@@ -36,7 +36,7 @@ class Checkout(models.Model):
     limit_book_card = fields.Integer(related='card_id.book_limit', string='Book limit on card')
     gt_name = fields.Char(related='card_id.gt_name', string='The user\'s card')
     start_date = fields.Date(related='card_id.start_date', string='Start date')
-    duration = fields.Integer(related='card_id.duration', string='Duration')
+    duration = fields.Selection(related='card_id.duration', string='Duration')
     end_date = fields.Date(related='card_id.end_date', string='End Date')
     state_card = fields.Selection(related='card_id.state', string='Status card', readonly=True, store=True)
 

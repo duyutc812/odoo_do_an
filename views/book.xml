@@ -73,14 +73,11 @@
                         </h1>
                     </div>
                     <group>
-                        <group colspan="4">
-
-                        </group>
-                        <group col="2" colspan="2">
-                            <group col="1" colspan="1">
-                                <field name="image" widget="image" width="200px" height="320px"/>
+                        <group col="4" colspan="4">
+                            <group col="2" colspan="2" string="Image Book">
+                                <field name="image" widget="image"/>
                             </group>
-                            <group col="1" colspan="1">
+                            <group col="2" colspan="2">
                                 <separator string="Information Book" col="1" colspan="1"/>
                                 <group>
                                     <field name="category"/>

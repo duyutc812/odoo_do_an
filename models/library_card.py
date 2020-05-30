@@ -18,11 +18,26 @@ class Card(models.Model):
             res.append((rec.id, '%s - %s' % (rec.code, rec.gt_name)))
         return res
 
-    book_limit = fields.Integer('No of Book on Card', required=True, default=1)
+    book_limit = fields.Integer('No of Book on Card', readonly=True,
+                                compute='_compute_book_limit', store=True)
+    price = fields.Integer('Price', compute='_compute_book_limit', store=True)
     user = fields.Selection([('student', 'Student'), ('teacher', 'Teacher')], string='User')
     student_id = fields.Many2one('library.student', string='Student Name')
     teacher_id = fields.Many2one('library.teacher', string='Teacher Name')
     gt_name = fields.Char(compute="_compute_name", method=True, string='Name')
+
+    @api.depends('duration')
+    def _compute_book_limit(self):
+        for lib_card in self:
+            if lib_card.duration == '1':
+                lib_card.book_limit = 3
+                lib_card.price = 20000
+            elif lib_card.duration == '3':
+                lib_card.book_limit = 4
+                lib_card.price = 30000
+            else:
+                lib_card.book_limit = 5
+                lib_card.price = 40000
 
     @api.model
     def _default_stage(self):
@@ -43,7 +58,11 @@ class Card(models.Model):
     state = fields.Selection(related='stage_id.state', store=True)
 
     start_date = fields.Date('Start Date', default=fields.Date.today())
-    duration = fields.Integer('Duration', help="Duration in months", default=1)
+    duration = fields.Selection([
+        ('1', '1 Month'),
+        ('3', '3 Months'),
+        ('6', '6 Months'),
+    ], string='Duration', default='1')
     end_date = fields.Date('End Date', compute="_compute_end_date", store=True)
     active = fields.Boolean('Active', default=True)
 
@@ -68,7 +87,7 @@ class Card(models.Model):
     def _compute_end_date(self):
         for rec in self:
             if rec.start_date:
-                rec.end_date = rec.start_date + rd(months=rec.duration)
+                rec.end_date = rec.start_date + rd(months=int(rec.duration))
 
     @api.multi
     def library_card_expire(self):
@@ -101,14 +120,14 @@ class Card(models.Model):
     @api.constrains('student_id', 'teacher_id')
     def _constrains_check_member_card(self):
         if self.user == 'student':
-            # print(self.ids)
+            print(self.ids)
             """ids la id cua record sap tao"""
             student_lib_card = self.search([
                 ('student_id', '=', self.student_id.id),
                 ('state', '!=', 'expire'),
                 ('id', 'not in', self.ids)
             ])
-            # print(student_lib_card)
+            print(student_lib_card)
             if student_lib_card:
                 raise ValidationError('You cannot assign library card to same student more than once!')
         if self.user == 'teacher':
@@ -129,7 +148,7 @@ class Card(models.Model):
 
         Stages = self.env['library.card.stage']
         self.stage_id = Stages.search([('state', '=', 'running')])
-        print(self.stage_id)
+        # print(self.stage_id)
         self.start_date = fields.Date.today()
         return {
             # effect when confirm Library card record
@@ -182,8 +201,8 @@ class Card(models.Model):
 
     @api.constrains('book_limit', 'duration')
     def _constrains_book_limit(self):
-        if self.book_limit <= 0 or self.duration < 0:
-            raise ValidationError('No of Book on Card and Duration must be great 0')
+        if self.book_limit <= 0:
+            raise ValidationError('No of Book on Card must be great 0')
 
     def _compute_check_borrowed_book(self):
         borrowed_book = self.env['library.checkout'].search_count([

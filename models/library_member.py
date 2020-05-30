@@ -115,6 +115,7 @@ class Teacher(models.Model):
     name = fields.Char('Name')
     teacher_image = fields.Binary('Cover', default=get_default_img())
     birth_date = fields.Date('Birth Date')
+    address = fields.Text('Address')
     age = fields.Integer('Age')
     phone = fields.Char('Phone')
     email = fields.Char('Email Contact')

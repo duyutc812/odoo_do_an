@@ -182,12 +182,13 @@
                                 <group>
                                     <field name="birth_date"/>
                                     <!--<field name="age"/>-->
-                                    <field name="phone" widget="phone"/>
+                                    <field name="phone" widget="phone" placeholder="e.g. 0988327192"/>
+                                    <field name="address" placeholder="e.g. adress"/>
                                 </group>
                                 <group>
                                     <field name="role" style="color:red"/>
                                     <field name="country_id"/>
-                                    <field name="email" placeholder="e.g@gmail.com"/>
+                                    <field name="email" placeholder="e.g. @gmail.com"/>
                                 </group>
                             </group>
                         </page>

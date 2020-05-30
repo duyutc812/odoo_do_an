@@ -135,7 +135,7 @@ class Magazine(models.Model):
     _name = 'library.magazine'
     _description = 'Magazine and newspaper'
 
-    type = fields.Selection([
+    type_mgz_new = fields.Selection([
         ('magazine', 'Magazine'),
         ('newspaper', 'Newspaper')
     ], string='Type', default='newspaper')

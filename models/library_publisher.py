@@ -35,5 +35,3 @@ class Publisher(models.Model):
         """Method to set upper for name"""
         for rec in self:
             rec.name = rec.name.title() if rec.name else ''
-
-

@@ -1,18 +1,4 @@
 <odoo>
-    <!--<record id="view_tree_magazine" model="ir.ui.view">
-        <field name="name">view.tree.magazine</field>
-        <field name="model">library.magazine</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="type"/>
-                <field name="category_mgz" attrs="{'invisible':[('type','=','newspaper')]}"/>
-                <field name="category_new" attrs="{'invisible':[('type','=','magazine')]}"/>
-                <field name="num_magazine"/>
-                <field name="publish_date"/>
-            </tree>
-        </field>
-    </record>-->
-
     <record id="view_form_magazine" model="ir.ui.view">
         <field name="name">view.form.magazine</field>
         <field name="model">library.magazine</field>
@@ -28,15 +14,15 @@
                             </button>
                     </div>
                     <!--<field name="image" widget="image" class="oe_avatar"/>-->
-                    <group col="4" colspan="4">
-                        <!--<group col="1" colspan="1">
+                    <!--<group col="4" colspan="4">
+                        &lt;!&ndash;<group col="1" colspan="1">
                             <field name="image" class="oe_avatar" style="height: 200px;width: 100px;"
                                    widget="image" nolabel="1" />
-                        </group>-->
+                        </group>&ndash;&gt;
                         <group col="2" colspan="2">
-                            <field name="type"/>
-                            <field name="category_mgz" attrs="{'invisible':[('type','=','newspaper')]}"/>
-                            <field name="category_new" attrs="{'invisible':[('type','=','magazine')]}"/>
+                            <field name="type_mgz_new"/>
+                            <field name="category_mgz" attrs="{'invisible':[('type_mgz_new','=','newspaper')]}"/>
+                            <field name="category_new" attrs="{'invisible':[('type_mgz_new','=','magazine')]}"/>
                             <field name="num_magazine"/>
                             <field name="publish_date"/>
                         </group>
@@ -46,9 +32,34 @@
                             <field name="availability"/>
                         </group>
 
+                    </group>-->
+                    <!--<field name="image" widget="image" class="oe_avatar"/>-->
+                    <div class="oe_title">
+                        <!--<label for="type_mgz_new" class="oe_edit_only"/>-->
+                        <h1 style="color:#7C7BAD">
+                            <field name="type_mgz_new" widget="radio"/>
+                        </h1>
+                    </div>
+                    <group col="4" colspan="4" >
+                        <!--<group col="1" colspan="1">
+                            <field name="image" class="oe_avatar" style="height: 200px;width: 100px;"
+                                   widget="image" nolabel="1" />
+                        </group>-->
+                        <group col="2" colspan="2" string="Information">
+                            <field name="type_mgz_new"/>
+                            <field name="category_mgz" attrs="{'invisible':[('type_mgz_new','=','newspaper')]}"/>
+                            <field name="category_new" attrs="{'invisible':[('type_mgz_new','=','magazine')]}"/>
+                            <field name="num_magazine"/>
+                            <field name="publish_date"/>
+                        </group>
+                        <group col="2" colspan="2" string="Others">
+                            <field name="quantity"/>
+                            <field name="actually"/>
+                            <field name="availability"/>
+                        </group>
                     </group>
-                    <notebook colspan="2">
-                        <page string="Meta MGZ/NEW">
+                    <notebook>
+                        <page string="Magazine and Newspaper">
                             <field name="mgz_new_ids">
                                 <tree editable="bottom" decoration-success="is_available == 'available'"
                                                         decoration-danger="is_available == 'not_available'">
@@ -71,12 +82,12 @@
         <field name="arch" type="xml">
             <kanban>
             <field name="id"/>
-            <field name="type"/>
+            <field name="type_mgz_new"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_details">
                             <a type="open">
-                                <t t-if="record.type.raw_value=='magazine'">
+                                <t t-if="record.type_mgz_new.raw_value=='magazine'">
                                     <strong>Magazine: </strong>
                                     <span style="color:black"><field name="category_mgz"/></span>
                                     - No.<field name="num_magazine"/> -  <field name="publish_date"/>

@@ -43,9 +43,7 @@
                         </button>
                         <button class="oe_stat_button" type="object" name="toggle_active" icon="fa-archive"
                                 groups="base.group_no_one"  >
-                            <strong>
-                                <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
-                            </strong>
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
                         </button>
                     </div>
                     <separator string="Author"/>
@@ -77,14 +75,10 @@
                     </group>
                     <notebook>
                         <page string="Biography">
-                            <group>
-                                <field name="biography"/>
-                            </group>
+                            <field name="biography"/>
                         </page>
                         <page string="More Information">
-                            <group>
-                                <field name="note"/>
-                            </group>
+                            <field name="note"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -166,29 +160,6 @@
                                         </h6>
                                     </strong>
                                     <table>
-                                        <!--<tr>
-                                            <td>Name: </td>
-                                            <td style="padding-left:10px;color:#7C7BAD">
-                                                <strong><h3><field name="pen_name"/></h3></strong>
-                                            </td>
-                                        </tr>-->
-                                        <!--<tr>
-                                            <td>Born: </td>
-                                            <th>
-                                                <field name="born_date" />
-                                                <t t-if="record.death_date.value">
-                                                    <strong> - </strong><field name="death_date"/>
-                                                </t>
-                                            </th>
-                                        </tr>-->
-                                         <!--<tr>
-                                            <td>Pen name: </td>
-                                            <th style="color:#7C7BAD"><field name="pen_name"/></th>
-                                        </tr>
-                                        <tr>
-                                            <td>Nationality: </td>
-                                            <th><field name="country_id"/></th>
-                                        </tr>-->
                                         <ul>
                                             <li>Pen Name: <field name="pen_name"/></li>
                                             <li>Born: <field name="born_date" />

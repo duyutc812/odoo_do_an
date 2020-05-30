@@ -130,8 +130,8 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_meta_books" name="Meta Books" parent="menu_library_document" action="action_meta_books"
-              sequence="30"/>
+    <menuitem id="menu_meta_books" name="Meta Books" parent="menu_library_others" action="action_meta_books"
+              sequence="51"/>
 
     <record id="action_library_magazine" model="ir.actions.act_window">
         <field name="name">Magazines and Newspapers</field>
