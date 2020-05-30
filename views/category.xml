@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<odoo>
+     <record id="view_tree_category" model="ir.ui.view">
+        <field name="name">view.tree.category</field>
+        <field name="model">library.category</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="book_ids" widget="many2many_tags"/>
+                <!--<field name="parent_id" />
+                <field name="child_ids" widget="many2many_tags" />-->
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_form_category" model="ir.ui.view">
+        <field name="name">view.form.category</field>
+        <field name="model">library.category</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group col="2">
+                        <separator string="Category" colspan="2"/>
+                        <field name="name" />
+                    </group>
+                    <!--<group>
+                        <group>
+                            <separator string="Parent Category"/>
+                            <field name="parent_id" options="{'no_create_edit':True}"/>
+                        </group>
+                        <group>
+                            <separator string="Subcategories"/>
+                            <field name="child_ids" widget="many2many_tags" />
+                        </group>
+                    </group>-->
+                    <separator string="All Book of category" colspan="4"/>
+                    <group>
+                        <field name="book_ids" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

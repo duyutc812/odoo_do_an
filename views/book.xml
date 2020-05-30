@@ -1,0 +1,346 @@
+<odoo>
+    <record id="open_meta_books_quantity" model="ir.actions.act_window">
+        <field name="name">Quantity</field>
+        <field name="res_model">meta.books</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('book_id', '=', active_id)]</field>
+    </record>
+
+    <record id="open_meta_books_actually" model="ir.actions.act_window">
+        <field name="name">Actually</field>
+        <field name="res_model">meta.books</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('book_id', '=', active_id),
+                              ('is_available', '=', 'available')]</field>
+    </record>
+
+    <record id="view_tree_book" model="ir.ui.view">
+        <field name="name">view.tree.book</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <tree> <!-- decoration-danger="is_available == 'not_available'"
+                  decoration-success="is_available == 'available'"-->
+                <field name="name_seq"/>
+                <field name="book_name"/>
+                <field name="category"/>
+                <field name="book_type"/>
+                <field name="language"/>
+                <field name="publisher_id"/>
+                <field name="author_ids" widget="many2many_tags"/>
+                <!--<field name="is_available"/>-->
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_form_book" model="ir.ui.view">
+        <field name="name">view.form.book</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <!--<button name="set_available" type="object" string="Available"
+                            attrs="{'invisible':[('is_available', '=', 'avai')]}"
+                            icon="fa-check"
+                            class="oe_highlight"/>
+                    <button name="set_not_available" type="object" string="Not available"
+                            attrs="{'invisible':[('is_available', '=', 'not_avai')]}"
+                            icon="fa-ban"
+                            class="oe_highlight"/>-->
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="expense_button_box">
+                        <button name="%(open_meta_books_quantity)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-th-list">
+                            <field name="quantity"  string="Quantity" widget="statinfo"/>
+                        </button>
+                        <button name="%(open_meta_books_actually)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-minus-square-o">
+                            <field name="actually" widget="statinfo" string="Actually"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name_seq" style="font-size: 24px; color:gray" /> -
+                            <field name="book_name"
+                                   placeholder="Book Name"
+                                   nolabel="1"
+                                   style="color:#7C7BAD"
+                                   class="o_text_overflow"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group colspan="4">
+
+                        </group>
+                        <group col="2" colspan="2">
+                            <group col="1" colspan="1">
+                                <field name="image" widget="image" width="200px" height="320px"/>
+                            </group>
+                            <group col="1" colspan="1">
+                                <separator string="Information Book" col="1" colspan="1"/>
+                                <group>
+                                    <field name="category"/>
+                                    <field name="isbn"/>
+                                    <field name="published_date"/>
+                                    <field name="publisher_id"/>
+                                    <field name="author_ids"
+                                           widget="many2many_tags"
+                                           required="1"/>
+                                    <field name="book_type"/>
+                                    <field name="num_page"/>
+                                </group>
+                                <!--<separator string="Status"/>-->
+                                <!--<group>
+                                    <field name="is_available" style="color:red"
+                                           attrs="{'invisible':[('is_available', '=', 'available')]}"
+                                           readonly="True"/>
+                                    <field name="is_available" style="color:green"
+                                           attrs="{'invisible':[('is_available', '=', 'not_available')]}"
+                                           readonly="True"/>
+                                </group>-->
+                                <separator string="Others"/>
+                                <group colspan="4">
+                                    <field name="currency_id" groups="base.group_no_one"/> <!-- class="oe_edit_only"-->
+                                    <field name="price"/>
+                                    <field name="language"/>
+                                    <field name="active"/>
+                                    <!--<field name="quantity"/>
+                                    <field name="actually"/>-->
+                                </group>
+                            </group>
+
+                        </group>
+                        <!--<notebook col="4" colspan="4">
+                            &lt;!&ndash;<page string="Meta Books">
+                                <field name="book_ids">
+                                    <tree decoration-danger="is_available == 'not_available'"
+                                          decoration-success="is_available == 'available'">
+                                        <field name="name_seq"/>
+                                        <field name="status"/>
+                                        <field name="is_available"/>
+                                    </tree>
+                                </field>
+                            </page>&ndash;&gt;
+                            <page string="Notes">
+                                <group>
+                                    <field name="notes"/>
+                                </group>
+                            </page>
+
+                        </notebook>-->
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_kanban_book" model="ir.ui.view">
+        <field name="name">view.kanban.book</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <kanban
+                    quick_create="false" group_create="false">
+                <field name="color"/>
+                <field name="id"/>
+                <field name="book_name"/>
+                <!--<field name="is_available"/>-->
+                <templates>
+                    <t t-name="kanban-box">
+                        <!--<t t-set="color"
+                           t-value="kanban_color(record.color.raw_value ||
+                           record.book_name.raw_value)"/>-->
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <img alt="Avatar" style="height:70px;width:50px;"
+                                     t-att-src="kanban_image('library.book', 'image',record.id.raw_value)"/>
+                            </div>
+                            <!--<div class="o_dropdown_kanban dropdown">
+                              &lt;!&ndash; Top-right drop down menu here... &ndash;&gt;
+                                <a class="dropdown-toggle btn"
+                                    data-toggle="dropdown" role="button"
+                                    aria-label="Dropdown menu"
+                                    title="Dropdown menu"
+                                    href="#">
+                                  <span class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                                    <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                    &lt;!&ndash;<ul class="oe_kanban_colorpicker" data-field="color"/>&ndash;&gt;
+                                </div>
+                            </div>-->
+                             <div class="oe_kanban_details">
+                                <strong>
+                                    <a type="open" class="o_text_overflow">
+                                        <field name="book_name"/>
+                                    </a>
+                                </strong>
+                                <ul>
+                                    <li>Book ID: <field name="name_seq" /></li>
+                                    <li class="o_text_overflow">Publisher: <field name="publisher_id" /></li>
+                                    <t t-set="red_or_black"
+                                       t-value="record.availability.raw_value == 'not_available' ?
+                                       'oe_kanban_text_red': '' "/>
+                                    <li t-att-class="red_or_black">
+                                        <field name="availability"/>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_search_book" model="ir.ui.view">
+       <field name="name">view.search.book</field>
+       <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name_seq" string="Book ID"/>
+                <field name="book_name" string="Book Name"/>
+                <!--<filter name="is_available" string="Available" domain="[('is_available', '=', 'available')]"/>
+                <filter name="is_available" string="Not Available" domain="[('is_available', '=', 'not_available')]"/>
+            --> <filter name="publisher_id" string="Publisher" context="{'group_by':'publisher_id'}"/>
+                <filter name="category" string="Category abc" context="{'group_by':'category'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_tree_meta_books" model="ir.ui.view">
+        <field name="name">view.tree.meta.books</field>
+        <field name="model">meta.books</field>
+        <field name="arch" type="xml">
+            <tree decoration-danger="is_available == 'not_available'"
+                  decoration-success="is_available == 'available'">
+                <field name="name_seq"/>
+                <field name="book_id"/>
+                <field name="status"/>
+                <field name="is_available"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_form_meta_books" model="ir.ui.view">
+        <field name="name">view.form.meta.books</field>
+        <field name="model">meta.books</field>
+        <field name="arch" type="xml">
+           <form>
+               <sheet>
+                   <div class="oe_title">
+                           <label for="name_seq" class="oe_edit_only"/>
+                           <h1>
+                               <field name="name_seq"/>
+                           </h1>
+                       </div>
+                   <group>
+                       <group>
+                           <field name="book_id"/>
+                           <field name="is_available"/>
+                       </group>
+                       <group>
+                           <field name="status"/>
+                       </group>
+                   </group>
+               </sheet>
+           </form>
+        </field>
+    </record>
+
+    <record id="view_tree_project" model="ir.ui.view">
+        <field name="name">view.tree.project</field>
+        <field name="model">document.project</field>
+        <field name="arch" type="xml">
+            <tree decoration-bf="availability=='available'"
+                  decoration-muted="availability=='not_available'">
+                <field name="name"/>
+                <field name="student_id"/>
+                <field name="major"/>
+                <field name="availability"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_form_project" model="ir.ui.view">
+        <field name="name">view.form.project</field>
+        <field name="model">document.project</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group string="Project Details">
+                            <field name="name"/>
+                            <field name="publish_date"/>
+                            <field name="teacher_name"/>
+                            <field name="availability"/>
+                        </group>
+                        <group string="Student Details">
+                            <field name="major"/>
+                            <field name="student_id"/>
+                            <field name="student_name"/>
+                            <field name="course"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_kanban_project" model="ir.ui.view">
+        <field name="name">view.kanban.project</field>
+        <field name="model">document.project</field>
+        <field name="arch" type="xml">
+            <kanban>
+            <field name="id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click" style="width:250px;height:90px">
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <a type="open">
+                                        <h6 class="o_text_overflow"><field name="name" /></h6>
+                                    </a>
+                                </strong>
+                                    <ul>
+                                        <li class="o_text_overflow">
+                                            <strong>Name: </strong><field name="student_name"/>
+                                        </li>
+                                        <li><strong>Major: </strong><field name="major" /></li>
+                                        <t t-set="red_or_black"
+                                            t-value="record.availability.raw_value == 'not_available' ?
+                                            'oe_kanban_text_red': '' "/>
+                                            <li t-att-class="red_or_black">
+                                            <field name="availability"/>
+                                    </li>
+                                    </ul>
+                            </div>
+                        </div>
+                    </t>
+                    <searchpanel>
+                        <field name="major" string="major"/>
+                    </searchpanel>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_search_project" model="ir.ui.view">
+       <field name="name">view.search.project</field>
+       <field name="model">document.project</field>
+        <field name="arch" type="xml">
+            <search >
+                <field name="name" string="Name Project"/>
+                <field name="student_name" string="Student Name"/>
+                <group>
+                    <filter string="Major Project" name="major" context="{'group_by': 'major'}"/>
+                </group>
+            </search>
+       </field>
+    </record>
+
+</odoo>

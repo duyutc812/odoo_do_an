@@ -1,0 +1,200 @@
+<odoo>
+    <record id="open_checkout_card" model="ir.actions.act_window">
+        <field name="name">Open checkout Card</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">library.checkout</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('card_id', '=', active_id),
+                              ('state', '=', 'running')]</field>
+    </record>
+
+    <record id="view_form_card" model="ir.ui.view">
+        <field name="name">view.form.card</field>
+        <field name="model">library.card</field>
+        <field name="arch" type="xml">
+            <form string="Card Details">
+                <header>
+                    <!--<button name="check_" type="object" string="ObjectButton"/>-->
+                    <field name="state" invisible="1"/>
+                    <button name="running_state"
+                            icon="fa-check"
+                            type="object"
+                            string="Confirm"
+                            attrs="{'invisible':[('state', '!=', 'draft')]}" class="oe_highlight"/>
+                            <!--groups="library.group_librarian" -->
+                    <button name="draft_state"
+                            icon="fa-ban"
+                            type="object"
+                            string="Draft"
+                            attrs="{'invisible':[('state', '!=', 'running')]}" class="oe_highlight"/>
+                            <!--groups="library.group_librarian"-->
+                    <button name="expire_state"
+                            type="object"
+                            string="Expire"
+                            attrs="{'invisible':[('state', '!=', 'running')]}" class="oe_highlight"/>
+
+                    <!--<button name="delete_state" type="object" string="Delete Card" class="oe_highlight"/>
+                            &lt;!&ndash;groups="library.group_librarian"&ndash;&gt;-->
+                    <field name="stage_id" widget="statusbar"/> <!-- clickable="True"-->
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="expense_button_box">
+                            <button name="%(open_checkout_card)d"
+                                    type="action"
+                                    class="oe_stat_button"
+                                    icon="fa-bars"
+                                    attrs="{'invisible': [('state', '!=', 'running')]}">
+                                    <field name="borrowed_book" string="Borrowed" widget="statinfo"/>
+                            </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="code" style="color:#7C7BAD"/>
+                        </h1>
+                    </div>
+                    <group col="2" colspan="4">
+                        <group>
+                            <separator string="Card Details"/>
+                            <field name="user" required="1" attrs="{'readonly':[('state','!=','draft')]}" />
+                            <field name="book_limit" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="student_id" attrs="{'invisible':[('user','!=','student')]}"
+                                   options="{'no_create_edit': True}"/>
+                            <field name="teacher_id" attrs="{'invisible':[('user','!=','teacher')]}"
+                                   options="{'no_create_edit': True}"/>
+                        </group>
+                        <group>
+                            <separator string="Membership Details" />
+                            <field name="start_date" required="1" attrs="{'readonly':[('state','!=','draft')]}" />
+                            <field name="duration" required="1" attrs="{'readonly':[('state','!=','draft')]}" />
+                            <field name="end_date" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_tree_card" model="ir.ui.view">
+        <field name="name">view.tree.card</field>
+        <field name="model">library.card</field>
+        <field name="arch" type="xml">
+            <tree string="Card Details"
+                  decoration-muted="state=='draft'"
+                  decoration-bf="state=='expire'"
+                  decoration-success="state=='running'">
+                <field name="code" />
+                <field name="user" />
+                <field name="book_limit" />
+                <field name="gt_name" />
+                <field name="end_date" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_search_card" model="ir.ui.view">
+        <field name="name">view.search.card</field>
+        <field name="model">library.card</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="code" string="Code"/>
+                <field name="student_id" string="Student ID"/>
+                <field name="teacher_id" string="Teacher ID"/>
+                <filter name="user" string="Teacher" domain="[('user', '=', 'teacher')]"/>
+                <filter name="user" string="Student" domain="[('user', '=', 'student')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_kanban_card" model="ir.ui.view">
+        <field name="name">view.kanban.card</field>
+        <field name="model">library.card</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="stage_id"
+                    quick_create="false"
+                    group_create="false">
+                <field name="code"/>
+                <field name="id"/>
+                <field name="user"/>
+                <field name="state"/>
+                <field name="book_limit"/>
+                <field name="end_date"/>
+                <field name="duration"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="o_dropdown_kanban dropdown">
+                                <!-- Top-right drop down menu here... -->
+                                <a class="dropdown-toggle btn" data-toggle="dropdown" role="button" aria-label="Dropdown menu" title="Dropdown menu" href="#">
+                                  <span class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                </div>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <h6>
+                                        <a type="open" class="o_text_overflow">
+                                            <field name="code" /> - <field name="gt_name"/>
+                                        </a>
+                                    </h6>
+                                </strong>
+                                <!--<table>
+                                    <tr>
+                                        <td style="width:55%;">Limit Book: </td>
+                                        <th><field name="book_limit" /></th>
+                                    </tr>
+                                    <tr>
+                                        <td>End Date: </td>
+                                        <th><field name="end_date" /></th>
+                                    </tr>
+                                    <tr>
+                                        <td>Duration: </td>
+                                        <th><field name="duration" /></th>
+                                    </tr>
+                                    <tr><td>User: </td>
+                                        <t t-set="red_or_black"
+                                           t-value="record.user.raw_value =='teacher'
+                                           ? 'oe_kanban_text_red' : ''" />
+                                            <th t-att-class="red_or_black">
+                                                <field name="user" />
+                                            </th>
+                                    </tr>
+                                    &lt;!&ndash;<li><strong><field name="book_limit" /></strong></li>
+                                    <li>End Date: <strong><field name="end_date" /></strong></li>
+                                    <li><strong><field name="duration" /></strong></li>&ndash;&gt;
+                                </table>-->
+                                <ul>
+                                    <li>Book Limit: <field name="book_limit"/></li>
+                                    <li>Date: <field name="start_date"/> - <field name="end_date"/></li>
+                                    <li>Duration: <strong><field name="duration"/></strong> (months)</li>
+                                    <t t-set="red_or_black"
+                                           t-value="record.user.raw_value =='teacher'
+                                           ? 'oe_kanban_text_red' : ''" />
+                                        <li t-att-class="red_or_black">
+                                            <field name="user" />
+                                        </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_calendar_card" model="ir.ui.view">
+        <field name="name">view.calendar.card</field>
+        <field name="model">library.card</field>
+        <field name="arch" type="xml">
+            <calendar string="Card Calendar" date_start="start_date"
+                      mode="month" quick_add="False" color="gt_name">
+                <field name="code"/>
+                <field name="gt_name"/>
+            </calendar>
+        </field>
+    </record>
+
+</odoo>

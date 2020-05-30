@@ -1,0 +1,237 @@
+<odoo>
+    <record id="view_tree_checkout" model="ir.ui.view">
+        <field name="name">view.tree.checkout</field>
+        <field name="model">library.checkout</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="state=='done'"
+                  decoration-muted="state=='draft'"
+                  decoration-it="state=='running'"
+                  decoration-danger="state=='fined'">
+                <field name="name_seq"/>
+                <field name="request_date"/>
+                <field name="return_date"/>
+                <field name="card_id"/>
+                <field name="user_id"/>
+                <field name="state"/>
+                <field name="borrow_book"/>
+                <field name="state_card"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_form_checkout" model="ir.ui.view">
+        <field name="name">view.form.checkout</field>
+        <field name="model">library.checkout</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" invisible="1"/>
+                    <button name="running" type="object"
+                            string="Borrowed" class="oe_highlight"
+                            attrs="{'invisible': [('state','!=', 'draft')]}"/>
+                    <button name="done" type="object"
+                            string="Returned" class="oe_highlight"
+                            attrs="{'invisible': [('state', '!=', 'running')]}"/>
+                    <button name="lost_book" type="object"
+                            string="Lost Book" class="oe_highlight"
+                            attrs="{'invisible': [('state', '!=', 'running')]}"/>
+                    <field name="stage_id" widget="statusbar" class="oe_right"/><!--clickable="True"-->
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="expense_button_box">
+                            <button name="open_checkout_of_card"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-bars" attrs="{'invisible':[('state', '!=', 'running')]}">
+                                    <field name="count" string="Another" widget="statinfo"/>
+                            </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name_seq" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name_seq"/>
+                        </h1>
+                        <h3>
+                          <span class="oe_read_only">On </span>
+                          <label for="request_date" class="oe_edit_only" />
+                          <field name="request_date" class="oe_inline" />
+                      </h3>
+                    </div>
+                    <group>
+                        <separator string="Card Detail" colspan="4"/>
+                        <group>
+                            <field name="card_id" options="{'no_create':True}" />
+                            <field name="limit_book_card" style="font-size:14px;color:#7C7BAD"/>
+                            <field name="gt_name"/>
+                            <field name="state_card"/>
+                        </group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="duration"/>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+                    <separator string="Borrow Book"/>
+                    <group col="2">
+                        <group>
+                            <field name="borrow_book"/>
+                            <field name="return_date" attrs="{'invisible':[('state', '!=', 'done')]}"/>
+                            <field name="user_id" options="{'no_open':True}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="note" attrs="{'invisible':[
+                                           ('state', '!=', 'fined')]}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_search_checkout" model="ir.ui.view">
+       <field name="name">view.search.checkout</field>
+       <field name="model">library.checkout</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name_seq" filter_domain="[('state','=', 'running')]" string="Checkout ID running"/>
+                <field name="card_id" string="Card ID"/>
+                <filter string="Draft" name="state_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Borrowed" name="state_running" domain="[('state', '=', 'running')]"/>
+                <filter string="Returned" name="state_done" domain="[('state', '=', 'done')]"/>
+                <filter string="Fined" name="state_fined" domain="[('state', '=', 'fined')]"/>
+                <group>
+                    <filter string="Card ID" name="card_id" context="{'group_by':'card_id'}"/>
+                    <filter string="Book ID" name="borrow_book" context="{'group_by':'borrow_book'}"/>
+                </group>
+            </search>
+       </field>
+    </record>
+
+    <record id="view_kanban_checkout" model="ir.ui.view">
+        <field name="name">view.kanban.checkout</field>
+        <field name="model">library.checkout</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="stage_id" quick_create="false"
+                    group_create="false" create="false">
+                <field name="id"/>
+                <field name="state_card"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="o_dropdown_kanban dropdown">
+                                <!-- Top-right drop down menu here... -->
+                                <a class="dropdown-toggle btn"
+                                        data-toggle="dropdown" role="button"
+                                        aria-label="Dropdown menu"
+                                        title="Dropdown menu"
+                                        href="#">
+                                    <span class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                                    <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                    <!--<ul class="oe_kanban_colorpicker" data-field="color"/>-->
+                                </div>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <a type="open" class="o_text_overflow"><field name="name_seq"/></a>
+                                </strong>
+                                    <!--<ul>
+                                        <li>
+                                            &lt;!&ndash;<t t-set="calendar_sign">
+                                            <i class="fa fa-calendar"/>
+                                            </t>
+                                            <t t-raw="calendar_sign" />
+                                            <field name="request_date" />&ndash;&gt;
+                                            <field name="request_date"/>
+                                        </li>
+                                        <li>
+                                            <field name="card_id"/>
+                                        </li>
+                                        <li>
+                                            <field name="borrow_book"/>
+                                        </li>
+
+                                    </ul>-->
+                                <!--<table>
+                                    &lt;!&ndash;<tr><td><field name="card_id"/></td></tr>&ndash;&gt;
+                                    <tr>
+                                        <t t-set="red_or_black"
+                                           t-value="record.state_card.raw_value == 'expire' ? 'oe_kanban_text_red' : '' "/>
+
+                                        <td t-att-class="red_or_black">
+                                            <field name="card_id"/>
+                                        </td>
+                                    </tr>
+                                    <tr><td><t t-set="calendar_sign">
+                                            <i class="fa fa-calendar"/>
+                                            </t>
+                                            <t t-raw="calendar_sign" /> :
+                                            <field name="request_date" /></td></tr>
+                                    <tr><td><field name="borrow_book"/></td></tr>
+                                </table>-->
+
+
+                                <ul>
+                                    <t t-set="red_or_black"
+                                           t-value="record.state_card.raw_value == 'expire' ?
+                                                    'oe_kanban_text_red' : '' "/>
+                                    <li style="padding-left:20px" t-att-class="red_or_black">
+                                        <field name="card_id"/>
+                                        <t t-if="record.state_card.raw_value == 'expire'"> (Expire)</t>
+                                    </li>
+                                    <li style="padding-left:20px">
+                                        <t t-set="calendar_sign">
+                                            <i class="fa fa-calendar"/>
+                                            </t>
+                                            <t t-raw="calendar_sign" /> :
+                                            <field name="request_date" />
+                                    </li>
+                                    <li class="o_text_overflow" style="padding-left:20px">
+                                        <field name="borrow_book"/>
+                                    </li>
+                                </ul>
+                                <!-- <div t-att="{'class':'oe_kanban_footer'}">-->
+                                <!--<div class="oe_kanban_footer">
+                                    <div class="oe_kanban_footer_left">
+                                        &lt;!&ndash; Left hand footer... &ndash;&gt;
+                                        <field name="priority" widget="priority"/>
+                                        <field name="activity_ids" widget="kanban_activity"/>
+                                    </div>
+
+                                    <div class="oe_kanban_footer_right">
+                                        &lt;!&ndash; Right hand footer... &ndash;&gt;
+                                        <field name="kanban_state" widget="kanban_state_selection"/>
+                                            <img t-att-src="kanban_image(
+                                                    'library.checkout', 'member_image', record.id.raw_value)"
+                                                    t-att-title="record.member_id.value"
+                                                    t-att-alt="record.member_id.value"
+                                                    width="50" height="50"
+                                                    class="oe_kanban_avatar" />
+
+                                    </div>
+                                    <t t-if= "record.num_books.raw_value == 0"><li>No books.</li></t>
+                                    <t t-elif="record.num_books.raw_value gte 3 "><li>A lot of books</li></t>
+                                    <t t-else=""><li><field name="num_books"/> books</li></t>
+                                </div>-->
+                            </div>
+                        <div class="oe_clear"/>
+                        </div> <!-- end of kanban color -->
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_calendar_checkout" model="ir.ui.view">
+        <field name="name">view.calendar.checkout</field>
+        <field name="model">library.checkout</field>
+        <field name="arch" type="xml">
+            <calendar string="Checkout Calendar" date_start="request_date"
+                      mode="month" quick_add="False" color="card_id">
+                <field name="card_id"/>
+            </calendar>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,142 @@
+<odoo>
+    <!--<record id="paperformat_euro_landscape"
+            model="report.paperformat">
+        <field name="name">European A4 Landscape</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">40</field>
+        <field name="margin_bottom">23</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">35</field>
+        <field name="dpi">90</field>
+     </record>-->
+
+    <report
+        id="action_library_checkout_report"
+        model="library.checkout"
+        report_type="qweb-html"
+        string="Checkout Report"
+        name="do_an_tn.report_library_checkout_template"/>
+        <!--paperformat="paperformat_euro_landscape"-->
+
+
+    <template id="report_library_checkout_template">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <!--<h>abc</h>-->
+                    <div class="container">
+                        <h1 style="text-align:center">Library Of University of Transport and Communications</h1>
+                        <br/>
+                        <div class="row bg-primary">
+                            <div class="col-1">ID</div>
+                            <div class="col-3">Card No</div>
+                            <div class="col-2">Request Date</div>
+                            <div class="col-4">Book Name</div>
+                            <div class="col-2">Librarian</div>
+                        </div>
+
+                        <t t-set="checkout_count" t-value="0"/>
+
+                        <t t-foreach="docs" t-as="o">
+                            <div class="row" style="padding-top:6px">
+                                <div class="col-1">
+                                    <h6 style="font-size:14px;padding-top:4px"><span t-field="o.name_seq"/></h6>
+                                </div>
+                                <div class="col-3">
+                                    <span t-field="o.card_id"/>
+                                </div>
+                                <div class="col-2">
+                                    <span t-field="o.request_date"/>
+                                </div>
+                                <div class="col-4">
+                                    <span t-field="o.borrow_book"/>
+                                </div>
+                                <div class="col-2">
+                                    <span t-field="o.user_id"/>
+                                </div>
+                            </div>
+                            <t t-set="checkout_count"
+                               t-value="checkout_count + 1">
+                            </t>
+                            <!--<p t-field="o.card_id.start_date"/>
+                            <p t-field="o.card_id.book_limit"/>-->
+                        </t>
+                        <br/>
+                        <h4>No Borrowed Book : <t t-esc="checkout_count"/></h4>
+                         <!--<p t-field="o.card_id.start_date"/>-->
+                         <!--<p t-field="o.card_id.end_date"/>-->
+                    </div>
+
+                </div>
+            </t>
+        </t>
+    </template>
+
+
+    <report
+        id="action_library_card_detail"
+        model="library.card"
+        report_type="qweb-html"
+        string="Card Report"
+        name="do_an_tn.report_card_detail_template"/>
+
+    <template id="report_card_detail_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h>abc</h>
+                    <!--<div class="container">
+                        <h1 style="text-align:center">Library Of University of Transport and Communications</h1>
+                        <br/>
+                        <div class="row bg-primary">
+                            <div class="col-1">ID</div>
+                            <div class="col-3">Card No</div>
+                            <div class="col-2">Request Date</div>
+                            <div class="col-4">Book Name</div>
+                            <div class="col-2">Librarian</div>
+                        </div>
+
+                        <t t-set="checkout_count" t-value="0"/>
+
+                        <t t-foreach="docs" t-as="o">
+                            <div class="row" style="padding-top:6px">
+                                <div class="col-1">
+                                    <h6 style="font-size:14px;padding-top:4px"><span t-field="o.name_seq"/></h6>
+                                </div>
+                                <div class="col-3">
+                                    <span t-field="o.card_id"/>
+                                </div>
+                                <div class="col-2">
+                                    <span t-field="o.request_date"/>
+                                </div>
+                                <div class="col-4">
+                                    <span t-field="o.borrow_book"/>
+                                </div>
+                                <div class="col-2">
+                                    <span t-field="o.user_id"/>
+                                </div>
+                            </div>
+                            <t t-set="checkout_count"
+                               t-value="checkout_count + 1">
+                            </t>
+                            &lt;!&ndash;<p t-field="o.card_id.start_date"/>
+                            <p t-field="o.card_id.book_limit"/>&ndash;&gt;
+                        </t>
+                        <br/>
+                        <h4>No Borrowed Book : <t t-esc="checkout_count"/></h4>
+                         &lt;!&ndash;<p t-field="o.card_id.start_date"/>&ndash;&gt;
+                         &lt;!&ndash;<p t-field="o.card_id.end_date"/>&ndash;&gt;
+                    </div>-->
+
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

@@ -1,0 +1,271 @@
+<odoo>
+    <record id="open_card_student" model="ir.actions.act_window">
+        <field name="name">Open Student Card</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">library.card</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="domain">[('student_id', '=', active_id),
+                              ('state', '=', 'running')]</field>
+    </record>
+
+    <record id="view_tree_student" model="ir.ui.view">
+        <field name="name">view.tree.student</field>
+        <field name="model">library.student</field>
+        <field name="arch" type="xml">
+            <tree create="false" delete="false">
+                <field name="name"/>
+                <field name="student_id"/>
+                <field name="email"/>
+                <field name="age"/>
+                <field name="gender"/>
+                <field name="phone"/>
+                <field name="birth_date"/>
+                <field name="major"/>
+                <field name="course"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_form_student" model="ir.ui.view">
+        <field name="name">view.form.student</field>
+        <field name="model">library.student</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="expense_button_box">
+                        <button name="%(open_card_student)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-bars">
+                                <field name="count" string="Card" widget="statinfo"/>
+                        </button>
+                        <button name="toggle_active"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-archive"
+                                groups="base.group_no_one">
+                                <field name="active" widget="boolean_button"
+                                       options='{"terminology": "archive"}'
+                                />
+                        </button>
+                    </div>
+                    <separator string="Student"/>
+                    <field name="student_image" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h5>
+                            ID: <field name="student_id" />
+                        </h5>
+                        <h1>
+                            <label for="name" class="oe_edit_only"/>
+                            <field name="name" style="color:#7C7BAD" placeholder="Student name"/>
+                        </h1>
+                    </div>
+                    <group col="2" colspan="2" string="Information Personal">
+                        <group>
+                            <field name="birth_date"/>
+                            <field name="age" attrs="{'invisible':[('age', '=', 0)]}"/>
+                            <field name="identity_card"/>
+                            <field name="gender"/>
+                            <field name="phone" widget="phone"/>
+
+                        </group>
+                        <group>
+                            <field name="address"/>
+                            <field name="country_id"/>
+                            <field name="email" placeholder="e.g. abc@gmail.com" widget="email"/>
+                            <field name="facebook" placeholder="http://facebook.com" widget="url"/>
+                        </group>
+                    </group>
+                    <group string="Major and Course">
+                        <group><field name="major" options="{'no_create': True, 'no_open': True}"/></group>
+                        <group><field name="course" widget="integer"/></group>
+                    </group>
+                    <notebook>
+                        <page string="More Information">
+                            <group>
+                                <field name="note"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_search_student" model="ir.ui.view">
+       <field name="name">view.search.student</field>
+       <field name="model">library.student</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="student_id" string="Student ID"/>
+                <field name="name" string="Name"/>
+                <filter string="Male" name="male" domain="[('gender', '=', 'male')]"/>
+                <filter string="Female" name="female" domain="[('gender', '=', 'female')]"/>
+                <group>
+                    <filter string="Age" name="age" context="{'group_by': 'age'}"/>
+                    <filter string="Course" name="course" context="{'group_by': 'course'}"/>
+                </group>
+        </search>
+       </field>
+    </record>
+
+    <record id="view_kanban_student" model="ir.ui.view">
+        <field name="name">view.kanban.student</field>
+        <field name="model">library.student</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="major" quick_create="false" group_create="false">
+                <field name="name"/>
+                <field name="id"/>
+                <field name="student_image"/>
+                <field name="email"/>
+                <field name="major"/>
+                <field name="course"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <img alt="Avatar" style="height:85px;width:85px"
+                                     t-att-src="kanban_image('library.student', 'student_image',record.id.raw_value)"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <a type="open">
+                                        <h6 class="o_text_overflow"><field name="name" /></h6>
+                                    </a>
+                                </strong>
+                                <ul>
+                                    <li><strong>ID: </strong><field name="student_id" /></li>
+                                    <li><strong>Course: </strong>K<field name="course" /></li>
+                                    <li class="o_text_overflow"><strong>Email: </strong><field name="email" /></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                    <!--<searchpanel>
+                        <field name="major" string="Major" select="multi" icon="fa-tags"/>
+                    </searchpanel>-->
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_tree_teacher" model="ir.ui.view">
+        <field name="name">view.tree.teacher</field>
+        <field name="model">library.teacher</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="birth_date"/>
+                <field name="age"/>
+                <field name="phone"/>
+                <field name="email"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_form_teacher" model="ir.ui.view">
+        <field name="name">view.form.teacher</field>
+        <field name="model">library.teacher</field>
+        <field name="arch" type="xml">
+            <form string="Teacher Form">
+                <sheet>
+                    <field name="teacher_image" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1>
+                            <label for="name" class="oe_edit_only"/>
+                            <field name="name" style="color:#7C7BAD"/>
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="Detail">
+                            <group>
+                                <group>
+                                    <field name="birth_date"/>
+                                    <!--<field name="age"/>-->
+                                    <field name="phone" widget="phone"/>
+                                </group>
+                                <group>
+                                    <field name="role" style="color:red"/>
+                                    <field name="country_id"/>
+                                    <field name="email" placeholder="e.g@gmail.com"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="More Information">
+                            <group>
+                                <field name="note"/>
+                            </group>
+                        </page>
+                    </notebook>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+     <record id="view_kanban_teacher" model="ir.ui.view">
+        <field name="name">view.kanban.teacher</field>
+        <field name="model">library.teacher</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column" create="false" nocreate="1">
+                <field name="name"/>
+                <field name="id"/>
+                <field name="teacher_image"/>
+                <field name="email"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <img style="height:85px;width:85px" alt="Avatar"
+                                     t-att-src="kanban_image('library.teacher', 'teacher_image', record.id.raw_value)"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <h3>
+                                        <a type="open">
+                                            <field name="name" />
+                                        </a>
+                                    </h3>
+                                </strong>
+                                <!--<ul>
+                                    <strong>Role: </strong><field name="role"/>
+                                    <strong>Email: </strong><field name="email"/>
+                                    <strong>Age: </strong><field name="age"/>
+                                </ul>-->
+                                <ul>
+                                    <li style="padding-left:5px">Role: <field name="role"/></li>
+                                    <li style="padding-left:5px">Email: <field name="email"/></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="inherit_view_tree_res_users" model="ir.ui.view">
+        <field name="name">inherit.view.tree.res.users</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='login_date']" position="after">
+                <field name="address"/>
+                <field name="facebook"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="inherit_view_form_res_users" model="ir.ui.view">
+        <field name="name">inherit.view.form.res.users</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_simple_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='mobile']" position="after">
+                <field name="address"/>
+                <field name="facebook"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

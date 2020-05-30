@@ -1,0 +1,210 @@
+<odoo>
+    <record id="open_books_of_author1" model="ir.actions.act_window">
+        <field name="name">All book for author</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">library.book</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('author_ids', '=', active_id)]</field>
+    </record>
+
+    <record id="view_tree_author" model="ir.ui.view">
+        <field name="name">view.tree.author</field>
+        <field name="model">library.author</field>
+        <field name="arch" type="xml">
+            <tree string="author tree">
+                <button name="%(open_books_of_author1)d" type="action"
+                        class="oe_highlight" string="All book"/>
+                <field name="name_seq"/>
+                <field name="pen_name"/>
+                <field name="name"/>
+                <field name="gender"/>
+                <field name="born_date"/>
+                <field name="death_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_form_author" model="ir.ui.view">
+        <field name="name">view.form.author</field>
+        <field name="model">library.author</field>
+        <field name="arch" type="xml">
+            <form string="author form">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="open_books_of_author2" type="object"
+                                class="oe_stat_button" icon="fa-book"
+                                help="type_object">
+                            <field name="count" string="All book" widget="statinfo"/>
+                        </button>
+                        <button name="%(open_books_of_author1)d" type="action"
+                                class="oe_stat_button" icon="fa-book"
+                                help="type_action">
+                            <field name="count" string="All book" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="object" name="toggle_active" icon="fa-archive"
+                                groups="base.group_no_one"  >
+                            <strong>
+                                <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            </strong>
+                        </button>
+                    </div>
+                    <separator string="Author"/>
+                    <field name="author_image" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h5>
+                            ID: <field name="name_seq" />
+                        </h5>
+                        <h1>
+                            <label for="pen_name" class="oe_edit_only"/>
+                            <field name="pen_name" style="color:#7C7BAD"/>
+                        </h1>
+                    </div>
+                    <group col="2" colspan="2">
+                        <separator string="Information Personal" colspan="4"/>
+                        <group>
+                            <field name="name"/>
+                            <field name="born_date"/>
+                            <field name="death_date"/>
+                        </group>
+                        <group>
+                            <field name="gender"/>
+                            <field name="country_id"/>
+                        </group>
+                    </group>
+                    <separator string="All Book" colspan="4" col="4"/>
+                    <group>
+                        <field name="book_ids" widget="many2many_tags"/>
+                    </group>
+                    <notebook>
+                        <page string="Biography">
+                            <group>
+                                <field name="biography"/>
+                            </group>
+                        </page>
+                        <page string="More Information">
+                            <group>
+                                <field name="note"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_search_author" model="ir.ui.view">
+       <field name="name">view.search.author</field>
+       <field name="model">library.author</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="pen_name" string="Pen Name"/>
+                <field name="name" string="Name"/>
+                <filter string="Male" name="male" domain="[('gender', '=', 'male')]"/>
+                <filter string="Female" name="female" domain="[('gender', '=', 'female')]"/>
+                <group>
+                    <filter string="Nationality" name="country_id" context="{'group_by': 'country_id'}"/>
+                    <filter string="Gender" name="gender" context="{'group_by': 'gender'}"/>
+                </group>
+            </search>
+       </field>
+    </record>
+
+    <record id="view_kanban_author" model="ir.ui.view">
+        <field name="name">view.kanban.author</field>
+        <field name="model">library.author</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name_seq"/>
+                <field name="id"/>
+                <field name="author_image"/>
+                <field name="pen_name"/>
+                <field name="color"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="
+                            oe_kanban_color_#{kanban_getcolor(record.color.raw_value)}
+                            oe_kanban_global_click">
+                            <div class="o_dropdown_kanban dropdown">
+                          <!-- Top-right drop down menu here... -->
+                                <a class="dropdown-toggle btn"
+                                    data-toggle="dropdown" role="button"
+                                    aria-label="Dropdown menu"
+                                    title="Dropdown menu"
+                                    href="#">
+                                  <span class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                                    <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                    <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                </div>
+                            </div>
+
+                            <div t-attf-class="oe_kanban_global_click">
+
+    <!--                            <img t-att-src="kanban_image(-->
+    <!--                                    'library.author', 'author_image', record.id.raw_value)"-->
+    <!--                                    t-att-title="record.pen_name.value"-->
+    <!--                                    t-att-alt="record.pen_name.value"-->
+    <!--                                    width="50" height="50"-->
+    <!--                                    class="oe_kanban_avatar" />-->
+                                <div class="o_kanban_image">
+                                    <img alt="Avatar" style="width:64px;height:74px"
+                                         t-att-src="kanban_image('library.author',
+                                                                'author_image',record.id.raw_value)"/>
+                                    <!--<button name="%(open_books_of_author1)d" type="action"
+                                            class="oe_highlight" string="All book">
+                                        All book
+                                    </button>-->
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <strong>
+                                        <h6>
+                                            <a type="open">
+                                                <field name="name_seq" />
+                                            </a>
+                                        </h6>
+                                    </strong>
+                                    <table>
+                                        <!--<tr>
+                                            <td>Name: </td>
+                                            <td style="padding-left:10px;color:#7C7BAD">
+                                                <strong><h3><field name="pen_name"/></h3></strong>
+                                            </td>
+                                        </tr>-->
+                                        <!--<tr>
+                                            <td>Born: </td>
+                                            <th>
+                                                <field name="born_date" />
+                                                <t t-if="record.death_date.value">
+                                                    <strong> - </strong><field name="death_date"/>
+                                                </t>
+                                            </th>
+                                        </tr>-->
+                                         <!--<tr>
+                                            <td>Pen name: </td>
+                                            <th style="color:#7C7BAD"><field name="pen_name"/></th>
+                                        </tr>
+                                        <tr>
+                                            <td>Nationality: </td>
+                                            <th><field name="country_id"/></th>
+                                        </tr>-->
+                                        <ul>
+                                            <li>Pen Name: <field name="pen_name"/></li>
+                                            <li>Born: <field name="born_date" />
+                                                <t t-if="record.death_date.value">
+                                                    <strong> - </strong><field name="death_date"/>
+                                                </t>
+                                            </li>
+                                            <li>Gender: <field name="gender"/></li>
+                                        </ul>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+</odoo>
