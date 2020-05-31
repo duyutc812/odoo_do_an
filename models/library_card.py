@@ -26,18 +26,23 @@ class Card(models.Model):
     teacher_id = fields.Many2one('library.teacher', string='Teacher Name')
     gt_name = fields.Char(compute="_compute_name", method=True, string='Name')
 
-    @api.depends('duration')
+    @api.depends('user', 'duration')
     def _compute_book_limit(self):
         for lib_card in self:
-            if lib_card.duration == '1':
-                lib_card.book_limit = 3
-                lib_card.price = 20000
-            elif lib_card.duration == '3':
-                lib_card.book_limit = 4
-                lib_card.price = 30000
+            if lib_card.user == 'student':
+                if lib_card.duration == '1':
+                    lib_card.book_limit = 3
+                    lib_card.price = 20000
+                elif lib_card.duration == '3':
+                    lib_card.book_limit = 4
+                    lib_card.price = 30000
+                else:
+                    lib_card.book_limit = 5
+                    lib_card.price = 40000
             else:
-                lib_card.book_limit = 5
-                lib_card.price = 40000
+                lib_card.duration = '6'
+                lib_card.book_limit = 6
+                lib_card.price = 0
 
     @api.model
     def _default_stage(self):
