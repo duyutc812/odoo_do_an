@@ -22,16 +22,16 @@
                             string="Confirm"
                             attrs="{'invisible':[('state', '!=', 'draft')]}" class="oe_highlight"/>
                             <!--groups="library.group_librarian" -->
-                    <button name="draft_state"
+                    <!--<button name="draft_state"
                             icon="fa-ban"
                             type="object"
                             string="Draft"
                             attrs="{'invisible':[('state', '!=', 'running')]}" class="oe_highlight"/>
-                            <!--groups="library.group_librarian"-->
-                    <button name="expire_state"
+                            &lt;!&ndash;groups="library.group_librarian"&ndash;&gt;-->
+                    <!--<button name="expire_state"
                             type="object"
                             string="Expire"
-                            attrs="{'invisible':[('state', '!=', 'running')]}" class="oe_highlight"/>
+                            attrs="{'invisible':[('state', '!=', 'running')]}" class="oe_highlight"/>-->
 
                     <button name="print_report" type="object" string="Print Report" class="oe_highlight"
                             attrs="{'invisible':[('state', '!=', 'running')]}"/>
@@ -141,6 +141,11 @@
                                   <span class="fa fa-ellipsis-v"/>
                                 </a>
                                 <div class="dropdown-menu" role="menu">
+                                    <t t-if="record.state.raw_value=='running'">
+                                        <div role="menuitem">
+                                            <a name="print_report" type="object" class="dropdown-item">Report</a>
+                                        </div>
+                                    </t>
                                     <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
                                 </div>
                             </div>

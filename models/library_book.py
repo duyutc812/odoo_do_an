@@ -138,7 +138,7 @@ class Magazine(models.Model):
     type_mgz_new = fields.Selection([
         ('magazine', 'Magazine'),
         ('newspaper', 'Newspaper')
-    ], string='Type', default='newspaper')
+    ], string='Type', default='newspaper', required=True)
     image = fields.Binary('Cover')
     category_mgz = fields.Many2one('categories.magazine', string='Category Magazine')
     category_new = fields.Many2one('categories.newspaper', string='Category Newspaper')
@@ -182,8 +182,9 @@ class Magazine(models.Model):
     def name_get(self):
         res = []
         for rec in self:
-            res.append((rec.id, 'Magazine %s - No.%s'
-                        % (rec.category_mgz.name if rec.category_mgz else rec.category_new.name, rec.num_magazine)))
+            res.append((rec.id, '%s %s - No.%s'
+                        % ('Newspaper' if rec.type_mgz_new == 'newspaper' else 'Magazine',
+                           rec.category_mgz.name if rec.category_mgz else rec.category_new.name, rec.num_magazine)))
         return res
 
 
@@ -198,7 +199,11 @@ class MetaMagazineNewspaper(models.Model):
     def name_get(self):
         res = []
         for rec in self:
-            res.append((rec.id, '%s - %s' % (rec.name_seq, rec.mgz_new_id)))
+            res.append((rec.id, '%s - %s - No.%s' %
+                        (rec.name_seq,
+                         rec.mgz_new_id.category_mgz.name if rec.mgz_new_id.category_mgz
+                         else rec.mgz_new_id.category_new.name,
+                         rec.mgz_new_id.num_magazine)))
         return res
 
     @api.model

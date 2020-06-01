@@ -35,13 +35,13 @@ class Card(models.Model):
         for lib_card in self:
             if lib_card.user == 'student':
                 if lib_card.duration == '1':
-                    lib_card.book_limit = 3
+                    lib_card.book_limit = 1
                     lib_card.price = 20000
                 elif lib_card.duration == '3':
-                    lib_card.book_limit = 4
+                    lib_card.book_limit = 2
                     lib_card.price = 30000
                 else:
-                    lib_card.book_limit = 5
+                    lib_card.book_limit = 3
                     lib_card.price = 40000
             else:
                 lib_card.duration = '6'
@@ -190,9 +190,9 @@ class Card(models.Model):
     #     # print(self.state)
     #     # print(vals['state'])
 
-    @api.multi
-    def draft_state(self):
-        self.stage_id = self.env['library.card.stage'].search([('state', '=', 'draft')])
+    # @api.multi
+    # def draft_state(self):
+    #     self.stage_id = self.env['library.card.stage'].search([('state', '=', 'draft')])
 
     @api.multi
     def unlink(self):
@@ -200,7 +200,6 @@ class Card(models.Model):
             if rec.state == 'running' or rec.state == 'expire':
                 raise ValidationError('You cannot delete a confirmed or expire library card!')
             elif rec.state == 'draft':
-                # print('abc la abc bâc')
                 checkout_card = self.env['library.checkout'].search_count([
                     ('card_id', '=', rec.id)
                 ])
@@ -208,18 +207,12 @@ class Card(models.Model):
                     raise ValidationError('Can not delete! related record')
         return super(Card, self).unlink()
 
-    @api.constrains('book_limit', 'duration')
-    def _constrains_book_limit(self):
-        if self.book_limit <= 0:
-            raise ValidationError('No of Book on Card must be great 0')
-
-    def _compute_check_borrowed_book(self):
-        borrowed_book = self.env['library.checkout'].search_count([
-            ('card_id', '=', self.id),
-            ('state', '=', 'running'),
-        ])
-        # print(borrowed_book)
-        self.borrowed_book = borrowed_book
+    # def _compute_check_borrowed_book(self):
+    #     borrowed_book = self.env['library.checkout'].search_count([
+    #         ('card_id', '=', self.id),
+    #         ('state', '=', 'running'),
+    #     ])
+    #     self.borrowed_book = borrowed_book
 
 
 

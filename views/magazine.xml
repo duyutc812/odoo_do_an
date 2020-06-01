@@ -116,4 +116,18 @@
         </field>
     </record>
 
+    <record id="view_tree_mgz_new" model="ir.ui.view">
+        <field name="name">view.tree.magazine.newspaper</field>
+        <field name="model">meta.magazinenewspaper</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="is_available=='available'"
+                  decoration-danger="is_available=='not_available'">
+                <field name="name_seq"/>
+                <field name="mgz_new_id"/>
+                <field name="status"/>
+                <field name="is_available"/>
+            </tree>
+        </field>
+    </record>
+
 </odoo>

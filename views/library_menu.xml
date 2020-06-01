@@ -133,6 +133,17 @@
     <menuitem id="menu_meta_books" name="Meta Books" parent="menu_library_others" action="action_meta_books"
               sequence="51"/>
 
+    <record id="action_meta_magazine_newspaper" model="ir.actions.act_window">
+        <field name="name">Meta Magazine and Newspaper</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">meta.magazinenewspaper</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_meta_magazine_newspaper" name="Meta Magazine and Newspaper" parent="menu_library_others"
+              action="action_meta_magazine_newspaper"
+              sequence="52"/>
+
     <record id="action_library_magazine" model="ir.actions.act_window">
         <field name="name">Magazines and Newspapers</field>
         <field name="type">ir.actions.act_window</field>
