@@ -33,6 +33,9 @@
                             string="Expire"
                             attrs="{'invisible':[('state', '!=', 'running')]}" class="oe_highlight"/>
 
+                    <button name="print_report" type="object" string="Print Report" class="oe_highlight"
+                            attrs="{'invisible':[('state', '!=', 'running')]}"/>
+
                     <!--<button name="delete_state" type="object" string="Delete Card" class="oe_highlight"/>
                             &lt;!&ndash;groups="library.group_librarian"&ndash;&gt;-->
                     <field name="stage_id" widget="statusbar"/> <!-- clickable="True"-->
@@ -58,18 +61,20 @@
                             <separator string="Card Details"/>
                             <field name="user" required="1" attrs="{'readonly':[('state','!=','draft')]}" />
                             <field name="book_limit" readonly="1"/>
-                            <field name="student_id" attrs="{'invisible':[('user','!=','student')]}"
+                            <field name="student_id" attrs="{'invisible':[('user','!=','student')],
+                                                                'readonly':[('state', '=', 'running')]}"
                                    options="{'no_create_edit': True}"/>
                             <field name="teacher_id" attrs="{'invisible':[('user','!=','teacher')]}"
                                    options="{'no_create_edit': True}"/>
-                            <field name="price" readonly="1"/>
+                            <field name="price" readonly="1" attrs="{'invisible': [('price', '=', 0)]}"/>
                         </group>
                         <group>
                             <separator string="Others" />
                             <field name="start_date" required="1"
                                    attrs="{'readonly':['|', ('state','!=','draft'), ('user', '=', 'teacher')]}" />
                             <field name="duration" required="1"
-                                   attrs="{'readonly':['|', ('state','!=','draft'), ('user', '=', 'teacher')]}" />
+                                   attrs="{'readonly':['|', ('state','!=','draft'), ('user', '=', 'teacher')]}"
+                                   force_save="1"/>
                             <field name="end_date"
                                    attrs="{'readonly':['|', ('state','!=','draft'), ('user', '=', 'teacher')]}"/>
                         </group>
@@ -186,6 +191,11 @@
                             </div>
                         </div>
                     </t>
+                    <searchpanel>
+                        <!--<field name="user" string="User"/>-->
+                        <field name="student_id" string="Student" icon="fa-tags" select="multi"/>
+                        <field name="teacher_id" string="Teacher"/>
+                    </searchpanel>
                 </templates>
             </kanban>
         </field>

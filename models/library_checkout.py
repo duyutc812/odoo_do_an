@@ -9,7 +9,7 @@ class Checkout(models.Model):
 
     card_id = fields.Many2one('library.card', string="Card No",
                               required=True,
-                              domain="[('state', '=', 'running')]")
+                              domain=[('state', '=', 'running')])
     user_id = fields.Many2one('res.users', 'Librarian',
                               default=lambda s: s.env.uid,
                               readonly=True)

@@ -12,6 +12,10 @@ class Card(models.Model):
     _rec_name = 'code'
 
     @api.multi
+    def print_report(self):
+        return self.env.ref('do_an_tn.action_library_card_detail').report_action(self)
+
+    @api.multi
     def name_get(self):
         res = []
         for rec in self:
@@ -64,10 +68,10 @@ class Card(models.Model):
 
     start_date = fields.Date('Start Date', default=fields.Date.today())
     duration = fields.Selection([
-        ('1', '1 Month'),
-        ('3', '3 Months'),
-        ('6', '6 Months'),
-    ], string='Duration', default='1')
+        ('1', '1 month'),
+        ('3', '3 months'),
+        ('6', '6 months'),
+    ], string='Duration')
     end_date = fields.Date('End Date', compute="_compute_end_date", store=True)
     active = fields.Boolean('Active', default=True)
 
