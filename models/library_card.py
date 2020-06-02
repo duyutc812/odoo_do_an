@@ -11,16 +11,21 @@ class Card(models.Model):
     _description = "Library Card Information"
     _rec_name = 'code'
 
+    @api.model
+    def _default_stage(self):
+        return self.env['library.card.stage'].search([], limit=1)
+
+    @api.model
+    def _group_expand_stage_id(self, stages, domain, order):
+        # print(stages)
+        # print(order)
+        # library.card.stage()
+        # sequence, name
+        return stages.search([], order=order)
+
     @api.multi
     def print_report(self):
         return self.env.ref('do_an_tn.action_library_card_detail').report_action(self)
-
-    @api.multi
-    def name_get(self):
-        res = []
-        for rec in self:
-            res.append((rec.id, '%s - %s' % (rec.code, rec.gt_name)))
-        return res
 
     book_limit = fields.Integer('No of Book on Card', readonly=True,
                                 compute='_compute_book_limit', store=True)
@@ -29,6 +34,33 @@ class Card(models.Model):
     student_id = fields.Many2one('library.student', string='Student Name')
     teacher_id = fields.Many2one('library.teacher', string='Teacher Name')
     gt_name = fields.Char(compute="_compute_name", method=True, string='Name')
+    stage_id = fields.Many2one('library.card.stage',
+                               default=_default_stage,
+                               group_expand='_group_expand_stage_id',
+                               )
+    state = fields.Selection(related='stage_id.state', store=True)
+
+    start_date = fields.Date('Start Date', default=fields.Date.today())
+    duration = fields.Selection([
+        ('1', '1 month'),
+        ('3', '3 months'),
+        ('6', '6 months'),
+    ], string='Duration')
+    end_date = fields.Date('End Date', compute="_compute_end_date", store=True)
+    active = fields.Boolean('Active', default=True)
+
+    code = fields.Char(string='Code', required=True, copy=False, readonly=True, index=True,
+                       default=lambda self: _('New'))
+    chk_card = fields.Integer(string="Borrowed Book",
+                              compute='_compute_chk_card',
+                              readonly=True)
+
+    @api.multi
+    def name_get(self):
+        res = []
+        for lib_card in self:
+            res.append((lib_card.id, '%s - %s' % (lib_card.code, lib_card.gt_name)))
+        return res
 
     @api.depends('user', 'duration')
     def _compute_book_limit(self):
@@ -48,48 +80,11 @@ class Card(models.Model):
                 lib_card.book_limit = 6
                 lib_card.price = 0
 
-    @api.model
-    def _default_stage(self):
-        return self.env['library.card.stage'].search([], limit=1)
-
-    @api.model
-    def _group_expand_stage_id(self, stages, domain, order):
-        # print(stages)
-        # print(order)
-        # library.card.stage()
-        # sequence, name
-        return stages.search([], order=order)
-
-    stage_id = fields.Many2one('library.card.stage',
-                               default=_default_stage,
-                               group_expand='_group_expand_stage_id',
-                               )
-    state = fields.Selection(related='stage_id.state', store=True)
-
-    start_date = fields.Date('Start Date', default=fields.Date.today())
-    duration = fields.Selection([
-        ('1', '1 month'),
-        ('3', '3 months'),
-        ('6', '6 months'),
-    ], string='Duration')
-    end_date = fields.Date('End Date', compute="_compute_end_date", store=True)
-    active = fields.Boolean('Active', default=True)
-
-    code = fields.Char(string='Code', required=True, copy=False, readonly=True, index=True,
-                       default=lambda self: _('New'))
-    borrowed_book = fields.Integer(string="Borrowed Book",
-                                   compute='_compute_check_borrowed_book',
-                                   readonly=True)
-
     """get name for user : student or teacher"""
     @api.depends('student_id')
     def _compute_name(self):
-        for rec in self:
-            if rec.student_id:
-                user = rec.student_id.name
-            else:
-                user = rec.teacher_id.name
-            rec.gt_name = user
+        for lib_card in self:
+            lib_card.gt_name = lib_card.student_id.name if lib_card.student_id else lib_card.teacher_id.name
 
     """get end_date for card"""
     @api.depends('start_date', 'duration')
@@ -168,6 +163,26 @@ class Card(models.Model):
             }
         }
 
+    @api.multi
+    def unlink(self):
+        for rec in self:
+            if rec.state == 'running' or rec.state == 'expire':
+                raise ValidationError('You cannot delete a confirmed or expire library card!')
+            elif rec.state == 'draft':
+                checkout_card = self.env['library.checkout'].search_count([
+                    ('card_id', '=', rec.id)
+                ])
+                if checkout_card:
+                    raise ValidationError('Can not delete! related record')
+        return super(Card, self).unlink()
+
+    def _compute_chk_card(self):
+        chk_card = self.env['library.checkout'].search_count([
+            ('card_id', '=', self.id),
+            ('state', '=', 'running'),
+        ])
+        self.chk_card = chk_card
+
     # @api.multi
     # def expire_state(self):
     #     self.stage_id = self.env['library.card.stage'].search([('state', '=', 'expire')])
@@ -194,25 +209,7 @@ class Card(models.Model):
     # def draft_state(self):
     #     self.stage_id = self.env['library.card.stage'].search([('state', '=', 'draft')])
 
-    @api.multi
-    def unlink(self):
-        for rec in self:
-            if rec.state == 'running' or rec.state == 'expire':
-                raise ValidationError('You cannot delete a confirmed or expire library card!')
-            elif rec.state == 'draft':
-                checkout_card = self.env['library.checkout'].search_count([
-                    ('card_id', '=', rec.id)
-                ])
-                if checkout_card:
-                    raise ValidationError('Can not delete! related record')
-        return super(Card, self).unlink()
 
-    # def _compute_check_borrowed_book(self):
-    #     borrowed_book = self.env['library.checkout'].search_count([
-    #         ('card_id', '=', self.id),
-    #         ('state', '=', 'running'),
-    #     ])
-    #     self.borrowed_book = borrowed_book
 
 
 

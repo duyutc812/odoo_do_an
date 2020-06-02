@@ -1,12 +1,12 @@
 <odoo>
-    <record id="open_card_student" model="ir.actions.act_window">
+ <!--   <record id="open_card_student" model="ir.actions.act_window">
         <field name="name">Open Student Card</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">library.card</field>
         <field name="view_mode">kanban,form</field>
         <field name="domain">[('student_id', '=', active_id),
                               ('state', '=', 'running')]</field>
-    </record>
+    </record>-->
 
     <record id="view_tree_student" model="ir.ui.view">
         <field name="name">view.tree.student</field>
@@ -19,7 +19,7 @@
                 <field name="age"/>
                 <field name="gender"/>
                 <field name="phone"/>
-                <field name="birth_date"/>
+                <field name="born_date"/>
                 <field name="major"/>
                 <field name="course"/>
             </tree>
@@ -33,21 +33,7 @@
             <form>
                 <sheet>
                     <div class="oe_button_box" name="expense_button_box">
-                        <button name="%(open_card_student)d"
-                                type="action"
-                                class="oe_stat_button"
-                                icon="fa-bars">
-                                <field name="count" string="Card" widget="statinfo"/>
-                        </button>
-                        <button name="toggle_active"
-                                type="object"
-                                class="oe_stat_button"
-                                icon="fa-archive"
-                                groups="base.group_no_one">
-                                <field name="active" widget="boolean_button"
-                                       options='{"terminology": "archive"}'
-                                />
-                        </button>
+
                     </div>
                     <separator string="Student"/>
                     <field name="student_image" widget="image" class="oe_avatar"/>
@@ -62,7 +48,7 @@
                     </div>
                     <group col="2" colspan="2" string="Information Personal">
                         <group>
-                            <field name="birth_date"/>
+                            <field name="born_date"/>
                             <field name="age" attrs="{'invisible':[('age', '=', 0)]}"/>
                             <field name="identity_card"/>
                             <field name="gender"/>
@@ -83,7 +69,7 @@
                     <notebook>
                         <page string="More Information">
                             <group>
-                                <field name="note"/>
+                                <field name="note" nolabel="1"/>
                             </group>
                         </page>
                     </notebook>
@@ -141,9 +127,6 @@
                             </div>
                         </div>
                     </t>
-                    <!--<searchpanel>
-                        <field name="major" string="Major" select="multi" icon="fa-tags"/>
-                    </searchpanel>-->
                 </templates>
             </kanban>
         </field>
@@ -155,7 +138,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name"/>
-                <field name="birth_date"/>
+                <field name="born_date"/>
                 <field name="age"/>
                 <field name="phone"/>
                 <field name="email"/>
@@ -180,7 +163,7 @@
                         <page string="Detail">
                             <group>
                                 <group>
-                                    <field name="birth_date"/>
+                                    <field name="born_date"/>
                                     <!--<field name="age"/>-->
                                     <field name="phone" widget="phone" placeholder="e.g. 0988327192"/>
                                     <field name="address" placeholder="e.g. adress"/>
@@ -194,7 +177,7 @@
                         </page>
                         <page string="More Information">
                             <group>
-                                <field name="note"/>
+                                <field name="note" nolabel="1"/>
                             </group>
                         </page>
                     </notebook>

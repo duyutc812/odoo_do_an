@@ -1,19 +1,20 @@
 <?xml version="1.0"?>
 <odoo>
-    <menuitem id="library_menu" name="Library School" web_icon="do_an_tn,static/description/icon.png" />
+    <!--Library School Menuitem-->
+    <menuitem id="menu_library" name="Library School" web_icon="do_an_tn,static/description/icon.png" />
 
+    <!--Author-->
     <record id="action_library_author" model="ir.actions.act_window">
         <field name="name">Authors</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">library.author</field>
         <field name="view_mode">kanban,tree,form</field>
-        <field name="context">{"search_default_country_id":0}</field>
+        <!--<field name="context">{"search_default_country_id":0}</field>-->
     </record>
-
-    <menuitem id="menu_library_author" name="Author" parent="library_menu" action="action_library_author"
-              sequence="30"/>
-
-    <menuitem id="menu_library_others" name="Others" parent="library_menu"
+    <menuitem id="menu_library_author" name="Authors"
+              parent="menu_library" action="action_library_author"/>
+    <!--Other Menuitem-->
+    <menuitem id="menu_library_others" name="Others" parent="menu_library"
               sequence="40"/>
 
     <record id="action_library_publisher" model="ir.actions.act_window">
@@ -22,13 +23,21 @@
         <field name="res_model">library.publisher</field>
         <field name="view_mode">kanban,tree,form</field>
     </record>
-
     <menuitem id="menu_library_publisher" name="Publisher" parent="menu_library_others"
               action="action_library_publisher" sequence="0"/>
+    <!--Student Major-->
+    <record id="action_student_major" model="ir.actions.act_window">
+        <field name="name">Majors</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">student.major</field>
+        <field name="view_mode">kanban,form</field>
+    </record>
 
-    <!-- This Menu Item Must have a parent -->
+    <menuitem id="menu_student_major" name="Major" parent="menu_library_others" action="action_student_major"
+              sequence="20"/>
+    <!--Category of Others Menuitem-->
     <menuitem id="menu_category" name="Categories" parent="menu_library_others" sequence="55"/>
-
+    <!--Book Categories-->
     <record id="action_library_category" model="ir.actions.act_window">
         <field name="name">Categories</field>
         <field name="type">ir.actions.act_window</field>
@@ -39,17 +48,59 @@
     <menuitem id="menu_library_category" name="Category" parent="menu_category" action="action_library_category"
               sequence="20"/>
 
-    <record id="action_student_major" model="ir.actions.act_window">
-        <field name="name">Majors</field>
+    <!--Magazine Categories-->
+    <record id="action_categories_magazine" model="ir.actions.act_window">
+        <field name="name">Categories Magazine</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">student.major</field>
+        <field name="res_model">categories.magazine</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_student_major" name="Major" parent="menu_library_others" action="action_student_major"
+    <menuitem id="menu_categories_magazine" name="Categories Magazine"
+              parent="menu_category"
+              action="action_categories_magazine" sequence="0"/>
+
+    <!--Newspaper Categories-->
+    <record id="action_categories_newspaper" model="ir.actions.act_window">
+        <field name="name">Categories Newspaper</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">categories.newspaper</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_categories_newspaper" name="Categories Newspaper"
+              parent="menu_category"
+              action="action_categories_newspaper" sequence="10"/>
+
+    <!--Card Stage-->
+    <record id="action_card_stage" model="ir.actions.act_window">
+        <field name="name">Card Stage</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">library.card.stage</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_card_stage" name="Card Stage" parent="menu_library_others"
+              action="action_card_stage"
+              sequence="100"/>
+
+    <!--Checkout Stage-->
+    <record id="action_checkout_stage" model="ir.actions.act_window">
+        <field name="name">Checkout Stage</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">library.checkout.stage</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_checkout_stage" name="Checkout Stage" parent="menu_library_others"
+              action="action_checkout_stage"
+              sequence="110"/>
+
+    <!--Member Menuitem-->
+    <menuitem id="menu_library_member" name="Members" parent="menu_library"
               sequence="20"/>
 
-
+    <!--Student of Member-->
     <record id="action_library_student" model="ir.actions.act_window">
         <field name="name">Students</field>
         <field name="type">ir.actions.act_window</field>
@@ -57,9 +108,12 @@
         <field name="view_mode">kanban,tree,form</field>
     </record>
 
-    <menuitem id="menu_library_student" name="Student" parent="menu_library_others" action="action_library_student"
-              sequence="30"/>
+    <menuitem id="menu_library_student" name="Student"
+              parent="menu_library_member"
+              action="action_library_student"
+              sequence="0"/>
 
+    <!--Teacher of Member-->
     <record id="action_library_teacher" model="ir.actions.act_window">
         <field name="name">Teachers</field>
         <field name="type">ir.actions.act_window</field>
@@ -67,8 +121,9 @@
         <field name="view_mode">kanban,tree,form</field>
     </record>
 
-    <menuitem id="menu_library_teacher" name="Teacher" parent="menu_library_others" action="action_library_teacher"
-              sequence="40"/>
+    <menuitem id="menu_library_teacher" name="Teacher"
+              parent="menu_library_member" action="action_library_teacher"
+              sequence="10"/>
 
     <record id="action_library_employee" model="ir.actions.act_window">
         <field name="name">Employees</field>
@@ -77,43 +132,15 @@
         <field name="view_mode">kanban,tree,form</field>
     </record>
 
-    <menuitem id="menu_library_employee" name="Employee" parent="menu_library_others" action="action_library_employee"
-              sequence="50"/>
-
-    <record id="action_library_card" model="ir.actions.act_window">
-        <field name="name">Card Details</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.card</field>
-        <field name="view_mode">kanban,calendar,tree,form</field>
-    </record>
-
-    <menuitem id="menu_library_card" name="Card Details" parent="library_menu" action="action_library_card"
-              sequence="10"/>
-
-    <menuitem id="menu_library_document" name="Documents" parent="library_menu"
+    <menuitem id="menu_library_employee" name="Employee"
+              parent="menu_library_member" action="action_library_employee"
               sequence="20"/>
 
-    <record id="action_categories_magazine" model="ir.actions.act_window">
-        <field name="name">Categories Magazine</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">categories.magazine</field>
-        <field name="view_mode">tree,form</field>
-    </record>
+    <!--Document Menuitem-->
+    <menuitem id="menu_library_document" name="Documents" parent="menu_library"
+              sequence="30"/>
 
-    <menuitem id="menu_categories_magazine" name="Categories Magazine" parent="menu_category"
-              action="action_categories_magazine" sequence="0"/>
-
-    <record id="action_categories_newspaper" model="ir.actions.act_window">
-        <field name="name">Categories Newspaper</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">categories.newspaper</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-
-    <menuitem id="menu_categories_newspaper" name="Categories Newspaper" parent="menu_category"
-              action="action_categories_newspaper" sequence="10"/>
-
-
+    <!--Book-->
     <record id="action_library_book" model="ir.actions.act_window">
         <field name="name">Books</field>
         <field name="type">ir.actions.act_window</field>
@@ -121,61 +148,23 @@
         <field name="view_mode">kanban,tree,form</field>
     </record>
 
-    <menuitem id="menu_library_book" name="Book" parent="menu_library_document" action="action_library_book" sequence="20"/>
+    <menuitem id="menu_library_book" name="Book"
+              parent="menu_library_document" action="action_library_book"
+              sequence="0"/>
 
-    <record id="action_meta_books" model="ir.actions.act_window">
-        <field name="name">Meta Books</field>
+    <!--Card-->
+    <record id="action_library_card" model="ir.actions.act_window">
+        <field name="name">Card Details</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">meta.books</field>
-        <field name="view_mode">tree,form</field>
+        <field name="res_model">library.card</field>
+        <field name="view_mode">kanban,calendar,tree,form</field>
     </record>
 
-    <menuitem id="menu_meta_books" name="Meta Books" parent="menu_library_others" action="action_meta_books"
-              sequence="51"/>
+    <menuitem id="menu_library_card" name="Card Details"
+              parent="menu_library" action="action_library_card"
+              sequence="2"/>
 
-    <record id="action_meta_magazine_newspaper" model="ir.actions.act_window">
-        <field name="name">Meta Magazine and Newspaper</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">meta.magazinenewspaper</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-
-    <menuitem id="menu_meta_magazine_newspaper" name="Meta Magazine and Newspaper" parent="menu_library_others"
-              action="action_meta_magazine_newspaper"
-              sequence="52"/>
-
-    <record id="action_library_magazine" model="ir.actions.act_window">
-        <field name="name">Magazines and Newspapers</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.magazine</field>
-        <field name="view_mode">kanban,form</field>
-    </record>
-
-    <menuitem id="menu_library_magazine" name="Magazine and Newspaper" parent="menu_library_document"
-              action="action_library_magazine"
-              sequence="50"/>
-
-    <record id="action_library_project" model="ir.actions.act_window">
-        <field name="name">Projects</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">document.project</field>
-        <field name="view_mode">tree,kanban,form</field>
-    </record>
-
-    <menuitem id="menu_library_project" name="Project" parent="menu_library_document" action="action_library_project"
-              sequence="40"/>
-
-    <!--<record id="action_meta_magazine_newspaper" model="ir.actions.act_window">
-        <field name="name">Meta Magazines and Newspaper</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">meta.magazinenewspaper</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-
-    <menuitem id="menu_meta_mgz_new" name="Meta Mgz/News" parent="menu_library_document"
-              action="action_meta_magazine_newspaper"
-              sequence="100"/>-->
-
+    <!--Checkout-->
     <record id="action_library_checkout" model="ir.actions.act_window">
         <field name="name">Checkouts</field>
         <field name="type">ir.actions.act_window</field>
@@ -183,32 +172,7 @@
         <field name="view_mode">kanban,calendar,tree,form</field>
     </record>
 
-    <menuitem id="menu_library_checkout" name="Checkouts" parent="library_menu" action="action_library_checkout"
-              sequence="-1"/>
-
-    <menuitem id="menu_card_checkout_stage" name="Card Details" parent="menu_library_others" action="action_library_card"
-              sequence="60"/>
-
-    <record id="action_card_stage" model="ir.actions.act_window">
-        <field name="name">Card Stage</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.card.stage</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-
-    <menuitem id="menu_card_stage" name="Card Stage" parent="menu_card_checkout_stage"
-              action="action_card_stage"
-              sequence="100"/>
-
-    <record id="action_checkout_stage" model="ir.actions.act_window">
-        <field name="name">Checkout Stage</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.checkout.stage</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-
-    <menuitem id="menu_checkout_stage" name="Checkout Stage" parent="menu_card_checkout_stage"
-              action="action_checkout_stage"
-              sequence="100"/>
-
+    <menuitem id="menu_library_checkout" name="Checkouts"
+              parent="menu_library" action="action_library_checkout"
+              sequence="1"/>
 </odoo>

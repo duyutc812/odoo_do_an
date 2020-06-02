@@ -10,7 +10,7 @@
             <field name="company_id" eval="False"/>
         </record>
 
-        <!-- Sequences for publisher-->
+        <!--Sequences for publisher-->
         <record id="seq_library_publisher" model="ir.sequence">
             <field name="name">Publisher Sequence</field>
             <field name="code">library.publisher.sequence</field>
@@ -19,16 +19,7 @@
             <field name="company_id" eval="False"/>
         </record>
 
-        <!-- Sequences for card-->
-        <record id="seq_library_card" model="ir.sequence">
-            <field name="name">Card Sequence</field>
-            <field name="code">library.card.sequence</field>
-            <field name="prefix">CD</field>
-            <field name="padding">3</field>
-            <field name="company_id" eval="False"/>
-        </record>
-
-        <!-- Sequences for Book-->
+        <!--Sequences for Book-->
         <record id="seq_library_book" model="ir.sequence">
             <field name="name">Book Sequence</field>
             <field name="code">library.book.sequence</field>
@@ -37,7 +28,7 @@
             <field name="company_id" eval="False"/>
         </record>
 
-        <!-- Sequences for Meta_books-->
+        <!--Sequences for Meta Books-->
         <record id="seq_meta_books" model="ir.sequence">
             <field name="name">Meta Books Sequence</field>
             <field name="code">library.meta.books.sequence</field>
@@ -46,22 +37,35 @@
             <field name="company_id" eval="False"/>
         </record>
 
-        <!-- Sequences for Magazine-->
-        <record id="seq_library_magazine" model="ir.sequence">
-            <field name="name">Magazine Sequence</field>
-            <field name="code">library.meta.magazine.newspaper.sequence</field>
-            <field name="prefix">MZ-NP</field>
+        <!--Sequence for Card-->
+        <record id="seq_library_card" model="ir.sequence">
+            <field name="name">Card Sequence</field>
+            <field name="code">library.card.sequence</field>
+            <field name="prefix">CD</field>
             <field name="padding">3</field>
             <field name="company_id" eval="False"/>
         </record>
 
-        <!-- Sequences for Checkout-->
-        <record id="seq_library_checkout" model="ir.sequence">
+        <!--Sequence for Checkout-->
+         <record id="seq_library_checkout" model="ir.sequence">
             <field name="name">Checkout Sequence</field>
             <field name="code">library.checkout.sequence</field>
             <field name="prefix">CK</field>
             <field name="padding">3</field>
             <field name="company_id" eval="False"/>
         </record>
+
+        <!--
+        <!
+        &lt;!&ndash; Sequences for Magazine&ndash;&gt;
+        <record id="seq_library_magazine" model="ir.sequence">
+            <field name="name">Magazine Sequence</field>
+            <field name="code">library.meta.magazine.newspaper.sequence</field>
+            <field name="prefix">MZ-NP</field>
+            <field name="padding">3</field>
+            <field name="company_id" eval="False"/>
+        </record>-->
+
+       -->
     </data>
 </odoo>

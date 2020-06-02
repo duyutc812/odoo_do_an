@@ -5,7 +5,6 @@ from odoo.exceptions import ValidationError
 class Checkout(models.Model):
     _name = 'library.checkout'
     _description = 'Library Checkout'
-    _rec_name = 'name_seq'
 
     card_id = fields.Many2one('library.card', string="Card No",
                               required=True,
@@ -13,9 +12,7 @@ class Checkout(models.Model):
     user_id = fields.Many2one('res.users', 'Librarian',
                               default=lambda s: s.env.uid,
                               readonly=True)
-
     request_date = fields.Date(default=fields.Date.today(), readonly=True)
-
 
     @api.model
     def _default_stage(self):
@@ -48,27 +45,34 @@ class Checkout(models.Model):
     ], string='Type Document', default='book')
 
     book_id = fields.Many2one('meta.books', 'Name Book',
-                              domain=[('is_available', '=', 'available')])
-    magazine_id = fields.Many2one('meta.magazinenewspaper', 'Name Magazine',
-                                  domain=[('is_available', '=', 'available')])
-    project_id = fields.Many2one('document.project', 'Name Project',
-                                 domain=[('availability', '=', 'available')])
-    status_document = fields.Text('Status', compute='_compute_get_status_document', store=True)
+                              domain=[('state', '=', 'available')])
+    # meta_book_id = fields.Many2one('meta.books', string='Meta Book')
+    # magazine_id = fields.Many2one('meta.magazinenewspaper', 'Name Magazine',
+    #                               domain=[('state', '=', 'available')])
+    # project_id = fields.Many2one('document.project', 'Name Project',
+    #                              domain=[('sta', '=', 'available')])
+    status_document = fields.Text('Status', compute='_compute_status_document', store=True)
 
     note = fields.Char('Note', readonly=True)
-    # count = fields.Integer(compute='_compute_get_another_checkout_of_card')
+    count = fields.Integer(compute='_compute_another_chk')
 
-    @api.depends('book_id', 'magazine_id')
-    def _compute_get_status_document(self):
-        for document in self:
-            if document.book_id:
-                document.status_document = document.book_id.status
-            elif document.magazine_id:
-                document.status_document = document.magazine_id.status
+    # @api.onchange('book_id')
+    # def _onchange_book_id(self):
+    #     for chk in self:
+    #         chk.meta_book_id = ''
+    #         return {'domain': {'meta_book_id': [('state', '=', 'available')]}}
+
+    @api.depends('book_id')
+    def _compute_status_document(self):
+        for chk in self:
+            if chk.book_id:
+                chk.status_document = chk.book_id.description
+            # elif document.magazine_id:
+            #     document.status_document = document.magazine_id.status
 
     def unlink(self):
-        for rec in self:
-            if rec.state == 'running' or rec.state == 'done' or rec.state == 'fined':
+        for chk in self:
+            if chk.state == 'running' or chk.state == 'done' or chk.state == 'fined':
                 raise ValidationError('You can not delete checkout when state is borrowed, returned, fined')
 
         return super(Checkout, self).unlink()
@@ -76,112 +80,105 @@ class Checkout(models.Model):
     @api.multi
     def name_get(self):
         res = []
-        for rec in self:
-            res.append((rec.id, '%s - %s' % (rec.name_seq, rec.gt_name)))
+        for chk in self:
+            res.append((chk.id, '%s - %s' % (chk.name_seq, chk.gt_name)))
         return res
 
-    # def done(self):
-    #     self.stage_id = self.env['library.checkout.stage'].search([
-    #         ('state', '=', 'done')
-    #     ])
-    #     self.borrow_book.is_available = 'avai'
-    #     self.return_date = fields.Date.today()
-    #
-    # @api.constrains('card_id', 'borrow_book')
-    # def _constrains_card_id_book(self):
-    #     domain = [('card_id', '=', self.card_id.id),
-    #               ('state', '!=', 'done'),
-    #               ('borrow_book', '=', self.borrow_book.id),
-    #               ('id', 'not in', self.ids)]
-    #     checkout_of_card = self.env['library.checkout'].search(domain)
-    #     if checkout_of_card:
-    #         raise ValidationError('You cannot borrow book to same card more than once!')
-    #
-    #     domain2 = [
-    #         ('card_id', '=', self.card_id.id),
-    #         ('state', '=', 'running'),
-    #         ('id', '!=', self.id)
-    #     ]
-    #     checkout_of_card2 = self.env['library.checkout'].search_count(domain2)
-    #     print(checkout_of_card2)
-    #     if self.card_id.book_limit <= checkout_of_card2:
-    #         raise ValidationError('You have borrowed more than the specified number of books for each card')
-    #
-    #
-    # @api.multi
-    # def running(self):
-    #     if self.name_seq == 'New':
-    #         self.name_seq = self.env['ir.sequence'].next_by_code('library.checkout.sequence') or _('New')
-    #
-    #     self.stage_id = self.env['library.checkout.stage'].search([
-    #         ('state', '=', 'running')
-    #     ])
-    #     if self.borrow_book.is_available == 'avai':
-    #         self.borrow_magazine.is_available = 'not_avai'
-    #     else:
-    #         raise ValidationError('Book: %s have borrowed.' %(self.borrow_book.book_name))
-    #     return {
-    #         'effect': {
-    #                 'fadeout': 'slow',
-    #                 'message': 'Checkout Cofirmed .... Thank You',
-    #                 'type': 'rainbow_man',
-    #             }
-    #     }
-    #
-    # def done(self):
-    #     self.stage_id = self.env['library.checkout.stage'].search([
-    #         ('state', '=', 'done')
-    #     ])
-    #     self.borrow_book.is_available = 'avai'
-    #     self.return_date = fields.Date.today()
-    #
-    # @api.constrains('card_id', 'borrow_book')
-    # def _constrains_card_id_book(self):
-    #     domain = [('card_id', '=', self.card_id.id),
-    #               ('state', '!=', 'done'),
-    #               ('borrow_book', '=', self.borrow_book.id),
-    #               ('id', 'not in', self.ids)]
-    #     print(self.card_id.book_limit)
-    #     checkout_of_card = self.env['library.checkout'].search(domain)
-    #     domain2 = [
-    #         ('card_id', '=', self.card_id.id),
-    #         ('state', '=', 'running'),
-    #         ('id', '!=', self.id)
-    #     ]
-    #     checkout_of_card2 = self.env['library.checkout'].search_count(domain2)
-    #     print(checkout_of_card2)
-    #     if self.card_id.book_limit <= checkout_of_card2:
-    #         raise ValidationError('You have borrowed more than the specified number of books for each card')
-    #     if checkout_of_card:
-    #         raise ValidationError('You cannot borrow book to same card more than once!')
-    #
-    # @api.multi
-    # def lost_book(self):
-    #     self.stage_id = self.env['library.checkout.stage'].search([
-    #         ('state', '=', 'fined')])
-    #     self.note = 'Fined because lost book'
-    #     self.return_date = fields.Date.today()
-    #
-    # def _compute_get_another_checkout_of_card(self):
-    #     domain = [
-    #         ('card_id', '=', self.card_id.id),
-    #         ('state', '=', 'running'),
-    #         ('id', '!=', self.id)
-    #     ]
-    #     self.count = self.env['library.checkout'].search_count(domain)
-    #
-    # def open_checkout_of_card(self):
-    #     return {
-    #         'name': _('Another Checkout (running)'),
-    #         'domain': [('card_id', '=', self.card_id.id),
-    #                    ('state', '=', 'running'),
-    #                    ('id', '!=', self.id)],
-    #         'view_type': 'form',
-    #         'res_model': 'library.checkout',
-    #         'view_id': False,
-    #         'view_mode': 'tree,form',
-    #         'type': 'ir.actions.act_window',
-    #     }
+    @api.constrains('card_id', 'book_id')
+    def _constrains_card_id_book(self):
+        lib_checkout = self.env['library.checkout']
+        domain = [('card_id', '=', self.card_id.id),
+                  ('state', '!=', 'done'),
+                  ('book_id', '=', self.book_id.id),
+                  # ('magazine_id', '=', self.magazine_id.id),
+                  # ('project_id', '=', self.project_id.id),
+                  ('id', 'not in', self.ids)]
+        chk_of_card = lib_checkout.search(domain)
+        if chk_of_card:
+            raise ValidationError('You cannot borrow book to same card more than once!')
+
+        # domain2 = [
+        #     ('card_id', '=', self.card_id.id),
+        #     ('state', '=', 'running'),
+        #     ('id', '!=', self.id)
+        # ]
+        # checkout_of_card2 = self.env['library.checkout'].search_count(domain2)
+        # print(checkout_of_card2)
+        # if self.card_id.book_limit <= checkout_of_card2:
+        #     raise ValidationError('You have borrowed more than the specified number of books for each card')
+
+    @api.multi
+    def running(self):
+        if self.name_seq == 'New':
+            self.name_seq = self.env['ir.sequence'].next_by_code('library.checkout.sequence') or _('New')
+
+        self.stage_id = self.env['library.checkout.stage'].search([
+            ('state', '=', 'running')
+        ])
+        if self.book_id:
+            if self.book_id.state == 'available':
+                self.book_id.state = 'not_available'
+            else:
+                raise ValidationError('Book: "%s" have borrowed.' % (self.book_id.book_name))
+        # if self.magazine_id:
+        #     if self.magazine_id.is_available == 'available':
+        #         self.magazine_id.is_available = 'not_available'
+        #     else:
+        #         raise ValidationError('Magazine/Newspaper have borrowed.')
+        #
+        # if self.project_id:
+        #     if self.project_id.availability == 'available':
+        #         self.project_id.availability = 'not_available'
+        #     else:
+        #         raise ValidationError('Project: " %s " have borrowed.' % (self.project_id.name))
+
+        return {
+            'effect': {
+                    'fadeout': 'slow',
+                    'message': 'Checkout Cofirmed .... Thank You',
+                    'type': 'rainbow_man',
+                }
+        }
+
+    def done(self):
+        self.stage_id = self.env['library.checkout.stage'].search([
+            ('state', '=', 'done')
+        ])
+        if self.book_id:
+            self.book_id.states = 'available'
+        # elif self.magazine_id:
+        #     self.magazine_id.is_available = 'available'
+        # elif self.project_id:
+        #     self.project_id.availability = 'available'
+        self.return_date = fields.Date.today()
+
+    @api.multi
+    def lost_book(self):
+        self.stage_id = self.env['library.checkout.stage'].search([
+            ('state', '=', 'fined')])
+        self.note = 'Fined because lost book'
+        self.return_date = fields.Date.today()
+
+    def _compute_another_chk(self):
+        domain = [
+            ('card_id', '=', self.card_id.id),
+            ('state', '=', 'running'),
+            ('id', '!=', self.id)
+        ]
+        self.count = self.env['library.checkout'].search_count(domain)
+
+    def open_checkout_of_card(self):
+        return {
+            'name': _('Another Checkout (running)'),
+            'domain': [('card_id', '=', self.card_id.id),
+                       ('state', '=', 'running'),
+                       ('id', '!=', self.id)],
+            'view_type': 'form',
+            'res_model': 'library.checkout',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+        }
 
 
 

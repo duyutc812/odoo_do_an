@@ -48,9 +48,9 @@
                     </group>
                     <notebook>
                         <page string="Books">
-                            <group>
+                            <!--<group>
                                 <field name="book_ids" widget="many2many_tags"/>
-                            </group>
+                            </group>-->
                         </page>
                         <page string="Notes">
                             <group>

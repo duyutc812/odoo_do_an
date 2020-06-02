@@ -17,6 +17,21 @@ class Category(models.Model):
     # child_ids = fields.One2many('library.category', 'parent_id',
     #                             string='Subcategories')
 
-    book_ids = fields.One2many('library.book', 'category')
+    # book_ids = fields.One2many('library.book', 'category')
+
+
+class CategoriesMagazine(models.Model):
+    _name = 'categories.magazine'
+    _description = 'Categories Magazine'
+
+    name = fields.Char('Name')
+
+
+class CategoriesNewspaper(models.Model):
+    _name = 'categories.newspaper'
+    _description = 'Categories Newspaper'
+
+    name = fields.Char('Name')
+
 
 

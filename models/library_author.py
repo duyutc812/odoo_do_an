@@ -28,38 +28,43 @@ class Author(models.Model):
     biography = fields.Text('Biography')
     note = fields.Html('Notes')
 
+    name_seq = fields.Char(string='Author ID', default=lambda self: _('New'), readonly=True)
+    color = fields.Integer('Color Index')
+
+    # book_ids = fields.Many2many('library.book', 'library_author_library_book_rel',
+    #                             'library_author_id', 'library_book_id', string='Books')
+
+    # count = fields.Integer(string="Count", compute='_get_book_count')
+    active = fields.Boolean('Active', default=True)
+
     _sql_constraints = [
         ('library_author_pen_name_uq',
          'UNIQUE (pen_name)',
-         'The Pen-Name must be unique.')
+         'The Pen-Name must be unique.'),
+        ('library_author_born_date_chk',
+         'CHECK (born_date < current_date)',
+         'DOB is should be less then today date'),
+        ('library_author_born_date_death_date_chk',
+         'CHECK (born_date < death_date)',
+         'Death date is must be less then born date'),
     ]
 
-    name_seq = fields.Char(string='Author ID', default=lambda self: _('New'), readonly=True)
+    # @api.multi
+    # def open_books_of_author2(self):
+    #     return {
+    #         'name': _('All book 2'),
+    #         'domain': [('author_ids', '=', self.id)],
+    #         'view_type': 'form',
+    #         'res_model': 'library.book',
+    #         'view_id': False,
+    #         'view_mode': 'tree,form',
+    #         'type': 'ir.actions.act_window',
+    #     }
 
-    color = fields.Integer('Color Index')
-
-    book_ids = fields.Many2many('library.book', 'library_author_library_book_rel',
-                                'library_author_id', 'library_book_id', string='Books')
-
-    count = fields.Integer(string="Count", compute='_get_book_count')
-    active = fields.Boolean('Active', default=True)
-
-    @api.multi
-    def open_books_of_author2(self):
-        return {
-            'name': _('All book 2'),
-            'domain': [('author_ids', '=', self.id)],
-            'view_type': 'form',
-            'res_model': 'library.book',
-            'view_id': False,
-            'view_mode': 'tree,form',
-            'type': 'ir.actions.act_window',
-        }
-
-    @api.multi
-    def _get_book_count(self):
-        self.count = self.env['library.book'].search_count([('author_ids', '=', self.id)])
-        # print(self.count)
+    # @api.multi
+    # def _get_book_count(self):
+    #     self.count = self.env['library.book'].search_count([('author_ids', '=', self.id)])
+    #     # print(self.count)
 
     @api.model
     def create(self, vals):
@@ -70,35 +75,19 @@ class Author(models.Model):
 
         return result
 
-
-    @api.constrains('born_date')
-    def _constrains_born_date(self):
-        """Method to constrains born_date"""
-        for rec in self:
-            if rec.born_date and rec.born_date >= fields.Date.today():
-                raise ValidationError("DOB is should be less then today date")
-
-
-    @api.constrains('born_date', 'death_date')
-    def _constrains_born_death(self):
-        """Method to constrains born_date < death_date"""
-        for rec in self:
-            if rec.born_date and rec.death_date and rec.death_date <= rec.born_date:
-                raise ValidationError('Death date is must be less then born date')
-
     @api.onchange('pen_name', 'name')
     def _onchange_pen_name_and_name_upper(self):
         """Method to set upper for name"""
-        for rec in self:
-            rec.pen_name = rec.pen_name.title() if rec.pen_name else ''
-            rec.name = rec.name.title() if rec.name else ''
+        for author in self:
+            author.pen_name = author.pen_name.title() if author.pen_name else ''
+            author.name = author.name.title() if author.name else ''
 
-    def unlink(self):
-        for rec in self:
-            check_author_book = self.env['library.book'].search([
-                ('author_ids', '=', rec.id)
-            ])
-            # print(check_author_book)
-            if check_author_book:
-                raise ValidationError('can not delete author!')
-        return super(Author, self).unlink()
+    # def unlink(self):
+    #     for rec in self:
+    #         check_author_book = self.env['library.book'].search([
+    #             ('author_ids', '=', rec.id)
+    #         ])
+    #         # print(check_author_book)
+    #         if check_author_book:
+    #             raise ValidationError('can not delete author!')
+    #     return super(Author, self).unlink()

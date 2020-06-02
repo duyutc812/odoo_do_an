@@ -1,121 +1,6 @@
 <odoo>
     <data noupdate="0">
-        <record id="data_student_major_1" model="student.major">
-            <field name="name">Information Technology</field>
-        </record>
-
-        <record id="data_student_major_2" model="student.major">
-            <field name="name">Accounting</field>
-        </record>
-
-        <record id="data_student_major_3" model="student.major">
-            <field name="name">Markerting</field>
-        </record>
-
-        <record id="data_student_major_4" model="student.major">
-            <field name="name">Mechanics</field>
-        </record>
-
-        <record id="data_category_1" model="library.category">
-            <field name="name">Tình yêu</field>
-        </record>
-
-        <record id="data_category_2" model="library.category">
-            <field name="name">Học Trò</field>
-        </record>
-
-        <record id="data_category_3" model="library.category">
-            <field name="name">Tiểu thuyết</field>
-        </record>
-
-        <record id="data_category_4" model="library.category">
-            <field name="name">Tạp chí</field>
-        </record>
-
-        <record id="data_category_5" model="library.category">
-            <field name="name">Trinh thám</field>
-        </record>
-
-        <record id="data_publisher_1" model="library.publisher">
-            <field name="name">Nhà Xuất Bản Trẻ</field>
-            <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nxbtre.jpeg"/>
-        </record>
-
-        <record id="data_publisher_2" model="library.publisher">
-            <field name="name">Nhà Xuất Bản Nhã Nam</field>
-            <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nhanam.jfif"/>
-        </record>
-
-        <record id="data_publisher_3" model="library.publisher">
-            <field name="name">Nhà Xuất Bản Văn Học</field>
-            <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nxbvanhoc.jpg"/>
-        </record>
-
-        <record id="data_publisher_4" model="library.publisher">
-            <field name="name">Nhà Xuất Bản Kim Đồng</field>
-            <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nxbkimdong.jfif"/>
-        </record>
-
-        <record id="data_student_1" model="library.student">
-            <field name="name">Student Zero</field>
-            <field name="student_id">160705411</field>
-            <field name="student_image" type="base64" file="do_an_tn\static\student\eden.jpg"/>
-            <field name="birth_date" eval="(DateTime.today()).strftime('%Y-%m-%d')"/>
-            <field name="phone">0978823728</field>
-            <field name="identity_card">982234890</field>
-            <field name="address">Bắc Ninh</field>
-            <field name="country_id">241</field>
-            <field name="email">studentzero@gmail.com</field>
-            <field name="major" ref="data_student_major_1"/>
-            <field name="course">57</field>
-            <field name="facebook">https://www.facebook.com</field>
-        </record>
-
-        <record id="data_student_2" model="library.student">
-            <field name="name">Student One</field>
-            <field name="student_id">160704523</field>
-            <field name="student_image" type="base64" file="do_an_tn\static\default_image.png"/>
-            <field name="birth_date" eval="(DateTime.today()).strftime('%Y-%m-%d')"/>
-            <!--<field name="age" eval="(DateTime.today() - '12/08/1998')"/>-->
-            <field name="phone">0982712312</field>
-            <field name="identity_card">1242312331</field>
-            <field name="address">Cà Mau</field>
-            <field name="country_id">241</field>
-            <field name="email">studentone@gmail.com</field>
-            <field name="major" ref="data_student_major_2"/>
-            <field name="course">58</field>
-        </record>
-
-        <record id="data_student_3" model="library.student">
-            <field name="name">Student Two</field>
-            <field name="student_id">160704524</field>
-            <field name="student_image" type="base64" file="do_an_tn\static\default_image.png"/>
-            <field name="birth_date" eval="(DateTime.today()).strftime('%Y-%m-%d')"/>
-            <!--<field name="age" eval="(DateTime.today() - '1998-12-08')"/>-->
-            <field name="phone">0982742312</field>
-            <field name="identity_card">1242314521</field>
-            <field name="address">Nghệ An</field>
-            <field name="country_id">241</field>
-            <field name="email">studenttwo@gmail.com</field>
-            <field name="major" ref="data_student_major_3"/>
-            <field name="course">59</field>
-        </record>
-
-        <record id="data_student_4" model="library.student">
-            <field name="name">Student Three</field>
-            <field name="student_id">160704525</field>
-            <field name="student_image" type="base64" file="do_an_tn\static\default_image.png"/>
-            <field name="birth_date" eval="(DateTime.today()).strftime('%Y-%m-%d')"/>
-            <!--<field name="age" eval="(DateTime.today() - '12/08/1998')"/>-->
-            <field name="phone">0982423090</field>
-            <field name="identity_card">10922314521</field>
-            <field name="address">Hà Nội</field>
-            <field name="country_id">10</field>
-            <field name="email">studentthree@gmail.com</field>
-            <field name="major" ref="data_student_major_4"/>
-            <field name="course">60</field>
-        </record>
-
+        <!--data author 1 -> 6-->
         <record id="data_author_1" model="library.author">
             <field name="pen_name">Nguyễn Nhật Ánh</field>
             <field name="name">Nguyễn Nhật Ánh</field>
@@ -176,25 +61,136 @@
             <field name="country_id">241</field>
             <field name="biography">Biography of Gao</field>
         </record>
+        <!--data publisher 1 - 4-->
+        <record id="data_publisher_1" model="library.publisher">
+            <field name="name">Nhà Xuất Bản Trẻ</field>
+            <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nxbtre.jpeg"/>
+        </record>
 
+        <record id="data_publisher_2" model="library.publisher">
+            <field name="name">Nhà Xuất Bản Nhã Nam</field>
+            <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nhanam.jfif"/>
+        </record>
+
+        <record id="data_publisher_3" model="library.publisher">
+            <field name="name">Nhà Xuất Bản Văn Học</field>
+            <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nxbvanhoc.jpg"/>
+        </record>
+
+        <record id="data_publisher_4" model="library.publisher">
+            <field name="name">Nhà Xuất Bản Kim Đồng</field>
+            <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nxbkimdong.jfif"/>
+        </record>
+
+        <!--data Book Category-->
+        <record id="data_category_1" model="library.category">
+            <field name="name">Tình yêu</field>
+        </record>
+
+        <record id="data_category_2" model="library.category">
+            <field name="name">Học Trò</field>
+        </record>
+
+        <record id="data_category_3" model="library.category">
+            <field name="name">Tiểu thuyết</field>
+        </record>
+
+        <record id="data_category_4" model="library.category">
+            <field name="name">Trinh thám</field>
+        </record>
+
+        <!--data Student Major-->
+        <record id="data_student_major_1" model="student.major">
+            <field name="name">Công nghệ thông tin</field>
+        </record>
+
+        <record id="data_student_major_2" model="student.major">
+            <field name="name">Kế Toán</field>
+        </record>
+
+        <record id="data_student_major_3" model="student.major">
+            <field name="name">Điện Tử Viễn Thông</field>
+        </record>
+
+        <record id="data_student_major_4" model="student.major">
+            <field name="name">Kinh Tế</field>
+        </record>
+
+        <!--data Magazine Categories-->
+        <record id="data_category_magazine_1" model="categories.magazine">
+            <field name="name">Thể Thao</field>
+        </record>
+
+        <record id="data_category_magazine_2" model="categories.magazine">
+            <field name="name">Công Nghệ</field>
+        </record>
+
+        <record id="data_category_magazine_3" model="categories.magazine">
+            <field name="name">Thời Trang</field>
+        </record>
+
+        <!--data Newspaper Categories-->
+        <record id="data_category_newspaper_1" model="categories.newspaper">
+            <field name="name">Tiền Phong</field>
+        </record>
+
+        <record id="data_category_newspaper_2" model="categories.newspaper">
+            <field name="name">Tuổi Trẻ</field>
+        </record>
+
+        <record id="data_category_newspaper_3" model="categories.newspaper">
+            <field name="name">Lao Động</field>
+        </record>
+
+        <!--data Student-->
+        <record id="data_student_1" model="library.student">
+            <field name="name">Student One</field>
+            <field name="student_id">160704523</field>
+            <field name="student_image" type="base64" file="do_an_tn\static\default_image.png"/>
+            <field name="born_date">1996-03-26</field>
+            <field name="phone">0982712312</field>
+            <field name="identity_card">1242312331</field>
+            <field name="address">Cà Mau</field>
+            <field name="country_id">241</field>
+            <field name="email">studentone@gmail.com</field>
+            <field name="major" ref="data_student_major_2"/>
+            <field name="course">58</field>
+        </record>
+
+        <record id="data_student_2" model="library.student">
+            <field name="name">Student Two</field>
+            <field name="student_id">160704524</field>
+            <field name="student_image" type="base64" file="do_an_tn\static\default_image.png"/>
+            <field name="born_date">1998-08-10</field>
+            <field name="phone">0982742312</field>
+            <field name="identity_card">1242314521</field>
+            <field name="address">Nghệ An</field>
+            <field name="country_id">241</field>
+            <field name="email">studenttwo@gmail.com</field>
+            <field name="major" ref="data_student_major_3"/>
+            <field name="course">59</field>
+        </record>
+
+        <!--data teacher-->
         <record id="data_teacher_1" model="library.teacher">
             <field name="name">Teacher One</field>
             <field name="email">TeacherOne@gmail.com</field>
-            <field name="birth_date">1975-04-30</field>
+            <field name="born_date">1975-04-30</field>
             <field name="teacher_image" type="base64" file="do_an_tn\static\default_image.png"/>
             <field name="role">Giảng Viên</field>
         </record>
 
         <record id="data_teacher_2" model="library.teacher">
             <field name="name">Teacher Three</field>
-            <field name="birth_date">1969-07-05</field>
+            <field name="born_date">1969-07-05</field>
             <field name="email">TeacherThree@gmail.com</field>
             <field name="teacher_image" type="base64" file="do_an_tn\static\default_image.png"/>
             <field name="role">Hiệu Trưởng</field>
         </record>
 
+        <!--data Book-->
         <record id="data_book_1" model="library.book">
-            <field name="book_name">Mắt Biếc</field>
+            <field name="name">Mắt Biếc</field>
             <field name="image" type="base64" file="do_an_tn\static\book\matbiec.jpg"/>
             <field name="category" ref="data_category_1"/>
             <field name="publisher_id" ref="data_publisher_1"/>
@@ -203,12 +199,56 @@
         </record>
 
         <record id="data_book_2" model="library.book">
-            <field name="book_name">Sherlock Holmes - Tập 1</field>
+            <field name="name">Sherlock Holmes - Tập 1</field>
             <field name="image" type="base64" file="do_an_tn\static\book\holmes1.jpg"/>
-            <field name="category" ref="data_category_5"/>
+            <field name="category" ref="data_category_2"/>
             <field name="publisher_id" ref="data_publisher_4"/>
             <field name="author_ids" eval="[(6,0,[ref('data_author_5')])]"/>
             <field name="price">56000</field>
+        </record>
+
+        <!--data Checkout Stage-->
+        <record id="data_card_stage_1" model="library.card.stage">
+            <field name="name">Draft</field>
+            <field name="sequence">10</field>
+            <field name="state">draft</field>
+        </record>
+
+        <record id="data_card_stage_2" model="library.card.stage">
+            <field name="name">Confirm</field>
+            <field name="sequence">20</field>
+            <field name="state">running</field>
+        </record>
+
+        <record id="data_card_stage_3" model="library.card.stage">
+            <field name="name">Expire</field>
+            <field name="sequence">30</field>
+            <field name="state">expire</field>
+        </record>
+
+        <!--Checkout Stage-->
+        <record id="data_checkout_stage_1" model="library.checkout.stage">
+            <field name="name">Draft</field>
+            <field name="sequence">10</field>
+            <field name="state">draft</field>
+        </record>
+
+        <record id="data_checkout_stage_2" model="library.checkout.stage">
+            <field name="name">Borrowed</field>
+            <field name="sequence">20</field>
+            <field name="state">running</field>
+        </record>
+
+        <record id="data_checkout_stage_3" model="library.checkout.stage">
+            <field name="name">Returned</field>
+            <field name="sequence">30</field>
+            <field name="state">done</field>
+        </record>
+
+        <record id="data_checkout_stage_4" model="library.checkout.stage">
+            <field name="name">Fined</field>
+            <field name="sequence">40</field>
+            <field name="state">fined</field>
         </record>
 
     </data>

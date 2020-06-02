@@ -26,11 +26,15 @@ class Student(models.Model):
     _description = 'Student'
     _rec_name = 'name'
 
+    @api.model
+    def _default_major(self):
+        return self.env['student.major'].search([], limit=1)
+
     name = fields.Char('Name', required=True)
     student_image = fields.Binary('Cover', default=get_default_img())
     student_id = fields.Char('Student ID', required=True)
     identity_card = fields.Char('Identity Card')
-    birth_date = fields.Date('Birth Date', default=fields.Date.today())
+    born_date = fields.Date('Born Date', default=fields.Date.today())
     age = fields.Integer('Age', compute='_compute_age', store=True, readonly=True)
     gender = fields.Selection([
         ('male', 'Male'),
@@ -40,56 +44,41 @@ class Student(models.Model):
     phone = fields.Char('Phone')
     email = fields.Char('Email')
     facebook = fields.Char('Facebook')
-
-    @api.model
-    def _default_major(self):
-        return self.env['student.major'].search([], limit=1)
     major = fields.Many2one('student.major', string="Major", default=_default_major)
-
     course = fields.Integer('Course', default=57)
     note = fields.Html('Notes')
-    country_id = fields.Many2one('res.country', 'Nationality', default=241)
+    country_id = fields.Many2one('res.country', 'Nationality')
     active = fields.Boolean('Active?', default=True)
-    count = fields.Integer('Count', compute='_get_student_card')
+    count = fields.Integer('Count', compute='_compute_student_card')
 
-    def _get_student_card(self):
-        domain = [('student_id', '=', self.id), ('state', '=', 'running')]
-        self.count = self.env['library.card'].search_count(domain)
+    # def _compute_student_card(self):
+    #     domain = [('student_id', '=', self.id), ('state', '=', 'running')]
+    #     self.count = self.env['library.card'].search_count(domain)
 
     @api.multi
     def name_get(self):
         res = []
-        for rec in self:
-            res.append((rec.id, '%s - %s - %s%s' % (rec.name, rec.student_id, 'K', rec.course)))
+        for student in self:
+            res.append((student.id, '%s - %s - %s%s' % (student.name, student.student_id, 'K', student.course)))
         return res
 
-    @api.depends('birth_date')
+    @api.depends('born_date')
     def _compute_age(self):
         """Method to onchange birth_date for student"""
         curr_date = fields.Date.today()
-        for rec in self:
-            birth_date = rec.birth_date
-            rec.age = curr_date.year - birth_date.year - \
+        for student in self:
+            born_date = student.born_date
+            student.age = curr_date.year - born_date.year - \
                       ((curr_date.month, curr_date.day) <
-                       (birth_date.month, birth_date.day)) if birth_date else 0
-            if rec.age < 0:
-                rec.age = 0
-            # if birth_date:
-            #     user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
-            #     print('user_tz :', user_tz)
-            #     time_in_timezone = pytz.utc.localize(rec.birth_date).astimezone(user_tz)
-            #     print(time_in_timezone)
-
-            # date_today = pytz.utc.localize()
-            #
-            #
-            # print(birth_date, curr_date)
+                       (born_date.month, born_date.day)) if born_date else 0
+            if student.age < 0:
+                student.age = 0
 
     @api.onchange('name')
-    def _onchange_and_name_upper(self):
+    def _onchange_name_upper(self):
         """Method to set upper for name"""
-        for rec in self:
-            rec.name = rec.name.title() if rec.name else ''
+        for student in self:
+            student.name = student.name.title() if student.name else ''
 
     _sql_constraints = [
         ('student_id_unique',
@@ -114,7 +103,7 @@ class Teacher(models.Model):
 
     name = fields.Char('Name')
     teacher_image = fields.Binary('Cover', default=get_default_img())
-    birth_date = fields.Date('Birth Date')
+    born_date = fields.Date('Born Date')
     address = fields.Text('Address')
     age = fields.Integer('Age')
     phone = fields.Char('Phone')
@@ -124,21 +113,21 @@ class Teacher(models.Model):
     country_id = fields.Many2one('res.country', 'Nationality')
     active = fields.Boolean('Active?', default=True)
 
-    @api.onchange('birth_date')
-    def _onchange_birth_date(self):
+    @api.onchange('born_date')
+    def _onchange_born_date(self):
         """Method to set upper for name"""
         curr_date = fields.Date.today()
-        for rec in self:
-            birth_date = rec.birth_date
-            rec.age = curr_date.year - birth_date.year -\
-                      ((curr_date.month, curr_date.day) < (birth_date.month, birth_date.day))\
-                if birth_date else ''
+        for teacher in self:
+            born_date = teacher.born_date
+            teacher.age = curr_date.year - born_date.year -\
+                      ((curr_date.month, curr_date.day) < (born_date.month, born_date.day))\
+                if born_date else ''
 
     @api.onchange('name')
     def _onchange_name_upper(self):
         """Method to set upper for name"""
-        for rec in self:
-            rec.name = rec.name.title() if rec.name else ''
+        for teacher in self:
+            teacher.name = teacher.name.title() if teacher.name else ''
 
 
 
