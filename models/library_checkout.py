@@ -44,29 +44,37 @@ class Checkout(models.Model):
         ('project', 'Project'),
     ], string='Type Document', default='book')
 
-    book_id = fields.Many2one('meta.books', 'Name Book',
+    book_id = fields.Many2one('library.book', 'Name Book',
                               domain=[('state', '=', 'available')])
-    # meta_book_id = fields.Many2one('meta.books', string='Meta Book')
+    meta_book_id = fields.Many2one('meta.books', string='Meta Book')
     # magazine_id = fields.Many2one('meta.magazinenewspaper', 'Name Magazine',
     #                               domain=[('state', '=', 'available')])
-    # project_id = fields.Many2one('document.project', 'Name Project',
-    #                              domain=[('sta', '=', 'available')])
-    status_document = fields.Text('Status', compute='_compute_status_document', store=True)
+    project_id = fields.Many2one('document.project', 'Name Project',
+                                 domain=[('state', '=', 'available')])
+    status_document = fields.Text('Description', compute='_compute_status_document', store=True)
 
     note = fields.Char('Note', readonly=True)
     count = fields.Integer(compute='_compute_another_chk')
 
-    # @api.onchange('book_id')
-    # def _onchange_book_id(self):
-    #     for chk in self:
-    #         chk.meta_book_id = ''
-    #         return {'domain': {'meta_book_id': [('state', '=', 'available')]}}
+    @api.onchange('type_document')
+    def onchange_type_document(self):
+        if self.type_document == 'project':
+            self.book_id = ''
+            self.meta_book_id = ''
+        elif self.type_document == 'book':
+            self.project_id = ''
 
-    @api.depends('book_id')
+    @api.onchange('book_id')
+    def _onchange_book_id(self):
+        self.meta_book_id = ''
+        return {'domain': {'meta_book_id': [('state', '=', 'available'),
+                                            ('book_id', '=', self.book_id.id)]}}
+
+    @api.depends('meta_book_id')
     def _compute_status_document(self):
         for chk in self:
             if chk.book_id:
-                chk.status_document = chk.book_id.description
+                chk.status_document = chk.meta_book_id.description
             # elif document.magazine_id:
             #     document.status_document = document.magazine_id.status
 
@@ -91,21 +99,21 @@ class Checkout(models.Model):
                   ('state', '!=', 'done'),
                   ('book_id', '=', self.book_id.id),
                   # ('magazine_id', '=', self.magazine_id.id),
-                  # ('project_id', '=', self.project_id.id),
+                  ('project_id', '=', self.project_id.id),
                   ('id', 'not in', self.ids)]
         chk_of_card = lib_checkout.search(domain)
         if chk_of_card:
             raise ValidationError('You cannot borrow book to same card more than once!')
 
-        # domain2 = [
-        #     ('card_id', '=', self.card_id.id),
-        #     ('state', '=', 'running'),
-        #     ('id', '!=', self.id)
-        # ]
-        # checkout_of_card2 = self.env['library.checkout'].search_count(domain2)
+        domain2 = [
+            ('card_id', '=', self.card_id.id),
+            ('state', '=', 'running'),
+            ('id', '!=', self.id)
+        ]
+        checkout_of_card2 = self.env['library.checkout'].search_count(domain2)
         # print(checkout_of_card2)
-        # if self.card_id.book_limit <= checkout_of_card2:
-        #     raise ValidationError('You have borrowed more than the specified number of books for each card')
+        if self.card_id.book_limit <= checkout_of_card2:
+            raise ValidationError('You have borrowed more than the specified number of books for each card')
 
     @api.multi
     def running(self):
@@ -115,11 +123,18 @@ class Checkout(models.Model):
         self.stage_id = self.env['library.checkout.stage'].search([
             ('state', '=', 'running')
         ])
+        #
         if self.book_id:
-            if self.book_id.state == 'available':
-                self.book_id.state = 'not_available'
+            mb_book_id = self.book_id.meta_book_ids.filtered(
+                lambda a: a.id == self.meta_book_id.id)
+            if mb_book_id.state == 'available':
+                self.book_id.meta_book_ids.filtered(
+                    lambda a: a.id == self.meta_book_id.id).state = 'not_available'
+                self.book_id.remaining -= 1
+
             else:
-                raise ValidationError('Book: "%s" have borrowed.' % (self.book_id.book_name))
+                raise ValidationError('Book: "%s - %s" have borrowed.' %
+                                      (self.meta_book_id.name_seq, self.meta_book_id.book_id.name))
         # if self.magazine_id:
         #     if self.magazine_id.is_available == 'available':
         #         self.magazine_id.is_available = 'not_available'
@@ -145,7 +160,9 @@ class Checkout(models.Model):
             ('state', '=', 'done')
         ])
         if self.book_id:
-            self.book_id.states = 'available'
+            self.book_id.meta_book_ids.filtered(
+                lambda a: a.id == self.meta_book_id.id).state = 'available'
+            self.book_id.remaining += 1
         # elif self.magazine_id:
         #     self.magazine_id.is_available = 'available'
         # elif self.project_id:

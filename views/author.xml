@@ -1,4 +1,12 @@
 <odoo>
+    <record id="open_books_of_author1" model="ir.actions.act_window">
+        <field name="name">All book for author</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">library.book</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('author_ids', '=', active_id)]</field>
+    </record>
+
     <record id="view_tree_author" model="ir.ui.view">
         <field name="name">view.tree.author</field>
         <field name="model">library.author</field>
@@ -21,6 +29,16 @@
             <form>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
+                        <button name="open_books_of_author2" type="object"
+                                class="oe_stat_button" icon="fa-book"
+                                help="type_object">
+                            <field name="count" string="All book" widget="statinfo"/>
+                        </button>
+                        <button name="%(open_books_of_author1)d" type="action"
+                                class="oe_stat_button" icon="fa-book"
+                                help="type_action">
+                            <field name="count" string="All book" widget="statinfo"/>
+                        </button>
                         <button class="oe_stat_button" type="object" name="toggle_active" icon="fa-archive"
                                 groups="base.group_no_one"  >
                             <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>

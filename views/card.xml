@@ -1,4 +1,12 @@
 <odoo>
+    <record id="open_checkout_card" model="ir.actions.act_window">
+        <field name="name">Open checkout Card</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">library.checkout</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('card_id', '=', active_id),
+                              ('state', '=', 'running')]</field>
+    </record>
     <record id="view_form_card" model="ir.ui.view">
         <field name="name">view.form.card</field>
         <field name="model">library.card</field>
@@ -32,6 +40,15 @@
                     <field name="stage_id" widget="statusbar"/> <!-- clickable="True"-->
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="expense_button_box">
+                        <button name="%(open_checkout_card)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-bars"
+                                attrs="{'invisible': [('state', '!=', 'running')]}">
+                                <field name="chk_card" string="Checkout's" widget="statinfo"/>
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="code" style="color:#7C7BAD"/>

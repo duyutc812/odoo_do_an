@@ -20,6 +20,7 @@
         'views/card.xml',
         'data/library_card_schedular.xml',
         'views/book.xml',
+        'views/project.xml',
         # 'views/magazine.xml',
         'views/checkout.xml',
         'reports/library_card_report.xml',

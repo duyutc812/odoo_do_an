@@ -31,10 +31,10 @@ class Author(models.Model):
     name_seq = fields.Char(string='Author ID', default=lambda self: _('New'), readonly=True)
     color = fields.Integer('Color Index')
 
-    # book_ids = fields.Many2many('library.book', 'library_author_library_book_rel',
-    #                             'library_author_id', 'library_book_id', string='Books')
+    book_ids = fields.Many2many('library.book', 'library_author_library_book_rel',
+                                'library_author_id', 'library_book_id', string='Books')
 
-    # count = fields.Integer(string="Count", compute='_get_book_count')
+    count = fields.Integer(string="Count", compute='_get_book_count')
     active = fields.Boolean('Active', default=True)
 
     _sql_constraints = [
@@ -47,24 +47,28 @@ class Author(models.Model):
         ('library_author_born_date_death_date_chk',
          'CHECK (born_date < death_date)',
          'Death date is must be less then born date'),
+        ('library_author_death_date_chk',
+         'CHECK (death_date <= current_date)',
+         'Death date is must be less then current date'),
     ]
 
-    # @api.multi
-    # def open_books_of_author2(self):
-    #     return {
-    #         'name': _('All book 2'),
-    #         'domain': [('author_ids', '=', self.id)],
-    #         'view_type': 'form',
-    #         'res_model': 'library.book',
-    #         'view_id': False,
-    #         'view_mode': 'tree,form',
-    #         'type': 'ir.actions.act_window',
-    #     }
+    @api.multi
+    def open_books_of_author2(self):
+        return {
+            'name': _('All book 2'),
+            'domain': [('author_ids', '=', self.id)],
+            'view_type': 'form',
+            'res_model': 'library.book',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+        }
 
-    # @api.multi
-    # def _get_book_count(self):
-    #     self.count = self.env['library.book'].search_count([('author_ids', '=', self.id)])
-    #     # print(self.count)
+    @api.multi
+    def _get_book_count(self):
+        for author in self:
+            author.count = self.env['library.book'].search_count([('author_ids', '=', author.id)])
+        # print(self.count)
 
     @api.model
     def create(self, vals):
@@ -82,12 +86,12 @@ class Author(models.Model):
             author.pen_name = author.pen_name.title() if author.pen_name else ''
             author.name = author.name.title() if author.name else ''
 
-    # def unlink(self):
-    #     for rec in self:
-    #         check_author_book = self.env['library.book'].search([
-    #             ('author_ids', '=', rec.id)
-    #         ])
-    #         # print(check_author_book)
-    #         if check_author_book:
-    #             raise ValidationError('can not delete author!')
-    #     return super(Author, self).unlink()
+    def unlink(self):
+        for rec in self:
+            check_author_book = self.env['library.book'].search([
+                ('author_ids', '=', rec.id)
+            ])
+            # print(check_author_book)
+            if check_author_book:
+                raise ValidationError('can not delete author!')
+        return super(Author, self).unlink()

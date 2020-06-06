@@ -9,6 +9,7 @@ access_categories_magazine,Categories Magazine Access,model_categories_magazine,
 access_categories_newspaper,Categories Newspaper Access,model_categories_newspaper,,1,1,1,1
 access_library_book,Book Access,model_library_book,,1,1,1,1
 access_meta_books,Meta Books Access,model_meta_books,,1,1,1,1
+access_document_project,Project Access,model_document_project,,1,1,1,1
 access_library_card_stage,Card Stage Access,model_library_card_stage,,1,1,1,1
 access_library_checkout_stage,Checkout Stage Access,model_library_checkout_stage,,1,1,1,1
 access_library_card,Card Access,model_library_card,,1,1,1,1

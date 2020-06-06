@@ -5,6 +5,7 @@ from . import student_major
 from . import library_member
 from . import library_book
 from . import meta_book
+from . import document_project
 from . import library_card_stage
 from . import library_checkout_stage
 from . import library_card

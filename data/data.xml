@@ -196,6 +196,7 @@
             <field name="publisher_id" ref="data_publisher_1"/>
             <field name="author_ids" eval="[(6,0,[ref('data_author_1')])]"/>
             <field name="price">56000</field>
+            <field name="num_page">300</field>
         </record>
 
         <record id="data_book_2" model="library.book">
@@ -205,6 +206,17 @@
             <field name="publisher_id" ref="data_publisher_4"/>
             <field name="author_ids" eval="[(6,0,[ref('data_author_5')])]"/>
             <field name="price">56000</field>
+            <field name="num_page">567</field>
+        </record>
+
+        <record id="data_book_3" model="library.book">
+            <field name="name">Odoo 12 Development Essentials</field>
+            <field name="image" type="base64" file="do_an_tn\static\book\odoo12.png"/>
+            <field name="category"/>
+            <field name="publisher_id"/>
+            <field name="author_ids"/>
+            <field name="price">210000</field>
+            <field name="num_page">394</field>
         </record>
 
         <!--data Checkout Stage-->
@@ -251,5 +263,13 @@
             <field name="state">fined</field>
         </record>
 
+        <!--data project-->
+        <record id="data_project_1" model="document.project">
+            <field name="name">Quản Lý Thư Viện Sử Dụng Odoo FrameWork</field>
+        </record>
+
+        <record id="data_project_2" model="document.project">
+            <field name="name">Đồ Án Chuyên Ngành Kế Toán</field>
+        </record>
     </data>
 </odoo>

@@ -1,0 +1,78 @@
+<odoo>
+    <record id="view_form_project" model="ir.ui.view">
+        <field name="name">view.form.project</field>
+        <field name="model">document.project</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group string="Project Details">
+                            <field name="name"/>
+                            <field name="publish_date"/>
+                            <field name="teacher_name"/>
+                            <field name="state" widget="radio"/>
+                        </group>
+                        <group string="Student Details">
+                            <field name="major"/>
+                            <field name="student_id"/>
+                            <field name="student_name"/>
+                            <field name="course"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_kanban_project" model="ir.ui.view">
+        <field name="name">view.kanban.project</field>
+        <field name="model">document.project</field>
+        <field name="arch" type="xml">
+            <kanban>
+            <field name="id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click" style="width:250px;height:90px">
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <a type="open">
+                                        <h6 class="o_text_overflow"><field name="name" /></h6>
+                                    </a>
+                                </strong>
+                                    <ul>
+                                        <li class="o_text_overflow">
+                                            <strong>Name: </strong><field name="student_name"/>
+                                        </li>
+                                        <li><strong>Major: </strong><field name="major" /></li>
+                                        <t t-set="red_or_black"
+                                            t-value="record.state.raw_value == 'not_available' ?
+                                            'oe_kanban_text_red': '' "/>
+                                            <li t-att-class="red_or_black">
+                                            <field name="state"/>
+                                    </li>
+                                    </ul>
+                            </div>
+                        </div>
+                    </t>
+                    <searchpanel>
+                        <field name="major" string="major"/>
+                    </searchpanel>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_search_project" model="ir.ui.view">
+       <field name="name">view.search.project</field>
+       <field name="model">document.project</field>
+        <field name="arch" type="xml">
+            <search >
+                <field name="name" string="Name Project"/>
+                <field name="student_name" string="Student Name"/>
+                <group>
+                    <filter string="Major Project" name="major" context="{'group_by': 'major'}"/>
+                </group>
+            </search>
+       </field>
+    </record>
+</odoo>

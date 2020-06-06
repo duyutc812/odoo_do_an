@@ -1,5 +1,4 @@
 <odoo>
-
     <record id="view_tree_publisher" model="ir.ui.view">
         <field name="name">view.tree.publisher</field>
         <field name="model">library.publisher</field>
@@ -95,5 +94,4 @@
             </kanban>
         </field>
     </record>
-
 </odoo>

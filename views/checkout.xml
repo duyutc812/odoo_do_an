@@ -59,7 +59,8 @@
                     <group>
                         <separator string="Card Detail" colspan="4"/>
                         <group>
-                            <field name="card_id" options="{'no_create':True}" />
+                            <field name="card_id" options="{'no_create':True}"
+                                   attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="limit_book_card" style="font-size:14px;color:#7C7BAD"/>
                             <field name="gt_name"/>
                             <field name="state_card"/>
@@ -73,14 +74,18 @@
                     <separator string="Document"/>
                     <group col="2">
                         <group>
-                            <field name="type_document" required="1"/>
-                            <field name="book_id" attrs="{'invisible':[('type_document', '!=', 'book')]}"
+                            <field name="type_document" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="book_id" attrs="{'invisible':[('type_document', '!=', 'book')],
+                                                          'readonly':[('state','!=','draft')]}"
                                    options="{'no_create_edit':True}"/>
-                            <!--<field name="meta_book_id" attrs="{'invisible':[('type_document', '!=', 'book')]}"/>
-                            --><!--<field name="magazine_id" attrs="{'invisible':[('type_document', '!=', 'magazine')]}"
-                                   options="{'no_create_edit':True}"/>
+                            <field name="meta_book_id"
+                                   attrs="{'invisible':[('type_document', '!=', 'book')],
+                                           'readonly':[('state','!=','draft')]}"
+                                   options="{'no_create_edit': True}"/>
+                            <!--<field name="magazine_id" attrs="{'invisible':[('type_document', '!=', 'magazine')]}"
+                                   options="{'no_create_edit':True}"/>-->
                             <field name="project_id" attrs="{'invisible':[('type_document', '!=', 'project')]}"/>
-                            --><field name="return_date" attrs="{'invisible':[('state', '!=', 'done')]}"/>
+                            <field name="return_date" attrs="{'invisible':[('state', '!=', 'done')]}"/>
                         </group>
                         <group>
                             <field name="status_document" readonly="1"/>
@@ -118,8 +123,8 @@
         <field name="name">view.kanban.checkout</field>
         <field name="model">library.checkout</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="stage_id" quick_create="false"><!--
-                    group_create="false" create="false"-->
+            <kanban default_group_by="stage_id" quick_create="false" group_create="false"><!--
+                     create="false"-->
                 <field name="id"/>
                 <field name="state_card"/>
                 <templates>
@@ -144,89 +149,26 @@
                                 <strong>
                                     <a type="open" class="o_text_overflow"><field name="name_seq"/></a>
                                 </strong>
-                                    <!--<ul>
-                                        <li>
-                                            &lt;!&ndash;<t t-set="calendar_sign">
-                                            <i class="fa fa-calendar"/>
-                                            </t>
-                                            <t t-raw="calendar_sign" />
-                                            <field name="request_date" />&ndash;&gt;
-                                            <field name="request_date"/>
-                                        </li>
-                                        <li>
-                                            <field name="card_id"/>
-                                        </li>
-                                        <li>
-                                            <field name="borrow_book"/>
-                                        </li>
-
-                                    </ul>-->
-                                <!--<table>
-                                    &lt;!&ndash;<tr><td><field name="card_id"/></td></tr>&ndash;&gt;
-                                    <tr>
-                                        <t t-set="red_or_black"
-                                           t-value="record.state_card.raw_value == 'expire' ? 'oe_kanban_text_red' : '' "/>
-
-                                        <td t-att-class="red_or_black">
-                                            <field name="card_id"/>
-                                        </td>
-                                    </tr>
-                                    <tr><td><t t-set="calendar_sign">
-                                            <i class="fa fa-calendar"/>
-                                            </t>
-                                            <t t-raw="calendar_sign" /> :
-                                            <field name="request_date" /></td></tr>
-                                    <tr><td><field name="borrow_book"/></td></tr>
-                                </table>-->
-
                                 <ul>
                                     <t t-set="red_or_black"
                                            t-value="record.state_card.raw_value == 'expire' ?
                                                     'oe_kanban_text_red' : '' "/>
-                                    <li style="padding-left:20px" t-att-class="red_or_black">
+                                    <li t-att-class="red_or_black">
                                         <field name="card_id"/>
                                         <t t-if="record.state_card.raw_value == 'expire'"> (Expire)</t>
                                     </li>
-                                    <li style="padding-left:20px">
+                                    <li>
                                         <t t-set="calendar_sign">
                                             <i class="fa fa-calendar"/>
                                             </t>
-                                            <t t-raw="calendar_sign" /> :
+                                            <!--<t t-raw="calendar_sign" />-->Request:
                                             <field name="request_date" />
                                     </li>
-                                    <!--<li class="o_text_overflow" style="padding-left:20px">
-                                        <field name="borrow_book"/>
-                                    </li>-->
+                                    <li>Project: <field name="type_document"/></li>
                                 </ul>
-                                <!-- <div t-att="{'class':'oe_kanban_footer'}">-->
-                                <!--<div class="oe_kanban_footer">
-                                    <div class="oe_kanban_footer_left">
-                                        &lt;!&ndash; Left hand footer... &ndash;&gt;
-                                        <field name="priority" widget="priority"/>
-                                        <field name="activity_ids" widget="kanban_activity"/>
-                                    </div>
-
-                                    <div class="oe_kanban_footer_right">
-                                        &lt;!&ndash; Right hand footer... &ndash;&gt;
-                                        <field name="kanban_state" widget="kanban_state_selection"/>
-                                            <img t-att-src="kanban_image(
-                                                    'library.checkout', 'member_image', record.id.raw_value)"
-                                                    t-att-title="record.member_id.value"
-                                                    t-att-alt="record.member_id.value"
-                                                    width="50" height="50"
-                                                    class="oe_kanban_avatar" />
-
-                                    </div>
-                                    <t t-if= "record.num_books.raw_value == 0"><li>No books.</li></t>
-                                    <t t-elif="record.num_books.raw_value gte 3 "><li>A lot of books</li></t>
-                                    <t t-else=""><li><field name="num_books"/> books</li></t>
-                                </div>-->
                             </div>
                         </div>
                     </t>
-                    <searchpanel>
-                        <field name="card_id" string="Card"/>
-                    </searchpanel>
                 </templates>
             </kanban>
         </field>

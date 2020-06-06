@@ -152,6 +152,18 @@
               parent="menu_library_document" action="action_library_book"
               sequence="0"/>
 
+    <!--Project-->
+    <record id="action_document_project" model="ir.actions.act_window">
+        <field name="name">Project</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">document.project</field>
+        <field name="view_mode">kanban,form</field>
+    </record>
+
+    <menuitem id="menu_document_project" name="Project"
+              parent="menu_library_document" action="action_document_project"
+              sequence="10"/>
+
     <!--Card-->
     <record id="action_library_card" model="ir.actions.act_window">
         <field name="name">Card Details</field>

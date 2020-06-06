@@ -43,7 +43,7 @@ class Book(models.Model):
     state = fields.Selection([
         ('available', 'Available'),
         ('not_available', 'Not Available')
-    ], string='Status')
+    ], string='Status', compute='_compute_state_book', store=True)
 
     meta_book_ids = fields.One2many(
         'meta.books',
@@ -60,12 +60,11 @@ class Book(models.Model):
                 )
             )
             book.remaining = remaining
-            book.state = 'available' if book.remaining > 0 else 'not_available'
 
-    # @api.depends('remaining')
-    # def _compute_state(self):
-    #     for book in self:
-    #         book.state = 'not_available' if book.remaining == 0 else 'available'
+    @api.depends('remaining')
+    def _compute_state_book(self):
+        for book in self:
+            book.state = 'available' if book.remaining > 0 else 'not_available'
 
     @api.multi
     def name_get(self):
