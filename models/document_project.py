@@ -18,6 +18,8 @@ class Project(models.Model):
         ('not_available', 'Not Available')
     ], string='Status', default='available')
 
+    description = fields.Char('Description')
+
     _sql_constraints = [
         ('document_project_publish_date_chk',
          'CHECK (publish_date <= current_date)',

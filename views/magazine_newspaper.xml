@@ -1,0 +1,128 @@
+<odoo>
+    <record id="view_form_magazine" model="ir.ui.view">
+        <field name="name">view.form.magazine</field>
+        <field name="model">magazine.newspaper</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <!--<field name="image" widget="image" class="oe_avatar"/>-->
+                    <!--<group col="4" colspan="4">
+                        &lt;!&ndash;<group col="1" colspan="1">
+                            <field name="image" class="oe_avatar" style="height: 200px;width: 100px;"
+                                   widget="image" nolabel="1" />
+                        </group>&ndash;&gt;
+                        <group col="2" colspan="2">
+                            <field name="type_mgz_new"/>
+                            <field name="category_mgz" attrs="{'invisible':[('type_mgz_new','=','newspaper')]}"/>
+                            <field name="category_new" attrs="{'invisible':[('type_mgz_new','=','magazine')]}"/>
+                            <field name="num_mgz_new"/>
+                            <field name="publish_date"/>
+                        </group>
+                        <group col="2" colspan="2">
+                            <field name="quantity"/>
+                            <field name="actually"/>
+                            <field name="availability"/>
+                        </group>
+
+                    </group>-->
+                    <!--<field name="image" widget="image" class="oe_avatar"/>-->
+                    <div class="oe_title">
+                        <!--<label for="type_mgz_new" class="oe_edit_only"/>-->
+                        <h1 style="color:#7C7BAD">
+                            <field name="type_mgz_new" widget="radio"/>
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="Magazine/Newspaper">
+                            <group col="4" colspan="4" >
+                                <separator string="Details Newspaper" colspan="4"
+                                           attrs="{'invisible': [('type_mgz_new', '=', 'magazine')]}"/>
+                                <separator string="Details Magazine" colspan="4"
+                                           attrs="{'invisible': [('type_mgz_new', '=', 'newspaper')]}"/>
+                                <group col="2" colspan="2">
+                                    <field name="category_mgz" attrs="{'invisible': [('type_mgz_new', '=', 'newspaper')]}"/>
+                                    <field name="category_new" attrs="{'invisible': [('type_mgz_new', '=', 'magazine')]}"/>
+                                    <field name="num_mgz_new"/>
+                                    <field name="publish_date"/>
+                                </group>
+                                <group col="2" colspan="2">
+                                    <field name="quantity"/>
+                                    <field name="remaining"/>
+                                    <field name="state"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Meta Magazine-Newspaper">
+                            <field name="meta_mgz_new_ids">
+                                <tree decoration-success="state == 'available'"
+                                      decoration-danger="state == 'not_available'"
+                                      editable="bottom">
+                                    <!-- editable="top" -->
+                                    <field name="name_seq"/>
+                                    <field name="description"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_kanban_magazine_newspaper" model="ir.ui.view">
+        <field name="name">view_kanban_magazine_newspaper</field>
+        <field name="model">magazine.newspaper</field>
+        <field name="arch" type="xml">
+            <kanban>
+            <field name="id"/>
+            <field name="type_mgz_new"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <a type="open">
+                                    <t t-if="record.type_mgz_new.raw_value=='magazine'">
+                                        <strong>Magazine: </strong>
+                                        <span style="color:black"><field name="category_mgz"/></span>
+                                        - No.<field name="num_mgz_new"/> -  <field name="publish_date"/>
+                                    </t>
+                                    <t t-else="">
+                                        <strong>Newspaper: </strong>
+                                        <span style="color:black"><field name="category_new"/></span>
+                                        - No.<field name="num_mgz_new"/> -  <field name="publish_date"/>
+                                    </t>
+                                </a>
+                                <ul>
+                                    <t t-set="red_or_black"
+                                           t-value="record.state.raw_value == 'not_available' ?
+                                           'oe_kanban_text_red': '' "/>
+                                    <li t-att-class="red_or_black">
+                                        <field name="state"/>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                   <!-- <searchpanel>
+                        <field name="type" string="Type"/>
+                    </searchpanel>-->
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_tree_mgz_new" model="ir.ui.view">
+        <field name="name">view.tree.magazine.newspaper</field>
+        <field name="model">meta.magazinenewspapers</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="state=='available'"
+                  decoration-danger="state=='not_available'">
+                <field name="name_seq"/>
+                <field name="mgz_new_id"/>
+                <field name="description"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

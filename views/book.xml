@@ -35,36 +35,36 @@
                     <notebook>
                         <page string="Book Information">
                             <group col="4" colspan="4">
-                        <group col="2" colspan="2" string="Image Book">
-                            <field name="image" widget="image"/>
-                        </group>
-                        <group col="2" colspan="2">
-                            <separator string="Information Book" col="2" colspan="4"/>
-                            <group colspan="2">
-                                <field name="category"/>
-                                <field name="isbn"/>
-                                <field name="published_date"/>
-                                <field name="publisher_id"/>
-                                <field name="author_ids"
-                                       widget="many2many_tags"
-                                       required="1"/>
-                                <field name="book_type"/>
-                                <field name="num_page"/>
+                                <group col="2" colspan="2" string="Image Book">
+                                    <field name="image" widget="image"/>
+                                </group>
+                                <group col="2" colspan="2">
+                                    <separator string="Information Book" col="2" colspan="4"/>
+                                    <group colspan="2">
+                                        <field name="category"/>
+                                        <field name="isbn"/>
+                                        <field name="published_date"/>
+                                        <field name="publisher_id"/>
+                                        <field name="author_ids"
+                                               widget="many2many_tags"
+                                               required="1"/>
+                                        <field name="book_type"/>
+                                        <field name="num_page"/>
+                                    </group>
+                                    <separator string="Others"/>
+                                    <group colspan="4">
+                                        <field name="quantity"/>
+                                        <field name="remaining"/>
+                                        <field name="currency_id" groups="base.group_no_one"/>
+                                        <!-- class="oe_edit_only"-->
+                                        <field name="price"/>
+                                        <field name="language"/>
+                                        <field name="active"/>
+                                    </group>
+                                </group>
                             </group>
-                            <separator string="Others"/>
-                            <group colspan="4">
-                                <field name="quantity"/>
-                                <field name="remaining"/>
-                                <field name="currency_id" groups="base.group_no_one"/>
-                                <!-- class="oe_edit_only"-->
-                                <field name="price"/>
-                                <field name="language"/>
-                                <field name="active"/>
-                            </group>
-                        </group>
-                    </group>
                         </page>
-                        <page string="Meta Books">
+                        <page string="Meta Books" >
                             <field name="meta_book_ids">
                                 <tree editable="bottom" decoration-danger="state == 'not_available'"
                                       decoration-success="state == 'available'">

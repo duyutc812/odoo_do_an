@@ -47,8 +47,10 @@ class Checkout(models.Model):
     book_id = fields.Many2one('library.book', 'Name Book',
                               domain=[('state', '=', 'available')])
     meta_book_id = fields.Many2one('meta.books', string='Meta Book')
-    # magazine_id = fields.Many2one('meta.magazinenewspaper', 'Name Magazine',
-    #                               domain=[('state', '=', 'available')])
+    mgz_new_id = fields.Many2one('magazine.newspaper', 'Name Mgz/New',
+                                 domain=[('state', '=', 'available')])
+    meta_mgz_new_id = fields.Many2one('meta.magazinenewspapers',
+                                      string='Meta Mgz-New')
     project_id = fields.Many2one('document.project', 'Name Project',
                                  domain=[('state', '=', 'available')])
     status_document = fields.Text('Description', compute='_compute_status_document', store=True)
@@ -61,7 +63,15 @@ class Checkout(models.Model):
         if self.type_document == 'project':
             self.book_id = ''
             self.meta_book_id = ''
+            self.mgz_new_id = ''
+            self.meta_mgz_new_id = ''
         elif self.type_document == 'book':
+            self.project_id = ''
+            self.mgz_new_id = ''
+            self.meta_mgz_new_id = ''
+        else:
+            self.book_id = ''
+            self.meta_book_id = ''
             self.project_id = ''
 
     @api.onchange('book_id')
@@ -70,13 +80,21 @@ class Checkout(models.Model):
         return {'domain': {'meta_book_id': [('state', '=', 'available'),
                                             ('book_id', '=', self.book_id.id)]}}
 
-    @api.depends('meta_book_id')
+    @api.onchange('mgz_new_id')
+    def _onchange_mgz_new_id(self):
+        self.meta_mgz_new_id = ''
+        return {'domain': {'meta_mgz_new_id': [('state', '=', 'available'),
+                                               ('mgz_new_id', '=', self.mgz_new_id.id)]}}
+
+    @api.depends('meta_book_id', 'meta_mgz_new_id', 'project_id')
     def _compute_status_document(self):
         for chk in self:
-            if chk.book_id:
+            if chk.meta_book_id:
                 chk.status_document = chk.meta_book_id.description
-            # elif document.magazine_id:
-            #     document.status_document = document.magazine_id.status
+            elif chk.meta_mgz_new_id:
+                chk.status_document = chk.meta_mgz_new_id.description
+            elif chk.project_id:
+                chk.status_document = chk.project_id.description
 
     def unlink(self):
         for chk in self:
@@ -98,7 +116,7 @@ class Checkout(models.Model):
         domain = [('card_id', '=', self.card_id.id),
                   ('state', '!=', 'done'),
                   ('book_id', '=', self.book_id.id),
-                  # ('magazine_id', '=', self.magazine_id.id),
+                  ('mgz_new_id', '=', self.mgz_new_id.id),
                   ('project_id', '=', self.project_id.id),
                   ('id', 'not in', self.ids)]
         chk_of_card = lib_checkout.search(domain)
@@ -135,17 +153,18 @@ class Checkout(models.Model):
             else:
                 raise ValidationError('Book: "%s - %s" have borrowed.' %
                                       (self.meta_book_id.name_seq, self.meta_book_id.book_id.name))
-        # if self.magazine_id:
-        #     if self.magazine_id.is_available == 'available':
-        #         self.magazine_id.is_available = 'not_available'
-        #     else:
-        #         raise ValidationError('Magazine/Newspaper have borrowed.')
-        #
-        # if self.project_id:
-        #     if self.project_id.availability == 'available':
-        #         self.project_id.availability = 'not_available'
-        #     else:
-        #         raise ValidationError('Project: " %s " have borrowed.' % (self.project_id.name))
+        elif self.mgz_new_id:
+            if self.meta_mgz_new_id.state == 'available':
+                self.meta_mgz_new_id.state = 'not_available'
+                self.mgz_new_id.remaining -= 1
+            else:
+                raise ValidationError('Magazine/Newspaper have borrowed.')
+
+        elif self.project_id:
+            if self.project_id.state == 'available':
+                self.project_id.state = 'not_available'
+            else:
+                raise ValidationError('Project: " %s " have borrowed.' % (self.project_id.name))
 
         return {
             'effect': {
@@ -163,10 +182,11 @@ class Checkout(models.Model):
             self.book_id.meta_book_ids.filtered(
                 lambda a: a.id == self.meta_book_id.id).state = 'available'
             self.book_id.remaining += 1
-        # elif self.magazine_id:
-        #     self.magazine_id.is_available = 'available'
-        # elif self.project_id:
-        #     self.project_id.availability = 'available'
+        elif self.mgz_new_id:
+            self.meta_mgz_new_id.is_available = 'available'
+            self.mgz_new_id.remaining += 1
+        elif self.project_id:
+            self.project_id.state = 'available'
         self.return_date = fields.Date.today()
 
     @api.multi

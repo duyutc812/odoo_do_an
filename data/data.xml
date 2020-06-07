@@ -271,5 +271,21 @@
         <record id="data_project_2" model="document.project">
             <field name="name">Đồ Án Chuyên Ngành Kế Toán</field>
         </record>
+
+        <!--data Magazine-->
+        <record id="data_magazine_1" model="magazine.newspaper">
+            <field name="type_mgz_new">magazine</field>
+            <field name="category_mgz" ref="data_category_magazine_1"/>
+            <field name="num_mgz_new">21</field>
+            <field name="publish_date">2020-06-02</field>
+        </record>
+
+        <!--data Newspaper-->
+        <record id="data_newspaper_2" model="magazine.newspaper">
+            <field name="type_mgz_new">newspaper</field>
+            <field name="category_new" ref="data_category_newspaper_2"/>
+            <field name="num_mgz_new">11</field>
+            <field name="publish_date">2019-04-03</field>
+        </record>
     </data>
 </odoo>

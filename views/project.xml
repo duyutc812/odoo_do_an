@@ -10,6 +10,7 @@
                             <field name="name"/>
                             <field name="publish_date"/>
                             <field name="teacher_name"/>
+                            <field name="description"/>
                             <field name="state" widget="radio"/>
                         </group>
                         <group string="Student Details">

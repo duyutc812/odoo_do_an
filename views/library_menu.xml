@@ -164,6 +164,18 @@
               parent="menu_library_document" action="action_document_project"
               sequence="10"/>
 
+    <!--Magazine/Newspaper-->
+    <record id="action_magazine_newspaper" model="ir.actions.act_window">
+        <field name="name">Magazine/Newspaper</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">magazine.newspaper</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+    <menuitem id="menu_magazine_newspaper" name="Magazine/Newspaper"
+              parent="menu_library_document" action="action_magazine_newspaper"
+              sequence="20"/>
+
     <!--Card-->
     <record id="action_library_card" model="ir.actions.act_window">
         <field name="name">Card Details</field>

@@ -21,7 +21,7 @@
         'data/library_card_schedular.xml',
         'views/book.xml',
         'views/project.xml',
-        # 'views/magazine.xml',
+        'views/magazine_newspaper.xml',
         'views/checkout.xml',
         'reports/library_card_report.xml',
         'reports/library_checkout_report.xml',
