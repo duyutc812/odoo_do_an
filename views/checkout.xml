@@ -151,26 +151,64 @@
                                 </div>
                             </div>
                             <div class="oe_kanban_details">
-                                <strong>
-                                    <a type="open" class="o_text_overflow"><field name="name_seq"/></a>
-                                </strong>
-                                <ul>
-                                    <t t-set="red_or_black"
-                                           t-value="record.state_card.raw_value == 'expire' ?
-                                                    'oe_kanban_text_red' : '' "/>
-                                    <li t-att-class="red_or_black">
-                                        <field name="card_id"/>
-                                        <t t-if="record.state_card.raw_value == 'expire'"> (Expire)</t>
-                                    </li>
-                                    <li>
-                                        <t t-set="calendar_sign">
-                                            <i class="fa fa-calendar"/>
-                                            </t>
-                                            <!--<t t-raw="calendar_sign" />-->Request:
+
+                                <table class="oe_kanban_table o_text_overflow"
+                                       style="font-size:11px">
+                                    <td colspan="2">
+                                        <strong>
+                                            <h5><a style="color:#7C7BAD"><field name="name_seq"/></a></h5>
+                                        </strong>
+                                    </td>
+                                    <tr>
+                                        <th>
+                                            Card:
+                                        </th>
+                                        <td>
+                                            <field name="card_id"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            Request:
+                                        </th>
+                                        <td>
                                             <field name="request_date" />
-                                    </li>
-                                    <li>Project: <field name="type_document"/></li>
-                                </ul>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Type: </th>
+                                        <td><field name="type_document"/></td>
+                                    </tr>
+                                    <tr>
+
+                                        <t t-if="record.book_id.raw_value">
+                                            <th>
+                                                Book:
+                                            </th>
+                                            <td>
+                                                <field name="book_id"/> - <b><field name="meta_book_id"/></b>
+                                            </td>
+                                        </t>
+
+                                        <t t-if="record.mgz_new_id.raw_value">
+                                            <th>
+                                                Mag/New:
+                                            </th>
+                                            <td>
+                                                <field name="mgz_new_id"/> - <b><field name="meta_mgz_new_id"/></b>
+                                            </td>
+                                        </t>
+
+                                        <t t-if="record.project_id.raw_value">
+                                            <th>
+                                                Name:
+                                            </th>
+                                            <td class="o_text_overflow">
+                                                <field name="project_id"/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                     </t>

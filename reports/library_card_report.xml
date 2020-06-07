@@ -12,22 +12,13 @@
                 <t t-foreach="docs" t-as="o">
                     <div class="page">
                         <div class="row">
-                            <center>
+                            <center style="width:400px;height:600px">
                                 <div class="col-xs-8" style="margin:auto">
                                     <table class="table table-condensed" style="border: 3px solid black !important;">
                                         <tr style="text-align:center;">
                                             <td><h2><strong><span t-field="o.code"/></strong></h2></td>
                                         </tr>
                                         <tr>
-                                            <!--<td width="40%">
-                                                    &lt;!&ndash;<p style="text-align:center;padding-top:10px;">
-                                                        <img t-if="not o.image" t-att-src="'/web/static/src/img/placeholder.png'" height="120" border="1" width="120"/>
-                                                        <img t-if="o.image" t-att-src="'data:image/png;base64,%s' % to_text(o.image)" height="120" border="1" width="120"/>
-                                                    </p>&ndash;&gt;
-                                                <p style="text-align:center;">
-                                                    <h2><strong><span t-field="o.code"/></strong></h2>
-                                                </p>
-                                            </td>-->
                                             <td width="100%">
                                                 <table>
                                                     <tr>

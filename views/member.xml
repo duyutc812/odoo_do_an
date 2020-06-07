@@ -105,9 +105,10 @@
                 <field name="student_image"/>
                 <field name="email"/>
                 <field name="major"/>
+                <field name="color"/>
                 <field name="course"/>
                 <templates>
-                    <t t-name="kanban-box">
+                    <!--<t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_global_click">
                             <div class="o_kanban_image">
                                 <img alt="Avatar" style="height:85px;width:85px"
@@ -124,6 +125,91 @@
                                     <li><strong>Course: </strong>K<field name="course" /></li>
                                     <li class="o_text_overflow"><strong>Email: </strong><field name="email" /></li>
                                 </ul>
+                            </div>
+                        </div>
+                    </t>-->
+                     <t t-name="kanban-box">
+                        <t t-set="color" t-value="kanban_color(record.color.raw_value || record.name.raw_value)" />
+                        <div t-att-class="color + (record.color.raw_value == 1 ? ' oe_kanban_color_alert' : '')">
+                            <div class="oe_kanban_box oe_kanban_color_border">
+                                <div class="oe_kanban_box_header oe_kanban_color_bgdark oe_kanban_color_border oe_kanban_draghandle">
+                                    <table class="oe_kanban_table">
+                                        <tr>
+                                            <td class="oe_kanban_title1" align="left" valign="middle" style="padding-left:10px;">
+                                                <h6>
+                                                    <a type="open">
+                                                        <field name="name"/>
+                                                    </a>
+                                                </h6>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="oe_kanban_box_content oe_kanban_color_bglight oe_kanban_box_show_onclick_trigger oe_kanban_color_border">
+                                    <table class="oe_kanban_table o_text_overflow" >
+                                        <tr width="300">
+                                            <td valign="top" width="64" align="left">
+                                                <a type="open">
+                                                    <img heigh="64" width="64"
+                                                         t-att-src="kanban_image('library.student', 'student_image', record.id.raw_value)"
+                                                         alt="image"/>
+                                                </a>
+                                            </td>
+                                            <td valign="top" align="left"
+                                                style="padding-left:10px;">
+                                                <table>
+                                                    <tr>
+                                                        <td>
+                                                            <b>ID :</b>
+                                                        </td>
+                                                        <td style="padding-left:10px;">
+                                                            <field name="student_id" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Major : </b></td>
+                                                        <td style="padding-left:10px;">
+                                                            <field name="major" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Course : </b></td>
+                                                        <td style="padding-left:10px;">
+                                                            K<field name="course" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Email : </b></td>
+                                                        <td style="padding-left:10px;">
+                                                            <field name="email" />
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <center>
+                                                    <b>
+                                                        <field name="gender" />
+                                                    </b>
+                                                </center>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="oe_kanban_buttons_set oe_kanban_color_border
+                                            oe_kanban_color_bglight oe_kanban_box_show_onclick">
+                                    <div class="oe_kanban_left">
+                                        <a role="button" string="Edit" class="btn btn-sm btn-default fa fa-pencil"
+                                           type="edit"/><!--groups="school.group_school_administration"-->
+                                        <a role="button"
+                                           string="Change Color"
+                                           icon="color-picker"
+                                           type="color"
+                                           name="color" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </t>

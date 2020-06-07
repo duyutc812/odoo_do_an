@@ -49,6 +49,7 @@ class Student(models.Model):
     note = fields.Html('Notes')
     country_id = fields.Many2one('res.country', 'Nationality')
     active = fields.Boolean('Active?', default=True)
+    color = fields.Integer('Color')
     count = fields.Integer('Count', compute='_compute_student_card')
 
     # def _compute_student_card(self):

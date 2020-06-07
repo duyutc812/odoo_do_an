@@ -155,6 +155,7 @@
             <field name="email">studentone@gmail.com</field>
             <field name="major" ref="data_student_major_2"/>
             <field name="course">58</field>
+            <field name="gender">female</field>
         </record>
 
         <record id="data_student_2" model="library.student">

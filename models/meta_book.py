@@ -17,7 +17,7 @@ class MetaBook(models.Model):
     def name_get(self):
         res = []
         for rec in self:
-            res.append((rec.id, '%s - %s' % (rec.name_seq, rec.book_id.name)))
+            res.append((rec.id, '%s' % (rec.name_seq)))
         return res
 
     @api.model
