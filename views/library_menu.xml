@@ -35,6 +35,18 @@
 
     <menuitem id="menu_student_major" name="Major" parent="menu_library_others" action="action_student_major"
               sequence="20"/>
+
+    <!--Teacher Role-->
+    <record id="action_teacher_role" model="ir.actions.act_window">
+        <field name="name">Role Teacher</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">teacher.role</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_teacher_role" name="Role Teacher" parent="menu_library_others" action="action_teacher_role"
+              sequence="30"/>
+
     <!--Category of Others Menuitem-->
     <menuitem id="menu_category" name="Categories" parent="menu_library_others" sequence="55"/>
     <!--Book Categories-->
@@ -169,7 +181,7 @@
         <field name="name">Magazine/Newspaper</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">magazine.newspaper</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,form</field>
     </record>
 
     <menuitem id="menu_magazine_newspaper" name="Magazine/Newspaper"

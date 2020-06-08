@@ -10,5 +10,15 @@
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
         </record>
+        <record id="ir_cron_card_send_email" model="ir.cron">
+            <field name="name">Library Card Send Email</field>
+            <field name="model_id" ref="model_library_card"/>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">model.library_card_send_email()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+        </record>
     </data>
 </odoo>

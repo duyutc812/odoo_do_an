@@ -98,8 +98,8 @@
                         </group>
                     </group>
                     <group>
-                        <field name="note" attrs="{'invisible':[
-                                           ('state', '!=', 'fined')]}"/>
+                        <field name="note"
+                               attrs="{'invisible':[('state', '!=', 'fined')]}"/>
                     </group>
                 </sheet>
             </form>

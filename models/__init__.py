@@ -2,6 +2,7 @@ from . import library_author
 from . import library_publisher
 from . import library_category
 from . import student_major
+from . import teacher_role
 from . import library_member
 from . import library_book
 from . import meta_book

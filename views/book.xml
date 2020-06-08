@@ -11,7 +11,7 @@
                 <field name="language"/>
                 <field name="publisher_id"/>
                 <field name="author_ids" widget="many2many_tags"/>
-                <!--<field name="is_available"/>-->
+                <field name="state"/>
             </tree>
         </field>
     </record>

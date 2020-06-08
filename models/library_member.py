@@ -52,9 +52,9 @@ class Student(models.Model):
     color = fields.Integer('Color')
     count = fields.Integer('Count', compute='_compute_student_card')
 
-    # def _compute_student_card(self):
-    #     domain = [('student_id', '=', self.id), ('state', '=', 'running')]
-    #     self.count = self.env['library.card'].search_count(domain)
+    def _compute_student_card(self):
+        domain = [('student_id', '=', self.id), ('state', '=', 'running')]
+        self.count = self.env['library.card'].search_count(domain)
 
     @api.multi
     def name_get(self):
@@ -109,10 +109,11 @@ class Teacher(models.Model):
     age = fields.Integer('Age')
     phone = fields.Char('Phone')
     email = fields.Char('Email Contact')
-    role = fields.Char('Role')
+    role = fields.Many2one('teacher.role', string='Role')
     note = fields.Html('Notes')
     country_id = fields.Many2one('res.country', 'Nationality')
     active = fields.Boolean('Active?', default=True)
+    # user_id = fields.Many2one('res.users', string='User', default=lambda self: self._uid)
 
     @api.onchange('born_date')
     def _onchange_born_date(self):
@@ -129,6 +130,8 @@ class Teacher(models.Model):
         """Method to set upper for name"""
         for teacher in self:
             teacher.name = teacher.name.title() if teacher.name else ''
+
+
 
 
 

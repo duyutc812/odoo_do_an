@@ -1,12 +1,12 @@
 <odoo>
- <!--   <record id="open_card_student" model="ir.actions.act_window">
+    <record id="open_card_student" model="ir.actions.act_window">
         <field name="name">Open Student Card</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">library.card</field>
-        <field name="view_mode">kanban,form</field>
+        <field name="view_mode">tree,form</field>
         <field name="domain">[('student_id', '=', active_id),
                               ('state', '=', 'running')]</field>
-    </record>-->
+    </record>
 
     <record id="view_tree_student" model="ir.ui.view">
         <field name="name">view.tree.student</field>
@@ -33,9 +33,23 @@
             <form>
                 <sheet>
                     <div class="oe_button_box" name="expense_button_box">
-
+                        <button name="%(open_card_student)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-bars">
+                                <field name="count" string="Card" widget="statinfo"/>
+                        </button>
+                        <!--<button name="toggle_active"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-archive"
+                                groups="base.group_no_one">
+                                <field name="active" widget="boolean_button"
+                                       options='{"terminology": "archive"}'
+                                />
+                        </button>-->
                     </div>
-                    <separator string="Student"/>
+                    <separator string="Student:"/>
                     <field name="student_image" widget="image" class="oe_avatar"/>
                     <div class="oe_title">
                         <h5>
@@ -148,15 +162,15 @@
                                 <div class="oe_kanban_box_content oe_kanban_color_bglight oe_kanban_box_show_onclick_trigger oe_kanban_color_border">
                                     <table class="oe_kanban_table o_text_overflow" >
                                         <tr width="300">
-                                            <td valign="top" width="64" align="left">
+                                            <td valign="top" width="50" align="left">
                                                 <a type="open">
-                                                    <img heigh="64" width="64"
+                                                    <img heigh="50" width="50"
                                                          t-att-src="kanban_image('library.student', 'student_image', record.id.raw_value)"
                                                          alt="image"/>
                                                 </a>
                                             </td>
                                             <td valign="top" align="left"
-                                                style="padding-left:10px;">
+                                                style="padding-left:10px;font-size:11px">
                                                 <table>
                                                     <tr>
                                                         <td>
@@ -238,6 +252,7 @@
         <field name="arch" type="xml">
             <form string="Teacher Form">
                 <sheet>
+                    <separator string="Teacher:"/>
                     <field name="teacher_image" widget="image" class="oe_avatar"/>
                     <div class="oe_title">
                         <h1>
@@ -253,9 +268,10 @@
                                     <!--<field name="age"/>-->
                                     <field name="phone" widget="phone" placeholder="e.g. 0988327192"/>
                                     <field name="address" placeholder="e.g. adress"/>
+                                   <!-- <field name="user_id"/>-->
                                 </group>
                                 <group>
-                                    <field name="role" style="color:red"/>
+                                    <field name="role"/>
                                     <field name="country_id"/>
                                     <field name="email" placeholder="e.g. @gmail.com"/>
                                 </group>
@@ -286,25 +302,23 @@
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_global_click">
                             <div class="o_kanban_image">
-                                <img style="height:85px;width:85px" alt="Avatar"
+                                <img style="height:60px;width:60px" alt="Avatar"
                                      t-att-src="kanban_image('library.teacher', 'teacher_image', record.id.raw_value)"/>
                             </div>
                             <div class="oe_kanban_details">
-                                <strong>
-                                    <h3>
-                                        <a type="open">
-                                            <field name="name" />
-                                        </a>
-                                    </h3>
-                                </strong>
+                                <h3 class="o_text_overflow">
+                                    <a type="open">
+                                        <field name="name" />
+                                    </a>
+                                </h3>
                                 <!--<ul>
                                     <strong>Role: </strong><field name="role"/>
                                     <strong>Email: </strong><field name="email"/>
                                     <strong>Age: </strong><field name="age"/>
                                 </ul>-->
                                 <ul>
-                                    <li style="padding-left:5px">Role: <field name="role"/></li>
-                                    <li style="padding-left:5px">Email: <field name="email"/></li>
+                                    <li style="padding-left:5px" class="o_text_overflow"><b>Role: </b><field name="role"/></li>
+                                    <li style="padding-left:5px" class="o_text_overflow"><b>Email: </b><field name="email"/></li>
                                 </ul>
                             </div>
                         </div>

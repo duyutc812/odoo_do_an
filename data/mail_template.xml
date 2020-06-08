@@ -1,0 +1,60 @@
+<odoo>
+    <data noupdate="0">
+        <record id="library_card_email_template" model="mail.template">
+            <field name="name">Library Card: Send by email</field>
+            <field name="model_id" ref="do_an_tn.model_library_card"/>
+            <field name="email_from">duyutc08121998@gmail.com</field>
+            <field name="email_to">${object.email}</field>
+            <field name="subject">Library Card (Ref ${object.code})</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear ${object.gt_name}
+                        <br />
+                        <br />
+                        This is a email from Library School.
+                        Card ID's : ${object.code}
+                        <br/>
+                        No of Book on Card: ${object.book_limit}
+                        <br/>
+                        Start Date: ${object.start_date}
+                        <br/>
+                        Duration: ${object.duration}
+                        <br/>
+                        End Date: ${object.end_date}
+                        <br/>
+                        Price: ${object.price}
+                    </p>
+                </div>
+            </field>
+            <field name="report_template"/>
+            <field name="report_name">Library Card_${(object.code)}</field>
+        </record>
+
+        <!--send email for card will be expire-->
+        <record id="lib_card_send_email_expire" model="mail.template">
+            <field name="name">Send Email for Card will be expire</field>
+            <field name="model_id" ref="do_an_tn.model_library_card"/>
+            <field name="email_from">duyutc08121998@gmail.com</field>
+            <field name="email_to">${object.email}</field>
+            <field name="subject">Library Card (Ref ${object.code})</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear ${object.gt_name}
+                        <br />
+                        <br />
+                        This is a email from Library School.
+                        Card ID's : ${object.code}
+                        <br/>
+                        End Date Card : ${object.end_date}
+                        <br/>
+                        The card of you will be expire in today.
+                    </p>
+                </div>
+            </field>
+            <field name="report_template"/>
+            <field name="report_name">Library Card_${(object.code)}</field>
+        </record>
+    </data>
+</odoo>

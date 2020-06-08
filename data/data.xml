@@ -116,6 +116,19 @@
             <field name="name">Kinh Tế</field>
         </record>
 
+        <!--data Teacher Role-->
+        <record id="data_teacher_role_1" model="teacher.role">
+            <field name="name">Hiệu Trưởng</field>
+        </record>
+
+        <record id="data_teacher_role_2" model="teacher.role">
+            <field name="name">Giảng Viên Toán</field>
+        </record>
+
+        <record id="data_teacher_role_3" model="teacher.role">
+            <field name="name">Giảng viên Công nghệ thông tin</field>
+        </record>
+
         <!--data Magazine Categories-->
         <record id="data_category_magazine_1" model="categories.magazine">
             <field name="name">Thể Thao</field>
@@ -175,18 +188,18 @@
         <!--data teacher-->
         <record id="data_teacher_1" model="library.teacher">
             <field name="name">Teacher One</field>
+            <field name="role" ref="data_teacher_role_1"/>
             <field name="email">TeacherOne@gmail.com</field>
             <field name="born_date">1975-04-30</field>
             <field name="teacher_image" type="base64" file="do_an_tn\static\default_image.png"/>
-            <field name="role">Giảng Viên</field>
         </record>
 
         <record id="data_teacher_2" model="library.teacher">
             <field name="name">Teacher Three</field>
+            <field name="role" ref="data_teacher_role_3"/>
             <field name="born_date">1969-07-05</field>
             <field name="email">TeacherThree@gmail.com</field>
             <field name="teacher_image" type="base64" file="do_an_tn\static\default_image.png"/>
-            <field name="role">Hiệu Trưởng</field>
         </record>
 
         <!--data Book-->

@@ -8,6 +8,7 @@ import pytz
 
 class Card(models.Model):
     _name = 'library.card'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Library Card Information"
     _rec_name = 'code'
 
@@ -30,10 +31,12 @@ class Card(models.Model):
     book_limit = fields.Integer('No of Book on Card', readonly=True,
                                 compute='_compute_book_limit', store=True)
     price = fields.Integer('Price', compute='_compute_book_limit', store=True)
-    user = fields.Selection([('student', 'Student'), ('teacher', 'Teacher')], string='User')
-    student_id = fields.Many2one('library.student', string='Student Name')
-    teacher_id = fields.Many2one('library.teacher', string='Teacher Name')
-    gt_name = fields.Char(compute="_compute_name", method=True, string='Name')
+    user = fields.Selection([('student', 'Student'), ('teacher', 'Teacher')], string='User', track_visibility='always')
+    student_id = fields.Many2one('library.student', string='Student Name', track_visibility='always')
+    teacher_id = fields.Many2one('library.teacher', string='Teacher Name', track_visibility='always')
+    gt_name = fields.Char(compute="_compute_gt_name", method=True, string='Name')
+    email = fields.Char('Email User', compute='_compute_email', method=True, store=True)
+    # user_id = fields.Many2one('res.users', default=lambda s: s.env.uid)
     stage_id = fields.Many2one('library.card.stage',
                                default=_default_stage,
                                group_expand='_group_expand_stage_id',
@@ -45,7 +48,7 @@ class Card(models.Model):
         ('1', '1 month'),
         ('3', '3 months'),
         ('6', '6 months'),
-    ], string='Duration')
+    ], string='Duration', default='1', track_visibility='always')
     end_date = fields.Date('End Date', compute="_compute_end_date", store=True)
     active = fields.Boolean('Active', default=True)
 
@@ -54,6 +57,25 @@ class Card(models.Model):
     chk_card = fields.Integer(string="Borrowed Book",
                               compute='_compute_chk_card',
                               readonly=True)
+    color = fields.Integer('Color')
+
+    @api.depends('student_id', 'teacher_id')
+    def _compute_email(self):
+        for lib_card in self:
+            if lib_card.student_id:
+                lib_card.email = lib_card.student_id.email
+            elif lib_card.teacher_id:
+                lib_card.email = lib_card.teacher_id.email
+
+    @api.onchange('user')
+    def _onchange_user(self):
+        for lib_card in self:
+            if lib_card.user == 'student':
+                lib_card.teacher_id = ''
+                lib_card.email = ''
+            elif lib_card.user == 'teacher':
+                lib_card.student_id = ''
+                lib_card.email = ''
 
     @api.multi
     def name_get(self):
@@ -75,14 +97,14 @@ class Card(models.Model):
                 else:
                     lib_card.book_limit = 3
                     lib_card.price = 40000
-            else:
+            elif lib_card.user == 'teacher':
                 lib_card.duration = '6'
                 lib_card.book_limit = 6
                 lib_card.price = 0
 
     """get name for user : student or teacher"""
     @api.depends('student_id')
-    def _compute_name(self):
+    def _compute_gt_name(self):
         for lib_card in self:
             lib_card.gt_name = lib_card.student_id.name if lib_card.student_id else lib_card.teacher_id.name
 
@@ -105,21 +127,45 @@ class Card(models.Model):
         #     raise ValidationError('miss timezone', 'kjsakfjk')
         user_tz = pytz.timezone(self.env.context.get('tz') or 'UTC')
         date_today = pytz.utc.localize(current_date).astimezone(user_tz)
-        # print(date_today)
-        lib_card_search = self.search([('state', '=', 'running'),
-                                                           ('end_date', '<', date_today)])
-        lib_card_expire_error = self.search([('state', '=', 'expire'),
-                                                                 ('end_date', '>', date_today)])
-        # print(lib_card_search)
-        # print(lib_card_expire_error)
-        Stages = self.env['library.card.stage']
-        if lib_card_expire_error:
-            for lib_card_running in lib_card_expire_error:
-                lib_card_running.stage_id = Stages.search([('state', '=', 'running')])
+        print(date_today)
+        # lib_card_expire = self.search([('end_date', '<', date_today),
+        #                                ('code', '!=', 'New')])
+        # lib_card_running = self.search([('end_date', '>', date_today),
+        #                                 ('code', '!=', 'New')])
+        # lib_card_draft = self.search([('code', '=', 'New')])
+        # # print('Running : ', lib_card_running)
+        # # print('Expire: ', lib_card_expire)
+        # Stages = self.env['library.card.stage']
+        # if lib_card_running:
+        #     for lib_card in lib_card_running:
+        #         lib_card.stage_id = Stages.search([('state', '=', 'running')])
+        #
+        # if lib_card_expire:
+        #     for lib_card in lib_card_expire:
+        #         lib_card.stage_id = Stages.search([('state', '=', 'expire')])
+        #
+        # if lib_card_draft:
+        #     for lib_card in lib_card_draft:
+        #         lib_card.stage_id = Stages.search([('state', '=', 'draft')])
 
-        if lib_card_search:
-            for lib_card_expire in lib_card_search:
-                lib_card_expire.stage_id = Stages.search([('state', '=', 'expire')])
+    @api.multi
+    def library_card_send_email(self):
+        current_date = datetime.now()
+        print('scheduled of send email')
+        user_tz = pytz.timezone(self.env.context.get('tz') or 'UTC')
+        date_today = pytz.utc.localize(current_date).astimezone(user_tz)
+        print(date_today)
+        # lib_card_will_expire = self.search([('end_date', '=', date_today),
+        #                                     ('code', '!=', 'New')])
+        # print(lib_card_will_expire)
+        # print('abc')
+        # for lib_card in lib_card_will_expire:
+        #     template_id = self.env.ref('do_an_tn.lib_card_send_email_expire').id
+        #     template = self.env['mail.template'].browse(template_id)
+        #     # print('template: ', template, '\n', 'template_id: ', template_id)
+        #     # self.env['email.template'].browse(template_id).send_mail(self.id, force_send=True)
+        #     template.send_mail(lib_card.id, force_send=True)
+        #     print(lib_card.id)
 
     @api.constrains('student_id', 'teacher_id')
     def _constrains_check_member_card(self):
@@ -182,6 +228,15 @@ class Card(models.Model):
             ('state', '=', 'running'),
         ])
         self.chk_card = chk_card
+
+    def send_email(self):
+        # trả về id của thằng template
+        template_id = self.env.ref('do_an_tn.library_card_email_template').id
+        template = self.env['mail.template'].browse(template_id)
+        # print('template: ', template, '\n', 'template_id: ', template_id)
+        # self.env['email.template'].browse(template_id).send_mail(self.id, force_send=True)
+        template.send_mail(self.id, force_send=True)
+        print(self.id)
 
     # @api.multi
     # def expire_state(self):

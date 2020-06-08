@@ -2,6 +2,7 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_library_author,Author Access,model_library_author,,1,1,1,1
 access_library_publisher,Publisher Access,model_library_publisher,,1,1,1,1
 access_student_major,Major Student Access,model_student_major,,1,1,1,1
+access_teacher_role,Role Teacher Access,model_teacher_role,,1,1,1,1
 access_library_student,Student Access,model_library_student,,1,1,1,1
 access_library_teacher,Teacher Access,model_library_teacher,,1,1,1,1
 access_library_category,Category Access,model_library_category,,1,1,1,1

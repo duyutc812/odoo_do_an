@@ -6,14 +6,6 @@ class Checkout(models.Model):
     _name = 'library.checkout'
     _description = 'Library Checkout'
 
-    card_id = fields.Many2one('library.card', string="Card No",
-                              required=True,
-                              domain=[('state', '=', 'running')])
-    user_id = fields.Many2one('res.users', 'Librarian',
-                              default=lambda s: s.env.uid,
-                              readonly=True)
-    request_date = fields.Date(default=fields.Date.today(), readonly=True)
-
     @api.model
     def _default_stage(self):
         return self.env['library.checkout.stage'].search([], limit=1)
@@ -21,6 +13,14 @@ class Checkout(models.Model):
     @api.model
     def _group_expand_stage_id(self, stages, domain, order):
         return stages.search([], order=order)
+
+    card_id = fields.Many2one('library.card', string="Card No",
+                              required=True,
+                              domain=[('state', '=', 'running')])
+    user_id = fields.Many2one('res.users', 'Librarian',
+                              default=lambda s: s.env.uid,
+                              readonly=True)
+    request_date = fields.Date(default=fields.Date.today(), readonly=True)
 
     stage_id = fields.Many2one('library.checkout.stage',
                                default=_default_stage,

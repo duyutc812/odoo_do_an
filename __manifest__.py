@@ -12,6 +12,7 @@
         'data/data.xml',
         'security/ir.model.access.csv',
         'data/sequence.xml',
+        'data/mail_template.xml',
         'views/library_menu.xml',
         'views/author.xml',
         'views/publisher.xml',
