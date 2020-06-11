@@ -12,31 +12,39 @@
                 <t t-foreach="docs" t-as="o">
                     <div class="page">
                         <div class="row">
-                            <center style="width:600px;height:600px">
+                            <center>
                                 <div class="col-xs-8" style="margin:auto">
-                                    <table style="border: 3px solid black !important;">
+                                    <table style="border: 3px solid black !important;width:550px;height:300px" >
                                         <tr style="text-align:center;">
-                                            <td><h2><strong><span t-field="o.code"/></strong></h2></td>
+                                            <td><h3 style="color:#24d9e3">University of Communications and Transport</h3></td>
+                                        </tr>
+                                        <tr style="text-align:center;">
+                                            <td >
+                                                <h4 style="color:red">Library Card</h4>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td width="100%">
+                                            <td style="padding-left:150px;">
                                                 <table>
                                                     <tr>
                                                         <td>
-                                                            <p style="text-align:right;"><strong>User: </strong></p>
-                                                            <p style="text-align:right;"><strong>Student: </strong></p>
-                                                            <p style="text-align:right;"><strong>Limit Book: </strong></p>
-                                                            <p style="text-align:right;"><strong>Start Date: </strong></p>
-                                                            <p style="text-align:right;"><strong>Duration: </strong></p>
-                                                            <p style="text-align:right;"><strong>End Date: </strong></p>
+                                                            <p style="text-align:left;"><strong>User: </strong></p>
+                                                            <p style="text-align:left;"><strong>Student: </strong></p>
+                                                            <p style="text-align:left;"><strong>Limit Book: </strong></p>
+                                                            <p style="text-align:left;"><strong>Duration: </strong></p>
+                                                            <p style="text-align:left;"><strong>End Date: </strong></p>
                                                         </td>
                                                         <td>
-                                                            <p style="text-align:center;padding-left:10px;" t-field="o.user"/>
-                                                            <p style="text-align:center;padding-left:10px;" t-field="o.gt_name"/>
-                                                            <p style="text-align:center;padding-left:10px;" t-field="o.book_limit"/>
-                                                            <p style="text-align:center;padding-left:10px;" t-field="o.start_date"/>
-                                                            <p style="text-align:center;padding-left:10px;" t-field="o.duration"/>
-                                                            <p style="text-align:center;padding-left:10px;" t-field="o.end_date"/>
+                                                            <p style="text-align:center;padding-left:10px;"
+                                                               t-field="o.user"/>
+                                                            <p style="text-align:center;padding-left:10px;"
+                                                               t-field="o.gt_name"/>
+                                                            <p style="text-align:center;padding-left:10px;"
+                                                               t-field="o.book_limit"/>
+                                                            <p style="text-align:center;padding-left:10px;"
+                                                               t-field="o.duration"/>
+                                                            <p style="text-align:center;padding-left:10px;"
+                                                               t-field="o.end_date"/>
                                                         </td>
                                                     </tr>
                                                 </table>

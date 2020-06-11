@@ -7,6 +7,7 @@
         <field name="domain">[('card_id', '=', active_id),
                               ('state', '=', 'running')]</field>
     </record>
+
     <record id="view_form_card" model="ir.ui.view">
         <field name="name">view.form.card</field>
         <field name="model">library.card</field>
@@ -21,12 +22,7 @@
                             string="Confirm"
                             attrs="{'invisible':[('state', '!=', 'draft')]}" class="oe_highlight"/>
                             <!--groups="library.group_librarian" -->
-                    <!--<button name="draft_state"
-                            icon="fa-ban"
-                            type="object"
-                            string="Draft"
-                            attrs="{'invisible':[('state', '!=', 'running')]}" class="oe_highlight"/>
-                            &lt;!&ndash;groups="library.group_librarian"&ndash;&gt;-->
+
                     <!--<button name="expire_state"
                             type="object"
                             string="Expire"
@@ -36,9 +32,16 @@
                             attrs="{'invisible':[('state', '!=', 'running')]}"/>
                     <button name="send_email" type="object" string="Send Email"
                             attrs="{'invisible':[('state', '!=', 'running')]}"/>
-
                     <!--<button name="delete_state" type="object" string="Delete Card" class="oe_highlight"/>
                             &lt;!&ndash;groups="library.group_librarian"&ndash;&gt;-->
+                    <button name="penalty_card"
+                            type="object"
+                            string="Penalty"
+                            attrs="{'invisible':['|', ('state', '!=', 'running'), ('is_penalty', '=', True)]}"/>
+                    <button name="cancel_penalty_card"
+                            type="object"
+                            string="Cancel Penalty"
+                            attrs="{'invisible':['|', ('state', '!=', 'running'), ('is_penalty', '=', False)]}"/>
                     <field name="stage_id" widget="statusbar"/> <!-- clickable="True"-->
                 </header>
                 <sheet>
@@ -62,6 +65,7 @@
                            <!-- <separator string="Card Details"/>-->
                             <field name="user" required="1" attrs="{'readonly':[('state','!=','draft')]}" />
                             <field name="book_limit" readonly="1"/>
+                            <field name="book_limit_syllabus" readonly="1" string="No of Syllabus"/>
                             <field name="student_id" attrs="{'invisible':[('user','!=','student')],
                                                              'readonly':[('state', '!=', 'draft')]}"
                                    options="{'no_create_edit': True}"/>
@@ -72,7 +76,9 @@
                         </group>
                         <group string="Others" >
                             <!--<separator string="Others" />-->
-                            <field name="start_date" required="1"/>
+                            <field name="start_date" required="1"
+                                   options="{'datepicker': {'warn_future': true, 'daysOfWeekDisabled': [0]}}"
+                                   /><!--options='{"datepicker": {"daysOfWeekDisabled": [0]}}'-->
                             <!--attrs="{'readonly':['|', ('state','!=','draft'), ('user', '=', 'teacher')]}" -->
                             <field name="duration" required="1"
                                    attrs="{'readonly':['|', ('state','!=','draft'), ('user', '=', 'teacher')]}"
@@ -81,6 +87,11 @@
                             <field name="price" readonly="1" attrs="{'invisible': [('price', '=', 0)]}"/>
                             <!--attrs="{'readonly':['|', ('state','!=','draft'), ('user', '=', 'teacher')]}"/>-->
                         </group>
+                    </group>
+                    <group string="Penalty" attrs="{'invisible':[('is_penalty', '=', False)]}">
+                        <field name="is_penalty"/>
+                        <field name="duration_penalty"/>
+                        <field name="end_date_penalty"/>
                     </group>
                 </sheet>
                 <!-- mail mixin fields -->
@@ -98,12 +109,13 @@
         <field name="model">library.card</field>
         <field name="arch" type="xml">
             <tree string="Card Details"
-                  decoration-info="state=='draft'"
+                  decoration-muted="state=='draft'"
                   decoration-danger="state=='expire'"
                   decoration-success="state=='running'">
                 <field name="code" />
                 <field name="user" />
                 <field name="book_limit" />
+                <field name="book_limit_syllabus" />
                 <field name="gt_name" />
                 <field name="end_date" />
                 <field name="price" sum="Total price Card"/>
@@ -138,8 +150,10 @@
                 <field name="user"/>
                 <field name="state"/>
                 <field name="book_limit"/>
+                <field name="book_limit_syllabus"/>
                 <field name="end_date"/>
                 <field name="duration"/>
+                <field name="is_penalty"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_global_click">
@@ -154,53 +168,56 @@
                                             <a name="print_report" type="object" class="dropdown-item">Report</a>
                                         </div>
                                     </t>
-                                    <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                    <t t-if="record.state.raw_value=='draft'">
+                                        <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                    </t>
                                 </div>
                             </div>
                             <div class="oe_kanban_details">
                                 <strong>
                                     <h6>
                                         <a type="open" class="o_text_overflow">
-                                            <field name="code" /> - <field name="gt_name"/>
+                                            <field name="code" /> -
+                                            <field name="gt_name"/>
+                                            <t t-if="record.is_penalty.raw_value">
+                                                <span style="color:red; font-size:11px">(Punishment)</span>
+                                            </t>
                                         </a>
                                     </h6>
                                 </strong>
-                                <!--<table>
-                                    <tr>
-                                        <td style="width:55%;">Limit Book: </td>
-                                        <th><field name="book_limit" /></th>
-                                    </tr>
-                                    <tr>
-                                        <td>End Date: </td>
-                                        <th><field name="end_date" /></th>
-                                    </tr>
-                                    <tr>
-                                        <td>Duration: </td>
-                                        <th><field name="duration" /></th>
-                                    </tr>
-                                    <tr><td>User: </td>
+                                <table style="font-size:10px">
+                                    <tr><th>User: </th>
                                         <t t-set="red_or_black"
                                            t-value="record.user.raw_value =='teacher'
                                            ? 'oe_kanban_text_red' : ''" />
-                                            <th t-att-class="red_or_black">
+                                            <td t-att-class="red_or_black">
                                                 <field name="user" />
-                                            </th>
+                                            </td>
                                     </tr>
-                                    &lt;!&ndash;<li><strong><field name="book_limit" /></strong></li>
-                                    <li>End Date: <strong><field name="end_date" /></strong></li>
-                                    <li><strong><field name="duration" /></strong></li>&ndash;&gt;
-                                </table>-->
-                                <ul>
-                                    <li>Book Limit: <field name="book_limit"/></li>
-                                    <li>Date: <field name="start_date"/> - <field name="end_date"/></li>
-                                    <li>Duration: <strong><field name="duration"/></strong> (months)</li>
-                                    <t t-set="red_or_black"
-                                           t-value="record.user.raw_value =='teacher'
-                                           ? 'oe_kanban_text_red' : ''" />
-                                        <li t-att-class="red_or_black">
-                                            User: <field name="user" />
-                                        </li>
-                                </ul>
+                                    <tr>
+                                        <th>Duration: </th>
+                                        <t t-if="record.duration.raw_value=='6'">
+                                            <td>
+                                                <strong><field name="duration"/></strong>
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td>
+                                                <field name="duration"/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                    <tr>
+                                        <th>Date: </th>
+                                        <td><field name="start_date"/> - <field name="end_date"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Limit Book: </th>
+                                        <td><field name="book_limit"/>(Book) and
+                                            <field name="book_limit_syllabus"/>(Syllabus)
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                     </t>

@@ -5,21 +5,40 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <group>
-                        <group string="Project Details">
-                            <field name="name"/>
-                            <field name="publish_date"/>
-                            <field name="teacher_name"/>
-                            <field name="description"/>
-                            <field name="state" widget="radio"/>
-                        </group>
-                        <group string="Student Details">
-                            <field name="major"/>
-                            <field name="student_id"/>
-                            <field name="student_name"/>
-                            <field name="course"/>
-                        </group>
-                    </group>
+                    <div class="oe_title">
+                        <separator string="Project"/>
+                    </div>
+                    <notebook>
+                        <page string="Project">
+                            <group>
+                                <group string="Project Details">
+                                    <field name="name"/>
+                                    <field name="publish_date"/>
+                                    <field name="teacher_name"/>
+                                    <field name="quantity" readonly="1"/>
+                                    <field name="remaining" readonly="1"/>
+                                </group>
+                                <group string="Student Details">
+                                    <field name="major"/>
+                                    <field name="student_id"/>
+                                    <field name="student_name"/>
+                                    <field name="course"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Meta Project">
+                            <field name="meta_project_ids">
+                                <tree decoration-success="state == 'available'"
+                                      decoration-danger="state == 'not_available'"
+                                      editable="bottom">
+                                    <!-- editable="top" -->
+                                    <field name="name_seq"/>
+                                    <field name="description"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

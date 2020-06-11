@@ -17,6 +17,8 @@
                         <br/>
                         No of Book on Card: ${object.book_limit}
                         <br/>
+                        No of Syllabus on Card: ${object.book_limit_syllabus}
+                        <br/>
                         Start Date: ${object.start_date}
                         <br/>
                         Duration: ${object.duration}
