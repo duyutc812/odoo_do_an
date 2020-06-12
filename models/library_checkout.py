@@ -1,5 +1,7 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
+from datetime import datetime, date
+import pytz
 
 
 class Checkout(models.Model):
@@ -53,6 +55,7 @@ class Checkout(models.Model):
                                       string='Meta Mgz-New')
     project_id = fields.Many2one('document.project', 'Name Project',
                                  domain=[('state', '=', 'available')])
+    meta_project_id = fields.Many2one('meta.projects', string='Meta Project')
     status_document = fields.Text('Description', compute='_compute_status_document', store=True)
 
     note = fields.Char('Note', readonly=True)
@@ -67,12 +70,14 @@ class Checkout(models.Model):
             self.meta_mgz_new_id = ''
         elif self.type_document == 'book':
             self.project_id = ''
+            self.meta_project_id = ''
             self.mgz_new_id = ''
             self.meta_mgz_new_id = ''
         else:
             self.book_id = ''
             self.meta_book_id = ''
             self.project_id = ''
+            self.meta_project_id = ''
 
     @api.onchange('book_id')
     def _onchange_book_id(self):
@@ -86,15 +91,21 @@ class Checkout(models.Model):
         return {'domain': {'meta_mgz_new_id': [('state', '=', 'available'),
                                                ('mgz_new_id', '=', self.mgz_new_id.id)]}}
 
-    @api.depends('meta_book_id', 'meta_mgz_new_id', 'project_id')
+    @api.onchange('project_id')
+    def _onchange_project_id(self):
+        self.meta_project_id = ''
+        return {'domain': {'meta_project_id': [('state', '=', 'available'),
+                                               ('project_id', '=', self.project_id.id)]}}
+
+    @api.depends('meta_book_id', 'meta_mgz_new_id', 'meta_project_id')
     def _compute_status_document(self):
         for chk in self:
             if chk.meta_book_id:
                 chk.status_document = chk.meta_book_id.description
             elif chk.meta_mgz_new_id:
                 chk.status_document = chk.meta_mgz_new_id.description
-            elif chk.project_id:
-                chk.status_document = chk.project_id.description
+            elif chk.meta_project_id:
+                chk.status_document = chk.meta_project_id.description
 
     def unlink(self):
         for chk in self:
@@ -110,7 +121,7 @@ class Checkout(models.Model):
             res.append((chk.id, '%s - %s' % (chk.name_seq, chk.gt_name)))
         return res
 
-    @api.constrains('card_id', 'book_id')
+    @api.constrains('card_id', 'book_id', 'mgz_new_id', 'project_id')
     def _constrains_card_id_book(self):
         lib_checkout = self.env['library.checkout']
         domain = [('card_id', '=', self.card_id.id),
@@ -120,6 +131,7 @@ class Checkout(models.Model):
                   ('project_id', '=', self.project_id.id),
                   ('id', 'not in', self.ids)]
         chk_of_card = lib_checkout.search(domain)
+        print(chk_of_card)
         if chk_of_card:
             raise ValidationError('You cannot borrow book to same card more than once!')
 
@@ -129,7 +141,8 @@ class Checkout(models.Model):
             ('id', '!=', self.id)
         ]
         checkout_of_card2 = self.env['library.checkout'].search_count(domain2)
-        # print(checkout_of_card2)
+        print(checkout_of_card2)
+        print(self.card_id.book_limit)
         if self.card_id.book_limit <= checkout_of_card2:
             raise ValidationError('You have borrowed more than the specified number of books for each card')
 
@@ -161,8 +174,9 @@ class Checkout(models.Model):
                 raise ValidationError('Magazine/Newspaper have borrowed.')
 
         elif self.project_id:
-            if self.project_id.state == 'available':
-                self.project_id.state = 'not_available'
+            if self.meta_project_id.state == 'available':
+                self.meta_project_id.state = 'not_available'
+                self.mgz_new_id.remaining -= 1
             else:
                 raise ValidationError('Project: " %s " have borrowed.' % (self.project_id.name))
 
@@ -186,8 +200,12 @@ class Checkout(models.Model):
             self.meta_mgz_new_id.is_available = 'available'
             self.mgz_new_id.remaining += 1
         elif self.project_id:
-            self.project_id.state = 'available'
-        self.return_date = fields.Date.today()
+            self.meta_project_id.state = 'available'
+            self.project_id.remaining += 1
+        current_date = datetime.now()
+        user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz or 'UTC')
+        date_today = pytz.utc.localize(current_date).astimezone(user_tz)
+        self.return_date = date_today.date()
 
     @api.multi
     def lost_book(self):

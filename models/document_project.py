@@ -71,7 +71,7 @@ class MetaProject(models.Model):
     @api.model
     def create(self, vals):
         if vals.get('name_seq', _('New')) == _('New'):
-            vals['name_seq'] = self.env['ir.sequence'].next_by_code('library.meta.magazine.newspaper.sequence') or _(
+            vals['name_seq'] = self.env['ir.sequence'].next_by_code('library.meta.document.project.sequence') or _(
                 'New')
         result = super(MetaProject, self).create(vals)
         return result

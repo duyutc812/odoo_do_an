@@ -65,8 +65,9 @@ class Card(models.Model):
         ('2_week', '2 weeks'),
         ('1_month', '1 month'),
     ], string='Duration Penalty')
-
-    end_date_penalty = fields.Date('End Date Penalty', compute='_compute_end_date_penalty', store=True)
+    end_date_penalty = fields.Date('End Date Penalty',
+                                   compute='_compute_end_date_penalty', store=True)
+    note = fields.Char('Note')
 
     @api.depends('duration_penalty')
     def _compute_end_date_penalty(self):
@@ -84,16 +85,26 @@ class Card(models.Model):
                 raise ValidationError('End Date Penalty > End Date Card!')
 
     def penalty_card(self):
+        current_date = datetime.now()
+        user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz or 'UTC')
+        date_today = pytz.utc.localize(current_date).astimezone(user_tz)
         for lib_card in self:
             lib_card.duration_penalty = ''
             lib_card.end_date_penalty = ''
+            lib_card.note = ''
             lib_card.is_penalty = True
+            # message = 'Penalty Card from %s' % \
+            #           (str(date_today.date()) + '%s' % ('to ' + str(lib_card.end_date_penalty) if lib_card.end_date_penalty else '')
+            #            + str(lib_card.note))
+            lib_card.message_post(body='Penalty Card')
 
     def cancel_penalty_card(self):
         for lib_card in self:
             lib_card.is_penalty = False
             lib_card.duration_penalty = ''
             lib_card.end_date_penalty = ''
+            lib_card.note = ''
+            lib_card.message_post(body='Canceled Penalty Card')
             
     @api.depends('student_id', 'teacher_id')
     def _compute_email(self):

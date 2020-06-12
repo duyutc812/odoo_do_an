@@ -107,6 +107,10 @@ class Teacher(models.Model):
     born_date = fields.Date('Born Date')
     address = fields.Text('Address')
     age = fields.Integer('Age')
+    gender = fields.Selection([
+        ('male', 'Male'),
+        ('fe_male', 'Female')
+    ])
     phone = fields.Char('Phone')
     email = fields.Char('Email Contact')
     role = fields.Many2one('teacher.role', string='Role')
@@ -122,7 +126,7 @@ class Teacher(models.Model):
         for teacher in self:
             born_date = teacher.born_date
             teacher.age = curr_date.year - born_date.year -\
-                      ((curr_date.month, curr_date.day) < (born_date.month, born_date.day))\
+                          ((curr_date.month, curr_date.day) < (born_date.month, born_date.day))\
                 if born_date else ''
 
     @api.onchange('name')

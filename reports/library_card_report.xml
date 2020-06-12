@@ -3,6 +3,7 @@
         id="action_library_card_detail"
         model="library.card"
         report_type="qweb-html"
+        menu="False"
         string="Card Report"
         name="do_an_tn.report_card_detail_template"/>
 
@@ -27,24 +28,34 @@
                                             <td style="padding-left:150px;">
                                                 <table>
                                                     <tr>
-                                                        <td>
-                                                            <p style="text-align:left;"><strong>User: </strong></p>
-                                                            <p style="text-align:left;"><strong>Student: </strong></p>
-                                                            <p style="text-align:left;"><strong>Limit Book: </strong></p>
-                                                            <p style="text-align:left;"><strong>Duration: </strong></p>
-                                                            <p style="text-align:left;"><strong>End Date: </strong></p>
-                                                        </td>
-                                                        <td>
-                                                            <p style="text-align:center;padding-left:10px;"
-                                                               t-field="o.user"/>
-                                                            <p style="text-align:center;padding-left:10px;"
-                                                               t-field="o.gt_name"/>
-                                                            <p style="text-align:center;padding-left:10px;"
-                                                               t-field="o.book_limit"/>
-                                                            <p style="text-align:center;padding-left:10px;"
-                                                               t-field="o.duration"/>
-                                                            <p style="text-align:center;padding-left:10px;"
-                                                               t-field="o.end_date"/>
+                                                        <th style="text-align:left;">
+                                                            <t t-if="o.user=='student'">
+                                                                <p>Student: </p>
+                                                                <p>Student ID: </p>
+                                                                <p>Major: </p>
+                                                                <p>Course: </p>
+                                                                <!--<p>Student ID: </p>-->
+                                                            </t>
+                                                            <t t-if="o.user=='teacher'">
+                                                                <p>Teacher: </p>
+                                                                <p>Role: </p>
+                                                            </t>
+                                                            <p>Duration: </p>
+                                                            <p>End Date: </p>
+                                                        </th>
+                                                        <td style="text-align:center;padding-left:10px;">
+                                                            <t t-if="o.student_id">
+                                                                <p t-field="o.student_id.name"/>
+                                                                <p t-field="o.student_id.student_id"/>
+                                                                <p t-field="o.student_id.major"/>
+                                                                <p t-field="o.student_id.course"/>
+                                                            </t>
+                                                            <t t-if="o.teacher_id">
+                                                                <p t-field="o.teacher_id.name"/>
+                                                                <p t-field="o.teacher_id.role"/>
+                                                            </t>
+                                                            <p t-field="o.duration"/>
+                                                            <p t-field="o.end_date"/>
                                                         </td>
                                                     </tr>
                                                 </table>

@@ -92,6 +92,7 @@
                         <field name="is_penalty"/>
                         <field name="duration_penalty"/>
                         <field name="end_date_penalty"/>
+                        <field name="note"/>
                     </group>
                 </sheet>
                 <!-- mail mixin fields -->
@@ -134,6 +135,9 @@
                 <field name="teacher_id" string="Teacher ID"/>
                 <filter name="user" string="Teacher" domain="[('user', '=', 'teacher')]"/>
                 <filter name="user" string="Student" domain="[('user', '=', 'student')]"/>
+                <group>
+                    <filter string="State" name="state" context="{'group_by': 'state'}"/>
+                </group>
             </search>
         </field>
     </record>

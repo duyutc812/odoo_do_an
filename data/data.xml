@@ -4,6 +4,7 @@
         <record id="data_author_1" model="library.author">
             <field name="pen_name">Nguyễn Nhật Ánh</field>
             <field name="name">Nguyễn Nhật Ánh</field>
+            <field name="name_seq">AT001</field>
             <field name="author_image" type="base64" file="do_an_tn\static\author\nguyennhatanh.jpg"/>
             <field name="gender">male</field>
             <field name="country_id">241</field>
@@ -14,6 +15,7 @@
         <record id="data_author_2" model="library.author">
             <field name="pen_name">Nam Cao</field>
             <field name="name">Trần Hữu Tri</field>
+            <field name="name_seq">AT002</field>
             <field name="author_image" type="base64" file="do_an_tn\static\author\namcao.jpg"/>
             <field name="gender">male</field>
             <field name="country_id">241</field>
@@ -23,28 +25,9 @@
         </record>
 
         <record id="data_author_3" model="library.author">
-            <field name="pen_name">Gosho Aoyama</field>
-            <field name="name">Gosho Aoyama</field>
-            <field name="author_image" type="base64" file="do_an_tn\static\author\goshoaoyama.jpg"/>
-            <field name="gender">male</field>
-            <field name="country_id">113</field>
-            <field name="born_date">1963-06-21</field>
-            <field name="biography">Biography of Gosho Aoyama</field>
-        </record>
-
-        <record id="data_author_4" model="library.author">
-            <field name="pen_name">Higashino Keigo</field>
-            <field name="name">Higashino Keigo</field>
-            <field name="author_image" type="base64" file="do_an_tn\static\author\higashinokeigo.jpg"/>
-            <field name="gender">male</field>
-            <field name="country_id">113</field>
-             <field name="born_date">1958-02-04</field>
-            <field name="biography">Biography of Higashino Keigo</field>
-        </record>
-
-        <record id="data_author_5" model="library.author">
             <field name="pen_name">Arthur Conan Doyle</field>
             <field name="name">Sir Conan Doyle</field>
+            <field name="name_seq">AT003</field>
             <field name="author_image" type="base64" file="do_an_tn\static\author\conan.jfif"/>
             <field name="gender">male</field>
             <field name="country_id">231</field>
@@ -53,31 +36,37 @@
             <field name="biography">Biography of Sir Conan Doyle</field>
         </record>
 
-        <record id="data_author_6" model="library.author">
+        <record id="data_author_4" model="library.author">
             <field name="pen_name">Nguyễn Ngọc Tư</field>
             <field name="name">Nguyễn Ngọc Tư</field>
+            <field name="name_seq">AT004</field>
             <field name="author_image" type="base64" file="do_an_tn\static\default_image.png"/>
             <field name="gender">female</field>
             <field name="country_id">241</field>
             <field name="biography">Biography of Gao</field>
         </record>
+
         <!--data publisher 1 - 4-->
         <record id="data_publisher_1" model="library.publisher">
+            <field name="nem_seq">PL001</field>
             <field name="name">Nhà Xuất Bản Trẻ</field>
             <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nxbtre.jpeg"/>
         </record>
 
         <record id="data_publisher_2" model="library.publisher">
+             <field name="nem_seq">PL002</field>
             <field name="name">Nhà Xuất Bản Nhã Nam</field>
             <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nhanam.jfif"/>
         </record>
 
         <record id="data_publisher_3" model="library.publisher">
+             <field name="nem_seq">PL003</field>
             <field name="name">Nhà Xuất Bản Văn Học</field>
             <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nxbvanhoc.jpg"/>
         </record>
 
         <record id="data_publisher_4" model="library.publisher">
+             <field name="nem_seq">PL004</field>
             <field name="name">Nhà Xuất Bản Kim Đồng</field>
             <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nxbkimdong.jfif"/>
         </record>
@@ -188,6 +177,7 @@
         <!--data teacher-->
         <record id="data_teacher_1" model="library.teacher">
             <field name="name">Teacher One</field>
+            <field name="gender">fe_male</field>
             <field name="role" ref="data_teacher_role_1"/>
             <field name="email">TeacherOne@gmail.com</field>
             <field name="born_date">1975-04-30</field>
@@ -196,6 +186,7 @@
 
         <record id="data_teacher_2" model="library.teacher">
             <field name="name">Teacher Three</field>
+            <field name="gender">male</field>
             <field name="role" ref="data_teacher_role_3"/>
             <field name="born_date">1969-07-05</field>
             <field name="email">TeacherThree@gmail.com</field>
@@ -205,9 +196,10 @@
         <!--data Book-->
         <record id="data_book_1" model="library.book">
             <field name="name">Mắt Biếc</field>
+            <field name="name_seq">BK001</field>
             <field name="image" type="base64" file="do_an_tn\static\book\matbiec.jpg"/>
             <field name="category" ref="data_category_1"/>
-            <field name="publisher_id" ref="data_publisher_1"/>
+            <field name="publisher_id"  ref="data_publisher_1"/>
             <field name="author_ids" eval="[(6,0,[ref('data_author_1')])]"/>
             <field name="price">56000</field>
             <field name="num_page">300</field>
@@ -215,16 +207,18 @@
 
         <record id="data_book_2" model="library.book">
             <field name="name">Sherlock Holmes - Tập 1</field>
+            <field name="name_seq">BK002</field>
             <field name="image" type="base64" file="do_an_tn\static\book\holmes1.jpg"/>
             <field name="category" ref="data_category_2"/>
             <field name="publisher_id" ref="data_publisher_4"/>
-            <field name="author_ids" eval="[(6,0,[ref('data_author_5')])]"/>
+            <field name="author_ids" eval="[(6,0,[ref('data_author_3')])]"/>
             <field name="price">56000</field>
             <field name="num_page">567</field>
         </record>
 
         <record id="data_book_3" model="library.book">
             <field name="name">Odoo 12 Development Essentials</field>
+            <field name="name_seq">BK003</field>
             <field name="image" type="base64" file="do_an_tn\static\book\odoo12.png"/>
             <field name="category"/>
             <field name="publisher_id"/>

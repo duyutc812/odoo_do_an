@@ -15,8 +15,10 @@
                                     <field name="name"/>
                                     <field name="publish_date"/>
                                     <field name="teacher_name"/>
-                                    <field name="quantity" readonly="1"/>
-                                    <field name="remaining" readonly="1"/>
+                                    <field name="quantity" readonly="1"
+                                           attrs="{'invisible': [('quantity', '=', 0)]}"/>
+                                    <field name="remaining" readonly="1"
+                                           attrs="{'invisible': [('remaining', '=', 0)]}"/>
                                 </group>
                                 <group string="Student Details">
                                     <field name="major"/>
