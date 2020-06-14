@@ -1,4 +1,69 @@
 <odoo>
+    <!--inherit search res.lang-->
+    <record id="view_search_inherit_res_lang" model="ir.ui.view">
+        <field name="name">view.search.inherit.res.lang</field>
+        <field name="model">res.lang</field>
+        <field name="inherit_id" ref="base.res_lang_search"/>
+        <field name="arch" type="xml">
+            <search>
+                <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!--form view for library rack-->
+    <record id="view_form_rack" model="ir.ui.view">
+        <field name="name">view.form.rack</field>
+        <field name="model">library.rack</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="expense_button_box">
+                        <button name="toggle_active"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-archive">
+                                <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <group>
+                        <field name="name" />
+                        <field name="code" />
+                        <field name="book_ids" widget="many2many_tags"/>
+                        <!--<field name="active" widget="boolean_toggle"/>-->
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View Of Library Rack -->
+    <record id="view_tree_rack" model="ir.ui.view">
+        <field name="name">view.tree.rack</field>
+        <field name="model">library.rack</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="code" />
+                <field name="book_ids" widget="many2many_tags"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--search view for library rack-->
+    <record id="view_search_rack" model="ir.ui.view">
+        <field name="name">view.search.rack</field>
+        <field name="model">library.rack</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="code" />
+                <field name="active" />
+            </search>
+        </field>
+    </record>
+
     <record id="view_tree_book" model="ir.ui.view">
         <field name="name">view.tree.book</field>
         <field name="model">library.book</field>
@@ -11,6 +76,7 @@
                 <field name="language"/>
                 <field name="publisher_id"/>
                 <field name="author_ids" widget="many2many_tags"/>
+                <field name="active" widget="boolean_toggle"/>
                 <field name="state"/>
             </tree>
         </field>
@@ -36,33 +102,43 @@
                         <page string="Book Information">
                             <group col="4" colspan="4">
                                 <group col="2" colspan="2" string="Image Book">
-                                    <field name="image" widget="image"/>
+                                    <field name="image" widget="image" style="width:60px;height:70px"/>
                                 </group>
                                 <group col="2" colspan="2">
                                     <separator string="Information Book" col="2" colspan="4"/>
                                     <group colspan="2">
                                         <field name="category"/>
-                                        <field name="isbn"/>
-                                        <field name="published_date"/>
-                                        <field name="publisher_id"/>
+                                        <field name="isbn" placeholder="ISBN code... "/>
+                                        <field name="published_date" placeholder="Enter publish date... "/>
+                                        <field name="publisher_id" placeholder="Enter Publisher... "/>
                                         <field name="author_ids"
+                                               placeholder="Choose Author... "
                                                widget="many2many_tags"
                                                required="1"/>
-                                        <field name="book_type"/>
-                                        <field name="num_page"/>
-                                    </group>
-                                    <separator string="Others"/>
-                                    <group colspan="4">
-                                        <field name="quantity"/>
-                                        <field name="remaining"/>
-                                        <field name="currency_id" groups="base.group_no_one"/>
-                                        <!-- class="oe_edit_only"-->
-                                        <field name="price"/>
-                                        <field name="language"/>
-                                        <field name="active"/>
+                                        <field name="translator_ids"
+                                               placeholder="Choose Translator... "
+                                               widget="many2many_tags"/>
                                     </group>
                                 </group>
                             </group>
+                            <group string="Details">
+                                <!--<separator string="Others"/>-->
+                                <group>
+                                    <field name="book_type"/>
+                                    <field name="num_page" placeholder="Enter Num Page...."/>
+                                    <field name="rack" placeholder="Choose Library Rack..." required="1"/>
+                                    <field name="quantity"/>
+                                    <field name="remaining"/>
+                                </group>
+                                <group>
+                                    <field name="currency_id" groups="base.group_no_one" placeholder="Choose Currency..."/>
+                                    <!-- class="oe_edit_only"-->
+                                    <field name="price" placeholder="Enter Price..."/>
+                                    <field name="language" placeholder="Choose Language..."/>
+                                    <field name="active"/>
+                                </group>
+                            </group>
+
                         </page>
                         <page string="Meta Books" >
                             <field name="meta_book_ids">

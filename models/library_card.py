@@ -82,12 +82,8 @@ class Card(models.Model):
                     lib_card.end_date_penalty = date_today.date() + rd(months=1)
             if lib_card.end_date_penalty and lib_card.end_date_penalty > lib_card.end_date:
                 lib_card.end_date_penalty = lib_card.end_date
-                raise ValidationError('End Date Penalty > End Date Card!')
 
     def penalty_card(self):
-        current_date = datetime.now()
-        user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz or 'UTC')
-        date_today = pytz.utc.localize(current_date).astimezone(user_tz)
         for lib_card in self:
             lib_card.duration_penalty = ''
             lib_card.end_date_penalty = ''

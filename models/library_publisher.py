@@ -4,7 +4,6 @@ from odoo import api, fields, models, _
 class Publisher(models.Model):
     _name = 'library.publisher'
     _description = 'Publisher'
-    _rec_name = 'name'
 
     name_seq = fields.Char(string='Publisher ID', required=True, copy=False, readonly=True, index=True,
                            default=lambda self: _('New'))
@@ -20,7 +19,7 @@ class Publisher(models.Model):
     website2 = fields.Char('Website 2')
     note = fields.Html('Notes')
     facebook = fields.Char('Facebook')
-    # book_ids = fields.One2many('library.book', 'publisher_id')
+    book_ids = fields.One2many('library.book', 'publisher_id')
 
     @api.model
     def create(self, vals):

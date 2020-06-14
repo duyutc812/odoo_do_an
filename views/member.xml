@@ -62,16 +62,21 @@
                     </div>
                     <group col="2" colspan="2" string="Information Personal">
                         <group>
-                            <field name="born_date"/>
                             <field name="age" attrs="{'invisible':[('age', '=', 0)]}"/>
                             <field name="identity_card"/>
                             <field name="gender"/>
-                            <field name="phone" widget="phone"/>
-
+                            <label for="street" string="Address"/>
+                            <div class="o_address_format">
+                                <field name="street" class="o_address_city" placeholder="Street..."/>-
+                                <field name="sub_district" placeholder="Sub District" class="o_address_city"/>-
+                                <field name="district" placeholder="District" class="o_address_city"/>-
+                                <field name="city" placeholder="City" class="o_address_city" string="Province/City"/>-
+                                <field name="country_id" placeholder="Country" class="o_address_country,oe_no_button"/>
+                            </div>
                         </group>
                         <group>
-                            <field name="address"/>
-                            <field name="country_id"/>
+                            <field name="born_date"/>
+                            <field name="phone" widget="phone"/>
                             <field name="email" placeholder="e.g. abc@gmail.com" widget="email"/>
                             <field name="facebook" placeholder="http://facebook.com" widget="url"/>
                         </group>

@@ -3,17 +3,17 @@
         <field name="name">view.tree.checkout</field>
         <field name="model">library.checkout</field>
         <field name="arch" type="xml">
-            <tree decoration-success="state=='done'"
-                  decoration-muted="state=='draft'"
-                  decoration-it="state=='running'"
+            <tree decoration-info="state=='done'"
+                  decoration-warning="state=='draft'"
+                  decoration-success="state=='running'"
                   decoration-danger="state=='fined'">
                 <field name="name_seq"/>
                 <field name="request_date"/>
                 <field name="return_date"/>
                 <field name="card_id"/>
                 <field name="user_id"/>
-                <field name="state"/>
                 <field name="state_card"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
@@ -34,7 +34,9 @@
                     <button name="lost_book" type="object"
                             string="Lost Book" class="oe_highlight"
                              attrs="{'invisible': [('state', '!=', 'running')]}"/>
+                    <button name="test" type="object" string="Test"/>
                     <field name="stage_id" widget="statusbar" class="oe_right"/><!--clickable="True"-->
+
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="expense_button_box">

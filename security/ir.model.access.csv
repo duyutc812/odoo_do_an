@@ -1,5 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_library_author,Author Access,model_library_author,,1,1,1,1
+access_library_translator,Translator Access,model_library_translator,,1,1,1,1
 access_library_publisher,Publisher Access,model_library_publisher,,1,1,1,1
 access_student_major,Major Student Access,model_student_major,,1,1,1,1
 access_teacher_role,Role Teacher Access,model_teacher_role,,1,1,1,1
@@ -8,6 +9,7 @@ access_library_teacher,Teacher Access,model_library_teacher,,1,1,1,1
 access_library_category,Category Access,model_library_category,,1,1,1,1
 access_categories_magazine,Categories Magazine Access,model_categories_magazine,,1,1,1,1
 access_categories_newspaper,Categories Newspaper Access,model_categories_newspaper,,1,1,1,1
+access_library_rack,Library Rack Access,model_library_rack,,1,1,1,1
 access_library_book,Book Access,model_library_book,,1,1,1,1
 access_meta_books,Meta Books Access,model_meta_books,,1,1,1,1
 access_document_project,Project Access,model_document_project,,1,1,1,1

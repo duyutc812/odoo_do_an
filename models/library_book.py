@@ -1,5 +1,16 @@
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, Warning
+
+
+class LibraryRack(models.Model):
+    _name = 'library.rack'
+    _description = "Library Rack"
+
+    name = fields.Char('Name', required=True,
+                       help="it will be show the position of book")
+    code = fields.Char('Code')
+    active = fields.Boolean('Active', default='True')
+    book_ids = fields.One2many('library.book', 'rack', 'All Book')
 
 
 class Book(models.Model):
@@ -14,11 +25,14 @@ class Book(models.Model):
     notes = fields.Text('Notes',
                         default='User have to pay 50% - 70% of the book price if they lose the book')
     isbn = fields.Char('ISBN')
-    currency_id = fields.Many2one('res.currency')
+    currency_id = fields.Many2one('res.currency', 'Currency',
+                                  default=lambda s: s.env['res.currency'].search([], limit=1))
     price = fields.Monetary('Price', 'currency_id')
-    language = fields.Many2one('res.lang', 'Language')
+    language = fields.Many2one('res.lang', 'Language',
+                               default=lambda s: s.env['res.lang'].search([], limit=1))
     category = fields.Many2one('library.category', 'Category')
     num_page = fields.Integer(string='Num Page')
+    rack = fields.Many2one('library.rack', string='Library Rack')
 
     """Date fields"""
     published_date = fields.Date('Published Date')
@@ -27,6 +41,8 @@ class Book(models.Model):
     publisher_id = fields.Many2one('library.publisher', string='Publisher')
     author_ids = fields.Many2many('library.author',
                                   string='Author')
+    translator_ids = fields.Many2many('library.translator',
+                                      string='Translator')
 
     """Other fields"""
     active = fields.Boolean('Active?', default=True)
@@ -85,15 +101,11 @@ class Book(models.Model):
         for book in self:
             book.name = book.name.title() if book.name else ''
 
-    # def unlink(self):
-    #     for rec in self:
-    #         check_checkout_book = self.env['library.checkout'].search([
-    #             ('borrow_book', '=', rec.id)
-    #         ])
-    #         # print(check_checkout_book)
-    #         if check_checkout_book:
-    #             raise ValidationError('Can not delete book!')
-    #     return super(Book, self).unlink()
+    def unlink(self):
+        for book in self:
+            if len(book.meta_book_ids) > 0:
+                raise ValidationError('You can not delete book!')
+        return super(Book, self).unlink()
 
 
 

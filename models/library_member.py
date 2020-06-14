@@ -40,17 +40,21 @@ class Student(models.Model):
         ('male', 'Male'),
         ('female', 'Female'),
     ], default='male', string="Gender")
-    address = fields.Text('Address')
     phone = fields.Char('Phone')
     email = fields.Char('Email')
     facebook = fields.Char('Facebook')
     major = fields.Many2one('student.major', string="Major", default=_default_major)
     course = fields.Integer('Course', default=57)
     note = fields.Html('Notes')
+    street = fields.Char('Street')
+    sub_district = fields.Char('Sub District')
+    district = fields.Char('District')
+    city = fields.Char('City')
     country_id = fields.Many2one('res.country', 'Nationality')
     active = fields.Boolean('Active?', default=True)
     color = fields.Integer('Color')
     count = fields.Integer('Count', compute='_compute_student_card')
+
 
     def _compute_student_card(self):
         domain = [('student_id', '=', self.id), ('state', '=', 'running')]

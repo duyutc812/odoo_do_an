@@ -1,5 +1,16 @@
 <odoo>
     <data noupdate="0">
+        <!--data library rack-->
+        <record id="data_rack_1" model="library.rack">
+            <field name="name">Rack 1</field>
+            <field name="code">LR1</field>
+        </record>
+
+        <record id="data_rack_2" model="library.rack">
+            <field name="name">Rack 2</field>
+            <field name="code">LR2</field>
+        </record>
+
         <!--data author 1 -> 6-->
         <record id="data_author_1" model="library.author">
             <field name="pen_name">Nguyễn Nhật Ánh</field>
@@ -295,5 +306,7 @@
             <field name="num_mgz_new">11</field>
             <field name="publish_date">2019-04-03</field>
         </record>
+
+
     </data>
 </odoo>

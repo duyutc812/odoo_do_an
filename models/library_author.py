@@ -95,3 +95,24 @@ class Author(models.Model):
             if check_author_book:
                 raise ValidationError('can not delete author!')
         return super(Author, self).unlink()
+
+
+class LibraryTranslator(models.Model):
+    _name = 'library.translator'
+    _description = 'Library Translator'
+
+    name = fields.Char('Name', required=True)
+    country_id = fields.Many2one('res.country', 'Nationality')
+    born_date = fields.Date('Date of Birth')
+    death_date = fields.Date('Date of Death')
+    gender = fields.Selection([
+        ('male', 'Male'),
+        ('female', 'Female'),
+    ], string='Gender', default='male')
+    active = fields.Boolean('Active', default=True)
+
+    @api.onchange('name')
+    def _onchange_pen_name_and_name_upper(self):
+        """Method to set upper for name"""
+        for trans in self:
+            trans.name = trans.name.title() if trans.name else ''

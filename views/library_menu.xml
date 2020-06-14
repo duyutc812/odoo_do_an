@@ -1,11 +1,15 @@
 <?xml version="1.0"?>
 <odoo>
     <!--Library School Menuitem-->
-    <menuitem id="menu_library" name="Library School" web_icon="do_an_tn,static/description/icon.png" />
+    <menuitem id="menu_library" name="Library School" web_icon="do_an_tn,static/description/icon.png" sequence="-1"/>
 
     <!--Other Menuitem-->
     <menuitem id="menu_library_others" name="Others" parent="menu_library"
               sequence="40"/>
+
+    <!--Library Menuitem-->
+    <menuitem id="menu_library_library" name="Library" parent="menu_library_others"
+              sequence="0"/>
 
     <!--Author-->
     <record id="action_library_author" model="ir.actions.act_window">
@@ -17,7 +21,7 @@
     </record>
     <menuitem id="menu_library_author"
               name="Authors"
-              parent="menu_library_others"
+              parent="menu_library_library"
               action="action_library_author"
               sequence="0"/>
 
@@ -28,7 +32,7 @@
         <field name="res_model">library.publisher</field>
         <field name="view_mode">kanban,tree,form</field>
     </record>
-    <menuitem id="menu_library_publisher" name="Publisher" parent="menu_library_others"
+    <menuitem id="menu_library_publisher" name="Publisher" parent="menu_library_library"
               action="action_library_publisher" sequence="10"/>
 
     <!--Student Major-->
@@ -157,6 +161,54 @@
     <!--Document Menuitem-->
     <menuitem id="menu_library_document" name="Documents" parent="menu_library"
               sequence="30"/>
+
+    <!--Language-->
+    <record id="action_inherit_res_lang" model="ir.actions.act_window">
+        <field name="name">Language</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.lang</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_inherit_res_lang" name="Languages"
+              parent="menu_library_others" action="action_inherit_res_lang"
+              sequence="80"/>
+
+    <!--Currency-->
+    <record id="action_inherit_res_currency" model="ir.actions.act_window">
+        <field name="name">Currency</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.currency</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_inherit_document_currency" name="Currency"
+              parent="menu_library_others" action="action_inherit_res_currency"
+              sequence="90"/>
+
+    <!--Library Rack-->
+    <record id="action_library_rack" model="ir.actions.act_window">
+        <field name="name">Library Rack</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">library.rack</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_library_rack" name="Library Racks"
+              parent="menu_library_library" action="action_library_rack"
+              sequence="100"/>
+
+     <!--Translator-->
+    <record id="action_library_translator" model="ir.actions.act_window">
+        <field name="name">Translator</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">library.translator</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_library_translator" name="Translator"
+              parent="menu_library_library" action="action_library_translator"
+              sequence="100"/>
 
     <!--Book-->
     <record id="action_library_book" model="ir.actions.act_window">

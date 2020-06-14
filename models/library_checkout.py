@@ -140,7 +140,7 @@ class Checkout(models.Model):
             ('state', '=', 'running'),
             ('id', '!=', self.id)
         ]
-        checkout_of_card2 = self.env['library.checkout'].search_count(domain2)
+        checkout_of_card2 = lib_checkout.search_count(domain2)
         print(checkout_of_card2)
         print(self.card_id.book_limit)
         if self.card_id.book_limit <= checkout_of_card2:
@@ -179,6 +179,16 @@ class Checkout(models.Model):
                 self.mgz_new_id.remaining -= 1
             else:
                 raise ValidationError('Project: " %s " have borrowed.' % (self.project_id.name))
+        domain2 = [
+            ('card_id', '=', self.card_id.id),
+            ('state', '=', 'running'),
+            ('id', '!=', self.id)
+        ]
+        checkout_of_card2 = self.search_count(domain2)
+        print(checkout_of_card2)
+        print(self.card_id.book_limit)
+        if self.card_id.book_limit <= checkout_of_card2:
+            raise ValidationError('You have borrowed more than the specified number of books for each card')
 
         return {
             'effect': {
