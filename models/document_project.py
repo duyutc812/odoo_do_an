@@ -12,7 +12,7 @@ class Project(models.Model):
     course = fields.Integer('Course', related='student_id.course', store=True)
     publish_date = fields.Date('Publish Date')
     teacher_name = fields.Many2one('library.teacher', string='Tutorial Teacher ')
-
+    rack = fields.Many2one('library.rack', 'Rack')
     state = fields.Selection([
         ('available', 'Available'),
         ('not_available', 'Not Available')

@@ -200,12 +200,12 @@
                                 </strong>
                                 <ul>
                                     <li>Book ID: <field name="name_seq" /></li>
-                                    <li class="o_text_overflow">Publisher: <field name="publisher_id" /></li>
-                                    <t t-set="red_or_black"
+                                    <!--<li class="o_text_overflow">Publisher: <field name="publisher_id" /></li>
+                                    --><t t-set="red_or_black"
                                        t-value="record.state.raw_value == 'not_available' ?
                                        'oe_kanban_text_red': '' "/>
                                     <li t-att-class="red_or_black">
-                                        <field name="state"/>
+                                       <field name="state"/>
                                     </li>
                                 </ul>
                             </div>

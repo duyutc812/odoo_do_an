@@ -40,14 +40,17 @@
                                 <separator string="Details Magazine" colspan="4"
                                            attrs="{'invisible': [('type_mgz_new', '=', 'newspaper')]}"/>
                                 <group col="2" colspan="2">
-                                    <field name="category_mgz" attrs="{'invisible': [('type_mgz_new', '=', 'newspaper')]}"/>
-                                    <field name="category_new" attrs="{'invisible': [('type_mgz_new', '=', 'magazine')]}"/>
-                                    <field name="num_mgz_new"/>
-                                    <field name="publish_date"/>
+                                    <field name="category_mgz" placeholder="Category magazine..."
+                                           attrs="{'invisible': [('type_mgz_new', '=', 'newspaper')]}"/>
+                                    <field name="category_new" placeholder="Category newspaper..."
+                                           attrs="{'invisible': [('type_mgz_new', '=', 'magazine')]}"/>
+                                    <field name="num_mgz_new" placeholder="No."/>
+                                    <field name="publish_date" placeholder="Publish date..."/>
                                 </group>
                                 <group col="2" colspan="2">
                                     <field name="quantity"/>
                                     <field name="remaining"/>
+                                    <field name="rack" placeholder="Library rack..."/>
                                     <field name="state"/>
                                 </group>
                             </group>

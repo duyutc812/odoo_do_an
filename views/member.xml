@@ -53,17 +53,17 @@
                     <field name="student_image" widget="image" class="oe_avatar"/>
                     <div class="oe_title">
                         <h5>
-                            ID: <field name="student_id" />
+                            ID: <field name="student_id" placeholder="Student ID..."/>
                         </h5>
                         <h1>
                             <label for="name" class="oe_edit_only"/>
-                            <field name="name" style="color:#7C7BAD" placeholder="Student name"/>
+                            <field name="name" style="color:#7C7BAD" placeholder="Student name..."/>
                         </h1>
                     </div>
                     <group col="2" colspan="2" string="Information Personal">
                         <group>
                             <field name="age" attrs="{'invisible':[('age', '=', 0)]}"/>
-                            <field name="identity_card"/>
+                            <field name="identity_card" placeholder="Identity Card..."/>
                             <field name="gender"/>
                             <label for="street" string="Address"/>
                             <div class="o_address_format">
@@ -75,15 +75,15 @@
                             </div>
                         </group>
                         <group>
-                            <field name="born_date"/>
-                            <field name="phone" widget="phone"/>
+                            <field name="born_date" widget="date" placeholder="Born date..."/>
+                            <field name="phone" widget="phone" placeholder="Phone number..."/>
                             <field name="email" placeholder="e.g. abc@gmail.com" widget="email"/>
                             <field name="facebook" placeholder="http://facebook.com" widget="url"/>
                         </group>
                     </group>
                     <group string="Major and Course">
                         <group><field name="major" options="{'no_create': True, 'no_open': True}"/></group>
-                        <group><field name="course" widget="integer"/></group>
+                        <group><field name="course" widget="integer" placeholder="Course..."/></group>
                     </group>
                     <notebook>
                         <page string="More Information">

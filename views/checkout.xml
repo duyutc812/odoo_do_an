@@ -34,7 +34,6 @@
                     <button name="lost_book" type="object"
                             string="Lost Book" class="oe_highlight"
                              attrs="{'invisible': [('state', '!=', 'running')]}"/>
-                    <button name="test" type="object" string="Test"/>
                     <field name="stage_id" widget="statusbar" class="oe_right"/><!--clickable="True"-->
 
                 </header>

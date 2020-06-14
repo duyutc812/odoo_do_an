@@ -51,6 +51,10 @@ class Card(models.Model):
         ('6', '6 months'),
     ], string='Duration', default='3', track_visibility='always')
     end_date = fields.Date('End Date', compute="_compute_end_date", store=True, track_visibility='always')
+    user_id = fields.Many2one('res.users', 'Librarian',
+                              default=lambda s: s.env.uid,
+                              readonly=True)
+
     active = fields.Boolean('Active', default=True)
 
     code = fields.Char(string='Code', required=True, copy=False, readonly=True, index=True,
@@ -93,6 +97,17 @@ class Card(models.Model):
             #           (str(date_today.date()) + '%s' % ('to ' + str(lib_card.end_date_penalty) if lib_card.end_date_penalty else '')
             #            + str(lib_card.note))
             lib_card.message_post(body='Penalty Card')
+            context = dict(self.env.context)
+            context['form_view_initial_mode'] = 'edit'
+            return {
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'library.card',
+                'res_id': lib_card.id,
+                'context': context
+            }
+
 
     def cancel_penalty_card(self):
         for lib_card in self:
@@ -162,29 +177,39 @@ class Card(models.Model):
     def library_check_card_expire(self):
         """method get card expire and confirm"""
         current_date = datetime.now()
-        print('scheduled action')
+        print('scheduled action check card expire and cancel penalty card')
         user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz or 'UTC')
         date_today = pytz.utc.localize(current_date).astimezone(user_tz)
         print(date_today)
+        Stages = self.env['library.card.stage']
         lib_card_expire = self.search([('end_date', '<', date_today),
                                        ('code', '!=', 'New')])
-        lib_card_running = self.search([('end_date', '>', date_today),
-                                        ('code', '!=', 'New')])
-        lib_card_draft = self.search([('code', '=', 'New')])
-        # print('Running : ', lib_card_running)
-        # print('Expire: ', lib_card_expire)
-        Stages = self.env['library.card.stage']
-        if lib_card_running:
-            for lib_card in lib_card_running:
-                lib_card.stage_id = Stages.search([('state', '=', 'running')])
-
+        lib_card_cancel_penalty = self.search([('is_penalty', '=', True),
+                                               ('code', '!=', 'New'),
+                                               ('state', '=', 'running'),
+                                               ('end_date_penalty', '<', date_today)])
         if lib_card_expire:
             for lib_card in lib_card_expire:
                 lib_card.stage_id = Stages.search([('state', '=', 'expire')])
-
-        if lib_card_draft:
-            for lib_card in lib_card_draft:
-                lib_card.stage_id = Stages.search([('state', '=', 'draft')])
+        if lib_card_cancel_penalty:
+            for lib_card in lib_card_cancel_penalty:
+                lib_card.is_penalty = False
+                lib_card.duration_penalty = ''
+                lib_card.end_date_penalty = ''
+                lib_card.note = ''
+                lib_card.message_post(body='Scheduled Action: Canceled Penalty')
+        # lib_card_running = self.search([('end_date', '>', date_today),
+        #                                 ('code', '!=', 'New')])
+        # lib_card_draft = self.search([('code', '=', 'New')])
+        # print('Running : ', lib_card_running)
+        # print('Expire: ', lib_card_expire)
+        # if lib_card_running:
+        #     for lib_card in lib_card_running:
+        #         lib_card.stage_id = Stages.search([('state', '=', 'running')])
+        #
+        # if lib_card_draft:
+        #     for lib_card in lib_card_draft:
+        #         lib_card.stage_id = Stages.search([('state', '=', 'draft')])
 
     @api.multi
     def library_card_send_email(self):
@@ -268,14 +293,15 @@ class Card(models.Model):
         self.chk_card = chk_card
 
     def send_email(self):
-        # trả về id của thằng template
         template_id = self.env.ref('do_an_tn.library_card_email_template').id
         template = self.env['mail.template'].browse(template_id)
-        # print('template: ', template, '\n', 'template_id: ', template_id)
-        # self.env['email.template'].browse(template_id).send_mail(self.id, force_send=True)
-        template.send_mail(self.id, force_send=True)
-        print('Send Email to user ID: ', self.id)
-        return self.message_post(body='Send Email for Card Expire', subject='Send Email')
+        # trả về id của thằng template
+        for lib_card in self:
+            # print('template: ', template, '\n', 'template_id: ', template_id)
+            # self.env['email.template'].browse(template_id).send_mail(self.id, force_send=True)
+            template.send_mail(lib_card.id, force_send=True)
+            print('Send Email to user ID: ', lib_card.id)
+            return self.message_post(body='Send Email for Card', subject='Send Email')
 
     # @api.multi
     # def expire_state(self):

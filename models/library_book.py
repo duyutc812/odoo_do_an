@@ -26,10 +26,10 @@ class Book(models.Model):
                         default='User have to pay 50% - 70% of the book price if they lose the book')
     isbn = fields.Char('ISBN')
     currency_id = fields.Many2one('res.currency', 'Currency',
-                                  default=lambda s: s.env['res.currency'].search([], limit=1))
+                                  default=lambda s: s.env['res.currency'].search([('name', '=', 'VND')], limit=1))
     price = fields.Monetary('Price', 'currency_id')
     language = fields.Many2one('res.lang', 'Language',
-                               default=lambda s: s.env['res.lang'].search([], limit=1))
+                               default=lambda s: s.env['res.lang'].search([('code', '=', 'vi_VN')], limit=1))
     category = fields.Many2one('library.category', 'Category')
     num_page = fields.Integer(string='Num Page')
     rack = fields.Many2one('library.rack', string='Library Rack')

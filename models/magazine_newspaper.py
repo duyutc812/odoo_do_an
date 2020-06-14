@@ -15,6 +15,7 @@ class Magazine(models.Model):
     num_mgz_new = fields.Integer(string="No.")
     publish_date = fields.Date(string='Publish Date', required=True)
     publish_year = fields.Integer(compute='get_publish_year', store=True)
+    rack = fields.Many2one('library.rack', 'Rack')
 
     quantity = fields.Integer(string='Quantity', compute='get_quantity_remaining', store=True)
     remaining = fields.Integer(string='Actually', compute='get_quantity_remaining', store=True)

@@ -12,17 +12,18 @@
                         <page string="Project">
                             <group>
                                 <group string="Project Details">
-                                    <field name="name"/>
-                                    <field name="publish_date"/>
-                                    <field name="teacher_name"/>
+                                    <field name="name" placeholder="Name project..."/>
+                                    <field name="publish_date" placeholder="Publish date..."/>
+                                    <field name="teacher_name" placeholder="Tutorial teacher..."/>
+                                    <field name="rack" placeholder="Library rack..."/>
                                     <field name="quantity" readonly="1"
                                            attrs="{'invisible': [('quantity', '=', 0)]}"/>
                                     <field name="remaining" readonly="1"
                                            attrs="{'invisible': [('remaining', '=', 0)]}"/>
                                 </group>
                                 <group string="Student Details">
-                                    <field name="major"/>
-                                    <field name="student_id"/>
+                                    <field name="major" placeholder="Major..."/>
+                                    <field name="student_id" placeholder="Student ID..."/>
                                     <field name="student_name"/>
                                     <field name="course"/>
                                 </group>

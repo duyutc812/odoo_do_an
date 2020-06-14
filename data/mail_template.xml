@@ -25,7 +25,7 @@
                         <br/>
                         End Date: ${object.end_date}
                         <br/>
-                        Price: ${object.price}
+                        Price: ${object.price} VND
                     </p>
                 </div>
             </field>
