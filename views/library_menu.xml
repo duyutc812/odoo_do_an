@@ -251,6 +251,7 @@
         <field name="name">Card Details</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">library.card</field>
+        <field name="limit">80</field>
         <field name="view_mode">kanban,calendar,tree,form</field>
     </record>
 
@@ -258,7 +259,7 @@
               parent="menu_library" action="action_library_card"
               sequence="2"/>
 
-    <!--Checkout-->
+    <!--&lt;!&ndash;Checkout&ndash;&gt;
     <record id="action_library_checkout" model="ir.actions.act_window">
         <field name="name">Checkouts</field>
         <field name="type">ir.actions.act_window</field>
@@ -268,7 +269,7 @@
 
     <menuitem id="menu_library_checkout" name="Checkouts"
               parent="menu_library" action="action_library_checkout"
-              sequence="1"/>
+              sequence="1"/>-->
 
     <!--Setting-->
     <menuitem id="menu_library_setting" name="Settings"
@@ -286,6 +287,18 @@
     <menuitem id="menu_scheduled_action" name="Scheduled Action"
               parent="menu_library_setting" action="action_inherit_ir_cron"
               sequence="0"/>
+
+    <!--Library Duration-->
+    <record id="action_library_duration" model="ir.actions.act_window">
+        <field name="name">Library Duration</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">library.duration</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_scheduled_action" name="Library Duration"
+              parent="menu_library_others" action="action_library_duration"
+              sequence="10"/>
 
 
 

@@ -26,34 +26,34 @@
                         </h5>
                         <h1>
                             <label for="name" class="oe_edit_only"/>
-                            <field name="name"/>
+                            <field name="name" placeholder="Publisher name..."/>
                         </h1>
                     </div>
 
                     <group col="2" colspan="2">
                         <separator string="Information" colspan="4"/>
                         <group>
-                            <field name="founding"/>
-                            <field name="phone" widget="phone"/>
-                            <field name="fax"/>
-                            <field name="address"/>
+                            <field name="founding" placeholder="Founding..."/>
+                            <field name="phone" widget="phone" placeholder="Phone..."/>
+                            <field name="fax" placeholder="Fax..."/>
+                            <field name="address" placeholder="Address..."/>
                         </group>
                         <group>
-                            <field name="email" widget="email"/>
-                            <field name="email" widget="email"/>
-                            <field name="website2" widget="url"/>
-                            <field name="facebook" widget="url"/>
+                            <field name="email" widget="email" placeholder="Email 1...."/>
+                            <field name="email" widget="email" placeholder="Email 2"/>
+                            <field name="website2" widget="url" placeholder="Website..."/>
+                            <field name="facebook" widget="url" placeholder="e.g facebook.com..."/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Books">
                             <group>
-                                <field name="book_ids" widget="many2many_tags"/>
+                                <field name="book_ids" widget="many2many_tags" readonly="1"/>
                             </group>
                         </page>
                         <page string="Notes">
                             <group>
-                                <field name="note"/>
+                                <field name="note" placeholder="Note" nolabel="1"/>
                             </group>
                         </page>
                     </notebook>

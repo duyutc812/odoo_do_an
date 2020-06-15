@@ -1,0 +1,41 @@
+<odoo>
+    <record id="view_tree_duration" model="ir.ui.view">
+        <field name="name">view.tree.duration</field>
+        <field name="model">library.duration</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="user_type"/>
+                <field name="duration"/>
+                <field name="book_on_card"/>
+                <field name="syllabus_on_card"/>
+                <field name="currency_id"/>
+                <field name="price"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_form_duration" model="ir.ui.view">
+        <field name="name">view.form.duration</field>
+        <field name="model">library.duration</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="duration"/>
+                            <field name="currency_id"/>
+                            <field name="price"/>
+                        </group>
+                        <group>
+                            <field name="user_type" required="1"/>
+                            <field name="book_on_card"/>
+                            <field name="syllabus_on_card"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

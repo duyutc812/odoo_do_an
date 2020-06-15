@@ -54,7 +54,7 @@
                                                                 <p t-field="o.teacher_id.name"/>
                                                                 <p t-field="o.teacher_id.role"/>
                                                             </t>
-                                                            <p t-field="o.duration"/>
+                                                            <p t-field="o.duration_id"/>
                                                             <p t-field="o.end_date"/>
                                                         </td>
                                                     </tr>

@@ -29,27 +29,24 @@ class Card(models.Model):
         return self.env.ref('do_an_tn.action_library_card_detail').report_action(self)
 
     book_limit = fields.Integer('No of Book on Card', readonly=True,
-                                compute='_compute_book_limit', store=True)
+                                related='duration_id.book_on_card', store=True)
     book_limit_syllabus = fields.Integer('No of Syllabus on Card', readonly=True,
-                                         compute='_compute_book_limit', store=True)
-    price = fields.Integer('Price', compute='_compute_book_limit', store=True)
+                                         related='duration_id.syllabus_on_card', store=True)
+
+    currency_id = fields.Many2one('res.currency', 'Currency', related='duration_id.currency_id', store=True)
+    price = fields.Monetary('Price', 'currency_id', compute='_compute_price', store=True)
     user = fields.Selection([('student', 'Student'), ('teacher', 'Teacher')], string='User', track_visibility='always')
     student_id = fields.Many2one('library.student', string='Student Name', track_visibility='always')
     teacher_id = fields.Many2one('library.teacher', string='Teacher Name', track_visibility='always')
     gt_name = fields.Char(compute="_compute_gt_name", method=True, string='Name')
     email = fields.Char('Email User', compute='_compute_email', method=True, store=True)
-    # user_id = fields.Many2one('res.users', default=lambda s: s.env.uid)
     stage_id = fields.Many2one('library.card.stage',
                                default=_default_stage,
                                group_expand='_group_expand_stage_id',
                                track_visibility='always')
     state = fields.Selection(related='stage_id.state', store=True)
-
     start_date = fields.Date('Start Date', default=fields.Date.today(), track_visibility='always')
-    duration = fields.Selection([
-        ('3', '3 months'),
-        ('6', '6 months'),
-    ], string='Duration', default='3', track_visibility='always')
+    duration_id = fields.Many2one('library.duration', string='Duration', track_visibility='always')
     end_date = fields.Date('End Date', compute="_compute_end_date", store=True, track_visibility='always')
     user_id = fields.Many2one('res.users', 'Librarian',
                               default=lambda s: s.env.uid,
@@ -72,6 +69,10 @@ class Card(models.Model):
     end_date_penalty = fields.Date('End Date Penalty',
                                    compute='_compute_end_date_penalty', store=True)
     note = fields.Char('Note')
+    kanban_state = fields.Selection(
+        [('normal', 'In Progress'),
+         ('blocked', 'Blocked')
+    ], 'Kanban State', default='normal', readonly=True)
 
     @api.depends('duration_penalty')
     def _compute_end_date_penalty(self):
@@ -93,6 +94,7 @@ class Card(models.Model):
             lib_card.end_date_penalty = ''
             lib_card.note = ''
             lib_card.is_penalty = True
+            lib_card.kanban_state = 'blocked'
             # message = 'Penalty Card from %s' % \
             #           (str(date_today.date()) + '%s' % ('to ' + str(lib_card.end_date_penalty) if lib_card.end_date_penalty else '')
             #            + str(lib_card.note))
@@ -108,13 +110,13 @@ class Card(models.Model):
                 'context': context
             }
 
-
     def cancel_penalty_card(self):
         for lib_card in self:
             lib_card.is_penalty = False
             lib_card.duration_penalty = ''
             lib_card.end_date_penalty = ''
             lib_card.note = ''
+            lib_card.kanban_state = 'normal'
             lib_card.message_post(body='Canceled Penalty Card')
             
     @api.depends('student_id', 'teacher_id')
@@ -130,10 +132,11 @@ class Card(models.Model):
         for lib_card in self:
             if lib_card.user == 'student':
                 lib_card.teacher_id = ''
-                lib_card.email = ''
             elif lib_card.user == 'teacher':
                 lib_card.student_id = ''
-                lib_card.email = ''
+            lib_card.email = ''
+            lib_card.duration_id = ''
+            return {'domain': {'duration_id': [('user_type', '=', lib_card.user)]}}
 
     @api.multi
     def name_get(self):
@@ -142,23 +145,30 @@ class Card(models.Model):
             res.append((lib_card.id, '%s - %s' % (lib_card.code, lib_card.gt_name)))
         return res
 
-    @api.depends('user', 'duration', 'state')
-    def _compute_book_limit(self):
+    @api.depends('duration_id', 'stage_id')
+    def _compute_price(self):
+        stage_draft = self.env['library.card.stage'].search([('state', '=', 'draft')])
         for lib_card in self:
-            if lib_card.user == 'student':
-                if lib_card.duration == '3':
-                    lib_card.book_limit = 1
-                    lib_card.book_limit_syllabus = 1
-                    lib_card.price = 20000 if lib_card.state != 'draft' else 0
-                else:
-                    lib_card.book_limit = 2
-                    lib_card.price = 30000 if lib_card.state != 'draft' else 0
-                lib_card.book_limit_syllabus = 1
-            elif lib_card.user == 'teacher':
-                lib_card.duration = '6'
-                lib_card.book_limit = 3
-                lib_card.book_limit_syllabus = 2
-                lib_card.price = 0
+            if lib_card.duration_id and lib_card.stage_id != stage_draft:
+                lib_card.price = lib_card.duration_id.price
+
+    # @api.depends('user', 'duration_id', 'state')
+    # def _compute_book_limit(self):
+    #     for lib_card in self:
+    #         if lib_card.user == 'student':
+    #             if lib_card.duration_id.duration == '3':
+    #                 lib_card.book_limit = 1
+    #                 lib_card.book_limit_syllabus = 1
+    #                 lib_card.price = 20000 if lib_card.state != 'draft' else 0
+    #             else:
+    #                 lib_card.book_limit = 2
+    #                 lib_card.price = 30000 if lib_card.state != 'draft' else 0
+    #             lib_card.book_limit_syllabus = 1
+    #         elif lib_card.user == 'teacher':
+    #             lib_card.duration = '6'
+    #             lib_card.book_limit = 3
+    #             lib_card.book_limit_syllabus = 2
+    #             lib_card.price = 0
 
     """get name for user : student or teacher"""
     @api.depends('student_id')
@@ -167,11 +177,84 @@ class Card(models.Model):
             lib_card.gt_name = lib_card.student_id.name if lib_card.student_id else lib_card.teacher_id.name
 
     """get end_date for card"""
-    @api.depends('start_date', 'duration')
+    @api.depends('start_date', 'duration_id')
     def _compute_end_date(self):
         for lib_card in self:
             if lib_card.start_date:
-                lib_card.end_date = lib_card.start_date + rd(months=int(lib_card.duration))
+                lib_card.end_date = lib_card.start_date + rd(months=int(lib_card.duration_id.duration))
+
+    @api.constrains('student_id', 'teacher_id')
+    def _constrains_check_member_card(self):
+        if self.user == 'student':
+            print(self.ids)
+            """ids la id cua record sap tao"""
+            student_lib_card = self.search([
+                ('student_id', '=', self.student_id.id),
+                ('state', '!=', 'expire'),
+                ('id', 'not in', self.ids)
+            ])
+            print(student_lib_card)
+            if student_lib_card:
+                raise ValidationError('You cannot assign library card to same student more than once!')
+        if self.user == 'teacher':
+            # print(self.ids)
+            teacher_lib_card = self.search([
+                ('teacher_id', '=', self.teacher_id.id),
+                ('state', '!=', 'expire'),
+                ('id', '!=', self.id)
+            ])
+            # print(teacher_lib_card)
+            if teacher_lib_card:
+                raise ValidationError('You cannot assign library card to same teacher more than once!')
+
+    @api.multi
+    def running_state(self):
+        stage_running = self.env['library.card.stage'].search([('state', '=', 'running')])
+        for lib_card in self:
+            if lib_card.code == 'New':
+                lib_card.code = self.env['ir.sequence'].next_by_code('library.card.sequence') or _('New')
+            lib_card.stage_id = stage_running
+            # print(self.stage_id)
+            lib_card.start_date = fields.Date.today()
+            return {
+                # effect when confirm Library card record
+                'effect': {
+                    'fadeout': 'slow',
+                    'message': 'Library Card ' + str(lib_card.code) + ' confirmed .... Thank You',
+                    'type': 'rainbow_man',
+                }
+            }
+
+    @api.multi
+    def draft_state(self):
+        stage_draft = self.env['library.card.stage'].search([('state', '=', 'draft')])
+        for lib_card in self:
+            lib_card.stage_id = stage_draft
+
+    @api.multi
+    def unlink(self):
+        for rec in self:
+            if rec.state == 'running' or rec.state == 'expire':
+                raise ValidationError('You cannot delete a confirmed or expire library card!')
+            # elif rec.state == 'draft':
+            #     checkout_card = self.env['library.checkout'].search_count([
+            #         ('card_id', '=', rec.id)
+            #     ])
+            #     if checkout_card:
+            #         raise ValidationError('Can not delete! related record')elif rec.state == 'draft':
+            #     checkout_card = self.env['library.checkout'].search_count([
+            #         ('card_id', '=', rec.id)
+            #     ])
+            #     if checkout_card:
+            #         raise ValidationError('Can not delete! related record')
+        return super(Card, self).unlink()
+
+    # def _compute_chk_card(self):
+    #     chk_card = self.env['library.checkout'].search_count([
+    #         ('card_id', '=', self.id),
+    #         ('state', '=', 'running'),
+    #     ])
+    #     self.chk_card = chk_card
 
     @api.multi
     def library_check_card_expire(self):
@@ -231,67 +314,6 @@ class Card(models.Model):
             template.send_mail(lib_card.id, force_send=True)
             print(lib_card.id)
 
-    @api.constrains('student_id', 'teacher_id')
-    def _constrains_check_member_card(self):
-        if self.user == 'student':
-            print(self.ids)
-            """ids la id cua record sap tao"""
-            student_lib_card = self.search([
-                ('student_id', '=', self.student_id.id),
-                ('state', '!=', 'expire'),
-                ('id', 'not in', self.ids)
-            ])
-            print(student_lib_card)
-            if student_lib_card:
-                raise ValidationError('You cannot assign library card to same student more than once!')
-        if self.user == 'teacher':
-            # print(self.ids)
-            teacher_lib_card = self.search([
-                ('teacher_id', '=', self.teacher_id.id),
-                ('state', '!=', 'expire'),
-                ('id', '!=', self.id)
-            ])
-            # print(teacher_lib_card)
-            if teacher_lib_card:
-                raise ValidationError('You cannot assign library card to same teacher more than once!')
-
-    @api.multi
-    def running_state(self):
-        if self.code == 'New':
-            self.code = self.env['ir.sequence'].next_by_code('library.card.sequence') or _('New')
-        Stages = self.env['library.card.stage']
-        self.stage_id = Stages.search([('state', '=', 'running')])
-        # print(self.stage_id)
-        self.start_date = fields.Date.today()
-        return {
-            # effect when confirm Library card record
-            'effect': {
-                'fadeout': 'slow',
-                'message': 'Library Card ' + str(self.code) + ' confirmed .... Thank You',
-                'type': 'rainbow_man',
-            }
-        }
-
-    @api.multi
-    def unlink(self):
-        for rec in self:
-            if rec.state == 'running' or rec.state == 'expire':
-                raise ValidationError('You cannot delete a confirmed or expire library card!')
-            elif rec.state == 'draft':
-                checkout_card = self.env['library.checkout'].search_count([
-                    ('card_id', '=', rec.id)
-                ])
-                if checkout_card:
-                    raise ValidationError('Can not delete! related record')
-        return super(Card, self).unlink()
-
-    def _compute_chk_card(self):
-        chk_card = self.env['library.checkout'].search_count([
-            ('card_id', '=', self.id),
-            ('state', '=', 'running'),
-        ])
-        self.chk_card = chk_card
-
     def send_email(self):
         template_id = self.env.ref('do_an_tn.library_card_email_template').id
         template = self.env['mail.template'].browse(template_id)
@@ -302,33 +324,6 @@ class Card(models.Model):
             template.send_mail(lib_card.id, force_send=True)
             print('Send Email to user ID: ', lib_card.id)
             return self.message_post(body='Send Email for Card', subject='Send Email')
-
-    # @api.multi
-    # def expire_state(self):
-    #     self.stage_id = self.env['library.card.stage'].search([('state', '=', 'expire')])
-
-    # """upgrade field code and constrain when drag kanban from draft to confirm"""
-    # @api.multi
-    # def write(self, vals):
-    #     """vals: nhung thay doi kieu dictionary : {'duration': 2}"""
-    #     # print(self)
-    #     # library.card(69, )
-    #     # print(vals)
-    #     # {'duration': 2}
-    #
-    #     if self.state == 'draft' and vals['state'] == 'expire':
-    #         # print('abc')
-    #         raise ValidationError('You can not change state kanban from draft to expire!')
-    #     elif self.state == 'expire' and vals['state'] == 'draft':
-    #         raise ValidationError('You can not change state kanban from expire to draft!')
-    #     return super(Card, self).write(vals)
-    #     # print(self.state)
-    #     # print(vals['state'])
-
-    # @api.multi
-    # def draft_state(self):
-    #     self.stage_id = self.env['library.card.stage'].search([('state', '=', 'draft')])
-
 
 
 

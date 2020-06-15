@@ -1,4 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_library_duration,Duration Access,model_library_duration,,1,0,0,0
 access_library_author,Author Access,model_library_author,,1,1,1,1
 access_library_translator,Translator Access,model_library_translator,,1,1,1,1
 access_library_publisher,Publisher Access,model_library_publisher,,1,1,1,1

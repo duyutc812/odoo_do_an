@@ -11,6 +11,34 @@
             <field name="code">LR2</field>
         </record>
 
+        <!--data library duration-->
+        <record id="data_library_duration_1" model="library.duration">
+            <field name="name">3 months(student)</field>
+            <field name="duration">3</field>
+            <field name="user_type">student</field>
+            <field name="price">20000</field>
+            <field name="book_on_card">1</field>
+            <field name="syllabus_on_card">1</field>
+        </record>
+
+        <record id="data_library_duration_2" model="library.duration">
+            <field name="name">6 months(student)</field>
+            <field name="duration">6</field>
+            <field name="user_type">student</field>
+            <field name="price">30000</field>
+            <field name="book_on_card">2</field>
+            <field name="syllabus_on_card">1</field>
+        </record>
+
+        <record id="data_library_duration_3" model="library.duration">
+            <field name="name">6 months(teacher)</field>
+            <field name="duration">6</field>
+            <field name="user_type">teacher</field>
+            <field name="price">0</field>
+            <field name="book_on_card">3</field>
+            <field name="syllabus_on_card">1</field>
+        </record>
+
         <!--data author 1 -> 6-->
         <record id="data_author_1" model="library.author">
             <field name="pen_name">Nguyễn Nhật Ánh</field>
@@ -59,25 +87,25 @@
 
         <!--data publisher 1 - 4-->
         <record id="data_publisher_1" model="library.publisher">
-            <field name="nem_seq">PL001</field>
+            <field name="name_seq">PL001</field>
             <field name="name">Nhà Xuất Bản Trẻ</field>
             <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nxbtre.jpeg"/>
         </record>
 
         <record id="data_publisher_2" model="library.publisher">
-             <field name="nem_seq">PL002</field>
+             <field name="name_seq">PL002</field>
             <field name="name">Nhà Xuất Bản Nhã Nam</field>
             <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nhanam.jfif"/>
         </record>
 
         <record id="data_publisher_3" model="library.publisher">
-             <field name="nem_seq">PL003</field>
+             <field name="name_seq">PL003</field>
             <field name="name">Nhà Xuất Bản Văn Học</field>
             <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nxbvanhoc.jpg"/>
         </record>
 
         <record id="data_publisher_4" model="library.publisher">
-             <field name="nem_seq">PL004</field>
+             <field name="name_seq">PL004</field>
             <field name="name">Nhà Xuất Bản Kim Đồng</field>
             <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nxbkimdong.jfif"/>
         </record>

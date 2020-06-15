@@ -1,12 +1,12 @@
 <odoo>
-    <record id="open_checkout_card" model="ir.actions.act_window">
+    <!--<record id="open_checkout_card" model="ir.actions.act_window">
         <field name="name">Open checkout Card</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">library.checkout</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('card_id', '=', active_id),
                               ('state', '=', 'running')]</field>
-    </record>
+    </record>-->
 
     <record id="view_form_card" model="ir.ui.view">
         <field name="name">view.form.card</field>
@@ -23,10 +23,10 @@
                             attrs="{'invisible':[('state', '!=', 'draft')]}" class="oe_highlight"/>
                             <!--groups="library.group_librarian" -->
 
-                    <!--<button name="expire_state"
+                    <button name="draft_state"
                             type="object"
-                            string="Expire"
-                            attrs="{'invisible':[('state', '!=', 'running')]}" class="oe_highlight"/>-->
+                            string="Draft"
+                            attrs="{'invisible':[('state', '!=', 'running')]}" class="oe_highlight"/>
 
                     <button name="print_report" type="object" string="Print Report" class="oe_highlight"
                             attrs="{'invisible':[('state', '!=', 'running')]}"/>
@@ -45,18 +45,29 @@
                     <field name="stage_id" widget="statusbar"/> <!-- clickable="True"-->
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="expense_button_box">
-                        <button name="%(open_checkout_card)d"
+                    <!--<div class="oe_button_box" name="expense_button_box">
+                        <button name="open_checkout_card"
                                 type="action"
                                 class="oe_stat_button"
                                 icon="fa-bars"
                                 attrs="{'invisible': [('state', '!=', 'running')]}">
-                                <field name="chk_card" string="Checkout's" widget="statinfo"/>
-                        </button>
+                                &lt;!&ndash;<field name="chk_card" string="Checkout's" widget="statinfo"/>
+                        &ndash;&gt;</button>
+                    </div>-->
+                    <div class="oe_button_box" name="expense_button_box">
+                            <button name="toggle_active"
+                                    type="object"
+                                    confirm="(Un)archiving a project automatically (un)archives its tasks and issues. Do you want to proceed?"
+                                    class="oe_stat_button"
+                                    icon="fa-archive">
+                                    <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            </button>
                     </div>
                     <div class="oe_title">
+                        <label for="code" string="Card ID: " class="oe_edit_only"/>
                         <h1>
-                            <label for="code" string="Card ID: " class="oe_edit_only"/>
+                            <!--<field name="kanban_state" widget="state_selection" class="oe_right" readonly="1"/>
+                            -->
                             <field name="code" style="color:#7C7BAD"/>
                         </h1>
                     </div>
@@ -80,12 +91,13 @@
                                    options="{'datepicker': {'warn_future': true, 'daysOfWeekDisabled': [0]}}"
                                    /><!--options='{"datepicker": {"daysOfWeekDisabled": [0]}}'-->
                             <!--attrs="{'readonly':['|', ('state','!=','draft'), ('user', '=', 'teacher')]}" -->
-                            <field name="duration" required="1"
-                                   attrs="{'readonly':['|', ('state','!=','draft'), ('user', '=', 'teacher')]}"
+                            <field name="duration_id" required="1"
+                                   attrs="{'readonly':[('state','!=','draft')]}"
                                    force_save="1"/>
                             <field name="end_date"/>
                             <field name="user_id" options="{'no_open': True}"/>
-                            <field name="price" readonly="1" attrs="{'invisible': [('price', '=', 0)]}"/>
+                            <field name="currency_id"/>
+                            <field name="price" readonly="1" widget='monetary'/>
                             <!--attrs="{'readonly':['|', ('state','!=','draft'), ('user', '=', 'teacher')]}"/>-->
                         </group>
                     </group>
@@ -151,7 +163,8 @@
         <field name="arch" type="xml">
             <kanban default_group_by="stage_id"
                     quick_create="false"
-                    group_create="false">
+                    group_create="false"
+                    limit="1">
                 <field name="code"/>
                 <field name="id"/>
                 <field name="user"/>
@@ -159,8 +172,13 @@
                 <field name="book_limit"/>
                 <field name="book_limit_syllabus"/>
                 <field name="end_date"/>
-                <field name="duration"/>
+                <field name="duration_id"/>
                 <field name="is_penalty"/>
+
+                 <progressbar
+                     field="kanban_state"
+                     colors='{"done": "success", "blocked": "danger"}' />
+
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_global_click">
@@ -186,9 +204,10 @@
                                         <a type="open" class="o_text_overflow">
                                             <field name="code" /> -
                                             <field name="gt_name"/>
-                                            <t t-if="record.is_penalty.raw_value">
+                                            <!--<t t-if="record.is_penalty.raw_value">
                                                 <span style="color:red; font-size:11px">(Punishment)</span>
-                                            </t>
+                                            </t>-->
+                                            <field name="kanban_state" widget="kanban_state_selection"/>
                                         </a>
                                     </h6>
                                 </strong>
@@ -203,14 +222,14 @@
                                     </tr>
                                     <tr>
                                         <th>Duration: </th>
-                                        <t t-if="record.duration.raw_value=='6'">
+                                        <t t-if="record.duration_id.raw_value=='6'">
                                             <td>
-                                                <strong><field name="duration"/></strong>
+                                                <strong><field name="duration_id"/></strong>
                                             </td>
                                         </t>
                                         <t t-else="">
                                             <td>
-                                                <field name="duration"/>
+                                                <field name="duration_id"/>
                                             </td>
                                         </t>
                                     </tr>

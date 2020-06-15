@@ -68,7 +68,7 @@
                             <p t-field="o.card_id.book_limit"/>-->
                         </t>
                         <br/>
-                        <h4>No Borrowed Book : <t t-esc="checkout_count"/></h4>
+                        <!--<h4>No Borrowed Book : <t t-esc="checkout_count"/></h4>-->
                          <!--<p t-field="o.card_id.start_date"/>-->
                          <!--<p t-field="o.card_id.end_date"/>-->
                     </div>

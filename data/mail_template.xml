@@ -15,17 +15,13 @@
                         This is a email from Library School.
                         Card ID's : ${object.code}
                         <br/>
-                        No of Book on Card: ${object.book_limit}
-                        <br/>
-                        No of Syllabus on Card: ${object.book_limit_syllabus}
+                        No of document on Card: ${object.book_limit} (book) and ${object.book_limit_syllabus} (syllabus)
                         <br/>
                         Start Date: ${object.start_date}
                         <br/>
-                        Duration: ${object.duration}
-                        <br/>
                         End Date: ${object.end_date}
                         <br/>
-                        Price: ${object.price} VND
+                        Price: ${object.price}
                     </p>
                 </div>
             </field>
