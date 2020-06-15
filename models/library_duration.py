@@ -14,9 +14,6 @@ class LibraryDuration(models.Model):
     ], string='User Type', default='student')
     book_on_card = fields.Integer('No book on card', required=True)
     syllabus_on_card = fields.Integer('No syllabus on card', required=True)
-    currency_id = fields.Many2one('res.currency', 'Currency',
-                                  default=lambda s: s.env['res.currency'].search([('name', '=', 'VND')], limit=1))
-    price = fields.Monetary('Price', 'currency_id')
 
     @api.depends('duration', 'user_type')
     def _compute_name(self):

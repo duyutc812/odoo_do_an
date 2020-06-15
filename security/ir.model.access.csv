@@ -20,4 +20,4 @@ access_meta_magazine_newspaper,Meta Magazine/Newspaper Access,model_meta_magazin
 access_library_card_stage,Card Stage Access,model_library_card_stage,,1,1,1,1
 access_library_checkout_stage,Checkout Stage Access,model_library_checkout_stage,,1,1,1,1
 access_library_card,Card Access,model_library_card,,1,1,1,1
-access_library_checkout,Checkout Access,model_library_checkout,,1,1,1,1
+access_checkout_magazine_newspaper,Checkout Magazine/Newspaper Access,model_library_checkout_magazine_newspaper,,1,1,1,1

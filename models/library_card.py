@@ -30,8 +30,8 @@ class Card(models.Model):
 
     book_limit = fields.Integer('No of Book on Card', readonly=True,
                                 related='duration_id.book_on_card', store=True)
-    book_limit_syllabus = fields.Integer('No of Syllabus on Card', readonly=True,
-                                         related='duration_id.syllabus_on_card', store=True)
+    limit_syllabus = fields.Integer('No of Syllabus on Card', readonly=True,
+                                    related='duration_id.syllabus_on_card', store=True)
 
     currency_id = fields.Many2one('res.currency', 'Currency', related='duration_id.currency_id', store=True)
     price = fields.Monetary('Price', 'currency_id', compute='_compute_price', store=True)

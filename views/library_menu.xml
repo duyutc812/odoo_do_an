@@ -259,17 +259,21 @@
               parent="menu_library" action="action_library_card"
               sequence="2"/>
 
-    <!--&lt;!&ndash;Checkout&ndash;&gt;
-    <record id="action_library_checkout" model="ir.actions.act_window">
-        <field name="name">Checkouts</field>
+    <menuitem id="menu_library_checkout" name="Checkouts"
+              parent="menu_library"
+              sequence="0"/>
+
+    <!--Checkout-->
+    <record id="action_checkout_mg_new" model="ir.actions.act_window">
+        <field name="name">Checkout Magazine/Newspaper</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.checkout</field>
-        <field name="view_mode">kanban,calendar,tree,form</field>
+        <field name="res_model">library.checkout.magazine.newspaper</field>
+        <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_library_checkout" name="Checkouts"
-              parent="menu_library" action="action_library_checkout"
-              sequence="1"/>-->
+    <menuitem id="menu_checkout_magazine_newspaper" name="Checkout magazine"
+              parent="menu_library_checkout" action="action_checkout_mg_new"
+              sequence="1"/>
 
     <!--Setting-->
     <menuitem id="menu_library_setting" name="Settings"

@@ -12,4 +12,4 @@ from . import magazine_newspaper
 from . import library_card_stage
 from . import library_checkout_stage
 from . import library_card
-# from . import library_checkout
+from . import library_checkout

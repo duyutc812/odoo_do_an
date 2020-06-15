@@ -191,7 +191,10 @@
             <field name="born_date">1996-03-26</field>
             <field name="phone">0982712312</field>
             <field name="identity_card">1242312331</field>
-            <field name="address">Cà Mau</field>
+            <field name="street">Street A</field>
+            <field name="sub_district">Sub District A</field>
+            <field name="district">District A</field>
+            <field name="city">City A</field>
             <field name="country_id">241</field>
             <field name="email">studentone@gmail.com</field>
             <field name="major" ref="data_student_major_2"/>
@@ -206,7 +209,10 @@
             <field name="born_date">1998-08-10</field>
             <field name="phone">0982742312</field>
             <field name="identity_card">1242314521</field>
-            <field name="address">Nghệ An</field>
+            <field name="street">Street B</field>
+            <field name="sub_district">Sub District B</field>
+            <field name="district">District B</field>
+            <field name="city">City B</field>
             <field name="country_id">241</field>
             <field name="email">studenttwo@gmail.com</field>
             <field name="major" ref="data_student_major_3"/>

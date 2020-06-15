@@ -84,7 +84,7 @@
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_global_click">
                             <div class="oe_kanban_details">
-                                <a type="open">
+                                <a type="open" class="o_text_overflow">
                                     <t t-if="record.type_mgz_new.raw_value=='magazine'">
                                         <strong>Magazine: </strong>
                                         <span style="color:black"><field name="category_mgz"/></span>

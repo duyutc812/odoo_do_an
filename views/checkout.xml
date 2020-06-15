@@ -1,5 +1,71 @@
 <odoo>
-    <record id="view_tree_checkout" model="ir.ui.view">
+    <record id="view_tree_checkout_mg_new" model="ir.ui.view">
+        <field name="name">view.tree.checkout.mg.new</field>
+        <field name="model">library.checkout.magazine.newspaper</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name_seq"/>
+                <field name="card_id"/>
+                <field name="borrow_date"/>
+                <field name="mgz_new_id"/>
+                <field name="meta_mgz_new_id"/>
+                <field name="status_document"/>
+                <field name="user_id"/>
+                <field name="status_document"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_form_checkout_mg_new" model="ir.ui.view">
+        <field name="name">view.form.checkout.mg.new</field>
+        <field name="model">library.checkout.magazine.newspaper</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" invisible="1"/>
+                    <button name="running_state"
+                            type="object"
+                            string="Confirm"
+                            class="oe_highlight"
+                            attrs="{'invisible':[('state', '=', 'running')]}"/>
+                    <button name="draft_state"
+                            type="object"
+                            string="Draft"
+                            class="oe_highlight"
+                            attrs="{'invisible':[('state', '=', 'draft')]}"/>
+                    <field name="stage_id" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name_seq" class="oe_edit_only" />
+                        <h1>
+                            <field name="name_seq" readonly="1"/>
+                        </h1>
+                        <h3>
+                          <span class="oe_read_only">On </span>
+                          <label for="borrow_date" class="oe_edit_only" />
+                          <field name="borrow_date" class="oe_inline" readonly="1"/>
+                        </h3>
+                    </div>
+                    <group col="2" colspan="4">
+                        <group string="Card Details">
+                           <!-- <separator string="Card Details"/>-->
+                            <field name="card_id" required="1" attrs="{'readonly':[('state','!=','draft')]}" />
+                            <field name="gt_name" readonly="1"/>
+                            <field name="user_id" required="1"/>
+                        </group>
+                        <group string="Others" >
+                            <field name="mgz_new_id" string="Title"/>
+                            <field name="meta_mgz_new_id" string="Meta mgz/new"/>
+                            <field name="status_document"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--<record id="view_tree_checkout" model="ir.ui.view">
         <field name="name">view.tree.checkout</field>
         <field name="model">library.checkout</field>
         <field name="arch" type="xml">
@@ -12,7 +78,7 @@
                 <field name="return_date"/>
                 <field name="card_id"/>
                 <field name="user_id"/>
-                <field name="state_card"/>
+                &lt;!&ndash;<field name="state_card"/>&ndash;&gt;
                 <field name="state"/>
             </tree>
         </field>
@@ -34,18 +100,10 @@
                     <button name="lost_book" type="object"
                             string="Lost Book" class="oe_highlight"
                              attrs="{'invisible': [('state', '!=', 'running')]}"/>
-                    <field name="stage_id" widget="statusbar" class="oe_right"/><!--clickable="True"-->
+                    <field name="stage_id" widget="statusbar" class="oe_right"/>&lt;!&ndash;clickable="True"&ndash;&gt;
 
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="expense_button_box">
-                        <button name="open_checkout_of_card"
-                                type="object"
-                                class="oe_stat_button"
-                                icon="fa-bars" attrs="{'invisible':[('state', '!=', 'running')]}">
-                                <field name="count" string="Another" widget="statinfo"/>
-                        </button>
-                    </div>
                     <div class="oe_title">
                         <label for="name_seq" class="oe_edit_only"/>
                         <h1>
@@ -64,17 +122,18 @@
                                    attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="limit_book_card" style="font-size:14px;color:#7C7BAD"/>
                             <field name="gt_name"/>
-                            <field name="state_card"/>
+
                         </group>
                         <group>
-                            <field name="start_date"/>
-                            <field name="duration"/>
+                            &lt;!&ndash;<field name="start_date"/>
+                            <field name="duration"/>&ndash;&gt;
                             <field name="end_date"/>
+                            <field name="state_card"/>
                         </group>
                     </group>
                     <group>
                         <separator string="Document" colspan="4"/>
-                        <group>
+                        &lt;!&ndash;<group>
                             <field name="type_document" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="book_id" attrs="{'invisible':[('type_document', '!=', 'book')],
                                                           'readonly':[('state','!=','draft')]}"
@@ -92,9 +151,9 @@
                             <field name="project_id" attrs="{'invisible':[('type_document', '!=', 'project')],
                                                              'readonly':[('state','!=','draft')]}"/>
                             <field name="return_date" attrs="{'invisible':[('state', '!=', 'done')]}"/>
-                        </group>
+                        </group>&ndash;&gt;
                         <group>
-                            <field name="status_document" readonly="1"/>
+                            &lt;!&ndash;<field name="status_document" readonly="1"/>&ndash;&gt;
                             <field name="user_id" options="{'no_open':True}"/>
                         </group>
                     </group>
@@ -102,11 +161,22 @@
                         <field name="note"
                                attrs="{'invisible':[('state', '!=', 'fined')]}"/>
                     </group>
+                    <notebook>
+                        <page string="abc">
+                            <field name="line_ids"/>
+                            <tree editable = "bottom">
+                              <field name="book_id" />
+                              <field name="meta_book_id" />
+                              <field name="mgz_new_id" />
+                              <field name="meta_mgz_new_id" />
+                          </tree>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
-    </record>
-
+    </record>-->
+<!--
     <record id="view_search_checkout" model="ir.ui.view">
        <field name="name">view.search.checkout</field>
        <field name="model">library.checkout</field>
@@ -129,15 +199,15 @@
         <field name="name">view.kanban.checkout</field>
         <field name="model">library.checkout</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="stage_id" quick_create="false" group_create="false"><!--
-                     create="false"-->
+            <kanban default_group_by="stage_id" quick_create="false" group_create="false">&lt;!&ndash;
+                     create="false"&ndash;&gt;
                 <field name="id"/>
                 <field name="state_card"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_global_click">
                             <div class="o_dropdown_kanban dropdown">
-                                <!-- Top-right drop down menu here... -->
+                                &lt;!&ndash; Top-right drop down menu here... &ndash;&gt;
                                 <a class="dropdown-toggle btn"
                                         data-toggle="dropdown" role="button"
                                         aria-label="Dropdown menu"
@@ -148,7 +218,7 @@
                                 <div class="dropdown-menu" role="menu">
                                     <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
                                     <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
-                                    <!--<ul class="oe_kanban_colorpicker" data-field="color"/>-->
+                                    &lt;!&ndash;<ul class="oe_kanban_colorpicker" data-field="color"/>&ndash;&gt;
                                 </div>
                             </div>
                             <div class="oe_kanban_details">
@@ -227,5 +297,5 @@
                 <field name="card_id"/>
             </calendar>
         </field>
-    </record>
+    </record>-->
 </odoo>

@@ -76,7 +76,7 @@
                            <!-- <separator string="Card Details"/>-->
                             <field name="user" required="1" attrs="{'readonly':[('state','!=','draft')]}" />
                             <field name="book_limit" readonly="1"/>
-                            <field name="book_limit_syllabus" readonly="1" string="No of Syllabus"/>
+                            <field name="limit_syllabus" readonly="1" string="No of Syllabus"/>
                             <field name="student_id" attrs="{'invisible':[('user','!=','student')],
                                                              'readonly':[('state', '!=', 'draft')]}"
                                    options="{'no_create_edit': True}"/>
@@ -131,7 +131,7 @@
                 <field name="code" />
                 <field name="user" />
                 <field name="book_limit" />
-                <field name="book_limit_syllabus" />
+                <field name="limit_syllabus" />
                 <field name="gt_name" />
                 <field name="end_date" />
                 <field name="price" sum="Total price Card"/>
@@ -163,14 +163,13 @@
         <field name="arch" type="xml">
             <kanban default_group_by="stage_id"
                     quick_create="false"
-                    group_create="false"
-                    limit="1">
+                    group_create="false">
                 <field name="code"/>
                 <field name="id"/>
                 <field name="user"/>
                 <field name="state"/>
                 <field name="book_limit"/>
-                <field name="book_limit_syllabus"/>
+                <field name="limit_syllabus"/>
                 <field name="end_date"/>
                 <field name="duration_id"/>
                 <field name="is_penalty"/>
@@ -240,7 +239,7 @@
                                     <tr>
                                         <th>Limit Book: </th>
                                         <td><field name="book_limit"/>(Book) and
-                                            <field name="book_limit_syllabus"/>(Syllabus)
+                                            <field name="limit_syllabus"/>(Syllabus)
                                         </td>
                                     </tr>
                                 </table>

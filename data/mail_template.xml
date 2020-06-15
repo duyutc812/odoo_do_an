@@ -15,7 +15,7 @@
                         This is a email from Library School.
                         Card ID's : ${object.code}
                         <br/>
-                        No of document on Card: ${object.book_limit} (book) and ${object.book_limit_syllabus} (syllabus)
+                        No of document on Card: ${object.book_limit} (book) and ${object.limit_syllabus} (syllabus)
                         <br/>
                         Start Date: ${object.start_date}
                         <br/>
