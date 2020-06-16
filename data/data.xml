@@ -257,7 +257,7 @@
             <field name="category" ref="data_category_2"/>
             <field name="publisher_id" ref="data_publisher_4"/>
             <field name="author_ids" eval="[(6,0,[ref('data_author_3')])]"/>
-            <field name="price">56000</field>
+            <field name="price">100000</field>
             <field name="num_page">567</field>
         </record>
 
@@ -268,7 +268,7 @@
             <field name="category"/>
             <field name="publisher_id"/>
             <field name="author_ids"/>
-            <field name="price">210000</field>
+            <field name="price">150000</field>
             <field name="num_page">394</field>
         </record>
 
@@ -330,6 +330,7 @@
             <field name="type_mgz_new">magazine</field>
             <field name="category_mgz" ref="data_category_magazine_1"/>
             <field name="num_mgz_new">21</field>
+            <field name="price">21000</field>
             <field name="publish_date">2020-06-02</field>
         </record>
 
@@ -338,6 +339,7 @@
             <field name="type_mgz_new">newspaper</field>
             <field name="category_new" ref="data_category_newspaper_2"/>
             <field name="num_mgz_new">11</field>
+            <field name="price">11000</field>
             <field name="publish_date">2019-04-03</field>
         </record>
 

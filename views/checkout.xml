@@ -3,15 +3,21 @@
         <field name="name">view.tree.checkout.mg.new</field>
         <field name="model">library.checkout.magazine.newspaper</field>
         <field name="arch" type="xml">
-            <tree string="">
+            <tree decoration-success="state == 'running'"
+                  decoration-muted="state == 'draft'"
+                  decoration-info="state == 'done'"
+                  decoration-danger="state == 'fined'">
                 <field name="name_seq"/>
                 <field name="card_id"/>
                 <field name="borrow_date"/>
                 <field name="mgz_new_id"/>
                 <field name="meta_mgz_new_id"/>
-                <field name="status_document"/>
+                <!--<field name="status_document"/>-->
                 <field name="user_id"/>
-                <field name="status_document"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="price"/>
+                <field name="note"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
@@ -27,12 +33,31 @@
                             type="object"
                             string="Confirm"
                             class="oe_highlight"
-                            attrs="{'invisible':[('state', '=', 'running')]}"/>
+                            attrs="{'invisible':[('state', '!=', 'draft')]}"
+                            />
                     <button name="draft_state"
                             type="object"
                             string="Draft"
                             class="oe_highlight"
-                            attrs="{'invisible':[('state', '=', 'draft')]}"/>
+                            /> <!--attrs="{'invisible':[('state', '!=', 'running')]}"
+                            -->
+                    <button name="done_state"
+                            type="object"
+                            string="Return"
+                            class="oe_highlight"
+                            attrs="{'invisible':[('state', '!=', 'running')]}"/>
+                    <button name="lost_document"
+                            type="object"
+                            string="Lost Document"
+                            class="oe_highlight"
+                            attrs="{'invisible':[('state', '!=', 'running')]}"/>
+                    <button name="fined_state"
+                            type="object"
+                            string="Fined"
+                            class="oe_highlight"
+                            attrs="{'invisible':[('state', '!=', 'running')]}"/>
+                    <button name="%(do_an_tn.action_wizard_modify_descrip)d" string="Modify Description"
+                            type="action"/>
                     <field name="stage_id" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -50,18 +75,122 @@
                     <group col="2" colspan="4">
                         <group string="Card Details">
                            <!-- <separator string="Card Details"/>-->
-                            <field name="card_id" required="1" attrs="{'readonly':[('state','!=','draft')]}" />
+                            <field name="card_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="gt_name" readonly="1"/>
                             <field name="user_id" required="1"/>
                         </group>
                         <group string="Others" >
-                            <field name="mgz_new_id" string="Title"/>
-                            <field name="meta_mgz_new_id" string="Meta mgz/new"/>
-                            <field name="status_document"/>
+                            <field name="mgz_new_id" string="Title"
+                                   attrs="{'readonly':[('state','!=','draft')]}"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="meta_mgz_new_id" string="Meta mgz/new"
+                                   attrs="{'readonly':[('state','!=','draft')]}"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="status_document" />
                         </group>
                     </group>
+                    <group string="Fined" attrs="{'invisible':[('state', '!=', 'fined')]}">
+                        <field name="currency_id"/>
+                        <field name="price" widget="monetary"/>
+                        <field name="note"/>
+
+                    </group>
                 </sheet>
+                <div class="oe_chatter">
+                    <!--<field name="message_follower_ids" widget="mail_followers"/>-->
+                    <!--<field name="activity_ids" widget="mail_activity"/>-->
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
             </form>
+        </field>
+    </record>
+
+    <record id="view_search_checkout_mag_new" model="ir.ui.view">
+       <field name="name">view.search.checkout.mag.new</field>
+       <field name="model">library.checkout.magazine.newspaper</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name_seq" string="Checkout ID"/>
+                <filter string="Draft" name="draft_state" domain="[('state','=', 'draft')]"/>
+                <filter string="Borrowed" name="running_state" domain="[('state','=', 'running')]"/>
+                <filter string="Returned" name="done_state" domain="[('state','=', 'done')]"/>
+                <filter string="Fined" name="fined_state" domain="[('state','=', 'fined')]"/>
+                <group>
+                    <filter string="State" name="state" context="{'group_by': 'state'}"/>
+                    <filter string="Card ID" name="card_id" context="{'group_by': 'card_id'}"/>
+                    <filter string="Borrow Date" name="borrow_date" context="{'group_by': 'borrow_date'}"/>
+                </group>
+            </search>
+       </field>
+    </record>
+
+    <record id="view_kanban_chk_mg_new" model="ir.ui.view">
+        <field name="name">view.kanban.chk.mg.new</field>
+        <field name="model">library.checkout.magazine.newspaper</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <!--<field name="name"/>-->
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <a type="open" class="o_text_overflow"><field name="name_seq"/></a>
+                                </strong>
+
+                                <!--<t t-set="red_or_black"
+                                        t-value="record.state_card.raw_value == 'expire' ?
+                                                'oe_kanban_text_red' : '' "/>
+                                <li style="padding-left:20px" t-att-class="red_or_black">
+                                    <field name="card_id"/>
+                                    <t t-if="record.state_card.raw_value == 'expire'"> (Expire)</t>
+                                </li>
+                                <li style="padding-left:20px">
+                                    <t t-set="calendar_sign">
+                                    <i class="fa fa-calendar"/>
+                                    </t>
+                                    <t t-raw="calendar_sign" /> :
+                                    <field name="request_date" />
+                                </li>-->
+                                <table style="font-size:11px">
+                                    <tr>
+                                        <th>
+                                            Card ID:
+                                        </th>
+                                        <td>
+                                            <field name="card_id"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            Title:
+                                        </th>
+                                        <td>
+                                            <field name="mgz_new_id"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            ID Doc:
+                                        </th>
+                                        <td>
+                                            <field name="meta_mgz_new_id"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            State:
+                                        </th>
+                                        <td>
+                                            <field name="state"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 

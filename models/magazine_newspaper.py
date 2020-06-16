@@ -3,19 +3,24 @@ from odoo import api, fields, models, _
 
 class Magazine(models.Model):
     _name = 'magazine.newspaper'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Magazine and newspaper'
 
     type_mgz_new = fields.Selection([
         ('magazine', 'Magazine'),
         ('newspaper', 'Newspaper')
-    ], string='Type', default='newspaper', required=True)
+    ], string='Type', default='newspaper', required=True, track_visibility='always')
     image = fields.Binary('Cover')
-    category_mgz = fields.Many2one('categories.magazine', string='Category Magazine')
-    category_new = fields.Many2one('categories.newspaper', string='Category Newspaper')
-    num_mgz_new = fields.Integer(string="No.")
-    publish_date = fields.Date(string='Publish Date', required=True)
-    publish_year = fields.Integer(compute='get_publish_year', store=True)
-    rack = fields.Many2one('library.rack', 'Rack')
+    category_mgz = fields.Many2one('categories.magazine', string='Category Magazine', track_visibility='always')
+    category_new = fields.Many2one('categories.newspaper', string='Category Newspaper', track_visibility='always')
+    num_mgz_new = fields.Integer(string="No.", track_visibility='always')
+    publish_date = fields.Date(string='Publish Date', required=True, track_visibility='always')
+    publish_year = fields.Integer(compute='get_publish_year', store=True, track_visibility='always')
+    rack = fields.Many2one('library.rack', 'Rack', track_visibility='always')
+
+    currency_id = fields.Many2one('res.currency', 'Currency',
+                                  default=lambda s: s.env['res.currency'].search([('name', '=', 'VND')], limit=1))
+    price = fields.Monetary('Price', 'currency_id')
 
     quantity = fields.Integer(string='Quantity', compute='get_quantity_remaining', store=True)
     remaining = fields.Integer(string='Actually', compute='get_quantity_remaining', store=True)
@@ -27,7 +32,7 @@ class Magazine(models.Model):
 
     meta_mgz_new_ids = fields.One2many(
         'meta.magazinenewspapers',
-        'mgz_new_id',
+        'mgz_new_id', track_visibility='always'
     )
     active = fields.Boolean('Active?', default=True)
 
@@ -83,13 +88,14 @@ class MetaMagazineNewspaper(models.Model):
     _name = 'meta.magazinenewspapers'
     _description = 'Meta Magazine/Newspaper'
 
-    mgz_new_id = fields.Many2one('magazine.newspaper', string='Magazine/Newspaper')
+    mgz_new_id = fields.Many2one('magazine.newspaper', string='Magazine/Newspaper', track_visibility='always')
     name_seq = fields.Char(string="Meta Magazine/Newspaper ID", default=lambda self: _('New'), readonly=True)
-    description = fields.Text('Description')
+    description = fields.Text('Description', track_visibility='always')
     state = fields.Selection([
         ('available', 'Available'),
         ('not_available', 'Not Available')
     ], string='Status', default='available')
+    chk_mg_new_id = fields.Many2one('library.checkout.magazine.newspaper', string='Checkout ID', readonly=True)
 
     @api.multi
     def name_get(self):

@@ -134,7 +134,8 @@
                 <field name="limit_syllabus" />
                 <field name="gt_name" />
                 <field name="end_date" />
-                <field name="price" sum="Total price Card"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="price" widget="monetary"/>
                 <field name="state" />
             </tree>
         </field>
@@ -161,9 +162,7 @@
         <field name="name">view.kanban.card</field>
         <field name="model">library.card</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="stage_id"
-                    quick_create="false"
-                    group_create="false">
+            <kanban>
                 <field name="code"/>
                 <field name="id"/>
                 <field name="user"/>

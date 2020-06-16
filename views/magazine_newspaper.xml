@@ -46,6 +46,8 @@
                                            attrs="{'invisible': [('type_mgz_new', '=', 'magazine')]}"/>
                                     <field name="num_mgz_new" placeholder="No."/>
                                     <field name="publish_date" placeholder="Publish date..."/>
+                                    <field name="currency_id"/>
+                                    <field name="price"/>
                                 </group>
                                 <group col="2" colspan="2">
                                     <field name="quantity"/>
@@ -61,14 +63,20 @@
                                       decoration-danger="state == 'not_available'"
                                       editable="bottom">
                                     <!-- editable="top" -->
-                                    <field name="name_seq"/>
-                                    <field name="description"/>
-                                    <field name="state"/>
+                                    <field name="name_seq" attrs="{'readonly':[('chk_mg_new_id', '!=', False)]}"/>
+                                    <field name="description" attrs="{'readonly':[('chk_mg_new_id', '!=', False)]}"/>
+                                    <field name="state" attrs="{'readonly':[('chk_mg_new_id', '!=', False)]}"/>
+                                    <field name="chk_mg_new_id"/>
                                 </tree>
                             </field>
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
             </form>
         </field>
     </record>
