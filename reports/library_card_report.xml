@@ -3,7 +3,6 @@
         id="action_library_card_detail"
         model="library.card"
         report_type="qweb-html"
-        menu="False"
         string="Card Report"
         name="do_an_tn.report_card_detail_template"/>
 
@@ -11,7 +10,7 @@
         <t t-call="web.html_container">
             <t t-call="web.internal_layout">
                 <t t-foreach="docs" t-as="o">
-                    <div class="page">
+                    <!--<div class="page">
                         <div class="row">
                             <center>
                                 <div class="col-xs-8" style="margin:auto">
@@ -34,7 +33,7 @@
                                                                 <p>Student ID: </p>
                                                                 <p>Major: </p>
                                                                 <p>Course: </p>
-                                                                <!--<p>Student ID: </p>-->
+                                                                &lt;!&ndash;<p>Student ID: </p>&ndash;&gt;
                                                             </t>
                                                             <t t-if="o.user=='teacher'">
                                                                 <p>Teacher: </p>
@@ -56,6 +55,58 @@
                                                             </t>
                                                             <p t-field="o.duration_id"/>
                                                             <p t-field="o.end_date"/>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </center>
+                        </div>
+                    </div>-->
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <div class="row">
+                            <center>
+                                <div class="col-xs-8" style="margin:auto">
+                                    <table style="border: 3px solid black !important;width:500px;height:300px" >
+                                        <tr>
+                                            <th colspan="2" style="text-align:center">
+                                                <h3 style="color:blue">Library School ABC XYZ</h3>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2" style="text-align:center">
+                                                <h4 style="color:red">Library Card</h4>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td width="35%">
+                                                <p style="text-align:center;padding-top:10px;">
+                                                    <img t-if="not o.student_id.student_image" t-att-src="'\static\default_image.png'" height="120" border="1" width="120"/>
+                                                    <img t-if="o.student_id.student_image" t-att-src="'data:image/png;base64,%s' % to_text(o.student_id.student_image)" height="120" border="1" width="120"/>
+                                                </p>
+
+                                                <!--<h5  style="text-align:center;"><strong><span t-field="o.gt_name"/></strong></h5>-->
+
+                                            </td>
+                                            <td width="65%" style="font-size:12px">
+                                                <table>
+                                                    <tr>
+                                                        <td>
+                                                            <p style="text-align:left;"><strong> Name: </strong></p>
+                                                            <p style="text-align:left;"><strong>Student ID: </strong></p>
+                                                            <p style="text-align:left;"><strong>Major: </strong></p>
+                                                            <p style="text-align:left;"><strong>Course: </strong></p>
+                                                            <p style="text-align:left;"><strong>End Date: </strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p style="text-align:left;padding-left:10px;"  t-field="o.student_id.name"/>
+                                                            <p style="text-align:left;padding-left:10px;"  t-field="o.student_id.student_id"/>
+                                                            <p style="text-align:left;padding-left:10px;" t-field="o.student_id.major"/>
+                                                            <p style="text-align:left;padding-left:10px;" t-field="o.end_date"/>
+                                                            <p style="text-align:left;padding-left:10px;" t-field="o.student_id.course"/>
                                                         </td>
                                                     </tr>
                                                 </table>

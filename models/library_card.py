@@ -56,8 +56,8 @@ class Card(models.Model):
 
     code = fields.Char(string='Code', required=True, copy=False, readonly=True, index=True,
                        default=lambda self: _('New'))
-    chk_card = fields.Integer(string="Borrowed Book",
-                              compute='_compute_chk_card',
+    chk_mg_new = fields.Integer(string="Borrowed Book",
+                              compute='_compute_chk_mg_new',
                               readonly=True)
     color = fields.Integer('Color')
 
@@ -69,10 +69,14 @@ class Card(models.Model):
     end_date_penalty = fields.Date('End Date Penalty',
                                    compute='_compute_end_date_penalty', store=True)
     note = fields.Char('Note')
-    kanban_state = fields.Selection(
-        [('normal', 'In Progress'),
-         ('blocked', 'Blocked')
-    ], 'Kanban State', default='normal', readonly=True)
+
+    @api.onchange('is_penalty')
+    def _onchange_is_penalty(self):
+        for lib_card in self:
+            if not lib_card.is_penalty:
+                lib_card.duration_penalty = ''
+                lib_card.end_date_penalty = ''
+                lib_card.note = ''
 
     @api.depends('duration_penalty')
     def _compute_end_date_penalty(self):
@@ -94,7 +98,6 @@ class Card(models.Model):
             lib_card.end_date_penalty = ''
             lib_card.note = ''
             lib_card.is_penalty = True
-            lib_card.kanban_state = 'blocked'
             # message = 'Penalty Card from %s' % \
             #           (str(date_today.date()) + '%s' % ('to ' + str(lib_card.end_date_penalty) if lib_card.end_date_penalty else '')
             #            + str(lib_card.note))
@@ -116,16 +119,12 @@ class Card(models.Model):
             lib_card.duration_penalty = ''
             lib_card.end_date_penalty = ''
             lib_card.note = ''
-            lib_card.kanban_state = 'normal'
             lib_card.message_post(body='Canceled Penalty Card')
             
     @api.depends('student_id', 'teacher_id')
     def _compute_email(self):
         for lib_card in self:
-            if lib_card.student_id:
-                lib_card.email = lib_card.student_id.email
-            elif lib_card.teacher_id:
-                lib_card.email = lib_card.teacher_id.email
+            lib_card.email = lib_card.student_id.email if lib_card.student_id else lib_card.teacher_id.email
 
     @api.onchange('user')
     def _onchange_user(self):
@@ -230,6 +229,10 @@ class Card(models.Model):
         stage_draft = self.env['library.card.stage'].search([('state', '=', 'draft')])
         for lib_card in self:
             lib_card.stage_id = stage_draft
+            lib_card.price = 0
+            lib_card.is_penalty = False
+            lib_card.duration_penalty = ''
+            lib_card.note = ''
 
     @api.multi
     def unlink(self):
@@ -249,12 +252,12 @@ class Card(models.Model):
             #         raise ValidationError('Can not delete! related record')
         return super(Card, self).unlink()
 
-    # def _compute_chk_card(self):
-    #     chk_card = self.env['library.checkout'].search_count([
-    #         ('card_id', '=', self.id),
-    #         ('state', '=', 'running'),
-    #     ])
-    #     self.chk_card = chk_card
+    def _compute_chk_mg_new(self):
+        chk_mg_new = self.env['library.checkout.magazine.newspaper'].search_count([
+            ('card_id', '=', self.id),
+            ('state', '=', 'running'),
+        ])
+        self.chk_card = chk_mg_new
 
     @api.multi
     def library_check_card_expire(self):
@@ -265,15 +268,10 @@ class Card(models.Model):
         date_today = pytz.utc.localize(current_date).astimezone(user_tz)
         print(date_today)
         Stages = self.env['library.card.stage']
-        lib_card_expire = self.search([('end_date', '<', date_today),
-                                       ('code', '!=', 'New')])
         lib_card_cancel_penalty = self.search([('is_penalty', '=', True),
                                                ('code', '!=', 'New'),
                                                ('state', '=', 'running'),
                                                ('end_date_penalty', '<', date_today)])
-        if lib_card_expire:
-            for lib_card in lib_card_expire:
-                lib_card.stage_id = Stages.search([('state', '=', 'expire')])
         if lib_card_cancel_penalty:
             for lib_card in lib_card_cancel_penalty:
                 lib_card.is_penalty = False
@@ -281,6 +279,12 @@ class Card(models.Model):
                 lib_card.end_date_penalty = ''
                 lib_card.note = ''
                 lib_card.message_post(body='Scheduled Action: Canceled Penalty')
+        lib_card_expire = self.search([('end_date', '<', date_today),
+                                       ('code', '!=', 'New')])
+        if lib_card_expire:
+            for lib_card in lib_card_expire:
+                lib_card.stage_id = Stages.search([('state', '=', 'expire')])
+
         # lib_card_running = self.search([('end_date', '>', date_today),
         #                                 ('code', '!=', 'New')])
         # lib_card_draft = self.search([('code', '=', 'New')])

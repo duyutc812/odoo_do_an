@@ -28,7 +28,7 @@ class CheckoutMagazineNewspaper(models.Model):
                                )
     state = fields.Selection(related='stage_id.state', store=True)
     name_seq = fields.Char(string="Checkout ID", default=lambda self: _('New'), readonly=True)
-    borrow_date = fields.Datetime(string='Borrow Date', default=fields.Datetime.now(), track_visibility='always')
+    borrow_date = fields.Datetime(string='Borrow Date', track_visibility='always')
     mgz_new_id = fields.Many2one('magazine.newspaper', 'Name Mgz/New', required=True, track_visibility='always')
     meta_mgz_new_id = fields.Many2one('meta.magazinenewspapers',
                                       string='Meta Mgz-New', required=True, track_visibility='always')
@@ -53,6 +53,7 @@ class CheckoutMagazineNewspaper(models.Model):
                 chk_mg_new.meta_mgz_new_id.state = 'not_available'
                 chk_mg_new.mgz_new_id.remaining -= 1
                 chk_mg_new.meta_mgz_new_id.chk_mg_new_id = chk_mg_new.id
+                chk_mg_new.borrow_date = fields.Datetime.now()
             else:
                 raise ValidationError('Magazine/Newspaper have borrowed.')
 
@@ -84,6 +85,7 @@ class CheckoutMagazineNewspaper(models.Model):
             chk_mg_new.stage_id = stage_fined
             chk_mg_new.meta_mgz_new_id.state = 'available'
             chk_mg_new.mgz_new_id.remaining += 1
+            chk_mg_new.meta_mgz_new_id.chk_mg_new_id = ''
             context = dict(self.env.context)
             context['form_view_initial_mode'] = 'edit'
             return {
@@ -102,6 +104,8 @@ class CheckoutMagazineNewspaper(models.Model):
             chk_mg_new.stage_id = stage_fined
             chk_mg_new.price = chk_mg_new.mgz_new_id.price
             chk_mg_new.note = 'Lost Document'
+            chk_mg_new.mgz_new_id.message_post('Lost document %s on Checkout ID: %s, member : %s'
+                                               % (chk_mg_new.meta_mgz_new_id.name_seq, chk_mg_new.name_seq, chk_mg_new.gt_name))
 
     @api.constrains('card_id', 'mgz_new_id')
     def _constrains_card_id_book(self):

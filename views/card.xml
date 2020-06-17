@@ -1,12 +1,12 @@
 <odoo>
-    <!--<record id="open_checkout_card" model="ir.actions.act_window">
+    <record id="open_checkout_magazine_newspaper" model="ir.actions.act_window">
         <field name="name">Open checkout Card</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.checkout</field>
+        <field name="res_model">library.checkout.magazine.newspaper</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('card_id', '=', active_id),
                               ('state', '=', 'running')]</field>
-    </record>-->
+    </record>
 
     <record id="view_form_card" model="ir.ui.view">
         <field name="name">view.form.card</field>
@@ -26,7 +26,8 @@
                     <button name="draft_state"
                             type="object"
                             string="Draft"
-                            attrs="{'invisible':[('state', '!=', 'running')]}" class="oe_highlight"/>
+                            class="oe_highlight"/>
+                    <!--attrs="{'invisible':[('state', '!=', 'running')]}" -->
 
                     <button name="print_report" type="object" string="Print Report" class="oe_highlight"
                             attrs="{'invisible':[('state', '!=', 'running')]}"/>
@@ -45,29 +46,25 @@
                     <field name="stage_id" widget="statusbar"/> <!-- clickable="True"-->
                 </header>
                 <sheet>
-                    <!--<div class="oe_button_box" name="expense_button_box">
-                        <button name="open_checkout_card"
+                    <div class="oe_button_box" name="expense_button_box">
+                        <button name="%(open_checkout_magazine_newspaper)d"
                                 type="action"
                                 class="oe_stat_button"
                                 icon="fa-bars"
                                 attrs="{'invisible': [('state', '!=', 'running')]}">
-                                &lt;!&ndash;<field name="chk_card" string="Checkout's" widget="statinfo"/>
-                        &ndash;&gt;</button>
-                    </div>-->
-                    <div class="oe_button_box" name="expense_button_box">
-                            <button name="toggle_active"
-                                    type="object"
-                                    confirm="(Un)archiving a project automatically (un)archives its tasks and issues. Do you want to proceed?"
-                                    class="oe_stat_button"
-                                    icon="fa-archive">
-                                    <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
-                            </button>
+                                <field name="chk_mg_new" string="Checkout Magazine/Newspaper" widget="statinfo"/>
+                        </button>
+                        <button name="toggle_active"
+                                type="object"
+                                confirm="(Un)archiving a project automatically (un)archives its tasks and issues. Do you want to proceed?"
+                                class="oe_stat_button"
+                                icon="fa-archive">
+                                <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
                     </div>
                     <div class="oe_title">
                         <label for="code" string="Card ID: " class="oe_edit_only"/>
                         <h1>
-                            <!--<field name="kanban_state" widget="state_selection" class="oe_right" readonly="1"/>
-                            -->
                             <field name="code" style="color:#7C7BAD"/>
                         </h1>
                     </div>
@@ -151,6 +148,9 @@
                 <field name="teacher_id" string="Teacher ID"/>
                 <filter name="user" string="Teacher" domain="[('user', '=', 'teacher')]"/>
                 <filter name="user" string="Student" domain="[('user', '=', 'student')]"/>
+                <filter name="state_running" string="Confirm" domain="[('state', '=', 'running')]"/>
+                <filter name="state_draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="state_expire" string="Expire" domain="[('state', '=', 'expire')]"/>
                 <group>
                     <filter string="State" name="state" context="{'group_by': 'state'}"/>
                 </group>
@@ -173,39 +173,37 @@
                 <field name="duration_id"/>
                 <field name="is_penalty"/>
 
-                 <progressbar
-                     field="kanban_state"
-                     colors='{"done": "success", "blocked": "danger"}' />
-
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_global_click">
-                            <div class="o_dropdown_kanban dropdown">
-                                <!-- Top-right drop down menu here... -->
-                                <a class="dropdown-toggle btn" data-toggle="dropdown" role="button" aria-label="Dropdown menu" title="Dropdown menu" href="#">
-                                  <span class="fa fa-ellipsis-v"/>
-                                </a>
-                                <div class="dropdown-menu" role="menu">
-                                    <t t-if="record.state.raw_value=='running'">
-                                        <div role="menuitem">
-                                            <a name="print_report" type="object" class="dropdown-item">Report</a>
+                            <t t-if="record.state.raw_value!='expire'">
+                                <div class="o_dropdown_kanban dropdown">
+                                    <!-- Top-right drop down menu here... -->
+                                    <a class="dropdown-toggle btn" data-toggle="dropdown" role="button" aria-label="Dropdown menu" title="Dropdown menu" href="#">
+                                      <span class="fa fa-ellipsis-v"/>
+                                    </a>
+
+                                        <div class="dropdown-menu" role="menu">
+                                            <t t-if="record.state.raw_value=='running'">
+                                                <div role="menuitem">
+                                                    <a name="print_report" type="object" class="dropdown-item">Report</a>
+                                                </div>
+                                            </t>
+                                            <t t-if="record.state.raw_value=='draft'">
+                                                <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                            </t>
                                         </div>
-                                    </t>
-                                    <t t-if="record.state.raw_value=='draft'">
-                                        <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
-                                    </t>
                                 </div>
-                            </div>
+                            </t>
                             <div class="oe_kanban_details">
                                 <strong>
                                     <h6>
                                         <a type="open" class="o_text_overflow">
                                             <field name="code" /> -
                                             <field name="gt_name"/>
-                                            <!--<t t-if="record.is_penalty.raw_value">
+                                            <t t-if="record.is_penalty.raw_value">
                                                 <span style="color:red; font-size:11px">(Punishment)</span>
-                                            </t>-->
-                                            <field name="kanban_state" widget="kanban_state_selection"/>
+                                            </t>
                                         </a>
                                     </h6>
                                 </strong>

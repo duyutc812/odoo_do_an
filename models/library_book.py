@@ -15,34 +15,34 @@ class LibraryRack(models.Model):
 
 class Book(models.Model):
     _name = 'library.book'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Library Book'
 
     name = fields.Char(string="Title", required=False, help='Book cover title')
     book_type = fields.Selection([
         ('paper', 'Paperback'),
         ('hard', 'Hardcover'),
-    ], string='Type', default='paper')
-    notes = fields.Text('Notes',
-                        default='User have to pay 50% - 70% of the book price if they lose the book')
-    isbn = fields.Char('ISBN')
+    ], string='Type', default='paper', track_visibility='always')
+    notes = fields.Text('Notes', track_visibility='always')
     currency_id = fields.Many2one('res.currency', 'Currency',
                                   default=lambda s: s.env['res.currency'].search([('name', '=', 'VND')], limit=1))
-    price = fields.Monetary('Price', 'currency_id')
+    price = fields.Monetary('Price', 'currency_id', track_visibility='always')
     language = fields.Many2one('res.lang', 'Language',
-                               default=lambda s: s.env['res.lang'].search([('code', '=', 'vi_VN')], limit=1))
-    category = fields.Many2one('library.category', 'Category')
-    num_page = fields.Integer(string='Num Page')
-    rack = fields.Many2one('library.rack', string='Library Rack')
+                               default=lambda s: s.env['res.lang'].search([('code', '=', 'vi_VN')], limit=1),
+                               track_visibility='always')
+    category = fields.Many2one('library.category', 'Category', track_visibility='always')
+    num_page = fields.Integer(string='Num Page', track_visibility='always')
+    rack = fields.Many2one('library.rack', string='Library Rack', track_visibility='always')
 
     """Date fields"""
-    published_date = fields.Date('Published Date')
+    published_date = fields.Date('Published Date', track_visibility='always')
 
     """Relational Fields"""
-    publisher_id = fields.Many2one('library.publisher', string='Publisher')
+    publisher_id = fields.Many2one('library.publisher', string='Publisher', track_visibility='always')
     author_ids = fields.Many2many('library.author',
-                                  string='Author')
+                                  string='Author', track_visibility='always')
     translator_ids = fields.Many2many('library.translator',
-                                      string='Translator')
+                                      string='Translator', track_visibility='always')
 
     """Other fields"""
     active = fields.Boolean('Active?', default=True)
@@ -51,7 +51,7 @@ class Book(models.Model):
     color = fields.Integer('Color')
 
     """name sequence"""
-    name_seq = fields.Char(string="Book ID", default=lambda self: _('New'), readonly=True)
+    name_seq = fields.Char(string="Book ID", default=lambda self: _('New'), readonly=True, track_visibility='always')
 
     quantity = fields.Integer(string='Quantity', compute='_compute_quantity_remaining', store=True)
     remaining = fields.Integer(string='Remaining', compute='_compute_quantity_remaining', store=True)
@@ -65,6 +65,14 @@ class Book(models.Model):
         'meta.books',
         'book_id',
     )
+
+    @api.constrains('price', 'num_page')
+    def _constrains_price(self):
+        for book in self:
+            if book.price <= 0:
+                raise ValidationError('The price must be greater than 0!')
+            if book.num_page <= 0:
+                raise ValidationError('The num page must be greater than 0!')
 
     @api.depends('meta_book_ids')
     def _compute_quantity_remaining(self):
@@ -103,7 +111,7 @@ class Book(models.Model):
 
     def unlink(self):
         for book in self:
-            if len(book.meta_book_ids) > 0:
+            if len(book.meta_book_ids):
                 raise ValidationError('You can not delete book!')
         return super(Book, self).unlink()
 

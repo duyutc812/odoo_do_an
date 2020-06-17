@@ -35,7 +35,8 @@
                                       decoration-danger="state == 'not_available'"
                                       editable="bottom">
                                     <!-- editable="top" -->
-                                    <field name="name_seq"/>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name_seq" readonly="1"/>
                                     <field name="description"/>
                                     <field name="state"/>
                                 </tree>
@@ -43,6 +44,11 @@
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
             </form>
         </field>
     </record>

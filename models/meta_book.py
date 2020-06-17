@@ -7,7 +7,8 @@ class MetaBook(models.Model):
 
     book_id = fields.Many2one('library.book', string='Book')
     name_seq = fields.Char(string="Meta Book ID", default=lambda self: _('New'), readonly=True)
-    description = fields.Text('Description')
+    description = fields.Text('Description', default='Tài liệu mới')
+    sequence = fields.Integer()
     state = fields.Selection([
         ('available', 'Available'),
         ('not_available', 'Not Available')

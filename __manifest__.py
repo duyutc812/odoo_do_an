@@ -11,6 +11,7 @@
     'data': [
         'data/data.xml',
         'security/ir.model.access.csv',
+        # 'security/library_security.xml',
         'data/sequence.xml',
         'data/mail_template.xml',
         'views/library_menu.xml',
@@ -24,8 +25,8 @@
         'views/book.xml',
         'views/project.xml',
         'views/magazine_newspaper.xml',
-        'views/checkout.xml',
         'wizards/modify_descrip.xml',
+        'views/checkout.xml',
         'reports/library_card_report.xml',
         # 'reports/library_checkout_report.xml',
     ],

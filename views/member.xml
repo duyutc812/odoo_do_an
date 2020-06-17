@@ -82,8 +82,13 @@
                         </group>
                     </group>
                     <group string="Major and Course">
-                        <group><field name="major" options="{'no_create': True, 'no_open': True}"/></group>
-                        <group><field name="course" widget="integer" placeholder="Course..."/></group>
+                        <group>
+                            <field name="major" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="major_name" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="course" widget="integer" placeholder="Course..."/>
+                        </group>
                     </group>
                     <notebook>
                         <page string="More Information">
@@ -109,6 +114,7 @@
                 <group>
                     <filter string="Age" name="age" context="{'group_by': 'age'}"/>
                     <filter string="Course" name="course" context="{'group_by': 'course'}"/>
+                    <filter string="Major" name="major_name" context="{'group_by': 'major_name'}"/>
                 </group>
         </search>
        </field>
@@ -118,7 +124,7 @@
         <field name="name">view.kanban.student</field>
         <field name="model">library.student</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="major" quick_create="false" group_create="false">
+            <kanban quick_create="false" group_create="false" edit="false" group_edit="false">
                 <field name="name"/>
                 <field name="id"/>
                 <field name="student_image"/>

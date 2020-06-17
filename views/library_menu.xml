@@ -127,6 +127,7 @@
         <field name="name">Students</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">library.student</field>
+        <field name="context">{"search_default_major_name":1}</field>
         <field name="view_mode">kanban,tree,form</field>
     </record>
 
@@ -162,6 +163,11 @@
     <menuitem id="menu_library_document" name="Documents" parent="menu_library"
               sequence="30"/>
 
+    <!--Setting-->
+    <menuitem id="menu_library_setting" name="Settings"
+              parent="menu_library_others"
+              sequence="70"/>
+
     <!--Language-->
     <record id="action_inherit_res_lang" model="ir.actions.act_window">
         <field name="name">Language</field>
@@ -171,7 +177,7 @@
     </record>
 
     <menuitem id="menu_inherit_res_lang" name="Languages"
-              parent="menu_library_others" action="action_inherit_res_lang"
+              parent="menu_library_setting" action="action_inherit_res_lang"
               sequence="80"/>
 
     <!--Currency-->
@@ -183,8 +189,20 @@
     </record>
 
     <menuitem id="menu_inherit_document_currency" name="Currency"
-              parent="menu_library_others" action="action_inherit_res_currency"
+              parent="menu_library_setting" action="action_inherit_res_currency"
               sequence="90"/>
+
+    <!--inherit scheduled acrion-->
+    <record id="action_scheduled_action_inherit" model="ir.actions.act_window">
+        <field name="name">Scheduled Action Inherit</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ir.cron</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_scheduled_action" name="Scheduled Action"
+              parent="menu_library_setting" action="action_scheduled_action_inherit"
+              sequence="100"/>
 
     <!--Library Rack-->
     <record id="action_library_rack" model="ir.actions.act_window">
@@ -236,7 +254,7 @@
 
     <!--Magazine/Newspaper-->
     <record id="action_magazine_newspaper" model="ir.actions.act_window">
-        <field name="name">Magazine/Newspaper</field>
+        <field name="name">Magazine and Newspaper</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">magazine.newspaper</field>
         <field name="view_mode">kanban,form</field>
@@ -252,7 +270,7 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">library.card</field>
         <field name="limit">80</field>
-        <field name="context">{"search_default_state":1}</field>
+        <field name="context">{"search_default_state_running":1}</field>
         <field name="view_mode">kanban,calendar,tree,form</field>
     </record>
 
@@ -269,30 +287,13 @@
         <field name="name">Checkout Magazine/Newspaper</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">library.checkout.magazine.newspaper</field>
-        <field name="context">{"search_default_state":1}</field>
-        <field name="view_mode">tree,kanban,form</field>
+        <field name="context">{"search_default_draft_state":1}</field>
+        <field name="view_mode">kanban,tree,form</field>
     </record>
 
-    <menuitem id="menu_checkout_magazine_newspaper" name="Checkout magazine"
+    <menuitem id="menu_checkout_magazine_newspaper" name="Checkout: Magazine and Newspaper"
               parent="menu_library_checkout" action="action_checkout_mg_new"
               sequence="1"/>
-
-    <!--Setting-->
-    <menuitem id="menu_library_setting" name="Settings"
-              parent="menu_library_others"
-              sequence="70"/>
-
-    <!--Inherit Scheduled Action-->
-    <record id="action_inherit_ir_cron" model="ir.actions.act_window">
-        <field name="name">Library Scheduled Action</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">ir.cron</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-
-    <menuitem id="menu_scheduled_action" name="Scheduled Action"
-              parent="menu_library_setting" action="action_inherit_ir_cron"
-              sequence="0"/>
 
     <!--Library Duration-->
     <record id="action_library_duration" model="ir.actions.act_window">
@@ -302,10 +303,8 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_scheduled_action" name="Library Duration"
+    <menuitem id="menu_library_duration" name="Library Duration"
               parent="menu_library_others" action="action_library_duration"
               sequence="10"/>
-
-
 
 </odoo>

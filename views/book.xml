@@ -108,7 +108,6 @@
                                     <separator string="Information Book" col="2" colspan="4"/>
                                     <group colspan="2">
                                         <field name="category"/>
-                                        <field name="isbn" placeholder="ISBN code... "/>
                                         <field name="published_date" placeholder="Enter publish date... "/>
                                         <field name="publisher_id" placeholder="Enter Publisher... "/>
                                         <field name="author_ids"
@@ -144,15 +143,20 @@
                             <field name="meta_book_ids">
                                 <tree editable="bottom" decoration-danger="state == 'not_available'"
                                       decoration-success="state == 'available'">
-                                    <field name="name_seq"/>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name_seq" readonly="1"/>
                                     <field name="description"/>
                                     <field name="state"/>
                                 </tree>
                             </field>
                         </page>
                     </notebook>
-
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
             </form>
         </field>
     </record>
@@ -223,8 +227,8 @@
             <search>
                 <field name="name_seq" string="Book ID"/>
                 <field name="name" string="Book Name"/>
-                <filter name="state" string="Available" domain="[('is_available', '=', 'available')]"/>
-                <filter name="state" string="Not Available" domain="[('is_available', '=', 'not_available')]"/>
+                <filter name="state" string="Available" domain="[('state', '=', 'available')]"/>
+                <filter name="state" string="Not Available" domain="[('state', '=', 'not_available')]"/>
                 <filter name="publisher_id" string="Publisher" context="{'group_by':'publisher_id'}"/>
                 <filter name="category" string="Category abc" context="{'group_by':'category'}"/>
             </search>

@@ -1,18 +1,20 @@
 from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 class Project(models.Model):
     _name = 'document.project'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Document - Project'
 
-    name = fields.Char('Name Project', required=True)
-    major = fields.Many2one('student.major', string='Major', requied=True)
-    student_id = fields.Many2one('library.student', string='Student ID')
-    student_name = fields.Char('Name Student', related='student_id.name', store=True)
-    course = fields.Integer('Course', related='student_id.course', store=True)
-    publish_date = fields.Date('Publish Date')
+    name = fields.Char('Name Project', required=True, track_visibility='always')
+    major = fields.Many2one('student.major', string='Major', requied=True, track_visibility='always')
+    student_id = fields.Many2one('library.student', string='Student ID', track_visibility='always')
+    student_name = fields.Char('Name Student', related='student_id.name', store=True, track_visibility='always')
+    course = fields.Integer('Course', related='student_id.course', store=True, track_visibility='always')
+    publish_date = fields.Date('Publish Date', track_visibility='always')
     teacher_name = fields.Many2one('library.teacher', string='Tutorial Teacher ')
-    rack = fields.Many2one('library.rack', 'Rack')
+    rack = fields.Many2one('library.rack', 'Rack', track_visibility='always')
     state = fields.Selection([
         ('available', 'Available'),
         ('not_available', 'Not Available')
@@ -21,6 +23,12 @@ class Project(models.Model):
     quantity = fields.Integer(string='Quantity', compute='get_quantity_remaining', store=True)
     remaining = fields.Integer(string='Actually', compute='get_quantity_remaining', store=True)
     meta_project_ids = fields.One2many('meta.projects', 'project_id')
+
+    def unlink(self):
+        for doc_pr in self:
+            if len(doc_pr.meta_project_ids):
+                raise ValidationError('You cannot delete!')
+            return super(Project, self).unlink()
 
     @api.depends('meta_project_ids')
     def get_quantity_remaining(self):
@@ -54,7 +62,8 @@ class MetaProject(models.Model):
 
     project_id = fields.Many2one('document.project', string='Project')
     name_seq = fields.Char(string="Meta Project ID", default=lambda self: _('New'), readonly=True)
-    description = fields.Text('Description')
+    sequence = fields.Integer()
+    description = fields.Text('Description', default='Tài liệu mới')
     state = fields.Selection([
         ('available', 'Available'),
         ('not_available', 'Not Available')

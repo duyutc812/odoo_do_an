@@ -3,7 +3,8 @@
         <field name="name">view.tree.checkout.mg.new</field>
         <field name="model">library.checkout.magazine.newspaper</field>
         <field name="arch" type="xml">
-            <tree decoration-success="state == 'running'"
+            <tree banner_route="/do_an_tn/checkout_mg_new"
+                  decoration-success="state == 'running'"
                   decoration-muted="state == 'draft'"
                   decoration-info="state == 'done'"
                   decoration-danger="state == 'fined'">
@@ -69,7 +70,8 @@
                         <h3>
                           <span class="oe_read_only">On </span>
                           <label for="borrow_date" class="oe_edit_only" />
-                          <field name="borrow_date" class="oe_inline" readonly="1"/>
+                          <field name="borrow_date" class="oe_inline" readonly="1"
+                                 attrs="{'invisible': [('state', '=', 'draft')]}"/>
                         </h3>
                     </div>
                     <group col="2" colspan="4">
@@ -81,19 +83,24 @@
                         </group>
                         <group string="Others" >
                             <field name="mgz_new_id" string="Title"
-                                   attrs="{'readonly':[('state','!=','draft')]}"
-                                   options="{'no_create': True, 'no_open': True}"/>
+                                   options="{'no_create': True, 'no_open': True}"
+                                   attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <!-- attrs="{'readonly':[('state','!=','draft')]}"-->
+
                             <field name="meta_mgz_new_id" string="Meta mgz/new"
-                                   attrs="{'readonly':[('state','!=','draft')]}"
-                                   options="{'no_create': True, 'no_open': True}"/>
+                                   options="{'no_create': True, 'no_open': True}"
+                                   attrs="{'readonly':[('state','!=','draft')]}"/>
+                                   <!--attrs="{'readonly':[('state','!=','draft')]}"-->
+
                             <field name="status_document" />
                         </group>
                     </group>
                     <group string="Fined" attrs="{'invisible':[('state', '!=', 'fined')]}">
-                        <field name="currency_id"/>
-                        <field name="price" widget="monetary"/>
-                        <field name="note"/>
-
+                        <group>
+                            <field name="currency_id"/>
+                            <field name="price" widget="monetary"/>
+                            <field name="note"/>
+                        </group>
                     </group>
                 </sheet>
                 <div class="oe_chatter">

@@ -1,4 +1,5 @@
 from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 class Magazine(models.Model):
@@ -16,7 +17,7 @@ class Magazine(models.Model):
     num_mgz_new = fields.Integer(string="No.", track_visibility='always')
     publish_date = fields.Date(string='Publish Date', required=True, track_visibility='always')
     publish_year = fields.Integer(compute='get_publish_year', store=True, track_visibility='always')
-    rack = fields.Many2one('library.rack', 'Rack', track_visibility='always')
+    rack = fields.Many2one('library.rack', 'Rack', track_visibility='always', required=True)
 
     currency_id = fields.Many2one('res.currency', 'Currency',
                                   default=lambda s: s.env['res.currency'].search([('name', '=', 'VND')], limit=1))
@@ -36,6 +37,12 @@ class Magazine(models.Model):
     )
     active = fields.Boolean('Active?', default=True)
 
+    @api.constrains('price')
+    def _constrains_price(self):
+        for mg_new in self:
+            if mg_new.price <= 0:
+                raise ValidationError('The price must be greater than 0!')
+
     @api.depends('publish_date')
     def get_publish_year(self):
         for mgz in self:
@@ -43,11 +50,16 @@ class Magazine(models.Model):
 
     @api.onchange('type_mgz_new')
     def _onchange_type_mgz_new(self):
-        for r in self:
-            if r.type_mgz_new == 'magazine':
-                r.category_new = ''
+        for mg_new in self:
+            if mg_new.type_mgz_new == 'magazine':
+                mg_new.category_new = ''
+
             else:
-                r.category_mgz = ''
+                mg_new.category_mgz = ''
+            mg_new.num_mgz_new = ''
+            mg_new.publish_date = ''
+            mg_new.rack = ''
+            mg_new.price = ''
 
     @api.depends('meta_mgz_new_ids')
     def get_quantity_remaining(self):
@@ -71,6 +83,13 @@ class Magazine(models.Model):
                            rec.category_mgz.name if rec.category_mgz else rec.category_new.name, rec.num_mgz_new)))
         return res
 
+    def unlink(self):
+        for mg_new in self:
+            if len(mg_new.meta_mgz_new_ids):
+                raise ValidationError('You cannot delete !')
+            return super(Magazine, self).unlink()
+
+
     _sql_constraints = [
         ('unique_category_magazine_num',
          'unique(category_mgz, num_mgz_new , publish_year)',
@@ -90,7 +109,8 @@ class MetaMagazineNewspaper(models.Model):
 
     mgz_new_id = fields.Many2one('magazine.newspaper', string='Magazine/Newspaper', track_visibility='always')
     name_seq = fields.Char(string="Meta Magazine/Newspaper ID", default=lambda self: _('New'), readonly=True)
-    description = fields.Text('Description', track_visibility='always')
+    description = fields.Text('Description',default='Tài liệu mới', track_visibility='always')
+    sequence = fields.Integer()
     state = fields.Selection([
         ('available', 'Available'),
         ('not_available', 'Not Available')
@@ -115,3 +135,9 @@ class MetaMagazineNewspaper(models.Model):
                 'New')
         result = super(MetaMagazineNewspaper, self).create(vals)
         return result
+
+    def unlink(self):
+        for meta_mg in self:
+            if meta_mg.chk_mg_new_id:
+                raise ValidationError('You cannot delete record %s!' %(meta_mg.name_seq))
+            return super(MetaMagazineNewspaper, self).unlink()

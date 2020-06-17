@@ -159,28 +159,28 @@
 
         <!--data Magazine Categories-->
         <record id="data_category_magazine_1" model="categories.magazine">
-            <field name="name">Thể Thao</field>
+            <field name="name">Tạp Chí Thể Thao</field>
         </record>
 
         <record id="data_category_magazine_2" model="categories.magazine">
-            <field name="name">Công Nghệ</field>
+            <field name="name">Tạp Chí Công Nghệ</field>
         </record>
 
         <record id="data_category_magazine_3" model="categories.magazine">
-            <field name="name">Thời Trang</field>
+            <field name="name">Tạp Chí Thời Trang</field>
         </record>
 
         <!--data Newspaper Categories-->
         <record id="data_category_newspaper_1" model="categories.newspaper">
-            <field name="name">Tiền Phong</field>
+            <field name="name">Báo Tiền Phong</field>
         </record>
 
         <record id="data_category_newspaper_2" model="categories.newspaper">
-            <field name="name">Tuổi Trẻ</field>
+            <field name="name">Báo Tuổi Trẻ</field>
         </record>
 
         <record id="data_category_newspaper_3" model="categories.newspaper">
-            <field name="name">Lao Động</field>
+            <field name="name">Báo Lao Động</field>
         </record>
 
         <!--data Student-->
@@ -197,7 +197,7 @@
             <field name="city">City A</field>
             <field name="country_id">241</field>
             <field name="email">studentone@gmail.com</field>
-            <field name="major" ref="data_student_major_2"/>
+            <field name="major" ref="data_student_major_1"/>
             <field name="course">58</field>
             <field name="gender">female</field>
         </record>
@@ -215,7 +215,7 @@
             <field name="city">City B</field>
             <field name="country_id">241</field>
             <field name="email">studenttwo@gmail.com</field>
-            <field name="major" ref="data_student_major_3"/>
+            <field name="major" ref="data_student_major_2"/>
             <field name="course">59</field>
         </record>
 
@@ -247,6 +247,7 @@
             <field name="publisher_id"  ref="data_publisher_1"/>
             <field name="author_ids" eval="[(6,0,[ref('data_author_1')])]"/>
             <field name="price">56000</field>
+            <field name="rack" ref="data_rack_1"/>
             <field name="num_page">300</field>
         </record>
 
@@ -258,6 +259,7 @@
             <field name="publisher_id" ref="data_publisher_4"/>
             <field name="author_ids" eval="[(6,0,[ref('data_author_3')])]"/>
             <field name="price">100000</field>
+            <field name="rack" ref="data_rack_1"/>
             <field name="num_page">567</field>
         </record>
 
@@ -269,6 +271,7 @@
             <field name="publisher_id"/>
             <field name="author_ids"/>
             <field name="price">150000</field>
+            <field name="rack" ref="data_rack_1"/>
             <field name="num_page">394</field>
         </record>
 
@@ -319,10 +322,16 @@
         <!--data project-->
         <record id="data_project_1" model="document.project">
             <field name="name">Quản Lý Thư Viện Sử Dụng Odoo FrameWork</field>
+            <field name="major" ref="data_student_major_1"/>
+            <field name="rack" ref="data_rack_2"/>
+            <field name="student_id" ref="data_student_1"/>
         </record>
 
         <record id="data_project_2" model="document.project">
             <field name="name">Đồ Án Chuyên Ngành Kế Toán</field>
+            <field name="major" ref="data_student_major_2"/>
+            <field name="rack" ref="data_rack_2"/>
+            <field name="student_id" ref="data_student_2"/>
         </record>
 
         <!--data Magazine-->
@@ -330,6 +339,7 @@
             <field name="type_mgz_new">magazine</field>
             <field name="category_mgz" ref="data_category_magazine_1"/>
             <field name="num_mgz_new">21</field>
+            <field name="rack" ref="data_rack_2"/>
             <field name="price">21000</field>
             <field name="publish_date">2020-06-02</field>
         </record>
@@ -340,6 +350,7 @@
             <field name="category_new" ref="data_category_newspaper_2"/>
             <field name="num_mgz_new">11</field>
             <field name="price">11000</field>
+            <field name="rack" ref="data_rack_2"/>
             <field name="publish_date">2019-04-03</field>
         </record>
 

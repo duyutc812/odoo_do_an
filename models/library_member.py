@@ -44,6 +44,7 @@ class Student(models.Model):
     email = fields.Char('Email')
     facebook = fields.Char('Facebook')
     major = fields.Many2one('student.major', string="Major", default=_default_major)
+    major_name = fields.Char(related='major.name', string='Major name', readonly=True, store=True)
     course = fields.Integer('Course', default=57)
     note = fields.Html('Notes')
     street = fields.Char('Street')
