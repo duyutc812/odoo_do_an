@@ -14,7 +14,8 @@ class CheckoutStage(models.Model):
         [('draft', 'Draft'),
          ('running', 'Borrowed'),
          ('done', 'Returned'),
-         ('fined', 'Fined')],
+         ('fined', 'Fined'),
+         ('lost', 'Lost')],
         default='draft',
     )
 

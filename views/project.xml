@@ -16,10 +16,9 @@
                                     <field name="publish_date" placeholder="Publish date..."/>
                                     <field name="teacher_name" placeholder="Tutorial teacher..."/>
                                     <field name="rack" placeholder="Library rack..."/>
-                                    <field name="quantity" readonly="1"
-                                           attrs="{'invisible': [('quantity', '=', 0)]}"/>
-                                    <field name="remaining" readonly="1"
-                                           attrs="{'invisible': [('remaining', '=', 0)]}"/>
+                                    <field name="quantity" readonly="1"/>
+                                    <field name="remaining" readonly="1"/>
+                                    <field name="state"/>
                                 </group>
                                 <group string="Student Details">
                                     <field name="major" placeholder="Major..."/>

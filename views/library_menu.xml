@@ -287,11 +287,12 @@
 
     <menuitem id="menu_library_card" name="Card Details"
               parent="menu_library" action="action_library_card"
-              sequence="2"/>
+              sequence="10"/>
 
+    <!--Checkout Menuitem-->
     <menuitem id="menu_library_checkout" name="Checkouts"
               parent="menu_library"
-              sequence="10"/>
+              sequence="0"/>
 
     <!--Checkout magazine newspaper-->
     <record id="action_checkout_mg_new" model="ir.actions.act_window">

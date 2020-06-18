@@ -18,10 +18,11 @@ class Project(models.Model):
     state = fields.Selection([
         ('available', 'Available'),
         ('not_available', 'Not Available')
-    ], string='Status', compute='_compute_state', store=True)
+    ], string='Status', compute='get_quantity_remaining')
+    # , compute='_compute_state', store=True
 
-    quantity = fields.Integer(string='Quantity', compute='get_quantity_remaining', store=True)
-    remaining = fields.Integer(string='Actually', compute='get_quantity_remaining', store=True)
+    quantity = fields.Integer(string='Quantity', compute='get_quantity_remaining')
+    remaining = fields.Integer(string='Remaining', compute='get_quantity_remaining')
     meta_project_ids = fields.One2many('meta.projects', 'project_id')
 
     def unlink(self):
@@ -37,11 +38,15 @@ class Project(models.Model):
             project.remaining = len(project.meta_project_ids.filtered(
                 lambda a: a.state == 'available'
             ))
+            # print('depends')
+            project.state = 'not_available'
+            if project.remaining > 0:
+                project.state = 'available'
 
-    @api.depends('remaining')
-    def _compute_state(self):
-        for project in self:
-            project.state = 'available' if project.remaining > 0 else 'not_available'
+    # @api.depends('remaining')
+    # def _compute_state(self):
+    #     for project in self:
+    #         project.state = 'available' if project.remaining > 0 else 'not_available'
 
     _sql_constraints = [
         ('document_project_publish_date_chk',

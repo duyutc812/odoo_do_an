@@ -55,13 +55,13 @@ class Book(models.Model):
     """name sequence"""
     name_seq = fields.Char(string="Book ID", default=lambda self: _('New'), readonly=True, track_visibility='always')
 
-    quantity = fields.Integer(string='Quantity', compute='_compute_quantity_remaining', store=True)
-    remaining = fields.Integer(string='Remaining', compute='_compute_quantity_remaining', store=True)
+    quantity = fields.Integer(string='Quantity', compute='_compute_quantity_remaining')
+    remaining = fields.Integer(string='Remaining', compute='_compute_quantity_remaining')
 
     state = fields.Selection([
         ('available', 'Available'),
         ('not_available', 'Not Available')
-    ], string='Status', compute='_compute_state_book', store=True)
+    ], string='Status', compute='_compute_quantity_remaining')
 
     meta_book_ids = fields.One2many(
         'meta.books',
@@ -80,12 +80,14 @@ class Book(models.Model):
     def _compute_quantity_remaining(self):
         for book in self:
             book.quantity = len(book.meta_book_ids)
-            remaining = len(
+            book.remaining = len(
                 book.meta_book_ids.filtered(
                     lambda a: a.state == 'available'
                 )
             )
-            book.remaining = remaining
+            book.state = 'not_available'
+            if book.remaining > 0:
+                book.state = 'available'
 
     @api.depends('remaining')
     def _compute_state_book(self):

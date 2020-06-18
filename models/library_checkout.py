@@ -51,7 +51,6 @@ class CheckoutMagazineNewspaper(models.Model):
             if chk_mg_new.meta_mgz_new_id.state == 'available':
                 chk_mg_new.stage_id = stage_running
                 chk_mg_new.meta_mgz_new_id.state = 'not_available'
-                chk_mg_new.mgz_new_id.remaining -= 1
                 chk_mg_new.meta_mgz_new_id.chk_mg_new_id = chk_mg_new.id
                 chk_mg_new.borrow_date = fields.Datetime.now()
             else:
@@ -64,7 +63,6 @@ class CheckoutMagazineNewspaper(models.Model):
             chk_mg_new.stage_id = stage_draft
             if chk_mg_new.meta_mgz_new_id.state == 'not_available':
                 chk_mg_new.meta_mgz_new_id.state = 'available'
-                chk_mg_new.mgz_new_id.remaining += 1
                 chk_mg_new.meta_mgz_new_id.chk_mg_new_id = ''
             chk_mg_new.price = 0
             chk_mg_new.note = ''
@@ -75,8 +73,8 @@ class CheckoutMagazineNewspaper(models.Model):
         for chk_mg_new in self:
             chk_mg_new.stage_id = stage_done
             chk_mg_new.meta_mgz_new_id.state = 'available'
-            chk_mg_new.mgz_new_id.remaining += 1
             chk_mg_new.meta_mgz_new_id.chk_mg_new_id = ''
+            chk_mg_new.borrow_date = ''
 
     @api.multi
     def fined_state(self):
@@ -84,7 +82,6 @@ class CheckoutMagazineNewspaper(models.Model):
         for chk_mg_new in self:
             chk_mg_new.stage_id = stage_fined
             chk_mg_new.meta_mgz_new_id.state = 'available'
-            chk_mg_new.mgz_new_id.remaining += 1
             chk_mg_new.meta_mgz_new_id.chk_mg_new_id = ''
             context = dict(self.env.context)
             context['form_view_initial_mode'] = 'edit'
@@ -99,7 +96,7 @@ class CheckoutMagazineNewspaper(models.Model):
 
     @api.multi
     def lost_document(self):
-        stage_fined = self.env['library.checkout.stage'].search([('state', '=', 'fined')])
+        stage_fined = self.env['library.checkout.stage'].search([('state', '=', 'lost')])
         for chk_mg_new in self:
             chk_mg_new.stage_id = stage_fined
             chk_mg_new.price = chk_mg_new.mgz_new_id.price

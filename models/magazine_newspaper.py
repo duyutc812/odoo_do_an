@@ -23,13 +23,12 @@ class Magazine(models.Model):
                                   default=lambda s: s.env['res.currency'].search([('name', '=', 'VND')], limit=1))
     price = fields.Monetary('Price', 'currency_id')
 
-    quantity = fields.Integer(string='Quantity', compute='get_quantity_remaining', store=True)
-    remaining = fields.Integer(string='Actually', compute='get_quantity_remaining', store=True)
-
+    quantity = fields.Integer(string='Quantity', compute='get_quantity_remaining')
+    remaining = fields.Integer(string='Remaining', compute='get_quantity_remaining')
     state = fields.Selection([
         ('available', 'Available'),
         ('not_available', 'Not Available')
-    ], string='Status', compute='_compute_state', store=True)
+    ], string='Status', compute='get_quantity_remaining')
 
     meta_mgz_new_ids = fields.One2many(
         'meta.magazinenewspapers',
@@ -69,10 +68,21 @@ class Magazine(models.Model):
                 lambda a: a.state == 'available'
             ))
 
-    @api.depends('remaining')
-    def _compute_state(self):
-        for mgz_new in self:
-            mgz_new.state = 'available' if mgz_new.remaining > 0 else 'not_available'
+            mgz_new.state = 'not_available'
+            if mgz_new.remaining >= 1:
+                mgz_new.state = 'available'
+            print(mgz_new.state)
+        print('depends')
+        return True
+
+    # @api.depends('books_available')
+    # def _compute_state(self):
+    #     for mgz_new in self:
+    #         mgz_new.state = 'not_available'
+    #         if mgz_new.books_available >= 1:
+    #             mgz_new.state = 'available'
+    #         print(mgz_new.state)
+    #     return True
 
     @api.multi
     def name_get(self):
@@ -88,7 +98,6 @@ class Magazine(models.Model):
             if len(mg_new.meta_mgz_new_ids):
                 raise ValidationError('You cannot delete !')
             return super(Magazine, self).unlink()
-
 
     _sql_constraints = [
         ('unique_category_magazine_num',

@@ -7,7 +7,8 @@
                   decoration-success="state == 'running'"
                   decoration-muted="state == 'draft'"
                   decoration-info="state == 'done'"
-                  decoration-danger="state == 'fined'">
+                  decoration-danger="state == 'fined'"
+                  decoration-bf="state == 'lost'">
                 <field name="name_seq"/>
                 <field name="card_id"/>
                 <field name="borrow_date"/>
@@ -95,7 +96,7 @@
                             <field name="status_document" />
                         </group>
                     </group>
-                    <group string="Fined" attrs="{'invisible':[('state', '!=', 'fined')]}">
+                    <group string="Fined" attrs="{'invisible':[('state', 'not in', ['lost', 'fined'])]}">
                         <group>
                             <field name="currency_id"/>
                             <field name="price" widget="monetary"/>

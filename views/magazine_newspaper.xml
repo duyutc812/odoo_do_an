@@ -54,6 +54,8 @@
                                 <group col="2" colspan="2">
                                     <field name="quantity"/>
                                     <field name="remaining"/>
+
+
                                     <field name="rack" placeholder="Library rack..."/>
                                     <field name="state"/>
                                 </group>
