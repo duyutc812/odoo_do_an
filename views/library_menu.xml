@@ -11,6 +11,10 @@
     <menuitem id="menu_library_library" name="Library" parent="menu_library_others"
               sequence="0"/>
 
+    <!--Library Menuitem-->
+    <menuitem id="menu_library_school" name="School" parent="menu_library_others"
+              sequence="10"/>
+
     <!--Author-->
     <record id="action_library_author" model="ir.actions.act_window">
         <field name="name">Authors</field>
@@ -43,7 +47,7 @@
         <field name="view_mode">kanban,form</field>
     </record>
 
-    <menuitem id="menu_student_major" name="Major" parent="menu_library_others" action="action_student_major"
+    <menuitem id="menu_student_major" name="Major" parent="menu_library_school" action="action_student_major"
               sequence="20"/>
 
     <!--Teacher Role-->
@@ -54,11 +58,11 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_teacher_role" name="Role Teacher" parent="menu_library_others" action="action_teacher_role"
+    <menuitem id="menu_teacher_role" name="Role Teacher" parent="menu_library_school" action="action_teacher_role"
               sequence="30"/>
 
     <!--Category of Others Menuitem-->
-    <menuitem id="menu_category" name="Categories" parent="menu_library_others" sequence="40"/>
+    <menuitem id="menu_category" name="Categories" parent="menu_library_others" sequence="20"/>
     <!--Book Categories-->
     <record id="action_library_category" model="ir.actions.act_window">
         <field name="name">Categories</field>
@@ -94,6 +98,11 @@
               parent="menu_category"
               action="action_categories_newspaper" sequence="10"/>
 
+    <!--Stage-->
+    <menuitem id="menu_Others_stage" name="Stage"
+              parent="menu_library_others"
+              sequence="30"/>
+
     <!--Card Stage-->
     <record id="action_card_stage" model="ir.actions.act_window">
         <field name="name">Card Stage</field>
@@ -102,7 +111,8 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_card_stage" name="Card Stage" parent="menu_library_others"
+    <menuitem id="menu_card_stage" name="Card Stage"
+              parent="menu_Others_stage"
               action="action_card_stage"
               sequence="50"/>
 
@@ -114,7 +124,8 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_checkout_stage" name="Checkout Stage" parent="menu_library_others"
+    <menuitem id="menu_checkout_stage" name="Checkout Stage"
+              parent="menu_Others_stage"
               action="action_checkout_stage"
               sequence="60"/>
 
@@ -166,7 +177,7 @@
     <!--Setting-->
     <menuitem id="menu_library_setting" name="Settings"
               parent="menu_library_others"
-              sequence="70"/>
+              sequence="40"/>
 
     <!--Language-->
     <record id="action_inherit_res_lang" model="ir.actions.act_window">
@@ -178,7 +189,7 @@
 
     <menuitem id="menu_inherit_res_lang" name="Languages"
               parent="menu_library_setting" action="action_inherit_res_lang"
-              sequence="80"/>
+              sequence="0"/>
 
     <!--Currency-->
     <record id="action_inherit_res_currency" model="ir.actions.act_window">
@@ -190,7 +201,7 @@
 
     <menuitem id="menu_inherit_document_currency" name="Currency"
               parent="menu_library_setting" action="action_inherit_res_currency"
-              sequence="90"/>
+              sequence="10"/>
 
     <!--inherit scheduled acrion-->
     <record id="action_scheduled_action_inherit" model="ir.actions.act_window">
@@ -202,7 +213,7 @@
 
     <menuitem id="menu_scheduled_action" name="Scheduled Action"
               parent="menu_library_setting" action="action_scheduled_action_inherit"
-              sequence="100"/>
+              sequence="20"/>
 
     <!--Library Rack-->
     <record id="action_library_rack" model="ir.actions.act_window">
@@ -214,7 +225,7 @@
 
     <menuitem id="menu_library_rack" name="Library Racks"
               parent="menu_library_library" action="action_library_rack"
-              sequence="100"/>
+              sequence="40"/>
 
      <!--Translator-->
     <record id="action_library_translator" model="ir.actions.act_window">
@@ -226,7 +237,7 @@
 
     <menuitem id="menu_library_translator" name="Translator"
               parent="menu_library_library" action="action_library_translator"
-              sequence="100"/>
+              sequence="20"/>
 
     <!--Book-->
     <record id="action_library_book" model="ir.actions.act_window">
@@ -280,7 +291,7 @@
 
     <menuitem id="menu_library_checkout" name="Checkouts"
               parent="menu_library"
-              sequence="0"/>
+              sequence="10"/>
 
     <!--Checkout magazine newspaper-->
     <record id="action_checkout_mg_new" model="ir.actions.act_window">
@@ -304,7 +315,20 @@
     </record>
 
     <menuitem id="menu_library_duration" name="Library Duration"
-              parent="menu_library_others" action="action_library_duration"
-              sequence="10"/>
+              parent="menu_library_library" action="action_library_duration"
+              sequence="30"/>
+
+    <!--Email Template-->
+    <record id="action_email_template" model="ir.actions.act_window">
+        <field name="name">Email Template</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mail.template</field>
+        <field name="context">{"search_default_model":1}</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_email_template" name="Email Template"
+              parent="menu_library_setting" action="action_email_template"
+              sequence="30"/>
 
 </odoo>

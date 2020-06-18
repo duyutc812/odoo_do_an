@@ -105,6 +105,8 @@ class LibraryTranslator(models.Model):
     country_id = fields.Many2one('res.country', 'Nationality')
     born_date = fields.Date('Date of Birth')
     death_date = fields.Date('Date of Death')
+    book_ids = fields.Many2many('library.book', 'library_book_library_translator_rel',
+                                'library_translator_id', 'library_book_id', string='All book')
     gender = fields.Selection([
         ('male', 'Male'),
         ('female', 'Female'),

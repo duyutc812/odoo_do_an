@@ -10,7 +10,9 @@ class LibraryRack(models.Model):
                        help="it will be show the position of book")
     code = fields.Char('Code')
     active = fields.Boolean('Active', default='True')
-    book_ids = fields.One2many('library.book', 'rack', 'All Book')
+    book_ids = fields.One2many('library.book', 'rack', string='All Book')
+    mg_new_ids = fields.One2many('magazine.newspaper', 'rack', string='Magazine/Newspaper')
+    project_ids = fields.One2many('document.project', 'rack', string='All Project')
 
 
 class Book(models.Model):
@@ -30,7 +32,7 @@ class Book(models.Model):
     language = fields.Many2one('res.lang', 'Language',
                                default=lambda s: s.env['res.lang'].search([('code', '=', 'vi_VN')], limit=1),
                                track_visibility='always')
-    category = fields.Many2one('library.category', 'Category', track_visibility='always')
+    category = fields.Many2one('library.category', 'Category', required=True, track_visibility='always')
     num_page = fields.Integer(string='Num Page', track_visibility='always')
     rack = fields.Many2one('library.rack', string='Library Rack', track_visibility='always')
 

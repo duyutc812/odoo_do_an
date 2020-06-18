@@ -127,9 +127,13 @@
             <field name="name">Trinh thám</field>
         </record>
 
+        <record id="data_category_5" model="library.category">
+            <field name="name">Lập Trình</field>
+        </record>
+
         <!--data Student Major-->
         <record id="data_student_major_1" model="student.major">
-            <field name="name">Công nghệ thông tin</field>
+            <field name="name">Công Nghệ Thông Tin</field>
         </record>
 
         <record id="data_student_major_2" model="student.major">
@@ -154,7 +158,7 @@
         </record>
 
         <record id="data_teacher_role_3" model="teacher.role">
-            <field name="name">Giảng viên Công nghệ thông tin</field>
+            <field name="name">Giảng Viên Công Nghệ Thông Tin</field>
         </record>
 
         <!--data Magazine Categories-->
@@ -255,7 +259,7 @@
             <field name="name">Sherlock Holmes - Tập 1</field>
             <field name="name_seq">BK002</field>
             <field name="image" type="base64" file="do_an_tn\static\book\holmes1.jpg"/>
-            <field name="category" ref="data_category_2"/>
+            <field name="category" ref="data_category_4"/>
             <field name="publisher_id" ref="data_publisher_4"/>
             <field name="author_ids" eval="[(6,0,[ref('data_author_3')])]"/>
             <field name="price">100000</field>
@@ -267,7 +271,7 @@
             <field name="name">Odoo 12 Development Essentials</field>
             <field name="name_seq">BK003</field>
             <field name="image" type="base64" file="do_an_tn\static\book\odoo12.png"/>
-            <field name="category"/>
+            <field name="category" ref="data_category_5"/>
             <field name="publisher_id"/>
             <field name="author_ids"/>
             <field name="price">150000</field>

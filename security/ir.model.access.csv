@@ -7,9 +7,9 @@ access_student_major,Major Student Access,model_student_major,,1,1,1,1
 access_teacher_role,Role Teacher Access,model_teacher_role,,1,1,1,1
 access_library_student,Student Access,model_library_student,,1,1,1,1
 access_library_teacher,Teacher Access,model_library_teacher,,1,1,1,1
-access_library_category,Category Access,model_library_category,,1,1,1,1
-access_categories_magazine,Categories Magazine Access,model_categories_magazine,,1,1,1,1
-access_categories_newspaper,Categories Newspaper Access,model_categories_newspaper,,1,1,1,1
+access_library_category,Category Access,model_library_category,,1,0,0,0
+access_categories_magazine,Categories Magazine Access,model_categories_magazine,,1,0,0,0
+access_categories_newspaper,Categories Newspaper Access,model_categories_newspaper,,1,0,0,0
 access_library_rack,Library Rack Access,model_library_rack,,1,1,1,1
 access_library_book,Book Access,model_library_book,,1,1,1,1
 access_meta_books,Meta Books Access,model_meta_books,,1,1,1,1

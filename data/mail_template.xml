@@ -5,7 +5,7 @@
             <field name="model_id" ref="do_an_tn.model_library_card"/>
             <field name="email_from">duyutc08121998@gmail.com</field>
             <field name="email_to">${object.email}</field>
-            <field name="subject">Library Card (Ref ${object.code})</field>
+            <field name="subject">Library School: Card ID: (Ref ${object.code})</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
@@ -35,7 +35,7 @@
             <field name="model_id" ref="do_an_tn.model_library_card"/>
             <field name="email_from">duyutc08121998@gmail.com</field>
             <field name="email_to">${object.email}</field>
-            <field name="subject">Library Card (Ref ${object.code})</field>
+            <field name="subject">Library Card Notice: (Ref ${object.code})</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">

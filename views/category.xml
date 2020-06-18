@@ -6,9 +6,6 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name" />
-                <!--<field name="book_ids" widget="many2many_tags"/>-->
-                <!--<field name="parent_id" />
-                <field name="child_ids" widget="many2many_tags" />-->
             </tree>
         </field>
     </record>
@@ -33,7 +30,7 @@
                             <field name="child_ids" widget="many2many_tags" />
                         </group>
                     </group>-->
-                    <separator string="All Book of category" colspan="4"/>
+                    <!--<separator string="All Book of category" colspan="4"/>-->
                     <!--<group>
                         <field name="book_ids" widget="many2many_tags"/>
                     </group>-->

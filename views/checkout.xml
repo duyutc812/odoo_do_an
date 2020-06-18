@@ -40,8 +40,8 @@
                             type="object"
                             string="Draft"
                             class="oe_highlight"
-                            /> <!--attrs="{'invisible':[('state', '!=', 'running')]}"
-                            -->
+                            attrs="{'invisible':[('state', '!=', 'running')]}"
+                            /> <!---->
                     <button name="done_state"
                             type="object"
                             string="Return"

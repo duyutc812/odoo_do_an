@@ -137,7 +137,10 @@ class MetaMagazineNewspaper(models.Model):
         return result
 
     def unlink(self):
+        chk_mg_new = self.env['library.checkout.magazine.newspaper']
         for meta_mg in self:
             if meta_mg.chk_mg_new_id:
                 raise ValidationError('You cannot delete record %s!' %(meta_mg.name_seq))
+            if chk_mg_new.search([('meta_mgz_new_id', '=', meta_mg.id)]):
+                raise ValidationError('Related checkout magazine newspaper record . You can not delete!')
             return super(MetaMagazineNewspaper, self).unlink()
