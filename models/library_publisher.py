@@ -31,5 +31,4 @@ class Publisher(models.Model):
     @api.onchange('name')
     def _onchange_name_publisher(self):
         """Method to set upper for name"""
-        for pub in self:
-            pub.name = pub.name.title() if pub.name else ''
+        self.name = self.name.title() if self.name else ''

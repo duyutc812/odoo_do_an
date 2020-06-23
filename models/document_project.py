@@ -29,7 +29,7 @@ class Project(models.Model):
         for doc_pr in self:
             if len(doc_pr.meta_project_ids):
                 raise ValidationError('You cannot delete!')
-            return super(Project, self).unlink()
+        return super(Project, self).unlink()
 
     @api.depends('meta_project_ids')
     def get_quantity_remaining(self):
@@ -56,9 +56,8 @@ class Project(models.Model):
 
     @api.onchange('major')
     def _onchange_student_major(self):
-        for r in self:
-            r.student_id = ''
-            return {'domain': {'student_id': [('major', '=', r.major.id)]}}
+        self.student_id = ''
+        return {'domain': {'student_id': [('major', '=', self.major.id)]}}
 
 
 class MetaProject(models.Model):
@@ -73,13 +72,15 @@ class MetaProject(models.Model):
         ('available', 'Available'),
         ('not_available', 'Not Available')
     ], string='Status', default='available')
+    checkout_id = fields.Many2one('checkout.book.project', readonly=True)
+    is_lost = fields.Boolean('Lost', default=False)
+    is_active = fields.Boolean('Active', default=True)
 
     @api.multi
     def name_get(self):
         res = []
         for rec in self:
-            res.append((rec.id, '%s' %
-                        (rec.name_seq)))
+            res.append((rec.id, '%s' % (rec.name_seq)))
         return res
 
     @api.model
@@ -89,3 +90,12 @@ class MetaProject(models.Model):
                 'New')
         result = super(MetaProject, self).create(vals)
         return result
+
+    def unlink(self):
+        chk = self.env['checkout.project.line']
+        for pro in self:
+            if pro.checkout_id:
+                raise ValidationError('You cannot delete record %s!' % (pro.name_seq))
+            if chk.search([('meta_project_id', '=', pro.id)]):
+                raise ValidationError('Related checkout record . You can not delete!')
+        return super(MetaProject, self).unlink()

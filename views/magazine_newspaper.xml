@@ -32,35 +32,33 @@
                             <field name="type_mgz_new" attrs="{'readonly': [('quantity', '>', 0)]}"/>
                         </h1>
                     </div>
+                    <group col="4" colspan="4" >
+                        <separator string="Details Newspaper" colspan="4"
+                                   attrs="{'invisible': [('type_mgz_new', '=', 'magazine')]}"/>
+                        <separator string="Details Magazine" colspan="4"
+                                   attrs="{'invisible': [('type_mgz_new', '=', 'newspaper')]}"/>
+                        <group col="2" colspan="2">
+                            <field name="category_mgz" placeholder="Category magazine..."
+                                   attrs="{'invisible': [('type_mgz_new', '=', 'newspaper')],
+                                           'required': [('type_mgz_new', '=', 'magazine')]}"/>
+                            <field name="category_new" placeholder="Category newspaper..."
+                                   attrs="{'invisible': [('type_mgz_new', '=', 'magazine')],
+                                           'required': [('type_mgz_new', '=', 'newspaper')]}"/>
+                            <field name="num_mgz_new" placeholder="No."/>
+                            <field name="publish_date" placeholder="Publish date..."/>
+                            <field name="currency_id"/>
+                            <field name="price"/>
+                        </group>
+                        <group col="2" colspan="2">
+                            <field name="quantity"/>
+                            <field name="remaining"/>
+
+
+                            <field name="rack" placeholder="Library rack..."/>
+                            <field name="state"/>
+                        </group>
+                    </group>
                     <notebook>
-                        <page string="Magazine/Newspaper">
-                            <group col="4" colspan="4" >
-                                <separator string="Details Newspaper" colspan="4"
-                                           attrs="{'invisible': [('type_mgz_new', '=', 'magazine')]}"/>
-                                <separator string="Details Magazine" colspan="4"
-                                           attrs="{'invisible': [('type_mgz_new', '=', 'newspaper')]}"/>
-                                <group col="2" colspan="2">
-                                    <field name="category_mgz" placeholder="Category magazine..."
-                                           attrs="{'invisible': [('type_mgz_new', '=', 'newspaper')],
-                                                   'required': [('type_mgz_new', '=', 'magazine')]}"/>
-                                    <field name="category_new" placeholder="Category newspaper..."
-                                           attrs="{'invisible': [('type_mgz_new', '=', 'magazine')],
-                                                   'required': [('type_mgz_new', '=', 'newspaper')]}"/>
-                                    <field name="num_mgz_new" placeholder="No."/>
-                                    <field name="publish_date" placeholder="Publish date..."/>
-                                    <field name="currency_id"/>
-                                    <field name="price"/>
-                                </group>
-                                <group col="2" colspan="2">
-                                    <field name="quantity"/>
-                                    <field name="remaining"/>
-
-
-                                    <field name="rack" placeholder="Library rack..."/>
-                                    <field name="state"/>
-                                </group>
-                            </group>
-                        </page>
                         <page string="Meta Magazine-Newspaper">
                             <field name="meta_mgz_new_ids">
                                 <tree decoration-success="state == 'available'"
@@ -69,9 +67,13 @@
                                     <!-- editable="top" -->
                                     <field name="sequence" widget="handle"/>
                                     <field name="name_seq" readonly="1"/>
-                                    <field name="description" attrs="{'readonly':[('chk_mg_new_id', '!=', False)]}"/>
+                                    <field name="description"
+                                           attrs="{'readonly':['|', ('chk_mg_new_id', '!=', False),
+                                                                    ('is_lost', '=', True)]}"/>
                                     <field name="state" attrs="{'readonly':[('chk_mg_new_id', '!=', False)]}"/>
-                                    <field name="chk_mg_new_id"/>
+                                    <field name="is_lost" readonly="1"/>
+                                    <field name="is_active" readonly="1"/>
+                                    <field name="chk_mg_new_id" readonly="1"/>
                                 </tree>
                             </field>
                         </page>
@@ -116,6 +118,8 @@
                                     <li t-att-class="red_or_black">
                                         <field name="state"/>
                                     </li>
+                                    <li>Quantity: <field name="quantity"/></li>
+                                    <li>Remaining: <field name="remaining"/></li>
                                 </ul>
                             </div>
                         </div>

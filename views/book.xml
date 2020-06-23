@@ -100,59 +100,60 @@
                                    class="o_text_overflow"/>
                         </h1>
                     </div>
-                    <notebook>
-                        <page string="Book Information">
-                            <group col="4" colspan="4">
-                                <group col="2" colspan="2" string="Image Book">
-                                    <field name="image" widget="image" style="width:60px;height:70px"/>
-                                </group>
-                                <group col="2" colspan="2">
-                                    <separator string="Information Book" col="2" colspan="4"/>
-                                    <group colspan="2">
-                                        <field name="category"/>
-                                        <field name="published_date" placeholder="Enter publish date... "/>
-                                        <field name="publisher_id" placeholder="Enter Publisher... "/>
-                                        <field name="author_ids"
-                                               placeholder="Choose Author... "
-                                               widget="many2many_tags"
-                                               required="1"/>
-                                        <field name="translator_ids"
-                                               placeholder="Choose Translator... "
-                                               widget="many2many_tags"/>
+                    <group col="3" colspan="3">
+                        <group col="1" colspan="1" string="Image Book">
+                            <field name="image" widget="image" class="oe_avatar" style="width:60px;height:70px" nolabel="1"/>
+                        </group>
+                        <group col="2" colspan="2">
+                            <separator string="Information Book" col="2" colspan="4"/>
+                            <group colspan="2">
+                                <field name="category"/>
+                                <field name="published_date" placeholder="Enter publish date... "/>
+                                <field name="publisher_id" placeholder="Enter Publisher... "/>
+                                <field name="author_ids"
+                                       placeholder="Choose Author... "
+                                       widget="many2many_tags"
+                                       required="1"/>
+                                <field name="translator_ids"
+                                       placeholder="Choose Translator... "
+                                       widget="many2many_tags"/>
+                            </group>
+                        </group>
+                        <notebook colspan="4">
+                            <page string="Details">
+                                <group>
+                                     <group>
+                                        <field name="book_type"/>
+                                        <field name="num_page" placeholder="Enter Num Page...."/>
+                                        <field name="rack" placeholder="Choose Library Rack..." required="1"/>
+                                        <field name="quantity"/>
+                                        <field name="remaining"/>
+                                    </group>
+                                    <group>
+                                        <field name="currency_id" groups="base.group_no_one" placeholder="Choose Currency..."/>
+                                        <!-- class="oe_edit_only"-->
+                                        <field name="price" placeholder="Enter Price..."/>
+                                        <field name="language" placeholder="Choose Language..."/>
+                                        <field name="active"/>
                                     </group>
                                 </group>
-                            </group>
-                            <group string="Details">
-                                <!--<separator string="Others"/>-->
-                                <group>
-                                    <field name="book_type"/>
-                                    <field name="num_page" placeholder="Enter Num Page...."/>
-                                    <field name="rack" placeholder="Choose Library Rack..." required="1"/>
-                                    <field name="quantity"/>
-                                    <field name="remaining"/>
-                                </group>
-                                <group>
-                                    <field name="currency_id" groups="base.group_no_one" placeholder="Choose Currency..."/>
-                                    <!-- class="oe_edit_only"-->
-                                    <field name="price" placeholder="Enter Price..."/>
-                                    <field name="language" placeholder="Choose Language..."/>
-                                    <field name="active"/>
-                                </group>
-                            </group>
-
-                        </page>
-                        <page string="Meta Books" >
-                            <field name="meta_book_ids">
-                                <tree editable="bottom" decoration-danger="state == 'not_available'"
-                                      decoration-success="state == 'available'">
-                                    <field name="sequence" widget="handle"/>
-                                    <field name="name_seq" readonly="1"/>
-                                    <field name="description"/>
-                                    <field name="state"/>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
+                            </page>
+                             <page string="Meta Books" >
+                                 <field name="meta_book_ids" >
+                                     <tree editable="bottom" decoration-danger="state == 'not_available'"
+                                           decoration-success="state == 'available'">
+                                         <field name="sequence" widget="handle"/>
+                                         <field name="name_seq" readonly="1"/>
+                                         <field name="description" attrs="{'readonly':[('checkout_id', '!=', False)]}"/>
+                                         <field name="state" attrs="{'readonly':[('checkout_id', '!=', False)]}"/>
+                                         <field name="is_lost"/>
+                                         <field name="is_active"/>
+                                         <field name="checkout_id" attrs="{'readonly':[('checkout_id', '!=', False)]}"/>
+                                     </tree>
+                                 </field>
+                            </page>
+                        </notebook>
+                    </group>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>

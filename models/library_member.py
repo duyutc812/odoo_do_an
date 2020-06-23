@@ -56,7 +56,6 @@ class Student(models.Model):
     color = fields.Integer('Color')
     count = fields.Integer('Count', compute='_compute_student_card')
 
-
     def _compute_student_card(self):
         domain = [('student_id', '=', self.id), ('state', '=', 'running')]
         self.count = self.env['library.card'].search_count(domain)
@@ -70,7 +69,6 @@ class Student(models.Model):
 
     @api.depends('born_date')
     def _compute_age(self):
-        """Method to onchange birth_date for student"""
         curr_date = fields.Date.today()
         for student in self:
             born_date = student.born_date
@@ -82,9 +80,7 @@ class Student(models.Model):
 
     @api.onchange('name')
     def _onchange_name_upper(self):
-        """Method to set upper for name"""
-        for student in self:
-            student.name = student.name.title() if student.name else ''
+        self.name = self.name.title() if self.name else ''
 
     _sql_constraints = [
         ('student_id_unique',
@@ -126,19 +122,15 @@ class Teacher(models.Model):
 
     @api.onchange('born_date')
     def _onchange_born_date(self):
-        """Method to set upper for name"""
         curr_date = fields.Date.today()
-        for teacher in self:
-            born_date = teacher.born_date
-            teacher.age = curr_date.year - born_date.year -\
-                          ((curr_date.month, curr_date.day) < (born_date.month, born_date.day))\
-                if born_date else ''
+        born_date = self.born_date
+        self.age = curr_date.year - born_date.year -\
+                  ((curr_date.month, curr_date.day) < (born_date.month, born_date.day))\
+            if born_date else ''
 
     @api.onchange('name')
     def _onchange_name_upper(self):
-        """Method to set upper for name"""
-        for teacher in self:
-            teacher.name = teacher.name.title() if teacher.name else ''
+        self.name = self.name.title() if self.name else ''
 
 
 

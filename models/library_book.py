@@ -110,8 +110,7 @@ class Book(models.Model):
 
     @api.onchange('name')
     def _onchange_book_name(self):
-        for book in self:
-            book.name = book.name.title() if book.name else ''
+        self.name = self.name.title() if self.name else ''
 
     def unlink(self):
         for book in self:

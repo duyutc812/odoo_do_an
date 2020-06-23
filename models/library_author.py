@@ -82,9 +82,8 @@ class Author(models.Model):
     @api.onchange('pen_name', 'name')
     def _onchange_pen_name_and_name_upper(self):
         """Method to set upper for name"""
-        for author in self:
-            author.pen_name = author.pen_name.title() if author.pen_name else ''
-            author.name = author.name.title() if author.name else ''
+        self.pen_name = self.pen_name.title() if self.pen_name else ''
+        self.name = self.name.title() if self.name else ''
 
     def unlink(self):
         for rec in self:
@@ -116,5 +115,4 @@ class LibraryTranslator(models.Model):
     @api.onchange('name')
     def _onchange_pen_name_and_name_upper(self):
         """Method to set upper for name"""
-        for trans in self:
-            trans.name = trans.name.title() if trans.name else ''
+        self.name = self.name.title() if self.name else ''

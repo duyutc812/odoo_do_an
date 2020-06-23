@@ -3,12 +3,13 @@
         <field name="name">view.tree.checkout.mg.new</field>
         <field name="model">library.checkout.magazine.newspaper</field>
         <field name="arch" type="xml">
-            <tree banner_route="/do_an_tn/checkout_mg_new"
+            <tree
                   decoration-success="state == 'running'"
                   decoration-muted="state == 'draft'"
                   decoration-info="state == 'done'"
                   decoration-danger="state == 'fined'"
                   decoration-bf="state == 'lost'">
+                <!--banner_route="/do_an_tn/checkout_mg_new"-->
                 <field name="name_seq"/>
                 <field name="card_id"/>
                 <field name="borrow_date"/>
@@ -51,16 +52,25 @@
                     <button name="lost_document"
                             type="object"
                             string="Lost Document"
+                            confirm="Lost Magazine or Newspaper? Are you sure ?"
                             class="oe_highlight"
-                            attrs="{'invisible':[('state', '!=', 'running')]}"/>
+                            attrs="{'invisible':['|', ('state', '!=', 'fined'), ('is_lost_doc', '=', True)]}"/>
                     <button name="fined_state"
                             type="object"
-                            string="Fined"
+                            string="Penalty"
                             class="oe_highlight"
                             attrs="{'invisible':[('state', '!=', 'running')]}"/>
-                    <button name="%(do_an_tn.action_wizard_modify_descrip)d" string="Modify Description"
-                            type="action"/>
-                    <field name="stage_id" widget="statusbar"/>
+                    <button name="cancel_state"
+                            type="object"
+                            string="Cancel"
+                            class="oe_highlight"
+                            attrs="{'invisible':[('state', 'not in', ['lost', 'fined'])]}"/>
+                    <button name="%(do_an_tn.action_wizard_modify_descrip_mg_new)d" string="Modify Description"
+                            type="action"
+                            attrs="{'invisible': [('state', 'in', ['running', 'lost'])]}"/>
+                    <field name="stage_id"
+                           widget="statusbar"
+                           /><!--options="{'fold_field': 'fold'}"-->
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -94,13 +104,18 @@
                                    <!--attrs="{'readonly':[('state','!=','draft')]}"-->
 
                             <field name="status_document" />
+                            <field name="price_doc" attrs="{'invisible': [('state', 'not in', ['fined', 'lost'])]}"/>
+                            <field name="is_lost_doc"/>
                         </group>
                     </group>
                     <group string="Fined" attrs="{'invisible':[('state', 'not in', ['lost', 'fined'])]}">
                         <group>
                             <field name="currency_id"/>
-                            <field name="price" widget="monetary"/>
-                            <field name="note"/>
+                            <field name="price" widget="monetary"
+                                   attrs="{'required': [('state', '=', 'fined')],
+                                           'readonly': [('is_lost_doc', '=', True)]}"/>
+                            <field name="note"
+                                   attrs="{'readonly': [('is_lost_doc', '=', True)]}"/>
                         </group>
                     </group>
                 </sheet>
@@ -119,6 +134,8 @@
         <field name="arch" type="xml">
             <search>
                 <field name="name_seq" string="Checkout ID"/>
+                <filter string="Draft and Borrowed" name="draft_running_state"
+                        domain="[('state','in', ['draft', 'running'])]"/>
                 <filter string="Draft" name="draft_state" domain="[('state','=', 'draft')]"/>
                 <filter string="Borrowed" name="running_state" domain="[('state','=', 'running')]"/>
                 <filter string="Returned" name="done_state" domain="[('state','=', 'done')]"/>

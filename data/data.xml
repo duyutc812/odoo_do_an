@@ -39,7 +39,7 @@
             <field name="syllabus_on_card">1</field>
         </record>
 
-        <!--data author 1 -> 6-->
+        <!--data author 1 -> 4-->
         <record id="data_author_1" model="library.author">
             <field name="pen_name">Nguyễn Nhật Ánh</field>
             <field name="name">Nguyễn Nhật Ánh</field>

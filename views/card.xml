@@ -1,4 +1,5 @@
 <odoo>
+<!--
     <record id="open_checkout_magazine_newspaper" model="ir.actions.act_window">
         <field name="name">Open checkout Card</field>
         <field name="type">ir.actions.act_window</field>
@@ -7,6 +8,7 @@
         <field name="domain">[('card_id', '=', active_id),
                               ('state', '=', 'running')]</field>
     </record>
+-->
 
     <record id="view_form_card" model="ir.ui.view">
         <field name="name">view.form.card</field>
@@ -47,16 +49,9 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="expense_button_box">
-                        <button name="%(open_checkout_magazine_newspaper)d"
-                                type="action"
-                                class="oe_stat_button"
-                                icon="fa-bars"
-                                attrs="{'invisible': [('state', '!=', 'running')]}">
-                                <field name="chk_mg_new" string="Checkout Magazine/Newspaper" widget="statinfo"/>
-                        </button>
                         <button name="toggle_active"
                                 type="object"
-                                confirm="(Un)archiving a project automatically (un)archives its tasks and issues. Do you want to proceed?"
+                                confirm="Do you want to archives for library card?"
                                 class="oe_stat_button"
                                 icon="fa-archive">
                                 <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
@@ -237,6 +232,12 @@
                                         <th>Limit Book: </th>
                                         <td><field name="book_limit"/>(Book) and
                                             <field name="limit_syllabus"/>(Syllabus)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>State: </th>
+                                        <td>
+                                            <field name="state"/>
                                         </td>
                                     </tr>
                                 </table>

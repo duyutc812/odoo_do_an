@@ -21,3 +21,6 @@ access_library_card_stage,Card Stage Access,model_library_card_stage,,1,1,1,1
 access_library_checkout_stage,Checkout Stage Access,model_library_checkout_stage,,1,1,1,1
 access_library_card,Card Access,model_library_card,,1,1,1,1
 access_checkout_magazine_newspaper,Checkout Magazine/Newspaper Access,model_library_checkout_magazine_newspaper,,1,1,1,1
+access_checkout_book_project,Checkout Book Project Access,model_checkout_book_project,,1,1,1,1
+access_checkout_book_line,Checkout Book Line Access,model_checkout_book_line,,1,1,1,1
+access_checkout_project_line,Checkout Project Line Access,model_checkout_project_line,,1,1,1,1

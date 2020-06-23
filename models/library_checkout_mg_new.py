@@ -1,5 +1,5 @@
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from datetime import datetime, date
 import pytz
 
@@ -33,6 +33,7 @@ class CheckoutMagazineNewspaper(models.Model):
     meta_mgz_new_id = fields.Many2one('meta.magazinenewspapers',
                                       string='Meta Mgz-New', required=True, track_visibility='always')
     status_document = fields.Text('Description', related="meta_mgz_new_id.description", store=True, track_visibility='always')
+    price_doc = fields.Monetary(related='mgz_new_id.price', store=True, string="Price Doc")
     user_id = fields.Many2one('res.users', 'Librarian',
                               default=lambda s: s.env.uid,
                               readonly=True, track_visibility='always')
@@ -41,48 +42,53 @@ class CheckoutMagazineNewspaper(models.Model):
                                   default=lambda s: s.env['res.currency'].search([('name', '=', 'VND')], limit=1))
     price = fields.Monetary('Price', 'currency_id')
     note = fields.Char('Note')
+    is_lost_doc = fields.Boolean('Lost', related='meta_mgz_new_id.is_lost')
 
     @api.multi
     def running_state(self):
+        chk_mg_new = self.env['checkout.book.project']
         stage_running = self.env['library.checkout.stage'].search([('state', '=', 'running')])
-        for chk_mg_new in self:
-            if chk_mg_new.name_seq == 'New':
-                chk_mg_new.name_seq = self.env['ir.sequence'].next_by_code('library.checkout.sequence') or _('New')
-            if chk_mg_new.meta_mgz_new_id.state == 'available':
-                chk_mg_new.stage_id = stage_running
-                chk_mg_new.meta_mgz_new_id.state = 'not_available'
-                chk_mg_new.meta_mgz_new_id.chk_mg_new_id = chk_mg_new.id
-                chk_mg_new.borrow_date = fields.Datetime.now()
+        for chk in self:
+            if chk_mg_new.search([('card_id', '=', chk.card_id.id),
+                                  ('state', '=', 'running')]):
+                raise ValidationError('Checkout BOOK and PROJECT exists. Please return the document to continue!')
+            if chk.name_seq == 'New':
+                chk.name_seq = self.env['ir.sequence'].next_by_code('library.checkout.sequence') or _('New')
+            if chk.meta_mgz_new_id.state == 'available':
+                chk.stage_id = stage_running
+                chk.meta_mgz_new_id.state = 'not_available'
+                chk.meta_mgz_new_id.chk_mg_new_id = chk.id
+                chk.borrow_date = fields.Datetime.now()
             else:
                 raise ValidationError('Magazine/Newspaper have borrowed.')
 
     @api.multi
     def draft_state(self):
         stage_draft = self.env['library.checkout.stage'].search([('state', '=', 'draft')])
-        for chk_mg_new in self:
-            chk_mg_new.stage_id = stage_draft
-            if chk_mg_new.meta_mgz_new_id.state == 'not_available':
-                chk_mg_new.meta_mgz_new_id.state = 'available'
-                chk_mg_new.meta_mgz_new_id.chk_mg_new_id = ''
-            chk_mg_new.price = 0
-            chk_mg_new.note = ''
+        for chk in self:
+            chk.stage_id = stage_draft
+            if chk.meta_mgz_new_id.state == 'not_available':
+                chk.meta_mgz_new_id.state = 'available'
+                chk.meta_mgz_new_id.chk_mg_new_id = ''
+            chk.price = 0
+            chk.note = ''
+            chk.borrow_date = ''
 
     @api.multi
     def done_state(self):
         stage_done = self.env['library.checkout.stage'].search([('state', '=', 'done')])
-        for chk_mg_new in self:
-            chk_mg_new.stage_id = stage_done
-            chk_mg_new.meta_mgz_new_id.state = 'available'
-            chk_mg_new.meta_mgz_new_id.chk_mg_new_id = ''
-            chk_mg_new.borrow_date = ''
+        for chk in self:
+            chk.stage_id = stage_done
+            chk.meta_mgz_new_id.state = 'available'
+            chk.meta_mgz_new_id.chk_mg_new_id = ''
 
     @api.multi
     def fined_state(self):
         stage_fined = self.env['library.checkout.stage'].search([('state', '=', 'fined')])
-        for chk_mg_new in self:
-            chk_mg_new.stage_id = stage_fined
-            chk_mg_new.meta_mgz_new_id.state = 'available'
-            chk_mg_new.meta_mgz_new_id.chk_mg_new_id = ''
+        for chk in self:
+            chk.stage_id = stage_fined
+            chk.meta_mgz_new_id.state = 'available'
+            chk.meta_mgz_new_id.chk_mg_new_id = ''
             context = dict(self.env.context)
             context['form_view_initial_mode'] = 'edit'
             return {
@@ -90,29 +96,43 @@ class CheckoutMagazineNewspaper(models.Model):
                 'view_type': 'form',
                 'view_mode': 'form',
                 'res_model': 'library.checkout.magazine.newspaper',
-                'res_id': chk_mg_new.id,
+                'res_id': chk.id,
                 'context': context
             }
 
     @api.multi
     def lost_document(self):
-        stage_fined = self.env['library.checkout.stage'].search([('state', '=', 'lost')])
-        for chk_mg_new in self:
-            chk_mg_new.stage_id = stage_fined
-            chk_mg_new.price = chk_mg_new.mgz_new_id.price
-            chk_mg_new.note = 'Lost Document'
-            chk_mg_new.mgz_new_id.message_post('Lost document %s on Checkout ID: %s, member : %s'
-                                               % (chk_mg_new.meta_mgz_new_id.name_seq, chk_mg_new.name_seq, chk_mg_new.gt_name))
+        for chk in self:
+            chk.price = chk.mgz_new_id.price
+            chk.meta_mgz_new_id.is_lost = True
+            chk.meta_mgz_new_id.chk_mg_new_id = chk.id
+            chk.meta_mgz_new_id.state = 'not_available'
+            chk.note = 'lost magazine or newspaper'
+            chk.mgz_new_id.message_post('Lost document %s on Checkout ID: %s, member : %s'
+                                               % (chk.meta_mgz_new_id.name_seq, chk.name_seq, chk.gt_name))
+
+    @api.multi
+    def cancel_state(self):
+        stage_cancel = self.env['library.checkout.stage'].search([('state', '=', 'cancel')])
+        for chk in self:
+            chk.stage_id = stage_cancel
+            chk.meta_mgz_new_id.state = 'available'
+            chk.meta_mgz_new_id.chk_mg_new_id = ''
+            chk.meta_mgz_new_id.is_lost = False
+            chk.price = ''
+            chk.note = ''
 
     @api.constrains('card_id', 'mgz_new_id')
     def _constrains_card_id_book(self):
-        domain = [('card_id', '=', self.card_id.id),
-                  ('state', 'not in', ('done', 'fined')),
-                  ('id', 'not in', self.ids)]
-        another_chk = self.search(domain)
-        print(another_chk)
-        if another_chk:
-            raise ValidationError('You cannot borrow Magazine or Newspaper to same card more than once!')
+        chk_mg_new = self.env['checkout.book.project']
+        for chk in self:
+            if chk_mg_new.search([('card_id', '=', chk.card_id.id),
+                                  ('state', '=', 'running')]):
+                raise ValidationError('Checkout BOOK and PROJECT exists. Please return the document to continue!')
+            if self.search([('card_id', '=', chk.card_id.id),
+                            ('state', 'not in', ('done', 'fined', 'cancel')),
+                            ('id', 'not in', chk.ids)]):
+                raise ValidationError('You cannot borrow Magazine or Newspaper to same card more than once!')
 
     @api.multi
     def name_get(self):
@@ -123,11 +143,10 @@ class CheckoutMagazineNewspaper(models.Model):
 
     @api.onchange('mgz_new_id')
     def _onchange_mgz_new_id(self):
-        for chk in self:
-            chk.meta_mgz_new_id = ''
-            # print(chk.mgz_new_id)
-            return {'domain': {'meta_mgz_new_id': [('state', '=', 'available'),
-                                                   ('mgz_new_id', '=', chk.mgz_new_id.id)]}}
+        self.meta_mgz_new_id = ''
+        # print(chk.mgz_new_id)
+        return {'domain': {'meta_mgz_new_id': [('state', '=', 'available'),
+                                               ('mgz_new_id', '=', self.mgz_new_id.id)]}}
 
     def unlink(self):
         for chk in self:
@@ -135,8 +154,4 @@ class CheckoutMagazineNewspaper(models.Model):
                 raise ValidationError('You can not delete checkout when state is borrowed, fined')
 
         return super(CheckoutMagazineNewspaper, self).unlink()
-
-
-
-
 

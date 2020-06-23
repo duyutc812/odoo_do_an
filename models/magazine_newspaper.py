@@ -49,16 +49,14 @@ class Magazine(models.Model):
 
     @api.onchange('type_mgz_new')
     def _onchange_type_mgz_new(self):
-        for mg_new in self:
-            if mg_new.type_mgz_new == 'magazine':
-                mg_new.category_new = ''
-
-            else:
-                mg_new.category_mgz = ''
-            mg_new.num_mgz_new = ''
-            mg_new.publish_date = ''
-            mg_new.rack = ''
-            mg_new.price = ''
+        if self.type_mgz_new == 'magazine':
+            self.category_new = ''
+        else:
+            self.category_mgz = ''
+        self.num_mgz_new = ''
+        self.publish_date = ''
+        self.rack = ''
+        self.price = ''
 
     @api.depends('meta_mgz_new_ids')
     def get_quantity_remaining(self):
@@ -125,6 +123,14 @@ class MetaMagazineNewspaper(models.Model):
         ('not_available', 'Not Available')
     ], string='Status', default='available')
     chk_mg_new_id = fields.Many2one('library.checkout.magazine.newspaper', string='Checkout ID', readonly=True)
+    is_lost = fields.Boolean('Lost', default=False)
+    is_active = fields.Boolean('Active', default=True)
+
+    @api.onchange('is_lost')
+    def onchange_is_lost(self):
+        for mg_new in self:
+            if mg_new.is_lost:
+                mg_new.state = 'not_available'
 
     @api.multi
     def name_get(self):
@@ -152,4 +158,4 @@ class MetaMagazineNewspaper(models.Model):
                 raise ValidationError('You cannot delete record %s!' %(meta_mg.name_seq))
             if chk_mg_new.search([('meta_mgz_new_id', '=', meta_mg.id)]):
                 raise ValidationError('Related checkout magazine newspaper record . You can not delete!')
-            return super(MetaMagazineNewspaper, self).unlink()
+        return super(MetaMagazineNewspaper, self).unlink()

@@ -8,27 +8,25 @@
                     <div class="oe_title">
                         <separator string="Project"/>
                     </div>
+                    <group>
+                        <group string="Project Details">
+                            <field name="name" placeholder="Name project..."/>
+                            <field name="publish_date" placeholder="Publish date..."/>
+                            <field name="teacher_name" placeholder="Tutorial teacher..."/>
+                            <field name="rack" placeholder="Library rack..."/>
+                            <field name="quantity" readonly="1"/>
+                            <field name="remaining" readonly="1"/>
+                            <field name="state"/>
+                        </group>
+                        <group string="Student Details">
+                            <field name="major" placeholder="Major..."/>
+                            <field name="student_id" placeholder="Student ID..."/>
+                            <field name="student_name"/>
+                            <field name="course"/>
+                        </group>
+                    </group>
                     <notebook>
-                        <page string="Project">
-                            <group>
-                                <group string="Project Details">
-                                    <field name="name" placeholder="Name project..."/>
-                                    <field name="publish_date" placeholder="Publish date..."/>
-                                    <field name="teacher_name" placeholder="Tutorial teacher..."/>
-                                    <field name="rack" placeholder="Library rack..."/>
-                                    <field name="quantity" readonly="1"/>
-                                    <field name="remaining" readonly="1"/>
-                                    <field name="state"/>
-                                </group>
-                                <group string="Student Details">
-                                    <field name="major" placeholder="Major..."/>
-                                    <field name="student_id" placeholder="Student ID..."/>
-                                    <field name="student_name"/>
-                                    <field name="course"/>
-                                </group>
-                            </group>
-                        </page>
-                        <page string="Meta Project">
+                         <page string="Meta Project">
                             <field name="meta_project_ids">
                                 <tree decoration-success="state == 'available'"
                                       decoration-danger="state == 'not_available'"
@@ -36,8 +34,11 @@
                                     <!-- editable="top" -->
                                     <field name="sequence" widget="handle"/>
                                     <field name="name_seq" readonly="1"/>
-                                    <field name="description"/>
-                                    <field name="state"/>
+                                    <field name="description" attrs="{'readonly':[('checkout_id', '!=', False)]}"/>
+                                    <field name="state" attrs="{'readonly':[('checkout_id', '!=', False)]}"/>
+                                    <field name="is_lost"/>
+                                    <field name="is_active"/>
+                                    <field name="checkout_id" attrs="{'readonly':[('checkout_id', '!=', False)]}"/>
                                 </tree>
                             </field>
                         </page>

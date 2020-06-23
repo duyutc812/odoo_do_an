@@ -1,5 +1,5 @@
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError, Warning
+from odoo.exceptions import ValidationError, Warning, UserError
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta as rd
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
@@ -57,8 +57,8 @@ class Card(models.Model):
     code = fields.Char(string='Code', required=True, copy=False, readonly=True, index=True,
                        default=lambda self: _('New'))
     chk_mg_new = fields.Integer(string="Borrowed Book",
-                              compute='_compute_chk_mg_new',
-                              readonly=True)
+                                compute='_compute_chk_mg_new',
+                                readonly=True)
     color = fields.Integer('Color')
 
     is_penalty = fields.Boolean('Penalty', default=False)
@@ -72,11 +72,10 @@ class Card(models.Model):
 
     @api.onchange('is_penalty')
     def _onchange_is_penalty(self):
-        for lib_card in self:
-            if not lib_card.is_penalty:
-                lib_card.duration_penalty = ''
-                lib_card.end_date_penalty = ''
-                lib_card.note = ''
+        if not self.is_penalty:
+            self.duration_penalty = ''
+            self.end_date_penalty = ''
+            self.note = ''
 
     @api.depends('duration_penalty')
     def _compute_end_date_penalty(self):
@@ -117,7 +116,6 @@ class Card(models.Model):
         for lib_card in self:
             lib_card.is_penalty = False
             lib_card.duration_penalty = ''
-            lib_card.end_date_penalty = ''
             lib_card.note = ''
             lib_card.message_post(body='Canceled Penalty Card')
             
@@ -128,14 +126,13 @@ class Card(models.Model):
 
     @api.onchange('user')
     def _onchange_user(self):
-        for lib_card in self:
-            if lib_card.user == 'student':
-                lib_card.teacher_id = ''
-            elif lib_card.user == 'teacher':
-                lib_card.student_id = ''
-            lib_card.email = ''
-            lib_card.duration_id = ''
-            return {'domain': {'duration_id': [('user_type', '=', lib_card.user)]}}
+        if self.user == 'student':
+            self.teacher_id = ''
+        elif self.user == 'teacher':
+            self.student_id = ''
+        self.email = ''
+        self.duration_id = ''
+        return {'domain': {'duration_id': [('user_type', '=', self.user)]}}
 
     @api.multi
     def name_get(self):
@@ -233,6 +230,7 @@ class Card(models.Model):
             lib_card.is_penalty = False
             lib_card.duration_penalty = ''
             lib_card.note = ''
+            lib_card.code = 'New'
 
     @api.multi
     def unlink(self):
@@ -323,9 +321,11 @@ class Card(models.Model):
         template = self.env['mail.template'].browse(template_id)
         # trả về id của thằng template
         for lib_card in self:
+            if not lib_card.email:
+                raise UserError(_("Cannot send email: user %s has no email address.") % lib_card.gt_name)
             # print('template: ', template, '\n', 'template_id: ', template_id)
             # self.env['email.template'].browse(template_id).send_mail(self.id, force_send=True)
-            template.send_mail(lib_card.id, force_send=True)
+            template.send_mail(lib_card.id, force_send=True, raise_exception=True)
             print('Send Email to user ID: ', lib_card.id)
             return self.message_post(body='Send Email for Card', subject='Send Email')
 
