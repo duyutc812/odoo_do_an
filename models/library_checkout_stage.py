@@ -15,9 +15,11 @@ class CheckoutStage(models.Model):
          ('running', 'Borrowed'),
          ('done', 'Returned'),
          ('fined', 'Fined'),
+         ('lost', 'Lost'),
          ('cancel', 'Canceled')],
         default='draft',
     )
+
 
 # class CheckoutInLIb(models.Model):
 #     _name = 'checkout.stage.in.lib'

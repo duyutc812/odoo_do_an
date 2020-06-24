@@ -214,6 +214,8 @@
                                     <li t-att-class="red_or_black">
                                        <field name="state"/>
                                     </li>
+                                    <li>Quantity: <field name="quantity"/></li>
+                                    <li>Remaining: <field name="remaining"/></li>
                                 </ul>
                             </div>
                         </div>

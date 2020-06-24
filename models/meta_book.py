@@ -14,7 +14,7 @@ class MetaBook(models.Model):
         ('available', 'Available'),
         ('not_available', 'Not Available')
     ], string='Status', default='available')
-    checkout_id = fields.Many2one('checkout.book.project', readonly=True)
+    checkout_id = fields.Many2one('library.checkout.at.lib', readonly=True)
     is_lost = fields.Boolean('Lost', default=False)
     is_active = fields.Boolean('Active', default=True)
 
@@ -39,10 +39,7 @@ class MetaBook(models.Model):
         return result
 
     def unlink(self):
-        chk_bp = self.env['checkout.book.line']
         for book in self:
             if book.checkout_id:
                 raise ValidationError('You cannot delete record %s!' % (book.name_seq))
-            if chk_bp.search([('meta_book_id', '=', book.id)]):
-                raise ValidationError('Related checkout record . You can not delete!')
         return super(MetaBook, self).unlink()

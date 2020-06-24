@@ -122,7 +122,7 @@ class MetaMagazineNewspaper(models.Model):
         ('available', 'Available'),
         ('not_available', 'Not Available')
     ], string='Status', default='available')
-    chk_mg_new_id = fields.Many2one('library.checkout.magazine.newspaper', string='Checkout ID', readonly=True)
+    checkout_id = fields.Many2one('library.checkout.at.lib', string='Checkout ID', readonly=True)
     is_lost = fields.Boolean('Lost', default=False)
     is_active = fields.Boolean('Active', default=True)
 
@@ -152,10 +152,7 @@ class MetaMagazineNewspaper(models.Model):
         return result
 
     def unlink(self):
-        chk_mg_new = self.env['library.checkout.magazine.newspaper']
         for meta_mg in self:
             if meta_mg.chk_mg_new_id:
                 raise ValidationError('You cannot delete record %s!' %(meta_mg.name_seq))
-            if chk_mg_new.search([('meta_mgz_new_id', '=', meta_mg.id)]):
-                raise ValidationError('Related checkout magazine newspaper record . You can not delete!')
         return super(MetaMagazineNewspaper, self).unlink()

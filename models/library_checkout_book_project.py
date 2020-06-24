@@ -81,8 +81,7 @@ class CheckoutBookProject(models.Model):
             if chk_mg_new.search([('card_id', '=', chk.card_id.id),
                                   ('state', '=', 'running')]):
                 raise ValidationError('Checkout magazine newspaper exists. Please return the document to continue!')
-            if chk.name_seq == 'New':
-                chk.name_seq = self.env['ir.sequence'].next_by_code('library.checkout.sequence') or _('New')
+            chk.name_seq = self.env['ir.sequence'].next_by_code('library.checkout.sequence') or _('New')
             for book in chk.checkout_book_line_ids:
                 print(book)
                 print(book.meta_book_id.state)

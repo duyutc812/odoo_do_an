@@ -328,6 +328,7 @@
             <field name="name">Quản Lý Thư Viện Sử Dụng Odoo FrameWork</field>
             <field name="major" ref="data_student_major_1"/>
             <field name="rack" ref="data_rack_2"/>
+            <field name="price">50000</field>
             <field name="student_id" ref="data_student_1"/>
         </record>
 
@@ -335,6 +336,7 @@
             <field name="name">Đồ Án Chuyên Ngành Kế Toán</field>
             <field name="major" ref="data_student_major_2"/>
             <field name="rack" ref="data_rack_2"/>
+            <field name="price">50000</field>
             <field name="student_id" ref="data_student_2"/>
         </record>
 

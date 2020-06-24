@@ -319,46 +319,29 @@
               parent="menu_library_setting" action="action_email_template"
               sequence="30"/>
 
-      <!-- This Menu Item must have a parent and an action -->
-    <menuitem id="menu_checkout_in_lib" name="At library" parent="menu_library_checkout" sequence="0"/>
-
-
-    <!--Checkout magazine newspaper-->
-    <record id="action_checkout_mg_new" model="ir.actions.act_window">
-        <field name="name">Checkout Magazine/Newspaper</field>
+    <!--Checkout At Lib-->
+    <record id="action_library_checkout_at_lib" model="ir.actions.act_window">
+        <field name="name">Checkout At Library</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.checkout.magazine.newspaper</field>
-        <field name="context">{"search_default_draft_running_state":1}</field>
+        <field name="res_model">library.checkout.at.lib</field>
+        <field name="context">{'search_default_state':0}</field>
         <field name="view_mode">kanban,tree,form</field>
     </record>
 
-    <menuitem id="menu_checkout_magazine_newspaper" name="Checkout: Magazine and Newspaper"
-              parent="menu_checkout_in_lib" action="action_checkout_mg_new"
+    <menuitem id="menu_library_checkout_at_lib" name="Checkout At Library"
+              parent="menu_library_checkout" action="action_library_checkout_at_lib"
               sequence="1"/>
 
-
     <!--Checkout Book Project-->
-    <record id="action_checkout_book_project" model="ir.actions.act_window">
-        <field name="name">Checkout Book Project</field>
+    <record id="action_checkout_back_home" model="ir.actions.act_window">
+        <field name="name">Checkout Back Home</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">checkout.book.project</field>
+        <field name="res_model">library.checkout.back.home</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_checkout_book_project" name="Checkout: Book and Project"
-              parent="menu_checkout_in_lib" action="action_checkout_book_project"
+    <menuitem id="menu_checkout_back_home" name="Checkout Back Home"
+              parent="menu_library_checkout" action="action_checkout_back_home"
               sequence="10"/>
 
-    <!--Checkout Book Project
-    <record id="action_document_issue" model="ir.actions.act_window">
-        <field name="name">Document Issue</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">document.issue</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-
-    <menuitem id="menu_document_issue" name="Document Issue"
-              parent="menu_checkout_in_lib" action="action_document_issue"
-              sequence="10"/>
--->
 </odoo>

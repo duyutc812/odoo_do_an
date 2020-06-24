@@ -20,7 +20,9 @@ class Project(models.Model):
         ('not_available', 'Not Available')
     ], string='Status', compute='get_quantity_remaining')
     # , compute='_compute_state', store=True
-
+    currency_id = fields.Many2one('res.currency', 'Currency',
+                                  default=lambda s: s.env['res.currency'].search([('name', '=', 'VND')], limit=1))
+    price = fields.Monetary('Price', 'currency_id', track_visibility='always')
     quantity = fields.Integer(string='Quantity', compute='get_quantity_remaining')
     remaining = fields.Integer(string='Remaining', compute='get_quantity_remaining')
     meta_project_ids = fields.One2many('meta.projects', 'project_id')
@@ -72,7 +74,7 @@ class MetaProject(models.Model):
         ('available', 'Available'),
         ('not_available', 'Not Available')
     ], string='Status', default='available')
-    checkout_id = fields.Many2one('checkout.book.project', readonly=True)
+    checkout_id = fields.Many2one('library.checkout.at.lib', readonly=True)
     is_lost = fields.Boolean('Lost', default=False)
     is_active = fields.Boolean('Active', default=True)
 
@@ -92,10 +94,7 @@ class MetaProject(models.Model):
         return result
 
     def unlink(self):
-        chk = self.env['checkout.project.line']
         for pro in self:
             if pro.checkout_id:
                 raise ValidationError('You cannot delete record %s!' % (pro.name_seq))
-            if chk.search([('meta_project_id', '=', pro.id)]):
-                raise ValidationError('Related checkout record . You can not delete!')
         return super(MetaProject, self).unlink()

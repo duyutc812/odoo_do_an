@@ -69,6 +69,7 @@ class Card(models.Model):
     end_date_penalty = fields.Date('End Date Penalty',
                                    compute='_compute_end_date_penalty', store=True)
     note = fields.Char('Note')
+    count = fields.Integer(compute='_compute_count')
 
     @api.onchange('is_penalty')
     def _onchange_is_penalty(self):
@@ -118,7 +119,7 @@ class Card(models.Model):
             lib_card.duration_penalty = ''
             lib_card.note = ''
             lib_card.message_post(body='Canceled Penalty Card')
-            
+
     @api.depends('student_id', 'teacher_id')
     def _compute_email(self):
         for lib_card in self:
@@ -147,24 +148,6 @@ class Card(models.Model):
         for lib_card in self:
             if lib_card.duration_id and lib_card.stage_id != stage_draft:
                 lib_card.price = lib_card.duration_id.price
-
-    # @api.depends('user', 'duration_id', 'state')
-    # def _compute_book_limit(self):
-    #     for lib_card in self:
-    #         if lib_card.user == 'student':
-    #             if lib_card.duration_id.duration == '3':
-    #                 lib_card.book_limit = 1
-    #                 lib_card.book_limit_syllabus = 1
-    #                 lib_card.price = 20000 if lib_card.state != 'draft' else 0
-    #             else:
-    #                 lib_card.book_limit = 2
-    #                 lib_card.price = 30000 if lib_card.state != 'draft' else 0
-    #             lib_card.book_limit_syllabus = 1
-    #         elif lib_card.user == 'teacher':
-    #             lib_card.duration = '6'
-    #             lib_card.book_limit = 3
-    #             lib_card.book_limit_syllabus = 2
-    #             lib_card.price = 0
 
     """get name for user : student or teacher"""
     @api.depends('student_id')
@@ -207,8 +190,7 @@ class Card(models.Model):
     def running_state(self):
         stage_running = self.env['library.card.stage'].search([('state', '=', 'running')])
         for lib_card in self:
-            if lib_card.code == 'New':
-                lib_card.code = self.env['ir.sequence'].next_by_code('library.card.sequence') or _('New')
+            lib_card.code = self.env['ir.sequence'].next_by_code('library.card.sequence') or _('New')
             lib_card.stage_id = stage_running
             # print(self.stage_id)
             lib_card.start_date = fields.Date.today()
@@ -250,12 +232,11 @@ class Card(models.Model):
             #         raise ValidationError('Can not delete! related record')
         return super(Card, self).unlink()
 
-    def _compute_chk_mg_new(self):
-        chk_mg_new = self.env['library.checkout.magazine.newspaper'].search_count([
+    def _compute_count(self):
+        chk_at_lib = self.env['library.checkout.at.lib'].search_count([
             ('card_id', '=', self.id),
-            ('state', '=', 'running'),
         ])
-        self.chk_card = chk_mg_new
+        self.count = chk_at_lib
 
     @api.multi
     def library_check_card_expire(self):

@@ -1,14 +1,11 @@
 <odoo>
-<!--
-    <record id="open_checkout_magazine_newspaper" model="ir.actions.act_window">
-        <field name="name">Open checkout Card</field>
+    <record id="open_checkout_at_lib" model="ir.actions.act_window">
+        <field name="name">Open checkout at library</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.checkout.magazine.newspaper</field>
+        <field name="res_model">library.checkout.at.lib</field>
         <field name="view_mode">tree,form</field>
-        <field name="domain">[('card_id', '=', active_id),
-                              ('state', '=', 'running')]</field>
+        <field name="domain">[('card_id', '=', active_id)]</field>
     </record>
--->
 
     <record id="view_form_card" model="ir.ui.view">
         <field name="name">view.form.card</field>
@@ -49,12 +46,12 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="expense_button_box">
-                        <button name="toggle_active"
-                                type="object"
-                                confirm="Do you want to archives for library card?"
+                        <button name="%(open_checkout_at_lib)d"
+                                type="action"
                                 class="oe_stat_button"
-                                icon="fa-archive">
-                                <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                                icon="fa-eject"
+                                help="All checkout at library">
+                                <field name="count" string="All checkout at lib" widget="statinfo"/>
                         </button>
                     </div>
                     <div class="oe_title">

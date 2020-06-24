@@ -1,21 +1,25 @@
 <odoo>
     <data>
-        <act_window id="action_wizard_modify_descrip_mg_new"
+        <act_window id="action_wizard_modify_descrip_doc"
                     name="Modify Description"
-                    res_model="modify.description.mg.new"
+                    res_model="modify.description.doc"
                     view_type="form"
                     view_mode="form"
                     target="new" multi="False"
         />
 
-        <record  id="wizard_descrip_form_mg_new" model="ir.ui.view">
-            <field name="name">wizard.description.form.mg.new</field>
-            <field name="model">modify.description.mg.new</field>
+        <record  id="wizard_descrip_doc" model="ir.ui.view">
+            <field name="name">wizard.description.doc</field>
+            <field name="model">modify.description.doc</field>
             <field name="arch" type="xml">
                 <form>
                     <group>
-                        <field name="mgz_new_id"/>
-                        <field name="meta_mgz_new_id"/>
+                        <field name="book_id" attrs="{'invisible': [('book_id', '=', False)]}"/>
+                        <field name="meta_book_id" attrs="{'invisible': [('meta_book_id', '=', False)]}"/>
+                        <field name="mgz_new_id" attrs="{'invisible': [('mgz_new_id', '=', False)]}"/>
+                        <field name="meta_mgz_new_id" attrs="{'invisible': [('meta_mgz_new_id', '=', False)]}"/>
+                        <field name="project_id" attrs="{'invisible': [('project_id', '=', False)]}"/>
+                        <field name="meta_project_id" attrs="{'invisible': [('meta_project_id', '=', False)]}"/>
                         <field name="status_document"/>
                     </group>
                     <footer>
@@ -32,68 +36,5 @@
             </field>
         </record>
 
-        <act_window id="action_wizard_modify_descrip_book"
-                    name="Modify Description"
-                    res_model="modify.description.book"
-                    view_type="form"
-                    view_mode="form"
-                    target="new" multi="False"
-        />
-
-        <record  id="wizard_descrip_form_book" model="ir.ui.view">
-            <field name="name">wizard.description.form.book</field>
-            <field name="model">modify.description.book</field>
-            <field name="arch" type="xml">
-                <form>
-                    <group>
-                        <field name="book_id"/>
-                        <field name="meta_book_ids"/>
-                        <field name="status_document"/>
-                    </group>
-                    <footer>
-                        <button type="object"
-                                name="button_update_description"
-                                string="Update"
-                                class="btn-primary"
-                                />
-                        <button special="cancel"
-                        string="Cancel"
-                        class="btn-secondary" />
-                    </footer>
-                </form>
-            </field>
-        </record>
-
-         <act_window id="action_wizard_modify_descrip_project"
-                    name="Modify Description"
-                    res_model="modify.description.project"
-                    view_type="form"
-                    view_mode="form"
-                    target="new" multi="False"
-        />
-
-        <record  id="wizard_descrip_form_project" model="ir.ui.view">
-            <field name="name">wizard.description.form.project</field>
-            <field name="model">modify.description.project</field>
-            <field name="arch" type="xml">
-                <form>
-                    <group>
-                        <field name="project_id"/>
-                        <field name="meta_project_ids"/>
-                        <field name="status_document"/>
-                    </group>
-                    <footer>
-                        <button type="object"
-                                name="button_update_description"
-                                string="Update"
-                                class="btn-primary"
-                                />
-                        <button special="cancel"
-                        string="Cancel"
-                        class="btn-secondary" />
-                    </footer>
-                </form>
-            </field>
-        </record>
     </data>
 </odoo>

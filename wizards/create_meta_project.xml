@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+        <act_window id="action_wizard_create_meta_project"
+                    name="Create Meta Project"
+                    res_model="create.meta.project"
+                    view_type="form"
+                    view_mode="form"
+                    target="new" multi="False"
+        />
+
+        <record  id="wizard_create_meta_project" model="ir.ui.view">
+            <field name="name">wizard.create.meta.project</field>
+            <field name="model">create.meta.project</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="project_id" readonly="1"/>
+                        <field name="description"/>
+                        <field name="state" readonly="1"/>
+                        <field name="quantity"/>
+                    </group>
+                    <footer>
+                        <button type="object"
+                                name="button_create"
+                                string="Create"
+                                class="btn-primary"
+                                />
+                        <button special="cancel"
+                        string="Cancel"
+                        class="btn-secondary" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -4,6 +4,11 @@
         <field name="model">document.project</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="%(do_an_tn.action_wizard_create_meta_project)d"
+                            type="action"
+                            string="Create Meta Project"/>
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <separator string="Project"/>
@@ -14,15 +19,25 @@
                             <field name="publish_date" placeholder="Publish date..."/>
                             <field name="teacher_name" placeholder="Tutorial teacher..."/>
                             <field name="rack" placeholder="Library rack..."/>
-                            <field name="quantity" readonly="1"/>
-                            <field name="remaining" readonly="1"/>
-                            <field name="state"/>
+
                         </group>
                         <group string="Student Details">
                             <field name="major" placeholder="Major..."/>
                             <field name="student_id" placeholder="Student ID..."/>
                             <field name="student_name"/>
                             <field name="course"/>
+                        </group>
+                    </group>
+                    <group>
+                        <separator string="Others" colspan="4"/>
+                        <group>
+                            <field name="quantity" readonly="1"/>
+                            <field name="remaining" readonly="1"/>
+                            <field name="state"/>
+                        </group>
+                        <group>
+                            <field name="currency_id"/>
+                            <field name="price"/>
                         </group>
                     </group>
                     <notebook>
@@ -61,7 +76,7 @@
             <field name="id"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div t-attf-class="oe_kanban_global_click" style="width:250px;height:90px">
+                        <div t-attf-class="oe_kanban_global_click">
                             <div class="oe_kanban_details">
                                 <strong>
                                     <a type="open">
@@ -73,12 +88,14 @@
                                             <strong>Name: </strong><field name="student_name"/>
                                         </li>
                                         <li><strong>Major: </strong><field name="major" /></li>
-                                        <t t-set="red_or_black"
-                                            t-value="record.state.raw_value == 'not_available' ?
-                                            'oe_kanban_text_red': '' "/>
-                                            <li t-att-class="red_or_black">
-                                            <field name="state"/>
-                                    </li>
+                                            <t t-set="red_or_black"
+                                                t-value="record.state.raw_value == 'not_available' ?
+                                                'oe_kanban_text_red': '' "/>
+                                                <li t-att-class="red_or_black">
+                                                <field name="state"/>
+                                        </li>
+                                        <li>Quantity: <field name="quantity"/></li>
+                                        <li>Remaining: <field name="remaining"/></li>
                                     </ul>
                             </div>
                         </div>
