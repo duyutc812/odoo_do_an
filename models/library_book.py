@@ -35,7 +35,7 @@ class Book(models.Model):
     category = fields.Many2one('library.category', 'Category', required=True, track_visibility='always')
     num_page = fields.Integer(string='Num Page', track_visibility='always')
     rack = fields.Many2one('library.rack', string='Library Rack', track_visibility='always')
-
+    book_term = fields.Integer('Book Term (Days)')
     """Date fields"""
     published_date = fields.Date('Published Date', track_visibility='always')
 
@@ -68,13 +68,15 @@ class Book(models.Model):
         'book_id',
     )
 
-    @api.constrains('price', 'num_page')
+    @api.constrains('price', 'num_page', 'book_term')
     def _constrains_price(self):
         for book in self:
             if book.price <= 0:
                 raise ValidationError('The price must be greater than 0!')
             if book.num_page <= 0:
                 raise ValidationError('The num page must be greater than 0!')
+            if book.book_term <= 0:
+                raise ValidationError('The book term must be greater than 0!')
 
     @api.depends('meta_book_ids')
     def _compute_quantity_remaining(self):
@@ -88,11 +90,6 @@ class Book(models.Model):
             book.state = 'not_available'
             if book.remaining > 0:
                 book.state = 'available'
-
-    @api.depends('remaining')
-    def _compute_state_book(self):
-        for book in self:
-            book.state = 'available' if book.remaining > 0 else 'not_available'
 
     @api.multi
     def name_get(self):

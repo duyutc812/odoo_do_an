@@ -253,6 +253,7 @@
             <field name="price">56000</field>
             <field name="rack" ref="data_rack_1"/>
             <field name="num_page">300</field>
+            <field name="book_term">7</field>
         </record>
 
         <record id="data_book_2" model="library.book">
@@ -265,6 +266,7 @@
             <field name="price">100000</field>
             <field name="rack" ref="data_rack_1"/>
             <field name="num_page">567</field>
+            <field name="book_term">15</field>
         </record>
 
         <record id="data_book_3" model="library.book">
@@ -277,6 +279,7 @@
             <field name="price">150000</field>
             <field name="rack" ref="data_rack_1"/>
             <field name="num_page">394</field>
+            <field name="book_term">30</field>
         </record>
 
         <!--data Checkout Stage-->
@@ -329,6 +332,7 @@
             <field name="major" ref="data_student_major_1"/>
             <field name="rack" ref="data_rack_2"/>
             <field name="price">50000</field>
+            <field name="project_term">15</field>
             <field name="student_id" ref="data_student_1"/>
         </record>
 
@@ -337,6 +341,7 @@
             <field name="major" ref="data_student_major_2"/>
             <field name="rack" ref="data_rack_2"/>
             <field name="price">50000</field>
+            <field name="project_term">15</field>
             <field name="student_id" ref="data_student_2"/>
         </record>
 

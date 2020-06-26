@@ -36,6 +36,7 @@
                             <field name="state"/>
                         </group>
                         <group>
+                            <field name="project_term"/>
                             <field name="currency_id"/>
                             <field name="price"/>
                         </group>
@@ -49,11 +50,11 @@
                                     <!-- editable="top" -->
                                     <field name="sequence" widget="handle"/>
                                     <field name="name_seq" readonly="1"/>
-                                    <field name="description" attrs="{'readonly':[('checkout_id', '!=', False)]}"/>
-                                    <field name="state" attrs="{'readonly':[('checkout_id', '!=', False)]}"/>
-                                    <field name="is_lost"/>
-                                    <field name="is_active"/>
-                                    <field name="checkout_id" attrs="{'readonly':[('checkout_id', '!=', False)]}"/>
+                                    <field name="description" attrs="{'readonly':[('checkout', '!=', False)]}"/>
+                                    <field name="state" attrs="{'readonly':[('checkout', '!=', False)]}"/>
+                                    <field name="is_lost" readonly="1"/>
+                                    <field name="is_active" readonly="1"/>
+                                    <field name="checkout" readonly="1"/>
                                 </tree>
                             </field>
                         </page>

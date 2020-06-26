@@ -20,12 +20,19 @@ class Project(models.Model):
         ('not_available', 'Not Available')
     ], string='Status', compute='get_quantity_remaining')
     # , compute='_compute_state', store=True
+    project_term = fields.Integer('Project Term (Days)', default=15)
     currency_id = fields.Many2one('res.currency', 'Currency',
                                   default=lambda s: s.env['res.currency'].search([('name', '=', 'VND')], limit=1))
     price = fields.Monetary('Price', 'currency_id', track_visibility='always')
     quantity = fields.Integer(string='Quantity', compute='get_quantity_remaining')
     remaining = fields.Integer(string='Remaining', compute='get_quantity_remaining')
     meta_project_ids = fields.One2many('meta.projects', 'project_id')
+
+    @api.constrains('project_term')
+    def _constrains_price(self):
+        for pro in self:
+            if pro.project_term <= 0:
+                raise ValidationError(_("The project term must be greater than 0!"))
 
     def unlink(self):
         for doc_pr in self:
@@ -74,7 +81,7 @@ class MetaProject(models.Model):
         ('available', 'Available'),
         ('not_available', 'Not Available')
     ], string='Status', default='available')
-    checkout_id = fields.Many2one('library.checkout.at.lib', readonly=True)
+    checkout = fields.Char(readonly=True)
     is_lost = fields.Boolean('Lost', default=False)
     is_active = fields.Boolean('Active', default=True)
 
@@ -95,6 +102,6 @@ class MetaProject(models.Model):
 
     def unlink(self):
         for pro in self:
-            if pro.checkout_id:
+            if pro.checkout:
                 raise ValidationError('You cannot delete record %s!' % (pro.name_seq))
         return super(MetaProject, self).unlink()

@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import api, fields, models, _, exceptions
 from odoo.exceptions import ValidationError, UserError
 from datetime import datetime, date
 import pytz
@@ -17,7 +17,7 @@ class CheckoutAtLib(models.Model):
     def _group_expand_stage_id(self, stages, domain, order):
         return stages.search([], order=order)
 
-    card_id = fields.Many2one('library.card', string="Card No",
+    card_id = fields.Many2one('library.card', string="Card ID",
                               required=True,
                               domain=[('state', '=', 'running'), ('is_penalty', '=', False)], track_visibility='always')
     state_card = fields.Selection(related='card_id.state', store=True)
@@ -36,11 +36,9 @@ class CheckoutAtLib(models.Model):
         ('magazine', 'Magazine And Newspaper'),
         ('project', 'Project'),
     ], string='Type Document', default='book', required=True)
-    book_id = fields.Many2one('library.book', 'Name Book',
-                              domain=[('state', '=', 'available')])
+    book_id = fields.Many2one('library.book', 'Name Book')
     meta_book_id = fields.Many2one('meta.books', string='Meta Book')
-    project_id = fields.Many2one('document.project', 'Name Project',
-                                 domain=[('state', '=', 'available')])
+    project_id = fields.Many2one('document.project', 'Name Project')
     meta_project_id = fields.Many2one('meta.projects', string='Meta Project')
     mgz_new_id = fields.Many2one('magazine.newspaper', 'Name Mgz/New', track_visibility='always')
     meta_mgz_new_id = fields.Many2one('meta.magazinenewspapers',
@@ -53,7 +51,7 @@ class CheckoutAtLib(models.Model):
 
     currency_id = fields.Many2one('res.currency', 'Currency',
                                   default=lambda s: s.env['res.currency'].search([('name', '=', 'VND')], limit=1))
-    price = fields.Monetary('Price', 'currency_id')
+    price_penalty = fields.Monetary('Penalty Price', 'currency_id')
     note = fields.Char('Note')
     is_lost_doc = fields.Boolean('Lost')
 
@@ -144,20 +142,20 @@ class CheckoutAtLib(models.Model):
             if chk.book_id:
                 if chk.meta_book_id.state == 'available':
                     chk.meta_book_id.state = 'not_available'
-                    chk.meta_book_id.checkout_id = chk.id
+                    chk.meta_book_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
                 else:
                     raise ValidationError('Book: "%s - %s" have borrowed.' %
                                           (self.meta_book_id.name_seq, self.meta_book_id.book_id.name))
             elif chk.mgz_new_id:
                 if self.meta_mgz_new_id.state == 'available':
                     self.meta_mgz_new_id.state = 'not_available'
-                    chk.meta_mgz_new_id.checkout_id = chk.id
+                    chk.meta_mgz_new_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
                 else:
                     raise ValidationError('Magazine/Newspaper have borrowed.')
             elif chk.project_id:
                 if chk.meta_project_id.state == 'available':
                     chk.meta_project_id.state = 'not_available'
-                    chk.meta_project_id.checkout_id = chk.id
+                    chk.meta_project_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
                 else:
                     raise ValidationError('Project: " %s " have borrowed.' % (self.project_id.name))
             chk.borrow_date = fields.Datetime.now()
@@ -176,13 +174,13 @@ class CheckoutAtLib(models.Model):
             chk.stage_id = stage_draft
             if chk.book_id and chk.meta_book_id.state == 'not_available' :
                 chk.meta_book_id.state = 'available'
-                chk.meta_book_id.checkout_id = ''
+                chk.meta_book_id.checkout = ''
             elif chk.mgz_new_id and chk.meta_mgz_new_id.state == 'not_available' :
                 chk.meta_mgz_new_id.state = 'available'
-                chk.meta_mgz_new_id.checkout_id = ''
+                chk.meta_mgz_new_id.checkout = ''
             elif chk.project_id and chk.meta_project_id.state == 'not_available':
                 chk.meta_project_id.state = 'available'
-                chk.meta_project_id.checkout_id = ''
+                chk.meta_project_id.checkout = ''
             chk.borrow_date = ''
 
     @api.multi
@@ -192,13 +190,13 @@ class CheckoutAtLib(models.Model):
             chk.stage_id = stage_done
             if chk.book_id:
                 chk.meta_book_id.state = 'available'
-                chk.meta_book_id.checkout_id = ''
+                chk.meta_book_id.checkout = ''
             elif chk.mgz_new_id:
                 chk.meta_mgz_new_id.state = 'available'
-                chk.meta_mgz_new_id.checkout_id = ''
+                chk.meta_mgz_new_id.checkout = ''
             elif chk.project_id:
                 chk.meta_project_id.state = 'available'
-                chk.meta_project_id.checkout_id = ''
+                chk.meta_project_id.checkout = ''
             chk.return_date = fields.Datetime.now()
 
     @api.multi
@@ -208,13 +206,13 @@ class CheckoutAtLib(models.Model):
             chk.stage_id = stage_fined
             if chk.book_id:
                 chk.meta_book_id.state = 'available'
-                chk.meta_book_id.checkout_id = ''
+                chk.meta_book_id.checkout = ''
             elif chk.mgz_new_id:
                 chk.meta_mgz_new_id.state = 'available'
-                chk.meta_mgz_new_id.checkout_id = ''
+                chk.meta_mgz_new_id.checkout = ''
             elif chk.project_id:
                 chk.meta_project_id.state = 'available'
-                chk.meta_project_id.checkout_id = ''
+                chk.meta_project_id.checkout = ''
             chk.return_date = fields.Datetime.now()
             context = dict(self.env.context)
             context['form_view_initial_mode'] = 'edit'
@@ -234,15 +232,15 @@ class CheckoutAtLib(models.Model):
             chk.stage_id = stage_lost
             if chk.book_id:
                 chk.meta_book_id.is_lost = True
-                chk.meta_book_id.checkout_id = chk.id
+                chk.meta_book_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
                 chk.meta_book_id.state = 'not_available'
             elif chk.mgz_new_id:
                 chk.meta_mgz_new_id.is_lost = True
-                chk.meta_mgz_new_id.checkout_id = chk.id
+                chk.meta_mgz_new_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
                 chk.meta_mgz_new_id.state = 'not_available'
             elif chk.project_id:
                 chk.meta_project_id.is_lost = True
-                chk.meta_project_id.checkout_id = chk.id
+                chk.meta_project_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
                 chk.meta_project_id.state = 'not_available'
             chk.return_date = ''
             chk.price = chk.price_doc
@@ -255,17 +253,17 @@ class CheckoutAtLib(models.Model):
             chk.stage_id = stage_cancel
             if chk.book_id:
                 chk.meta_book_id.state = 'available'
-                chk.meta_book_id.checkout_id = ''
+                chk.meta_book_id.checkout = ''
                 chk.meta_book_id.is_lost = False
                 chk.meta_book_id.description = chk.status_document
             elif chk.mgz_new_id:
                 chk.meta_mgz_new_id.state = 'available'
-                chk.meta_mgz_new_id.checkout_id = ''
+                chk.meta_mgz_new_id.checkout = ''
                 chk.meta_mgz_new_id.is_lost = False
                 chk.meta_mgz_new_id.description = chk.status_document
             elif chk.project_id:
                 chk.meta_project_id.state = 'available'
-                chk.meta_project_id.checkout_id = ''
+                chk.meta_project_id.checkout = ''
                 chk.meta_project_id.is_lost = False
                 chk.meta_project_id.description = chk.status_document
             chk.price = ''
@@ -275,8 +273,8 @@ class CheckoutAtLib(models.Model):
     @api.multi
     def name_get(self):
         res = []
-        for chk_mg_new in self:
-            res.append((chk_mg_new.id, '%s - %s' % (chk_mg_new.name_seq, chk_mg_new.gt_name)))
+        for chk in self:
+            res.append((chk.id, '%s - %s' % (chk.name_seq, chk.gt_name)))
         return res
 
     def unlink(self):

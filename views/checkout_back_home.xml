@@ -6,43 +6,140 @@
             <form>
                 <header>
                     <field name="state" invisible="1"/>
+                    <button name="running_state"
+                            type="object"
+                            string="Confirm"
+                            class="oe_highlight"
+                            attrs="{'invisible':[('state', '!=', 'draft')]}"
+                            />
+
+                    <button name="draft_state"
+                            type="object"
+                            string="Draft"
+                            class="oe_highlight"
+                            attrs="{'invisible':[('state', '!=', 'running')]}"
+                            />
+                    <!--
+                    <button name="done_state"
+                            type="object"
+                            string="Return"
+                            class="oe_highlight"
+                            attrs="{'invisible':[('state', '!=', 'running')]}"/>
+                    <button name="lost_document"
+                            type="object"
+                            string="Lost Document"
+                            confirm="Lost Magazine or Newspaper? Are you sure ?"
+                            class="oe_highlight"
+                            attrs="{'invisible':['|', ('state', '!=', 'fined'), ('is_lost_doc', '=', True)]}"/>
+                    <button name="fined_state"
+                            type="object"
+                            string="Penalty"
+                            class="oe_highlight"
+                            attrs="{'invisible':[('state', '!=', 'running')]}"/>
+                    <button name="cancel_state"
+                            type="object"
+                            string="Cancel"
+                            class="oe_highlight"
+                            attrs="{'invisible':[('state', 'not in', ['lost', 'fined'])]}"/>
+                    <button name="%(do_an_tn.action_wizard_modify_descrip_doc)d" string="Modify Description"
+                            type="action"
+                            attrs="{'invisible': [('state', 'in', ['running', 'lost'])]}"/>
+                    -->
                     <field name="stage_id"
                            widget="statusbar"
                            options="{'fold_field': 'fold'}"
-                           />
+                           /><!--options="{'fold_field': 'fold'}"-->
                 </header>
                 <sheet>
-                    <group>
-                        <field name="name_seq"/>
-                        <field name="card_id"/>
-                        <field name="state_card"/>
-                        <field name="user_id"/>
-                        <field name="borrow_date"/>
-                        <field name="gt_name"/>
-                        <field name="start_date"/>
-                        <field name="end_date"/>
-                        <field name="book_limit_card"/>
-                        <field name="limit_syllabus_card"/>
-                        <field name="type_document"/>
-                        <field name="book_id"/>
-                        <field name="meta_book_id"/>
-                        <field name="project_id"/>
-                        <field name="meta_project_id"/>
-                        <field name="status_document"/>
-                        <field name="category_book"/>
-                        <field name="price_doc"/>
-                        <field name="currency_id"/>
-                        <field name="price"/>
-                        <field name="note"/>
+                    <div class="oe_button_box" name="expense_button_box">
+                            <button name="toggle_active"
+                                    type="object"
+                                    confirm="(Un)archiving a project automatically (un)archives its tasks and issues. Do you want to proceed?"
+                                    class="oe_stat_button"
+                                    icon="fa-archive">
+                            </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                             <field name="priority" widget="priority" />
+                            <field name="kanban_state" widget="state_selection" class="oe_right"/>
+                        </h1>
+                           <label for="name_seq" class="oe_edit_only" />
+                        <h1>
+                            <field name="name_seq" readonly="1" class="oe_inline"/>
+                        </h1>
+                        <h3>
+                            <label for="borrow_date" class="oe_edit_only" />
+                            <field name="borrow_date" class="oe_inline" readonly="1"
+                                   attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                        </h3>
+                    </div>
+                    <group col="2" colspan="4">
+                        <separator string="Card Details" colspan="4"/>
+                        <group>
+                            <field name="card_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="state_card" readonly="1"/>
+                            <field name="gt_name" readonly="1"/>
+                            <field name="user_id" required="1"/>
+                        </group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="book_limit_card"/>
+                            <field name="limit_syllabus_card"/>
+                        </group>
+                    </group>
+                    <group string="Others" >
+                        <group>
+                            <field name="type_document" required="1"/>
+                            <field name="book_id"
+                                   attrs="{'invisible': [('type_document', '!=', 'book')],
+                                           'required': [('type_document', '=', 'book')]}"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="meta_book_id"
+                                   attrs="{'invisible': [('type_document', '!=', 'book')],
+                                           'required': [('type_document', '=', 'book')]}"
+                                   options="{'no_create': True}"/>
+                            <field name="project_id"
+                                   options="{'no_create': True, 'no_open': True}"
+                                   attrs="{'invisible': [('type_document', '!=', 'project')],
+                                           'required': [('type_document', '=', 'project')]}"/>
+                            <field name="meta_project_id"
+                                   options="{'no_create': True, 'no_open': True}"
+                                   attrs="{'invisible': [('type_document', '!=', 'project')],
+                                           'required': [('type_document', '=', 'project')]}"/>
+                        </group>
+                        <group>
+                            <field name="document_term" readonly="1"/>
+                            <field name="category_doc"/> <!--       attrs="{'invisible': [('type_document', '!=', 'book')]}"-->
+                            <field name="price_doc"/> <!-- attrs="{'invisible': [('state', 'not in', ['fined', 'lost'])]}"-->
+                            <field name="status_document" />
+                        </group>
+                    </group>
+                    <group string="Return Date">
+                        <group>
+                            <field name="return_date" required="1"/>
+                        </group>
+                        <group>
+                            <field name="actual_return_date" string="Actual Return Date"/>
+                        </group>
+                    </group>
+                    <group string="Fined" attrs="{'invisible':[('state', 'not in', ['lost', 'fined'])]}">
+                        <group>
+                            <field name="currency_id"/>
+                            <field name="price_penalty" widget="monetary"
+                                   attrs="{'required': [('state', '=', 'fined')]}"/>
+                            <field name="note"/>
+                        </group>
                     </group>
                 </sheet>
-                <!-- mail mixin fields -->
                 <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
+                    <!--<field name="message_follower_ids" widget="mail_followers"/>-->
+                    <!--<field name="activity_ids" widget="mail_activity"/>-->
                     <field name="message_ids" widget="mail_thread"/>
                 </div>
             </form>
         </field>
     </record>
+
 </odoo>

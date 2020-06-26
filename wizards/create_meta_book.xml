@@ -1,0 +1,69 @@
+<odoo>
+    <data>
+        <act_window id="action_wizard_create_meta_book"
+                    name="Create Meta Book"
+                    res_model="create.meta.book"
+                    view_type="form"
+                    view_mode="form"
+                    target="new" multi="False"
+        />
+
+        <record  id="wizard_create_meta_book" model="ir.ui.view">
+            <field name="name">wizard.create.meta.book</field>
+            <field name="model">create.meta.book</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="book_id" readonly="1"/>
+                        <field name="description"/>
+                        <field name="state" readonly="1"/>
+                        <field name="quantity"/>
+                    </group>
+                    <footer>
+                        <button type="object"
+                                name="button_create"
+                                string="Create"
+                                class="btn-primary"
+                                />
+                        <button special="cancel"
+                        string="Cancel"
+                        class="btn-secondary" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="action_wizard_create_meta_mg_new"
+                    name="Create Meta Magazine Newspaper"
+                    res_model="create.meta.mg.new"
+                    view_type="form"
+                    view_mode="form"
+                    target="new" multi="False"
+        />
+
+        <record  id="wizard_create_meta_mg_new" model="ir.ui.view">
+            <field name="name">wizard.create.meta.mg.new</field>
+            <field name="model">create.meta.mg.new</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="mgz_new_id" readonly="1"/>
+                        <field name="description"/>
+                        <field name="state" readonly="1"/>
+                        <field name="quantity"/>
+                    </group>
+                    <footer>
+                        <button type="object"
+                                name="button_create"
+                                string="Create"
+                                class="btn-primary"
+                                />
+                        <button special="cancel"
+                        string="Cancel"
+                        class="btn-secondary" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

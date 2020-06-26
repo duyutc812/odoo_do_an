@@ -1,4 +1,4 @@
-(<odoo>
+<odoo>
     <record id="view_tree_checkout_at_lib" model="ir.ui.view">
         <field name="name">view.tree.checkout.at.lib</field>
         <field name="model">library.checkout.at.lib</field>
@@ -17,7 +17,7 @@
                 <!--<field name="status_document"/>-->
                 <field name="user_id"/>
                 <field name="currency_id" invisible="1"/>
-                <field name="price" string="Penalty Price" sum="Total Penalty Price"/>
+                <field name="price_penalty" string="Penalty Price" sum="Total Penalty Price"/>
                 <field name="note"/>
                 <field name="state"/>
             </tree>
@@ -96,28 +96,34 @@
                         <group string="Others" >
                             <field name="type_document"/>
                             <field name="book_id"
-                                   attrs="{'invisible': [('type_document', '!=', 'book')]}"
+                                   attrs="{'invisible': [('type_document', '!=', 'book')],
+                                           'required': [('type_document', '=', 'book')]}"
                                    options="{'no_create': True, 'no_open': True}"/>
                             <field name="meta_book_id"
-                                   attrs="{'invisible': [('type_document', '!=', 'book')]}"
+                                   attrs="{'invisible': [('type_document', '!=', 'book')],
+                                           'required': [('type_document', '=', 'book')]}"
                                    options="{'no_create': True}"/>
                             <field name="mgz_new_id" string="Title"
                                    options="{'no_create': True, 'no_open': True}"
                                    attrs="{'readonly':[('state','!=','draft')],
-                                           'invisible': [('type_document', '!=', 'magazine')]}"/>
+                                           'invisible': [('type_document', '!=', 'magazine')],
+                                           'required': [('type_document', '=', 'magazine')]}"/>
                                   <!-- attrs="{'readonly':[('state','!=','draft')]}"-->
 
                             <field name="meta_mgz_new_id" string="Meta mgz/new"
                                    options="{'no_create': True, 'no_open': True}"
                                    attrs="{'readonly':[('state','!=','draft')],
-                                           'invisible': [('type_document', '!=', 'magazine')]}"/>
+                                           'invisible': [('type_document', '!=', 'magazine')],
+                                           'required': [('type_document', '=', 'magazine')]}"/>
                                    <!--attrs="{'readonly':[('state','!=','draft')]}"-->
                             <field name="project_id"
                                    options="{'no_create': True, 'no_open': True}"
-                                   attrs="{'invisible': [('type_document', '!=', 'project')]}"/>
+                                   attrs="{'invisible': [('type_document', '!=', 'project')],
+                                           'required': [('type_document', '=', 'project')]}"/>
                             <field name="meta_project_id"
                                    options="{'no_create': True, 'no_open': True}"
-                                   attrs="{'invisible': [('type_document', '!=', 'project')]}"/>
+                                   attrs="{'invisible': [('type_document', '!=', 'project')],
+                                           'required': [('type_document', '=', 'project')]}"/>
                             <field name="status_document" />
                             <field name="price_doc" attrs="{'invisible': [('state', 'not in', ['fined', 'lost'])]}"/>
                             <field name="is_lost_doc" invisible="1"/>
@@ -127,7 +133,7 @@
                     <group string="Fined" attrs="{'invisible':[('state', 'not in', ['lost', 'fined'])]}">
                         <group>
                             <field name="currency_id"/>
-                            <field name="price" widget="monetary"
+                            <field name="price_penalty" widget="monetary"
                                    attrs="{'required': [('state', '=', 'fined')],
                                            'readonly': [('is_lost_doc', '=', True)]}"/>
                             <field name="note"
@@ -174,6 +180,19 @@
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_global_click">
+                            <t t-if="record.state.raw_value=='draft'">
+                                <div class="o_dropdown_kanban dropdown">
+                                    <!-- Top-right drop down menu here... -->
+                                    <a class="dropdown-toggle btn" data-toggle="dropdown" role="button" aria-label="Dropdown menu" title="Dropdown menu" href="#">
+                                      <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div class="dropdown-menu" role="menu">
+                                        <t>
+                                            <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                        </t>
+                                    </div>
+                                </div>
+                            </t>
                             <div class="oe_kanban_details">
                                 <strong>
                                     <a type="open" class="o_text_overflow"><field name="name_seq"/></a>

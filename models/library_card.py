@@ -71,6 +71,12 @@ class Card(models.Model):
     note = fields.Char('Note')
     count = fields.Integer(compute='_compute_count')
 
+    # kanban_state = fields.Selection(
+    #     [('grey', 'Draft'),
+    #      ('red', 'Penalty'),
+    #      ('green', 'Confirm')],
+    #     string='Kanban State', compute='_compute_kanban_state')
+
     @api.onchange('is_penalty')
     def _onchange_is_penalty(self):
         if not self.is_penalty:

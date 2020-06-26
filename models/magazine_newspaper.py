@@ -122,7 +122,7 @@ class MetaMagazineNewspaper(models.Model):
         ('available', 'Available'),
         ('not_available', 'Not Available')
     ], string='Status', default='available')
-    checkout_id = fields.Many2one('library.checkout.at.lib', string='Checkout ID', readonly=True)
+    checkout = fields.Char(readonly=True)
     is_lost = fields.Boolean('Lost', default=False)
     is_active = fields.Boolean('Active', default=True)
 
@@ -153,6 +153,6 @@ class MetaMagazineNewspaper(models.Model):
 
     def unlink(self):
         for meta_mg in self:
-            if meta_mg.chk_mg_new_id:
+            if meta_mg.checkout:
                 raise ValidationError('You cannot delete record %s!' %(meta_mg.name_seq))
         return super(MetaMagazineNewspaper, self).unlink()

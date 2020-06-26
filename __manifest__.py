@@ -22,6 +22,7 @@
         'views/member.xml',
         'views/card.xml',
         'data/library_card_schedular.xml',
+        'wizards/create_meta_book.xml',
         'views/book.xml',
         'wizards/create_meta_project.xml',
         'views/project.xml',
