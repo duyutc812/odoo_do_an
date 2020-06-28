@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+        <act_window id="action_wizard_extend_library_card"
+                    name="Extend Library Card"
+                    res_model="extend.library.card"
+                    view_type="form"
+                    view_mode="form"
+                    target="new" multi="False"
+        />
+
+        <record  id="wizard_extend_library_card" model="ir.ui.view">
+            <field name="name">wizard.extend.library.card</field>
+            <field name="model">extend.library.card</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="card_id" readonly="1"/>
+                        <field name="duration_id" required="1" readonly="1"/>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="price" readonly="1" widget="monetary"/>
+                    </group>
+                    <footer>
+                        <button type="object"
+                                name="button_extend_card"
+                                string="Extend"
+                                class="btn-primary"
+                                />
+                        <button special="cancel"
+                        string="Cancel"
+                        class="btn-secondary" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

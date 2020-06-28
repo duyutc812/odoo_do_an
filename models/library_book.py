@@ -72,11 +72,11 @@ class Book(models.Model):
     def _constrains_price(self):
         for book in self:
             if book.price <= 0:
-                raise ValidationError('The price must be greater than 0!')
+                raise ValidationError(_('The price must be greater than 0!'))
             if book.num_page <= 0:
-                raise ValidationError('The num page must be greater than 0!')
+                raise ValidationError(_('The num page must be greater than 0!'))
             if book.book_term <= 0:
-                raise ValidationError('The book term must be greater than 0!')
+                raise ValidationError(_('The book term must be greater than 0!'))
 
     @api.depends('meta_book_ids')
     def _compute_quantity_remaining(self):
@@ -112,7 +112,7 @@ class Book(models.Model):
     def unlink(self):
         for book in self:
             if len(book.meta_book_ids):
-                raise ValidationError('You can not delete book!')
+                raise ValidationError(_('You can not delete book!'))
         return super(Book, self).unlink()
 
 

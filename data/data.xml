@@ -18,7 +18,7 @@
             <field name="user_type">student</field>
             <field name="price">20000</field>
             <field name="book_on_card">1</field>
-            <field name="syllabus_on_card">1</field>
+            <field name="syllabus_on_card">2</field>
         </record>
 
         <record id="data_library_duration_2" model="library.duration">
@@ -27,7 +27,7 @@
             <field name="user_type">student</field>
             <field name="price">30000</field>
             <field name="book_on_card">2</field>
-            <field name="syllabus_on_card">1</field>
+            <field name="syllabus_on_card">2</field>
         </record>
 
         <record id="data_library_duration_3" model="library.duration">
@@ -36,7 +36,7 @@
             <field name="user_type">teacher</field>
             <field name="price">0</field>
             <field name="book_on_card">3</field>
-            <field name="syllabus_on_card">1</field>
+            <field name="syllabus_on_card">2</field>
         </record>
 
         <!--data author 1 -> 4-->

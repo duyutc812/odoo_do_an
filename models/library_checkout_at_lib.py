@@ -122,7 +122,7 @@ class CheckoutAtLib(models.Model):
                   ('id', 'not in', self.ids)]
         chk_of_card = lib_checkout.search(domain)
         if chk_of_card:
-            raise ValidationError('You cannot borrow book to same card more than once!')
+            raise ValidationError(_('You cannot borrow book to same card more than once!'))
 
         domain2 = [
             ('card_id', '=', self.card_id.id),
@@ -131,34 +131,46 @@ class CheckoutAtLib(models.Model):
         ]
         checkout_of_card2 = lib_checkout.search_count(domain2)
         if checkout_of_card2:
-            raise ValidationError('You have borrowed more than the specified number of books for each card')
+            raise ValidationError(_('You have borrowed more than the specified number of books for each card'))
+
+    @api.onchange('state')
+    def _onchange_state(self):
+        if self.state not in ['fined', 'lost']:
+            self.price = 0
+            self.note = ''
 
     @api.multi
     def running_state(self):
         state_running = self.env['library.checkout.stage'].search([('state', '=', 'running')])
         for chk in self:
+            if self.search([('card_id', '=', chk.card_id.id),
+                            ('state', '=', 'running'),
+                            ('id', 'not in', self.ids)]):
+                raise ValidationError(_('You are borrowing a document, please return it to continue!'))
             chk.name_seq = self.env['ir.sequence'].next_by_code('library.checkout.sequence') or _('New')
             chk.stage_id = state_running
+            chk._onchange_state()
             if chk.book_id:
                 if chk.meta_book_id.state == 'available':
                     chk.meta_book_id.state = 'not_available'
                     chk.meta_book_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
                 else:
-                    raise ValidationError('Book: "%s - %s" have borrowed.' %
-                                          (self.meta_book_id.name_seq, self.meta_book_id.book_id.name))
+                    raise ValidationError(_('Book: "%s - %s" have borrowed.' %
+                                          (self.meta_book_id.name_seq, self.meta_book_id.book_id.name)))
             elif chk.mgz_new_id:
                 if self.meta_mgz_new_id.state == 'available':
                     self.meta_mgz_new_id.state = 'not_available'
                     chk.meta_mgz_new_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
                 else:
-                    raise ValidationError('Magazine/Newspaper have borrowed.')
+                    raise ValidationError(_('Magazine/Newspaper have borrowed.'))
             elif chk.project_id:
                 if chk.meta_project_id.state == 'available':
                     chk.meta_project_id.state = 'not_available'
                     chk.meta_project_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
                 else:
-                    raise ValidationError('Project: " %s " have borrowed.' % (self.project_id.name))
+                    raise ValidationError(_('Project: " %s " have borrowed.' % (self.project_id.name)))
             chk.borrow_date = fields.Datetime.now()
+            chk.return_date = ''
             return {
                 'effect': {
                     'fadeout': 'slow',
@@ -172,10 +184,11 @@ class CheckoutAtLib(models.Model):
         stage_draft = self.env['library.checkout.stage'].search([('state', '=', 'draft')])
         for chk in self:
             chk.stage_id = stage_draft
-            if chk.book_id and chk.meta_book_id.state == 'not_available' :
+            chk._onchange_state()
+            if chk.book_id and chk.meta_book_id.state == 'not_available':
                 chk.meta_book_id.state = 'available'
                 chk.meta_book_id.checkout = ''
-            elif chk.mgz_new_id and chk.meta_mgz_new_id.state == 'not_available' :
+            elif chk.mgz_new_id and chk.meta_mgz_new_id.state == 'not_available':
                 chk.meta_mgz_new_id.state = 'available'
                 chk.meta_mgz_new_id.checkout = ''
             elif chk.project_id and chk.meta_project_id.state == 'not_available':
@@ -188,6 +201,7 @@ class CheckoutAtLib(models.Model):
         stage_done = self.env['library.checkout.stage'].search([('state', '=', 'done')])
         for chk in self:
             chk.stage_id = stage_done
+            chk._onchange_state()
             if chk.book_id:
                 chk.meta_book_id.state = 'available'
                 chk.meta_book_id.checkout = ''
@@ -242,8 +256,8 @@ class CheckoutAtLib(models.Model):
                 chk.meta_project_id.is_lost = True
                 chk.meta_project_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
                 chk.meta_project_id.state = 'not_available'
-            chk.return_date = ''
-            chk.price = chk.price_doc
+            chk.return_date = fields.Datetime.now()
+            chk.price_penalty = chk.price_doc
             chk.note = 'lost magazine or newspaper'
 
     @api.multi
@@ -251,6 +265,7 @@ class CheckoutAtLib(models.Model):
         stage_cancel = self.env['library.checkout.stage'].search([('state', '=', 'cancel')])
         for chk in self:
             chk.stage_id = stage_cancel
+            chk._onchange_state()
             if chk.book_id:
                 chk.meta_book_id.state = 'available'
                 chk.meta_book_id.checkout = ''
@@ -266,8 +281,6 @@ class CheckoutAtLib(models.Model):
                 chk.meta_project_id.checkout = ''
                 chk.meta_project_id.is_lost = False
                 chk.meta_project_id.description = chk.status_document
-            chk.price = ''
-            chk.note = ''
             chk.return_date = fields.Datetime.now()
 
     @api.multi
@@ -280,6 +293,6 @@ class CheckoutAtLib(models.Model):
     def unlink(self):
         for chk in self:
             if chk.state != 'draft':
-                raise ValidationError('You can not delete checkout when state not is draft!')
+                raise ValidationError(_('You can not delete checkout when state not is draft!'))
         return super(CheckoutAtLib, self).unlink()
 

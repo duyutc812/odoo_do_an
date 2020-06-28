@@ -40,7 +40,7 @@ class Magazine(models.Model):
     def _constrains_price(self):
         for mg_new in self:
             if mg_new.price <= 0:
-                raise ValidationError('The price must be greater than 0!')
+                raise ValidationError(_('The price must be greater than 0!'))
 
     @api.depends('publish_date')
     def get_publish_year(self):
@@ -94,7 +94,7 @@ class Magazine(models.Model):
     def unlink(self):
         for mg_new in self:
             if len(mg_new.meta_mgz_new_ids):
-                raise ValidationError('You cannot delete !')
+                raise ValidationError(_('You cannot delete !'))
             return super(Magazine, self).unlink()
 
     _sql_constraints = [
@@ -154,5 +154,5 @@ class MetaMagazineNewspaper(models.Model):
     def unlink(self):
         for meta_mg in self:
             if meta_mg.checkout:
-                raise ValidationError('You cannot delete record %s!' %(meta_mg.name_seq))
+                raise ValidationError(_('You cannot delete record %s!' %(meta_mg.name_seq)))
         return super(MetaMagazineNewspaper, self).unlink()

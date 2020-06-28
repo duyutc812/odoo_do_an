@@ -41,5 +41,5 @@ class MetaBook(models.Model):
     def unlink(self):
         for book in self:
             if book.checkout:
-                raise ValidationError('You cannot delete record %s!' % (book.name_seq))
+                raise ValidationError(_('You cannot delete record %s!' % (book.name_seq)))
         return super(MetaBook, self).unlink()

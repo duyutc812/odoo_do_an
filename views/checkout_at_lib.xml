@@ -7,8 +7,7 @@
                   decoration-success="state == 'done'"
                   decoration-muted="state == 'draft'"
                   decoration-info="state == 'running'"
-                  decoration-danger="state == 'fined'"
-                  decoration-bf="state == 'lost'">
+                  decoration-danger="state in ['fined', 'lost']">
                 <!--banner_route="/do_an_tn/checkout_mg_new"-->
                 <field name="name_seq"/>
                 <field name="card_id"/>

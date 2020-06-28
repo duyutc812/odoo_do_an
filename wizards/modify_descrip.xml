@@ -36,5 +36,39 @@
             </field>
         </record>
 
+        <act_window id="action_wizard_modify_descrip_chk_bh"
+                    name="Modify Description"
+                    res_model="modify.description.doc.chk.bh"
+                    view_type="form"
+                    view_mode="form"
+                    target="new" multi="False"
+        />
+
+        <record  id="wizard_descrip_chk_back_home" model="ir.ui.view">
+            <field name="name">wizard.description.chk.back.home</field>
+            <field name="model">modify.description.doc.chk.bh</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="book_id" attrs="{'invisible': [('book_id', '=', False)]}"/>
+                        <field name="meta_book_id" attrs="{'invisible': [('meta_book_id', '=', False)]}"/>
+                        <field name="project_id" attrs="{'invisible': [('project_id', '=', False)]}"/>
+                        <field name="meta_project_id" attrs="{'invisible': [('meta_project_id', '=', False)]}"/>
+                        <field name="status_document"/>
+                    </group>
+                    <footer>
+                        <button type="object"
+                                name="button_update_description"
+                                string="Update"
+                                class="btn-primary"
+                                />
+                        <button special="cancel"
+                        string="Cancel"
+                        class="btn-secondary" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
     </data>
 </odoo>

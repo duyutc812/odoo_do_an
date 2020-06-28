@@ -20,6 +20,7 @@
         'views/publisher.xml',
         'views/category.xml',
         'views/member.xml',
+        'wizards/extend_library_card.xml',
         'views/card.xml',
         'data/library_card_schedular.xml',
         'wizards/create_meta_book.xml',

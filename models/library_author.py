@@ -92,7 +92,7 @@ class Author(models.Model):
             ])
             # print(check_author_book)
             if check_author_book:
-                raise ValidationError('can not delete author!')
+                raise ValidationError(_('can not delete author!'))
         return super(Author, self).unlink()
 
 

@@ -107,7 +107,7 @@ class Card(models.Model):
             # message = 'Penalty Card from %s' % \
             #           (str(date_today.date()) + '%s' % ('to ' + str(lib_card.end_date_penalty) if lib_card.end_date_penalty else '')
             #            + str(lib_card.note))
-            lib_card.message_post(body='Penalty Card')
+            lib_card.message_post(_('Penalty Card'))
             context = dict(self.env.context)
             context['form_view_initial_mode'] = 'edit'
             return {
@@ -122,9 +122,35 @@ class Card(models.Model):
     def cancel_penalty_card(self):
         for lib_card in self:
             lib_card.is_penalty = False
-            lib_card.duration_penalty = ''
-            lib_card.note = ''
-            lib_card.message_post(body='Canceled Penalty Card')
+            lib_card._onchange_is_penalty()
+            lib_card.message_post(_('Canceled Penalty Card'))
+
+    @api.multi
+    def running_state(self):
+        stage_running = self.env['library.card.stage'].search([('state', '=', 'running')])
+        for lib_card in self:
+            lib_card.code = self.env['ir.sequence'].next_by_code('library.card.sequence') or _('New')
+            lib_card.stage_id = stage_running
+            # print(self.stage_id)
+            lib_card.start_date = fields.Date.today()
+            return {
+                # effect when confirm Library card record
+                'effect': {
+                    'fadeout': 'slow',
+                    'message': 'Library Card ' + str(lib_card.code) + ' confirmed .... Thank You',
+                    'type': 'rainbow_man',
+                }
+            }
+
+    @api.multi
+    def draft_state(self):
+        stage_draft = self.env['library.card.stage'].search([('state', '=', 'draft')])
+        for lib_card in self:
+            lib_card.stage_id = stage_draft
+            lib_card.price = 0
+            lib_card.is_penalty = False
+            lib_card._onchange_is_penalty()
+            lib_card.code = 'New'
 
     @api.depends('student_id', 'teacher_id')
     def _compute_email(self):
@@ -180,7 +206,7 @@ class Card(models.Model):
             ])
             print(student_lib_card)
             if student_lib_card:
-                raise ValidationError('You cannot assign library card to same student more than once!')
+                raise ValidationError(_('You cannot assign library card to same student more than once!'))
         if self.user == 'teacher':
             # print(self.ids)
             teacher_lib_card = self.search([
@@ -190,41 +216,13 @@ class Card(models.Model):
             ])
             # print(teacher_lib_card)
             if teacher_lib_card:
-                raise ValidationError('You cannot assign library card to same teacher more than once!')
-
-    @api.multi
-    def running_state(self):
-        stage_running = self.env['library.card.stage'].search([('state', '=', 'running')])
-        for lib_card in self:
-            lib_card.code = self.env['ir.sequence'].next_by_code('library.card.sequence') or _('New')
-            lib_card.stage_id = stage_running
-            # print(self.stage_id)
-            lib_card.start_date = fields.Date.today()
-            return {
-                # effect when confirm Library card record
-                'effect': {
-                    'fadeout': 'slow',
-                    'message': 'Library Card ' + str(lib_card.code) + ' confirmed .... Thank You',
-                    'type': 'rainbow_man',
-                }
-            }
-
-    @api.multi
-    def draft_state(self):
-        stage_draft = self.env['library.card.stage'].search([('state', '=', 'draft')])
-        for lib_card in self:
-            lib_card.stage_id = stage_draft
-            lib_card.price = 0
-            lib_card.is_penalty = False
-            lib_card.duration_penalty = ''
-            lib_card.note = ''
-            lib_card.code = 'New'
+                raise ValidationError(_('You cannot assign library card to same teacher more than once!'))
 
     @api.multi
     def unlink(self):
         for rec in self:
             if rec.state == 'running' or rec.state == 'expire':
-                raise ValidationError('You cannot delete a confirmed or expire library card!')
+                raise ValidationError(_('You cannot delete a confirmed or expire library card!'))
             # elif rec.state == 'draft':
             #     checkout_card = self.env['library.checkout'].search_count([
             #         ('card_id', '=', rec.id)
@@ -260,10 +258,8 @@ class Card(models.Model):
         if lib_card_cancel_penalty:
             for lib_card in lib_card_cancel_penalty:
                 lib_card.is_penalty = False
-                lib_card.duration_penalty = ''
-                lib_card.end_date_penalty = ''
-                lib_card.note = ''
-                lib_card.message_post(body='Scheduled Action: Canceled Penalty')
+                lib_card._onchange_is_penalty()
+                lib_card.message_post(_('Scheduled Action: Canceled Penalty'))
         lib_card_expire = self.search([('end_date', '<', date_today),
                                        ('code', '!=', 'New')])
         if lib_card_expire:
@@ -314,7 +310,7 @@ class Card(models.Model):
             # self.env['email.template'].browse(template_id).send_mail(self.id, force_send=True)
             template.send_mail(lib_card.id, force_send=True, raise_exception=True)
             print('Send Email to user ID: ', lib_card.id)
-            return self.message_post(body='Send Email for Card', subject='Send Email')
+            return self.message_post(_('Send Email for Card'))
 
 
 

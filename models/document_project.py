@@ -37,7 +37,7 @@ class Project(models.Model):
     def unlink(self):
         for doc_pr in self:
             if len(doc_pr.meta_project_ids):
-                raise ValidationError('You cannot delete!')
+                raise ValidationError(_('You cannot delete!'))
         return super(Project, self).unlink()
 
     @api.depends('meta_project_ids')
@@ -103,5 +103,5 @@ class MetaProject(models.Model):
     def unlink(self):
         for pro in self:
             if pro.checkout:
-                raise ValidationError('You cannot delete record %s!' % (pro.name_seq))
+                raise ValidationError(_('You cannot delete record %s!' % (pro.name_seq)))
         return super(MetaProject, self).unlink()

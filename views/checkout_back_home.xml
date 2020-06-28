@@ -1,4 +1,30 @@
 <odoo>
+    <record id="view_tree_checkout_back_home" model="ir.ui.view">
+        <field name="name">view.tree.checkout.back.home</field>
+        <field name="model">library.checkout.back.home</field>
+        <field name="arch" type="xml">
+            <tree
+                  decoration-success="state == 'done'"
+                  decoration-muted="state == 'draft'"
+                  decoration-info="state == 'running'"
+                  decoration-danger="state in ['fined', 'lost']">
+                <!--banner_route="/do_an_tn/checkout_mg_new"-->
+                <field name="name_seq"/>
+                <field name="card_id"/>
+                <field name="borrow_date"/>
+                <field name="return_date"/>
+                <field name="actual_return_date"/>
+                <field name="type_document"/>
+                <field name="category_doc"/>
+                <field name="user_id"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="price_total" string="Penalty Price" sum="Total Penalty Price"/>
+                <field name="note"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
     <record id="view_form_checkout_back_home" model="ir.ui.view">
         <field name="name">view.form.checkout.back.home</field>
         <field name="model">library.checkout.back.home</field>
@@ -17,34 +43,43 @@
                             type="object"
                             string="Draft"
                             class="oe_highlight"
-                            attrs="{'invisible':[('state', '!=', 'running')]}"
-                            />
-                    <!--
+
+                            /><!--attrs="{'invisible':[('state', '!=', 'running')]}"-->
+
                     <button name="done_state"
                             type="object"
                             string="Return"
                             class="oe_highlight"
                             attrs="{'invisible':[('state', '!=', 'running')]}"/>
-                    <button name="lost_document"
-                            type="object"
-                            string="Lost Document"
-                            confirm="Lost Magazine or Newspaper? Are you sure ?"
-                            class="oe_highlight"
-                            attrs="{'invisible':['|', ('state', '!=', 'fined'), ('is_lost_doc', '=', True)]}"/>
+
                     <button name="fined_state"
                             type="object"
                             string="Penalty"
                             class="oe_highlight"
                             attrs="{'invisible':[('state', '!=', 'running')]}"/>
+
+                    <button name="lost_document"
+                            type="object"
+                            string="Lost Document"
+                            confirm="Lost Magazine or Newspaper? Are you sure ?"
+                            class="oe_highlight"
+                            attrs="{'invisible':[('state', '!=', 'fined')]}"/>
+
+                    <!--
+
+                   <button name="%(do_an_tn.action_wizard_modify_descrip_doc)d" string="Modify Description"
+                            type="action"
+                            attrs="{'invisible': [('state', 'in', ['running', 'lost'])]}"/>
+                    -->
                     <button name="cancel_state"
                             type="object"
                             string="Cancel"
                             class="oe_highlight"
                             attrs="{'invisible':[('state', 'not in', ['lost', 'fined'])]}"/>
-                    <button name="%(do_an_tn.action_wizard_modify_descrip_doc)d" string="Modify Description"
+
+                    <button name="%(do_an_tn.action_wizard_modify_descrip_chk_bh)d" string="Modify Description"
                             type="action"
-                            attrs="{'invisible': [('state', 'in', ['running', 'lost'])]}"/>
-                    -->
+                            attrs="{'invisible': [('state', 'in', ['running', 'lost', 'cancel'])]}"/>
                     <field name="stage_id"
                            widget="statusbar"
                            options="{'fold_field': 'fold'}"
@@ -61,7 +96,7 @@
                     </div>
                     <div class="oe_title">
                         <h1>
-                             <field name="priority" widget="priority" />
+                            <field name="priority" widget="priority" />
                             <field name="kanban_state" widget="state_selection" class="oe_right"/>
                         </h1>
                            <label for="name_seq" class="oe_edit_only" />
@@ -79,14 +114,11 @@
                         <group>
                             <field name="card_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="state_card" readonly="1"/>
-                            <field name="gt_name" readonly="1"/>
-                            <field name="user_id" required="1"/>
+                            <field name="gt_name" readonly="1" invisible="1"/>
                         </group>
                         <group>
-                            <field name="start_date"/>
                             <field name="end_date"/>
-                            <field name="book_limit_card"/>
-                            <field name="limit_syllabus_card"/>
+                            <field name="user_id" required="1"/>
                         </group>
                     </group>
                     <group string="Others" >
@@ -110,7 +142,7 @@
                                            'required': [('type_document', '=', 'project')]}"/>
                         </group>
                         <group>
-                            <field name="document_term" readonly="1"/>
+                            <field name="document_term" readonly="1" string="Term"/>
                             <field name="category_doc"/> <!--       attrs="{'invisible': [('type_document', '!=', 'book')]}"-->
                             <field name="price_doc"/> <!-- attrs="{'invisible': [('state', 'not in', ['fined', 'lost'])]}"-->
                             <field name="status_document" />
@@ -124,11 +156,13 @@
                             <field name="actual_return_date" string="Actual Return Date"/>
                         </group>
                     </group>
-                    <group string="Fined" attrs="{'invisible':[('state', 'not in', ['lost', 'fined'])]}">
+                    <group>
                         <group>
-                            <field name="currency_id"/>
-                            <field name="price_penalty" widget="monetary"
-                                   attrs="{'required': [('state', '=', 'fined')]}"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="day_overdue" attrs="{'invisible': [('day_overdue', '=', 0)]}"/>
+                            <field name="price_penalty_chk" attrs="{'invisible': [('price_penalty_chk', '=', 0)]}"/>
+                            <field name="price_penalty_doc"/>
+                            <field name="price_total" attrs="{'invisible': [('price_total', '=', 0)]}"/>
                             <field name="note"/>
                         </group>
                     </group>

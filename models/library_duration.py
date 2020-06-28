@@ -27,7 +27,7 @@ class LibraryDuration(models.Model):
     @api.constrains('duration')
     def _constrains_duration(self):
         if self.duration <= 0:
-            raise ValidationError('Duration must be great 0!')
+            raise ValidationError(_('Duration must be great 0!'))
 
     _sql_constraints = [
         ('duration_user_uniq',

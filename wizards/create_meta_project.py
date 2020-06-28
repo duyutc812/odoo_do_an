@@ -25,9 +25,8 @@ class CreateMetaProject(models.TransientModel):
     @api.multi
     def button_create(self):
         meta_project = self.env['meta.projects']
-
         if not self.quantity:
-            raise ValidationError('The Quantity must be greater than 0!')
+            raise ValidationError(_('The Quantity must be greater than 0!'))
         for k in range(1, self.quantity+1):
             project_fields = list(meta_project._fields)
             project_vals = meta_project.default_get(project_fields)
@@ -35,8 +34,7 @@ class CreateMetaProject(models.TransientModel):
                                  'description': self.description,
                                  'state': 'available'})
             meta_project.create(project_vals)
-        msg = str(self.create_uid.name) + ' updated ' + 'quantity of %s' % (self.project_id.name) + ' is ' + str(self.quantity)
-        self.project_id.message_post(msg)
+        self.project_id.message_post(_('%s updated quantity of %s is %s' % (str(self.create_uid.name), str(self.project_id.name), str(self.quantity))))
         return True
 
 

@@ -46,11 +46,11 @@ class CheckoutBookProject(models.Model):
         for chk in self:
             if chk_mg_new.search([('card_id', '=', chk.card_id.id),
                                   ('state', '=', 'running')]):
-                raise ValidationError('Checkout magazine newspaper exists. Please return the document to continue!')
+                raise ValidationError(_('Checkout magazine newspaper exists. Please return the document to continue!'))
             if self.search([('card_id', '=', chk.card_id.id),
                             ('state', 'in', ['draft', 'running']),
                             ('id', 'not in', chk.ids)]):
-                raise ValidationError('You cannot borrow Book or Project to same card more than once!')
+                raise ValidationError(_('You cannot borrow Book or Project to same card more than once!'))
 
     @api.multi
     def name_get(self):
@@ -77,16 +77,16 @@ class CheckoutBookProject(models.Model):
         stage_running = self.env['library.checkout.stage'].search([('state', '=', 'running')])
         for chk in self:
             if not chk.checkout_project_line_ids and not chk.checkout_book_line_ids:
-                raise ValidationError('Choose Document!')
+                raise ValidationError(_('Choose Document!'))
             if chk_mg_new.search([('card_id', '=', chk.card_id.id),
                                   ('state', '=', 'running')]):
-                raise ValidationError('Checkout magazine newspaper exists. Please return the document to continue!')
+                raise ValidationError(_('Checkout magazine newspaper exists. Please return the document to continue!'))
             chk.name_seq = self.env['ir.sequence'].next_by_code('library.checkout.sequence') or _('New')
             for book in chk.checkout_book_line_ids:
                 print(book)
                 print(book.meta_book_id.state)
                 if book.meta_book_id.state == 'not_available':
-                    raise ValidationError('The book : %s has been borrowed' % (book.book_id.name))
+                    raise ValidationError(_('The book : %s has been borrowed' % (book.book_id.name)))
                 else:
                     book.meta_book_id.state = 'not_available'
                     book.meta_book_id.checkout_id = chk.id
@@ -94,7 +94,7 @@ class CheckoutBookProject(models.Model):
                 print(pro)
                 print(pro.meta_project_id.state)
                 if pro.meta_project_id.state == 'not_available':
-                    raise ValidationError('The project : %s has been borrowed' % (pro.project_id.name))
+                    raise ValidationError(_('The project : %s has been borrowed' % (pro.project_id.name)))
                 else:
                     pro.meta_project_id.state = 'not_available'
                     pro.meta_project_id.checkout_id = chk.id
@@ -106,10 +106,10 @@ class CheckoutBookProject(models.Model):
         for chk in self:
             for book in chk.checkout_book_line_ids:
                 if book.state == 'not_available':
-                    raise ValidationError('you need to return book : %s' % (book.book_id.name))
+                    raise ValidationError(_('you need to return book : %s' % (book.book_id.name)))
             for pro in chk.checkout_project_line_ids:
                 if pro.state == 'not_available':
-                    raise ValidationError('you need to return project : %s' % (pro.project_id.name))
+                    raise ValidationError(_('you need to return project : %s' % (pro.project_id.name)))
             chk.stage_id = stage_done
 
     @api.multi
@@ -132,7 +132,7 @@ class CheckoutBookProject(models.Model):
     def unlink(self):
         for chk in self:
             if chk.state != 'draft':
-                raise ValidationError('Cannot delete record when state is not draft!')
+                raise ValidationError(_('Cannot delete record when state is not draft!'))
             for r in chk.checkout_book_line_ids:
                 r.unlink()
         return super(CheckoutBookProject, self).unlink()
@@ -143,9 +143,9 @@ class CheckoutBookProject(models.Model):
             chk_book = len(chk.checkout_book_line_ids) if len(chk.checkout_book_line_ids) else 0
             chk_pro = len(chk.checkout_project_line_ids) if len(chk.checkout_project_line_ids) else 0
             if not chk_book and not chk_pro:
-                raise ValidationError('Please select document for checkout!')
+                raise ValidationError(_('Please select document for checkout!'))
             if (chk_book + chk_pro) > chk.num_document:
-                raise ValidationError('Cannot borrow more than %s document' % (chk.num_document))
+                raise ValidationError(_('Cannot borrow more than %s document' % (chk.num_document)))
 
 
 class CheckoutBookLine(models.Model):
@@ -193,14 +193,14 @@ class CheckoutBookLine(models.Model):
         for r in self:
             if self.search_count([('checkout_id', '=', r.checkout_id.id),
                                   ('book_id', '=', r.book_id.id)]) > 1:
-                raise ValidationError('Cannot borrow same book on checkout!')
+                raise ValidationError(_('Cannot borrow same book on checkout!'))
             if r.book_id and not r.meta_book_id:
-                raise ValidationError('Select meta book for %s' % (r.book_id.name))
+                raise ValidationError(_('Select meta book for %s' % (r.book_id.name)))
 
     def unlink(self):
         for book in self:
             if book.state == 'not_available':
-                raise ValidationError('cannot delete!')
+                raise ValidationError(_('Cannot delete!'))
         return super(CheckoutBookLine, self).unlink()
 
 
@@ -225,7 +225,7 @@ class CheckoutProjectLine(models.Model):
     def _onchange_book_id(self):
         self.meta_project_id = ''
         return {'domain': {'meta_project_id': [('state', '=', 'available'),
-                                                   ('project_id', '=', self.project_id.id)]}}
+                                               ('project_id', '=', self.project_id.id)]}}
 
     """constrains cannot borrow same project in checkout"""
     @api.constrains('project_id')
@@ -235,12 +235,12 @@ class CheckoutProjectLine(models.Model):
                                   ('project_id', '=', r.project_id.id)]) > 1:
                 print(self.search_count([('checkout_id', '=', r.checkout_id.id),
                                   ('project_id', '=', r.project_id.id)]))
-                raise ValidationError('Cannot borrow same project on checkout!')
+                raise ValidationError(_('Cannot borrow same project on checkout!'))
             if r.project_id and not r.meta_project_id:
-                raise ValidationError('Select meta project for %s' % (r.project_id.name))
+                raise ValidationError(_('Select meta project for %s' % (r.project_id.name)))
 
     def unlink(self):
         for pro in self:
             if pro.state == 'not_available':
-                raise ValidationError('cannot delete!')
+                raise ValidationError(_('Cannot delete!'))
         return super(CheckoutProjectLine, self).unlink()

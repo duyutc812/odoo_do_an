@@ -42,7 +42,12 @@
                             type="object"
                             string="Cancel Penalty"
                             attrs="{'invisible':['|', ('state', '!=', 'running'), ('is_penalty', '=', False)]}"/>
+                    <button name="%(do_an_tn.action_wizard_extend_library_card)d"
+                            type="action"
+                            string="Extend Card"/>
+
                     <field name="stage_id" widget="statusbar"/> <!-- clickable="True"-->
+
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="expense_button_box">
@@ -208,7 +213,7 @@
                                                 <field name="user" />
                                             </td>
                                     </tr>
-                                    <tr>
+                                    <!--<tr>
                                         <th>Duration: </th>
                                         <t t-if="record.duration_id.raw_value=='6'">
                                             <td>
@@ -220,7 +225,7 @@
                                                 <field name="duration_id"/>
                                             </td>
                                         </t>
-                                    </tr>
+                                    </tr>-->
                                     <tr>
                                         <th>Date: </th>
                                         <td><field name="start_date"/> - <field name="end_date"/></td>
@@ -235,6 +240,12 @@
                                         <th>State: </th>
                                         <td>
                                             <field name="state"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Librarian: </th>
+                                        <td>
+                                            <field name="user_id"/>
                                         </td>
                                     </tr>
                                 </table>

@@ -26,7 +26,7 @@ class CreateMetaBook(models.TransientModel):
     def button_create(self):
         meta_book = self.env['meta.books']
         if not self.quantity:
-            raise ValidationError('The Quantity must be greater than 0!')
+            raise ValidationError(_('The Quantity must be greater than 0!'))
         for k in range(1, self.quantity+1):
             book_fields = list(meta_book._fields)
             book_vals = meta_book.default_get(book_fields)
@@ -34,8 +34,7 @@ class CreateMetaBook(models.TransientModel):
                               'description': self.description,
                               'state': 'available'})
             meta_book.create(book_vals)
-        msg = str(self.create_uid.name) + ' updated ' + 'quantity of %s' % (self.book_id.name) + ' is ' + str(self.quantity)
-        self.book_id.message_post(msg)
+        self.book_id.message_post(_('%s updated quantity of %s is %s' % (str(self.create_uid.name), str(self.book_id.name), str(self.quantity))))
         return True
 
 
@@ -63,7 +62,7 @@ class CreateMetaMagazineNewspaper(models.TransientModel):
     def button_create(self):
         meta_mg_new = self.env['meta.magazinenewspapers']
         if not self.quantity:
-            raise ValidationError('The Quantity must be greater than 0!')
+            raise ValidationError(_('The Quantity must be greater than 0!'))
         for k in range(1, self.quantity + 1):
             mg_new_fields = list(meta_mg_new._fields)
             mg_new_vals = meta_mg_new.default_get(mg_new_fields)
@@ -71,9 +70,7 @@ class CreateMetaMagazineNewspaper(models.TransientModel):
                                 'description': self.description,
                                 'state': 'available'})
             meta_mg_new.create(mg_new_vals)
-        msg = str(self.create_uid.name) + ' updated ' + 'quantity of %s' % (str(self.mgz_new_id.name_get()[0][1])) + ' is ' + str(
-            self.quantity)
-        self.mgz_new_id.message_post(msg)
+        self.mgz_new_id.message_post(_('%s updated quantity of %s is %s' % (str(self.create_uid.name), str(self.mgz_new_id.name_get()[0][1]), str(self.quantity))))
         return True
 
 
