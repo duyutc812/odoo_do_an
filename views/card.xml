@@ -172,7 +172,19 @@
 
                 <templates>
                     <t t-name="kanban-box">
-                        <div t-attf-class="oe_kanban_global_click">
+                        <div t-attf-class="oe_kanban_global_click o_kanban_record_has_image_fill o_hospital_patient_kanban">
+                            <t t-if="record.user.raw_value=='student'">
+                                <img t-att-src="kanban_image(
+                                    'library.card', 'student_image', record.id.raw_value)"
+                                    class="o_kanban_image"
+                                    t-att-alt="record.gt_name.value"/>
+                            </t>
+                            <t t-elif="record.user.raw_value=='teacher'">
+                                <img t-att-src="kanban_image(
+                                    'library.card', 'teacher_image', record.id.raw_value)"
+                                    class="o_kanban_image"
+                                    t-att-alt="record.gt_name.value"/>
+                            </t>
                             <t t-if="record.state.raw_value!='expire'">
                                 <div class="o_dropdown_kanban dropdown">
                                     <!-- Top-right drop down menu here... -->
@@ -204,7 +216,7 @@
                                         </a>
                                     </h6>
                                 </strong>
-                                <table style="font-size:10px">
+                                <table style="font-size:10px" class="o_text_overflow">
                                     <tr><th>User: </th>
                                         <t t-set="red_or_black"
                                            t-value="record.user.raw_value =='teacher'

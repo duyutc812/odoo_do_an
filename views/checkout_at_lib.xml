@@ -57,7 +57,7 @@
                             type="object"
                             string="Penalty"
                             class="oe_highlight"
-                            attrs="{'invisible':[('state', '!=', 'running')]}"/>
+                            attrs="{'invisible':[('state', 'not in', ['running', 'lost'])]}"/>
                     <button name="cancel_state"
                             type="object"
                             string="Cancel"
@@ -93,14 +93,16 @@
                             <field name="user_id" required="1"/>
                         </group>
                         <group string="Others" >
-                            <field name="type_document"/>
+                            <field name="type_document" attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="book_id"
                                    attrs="{'invisible': [('type_document', '!=', 'book')],
-                                           'required': [('type_document', '=', 'book')]}"
+                                           'required': [('type_document', '=', 'book')],
+                                           'readonly':[('state','!=','draft')]}"
                                    options="{'no_create': True, 'no_open': True}"/>
                             <field name="meta_book_id"
                                    attrs="{'invisible': [('type_document', '!=', 'book')],
-                                           'required': [('type_document', '=', 'book')]}"
+                                           'required': [('type_document', '=', 'book')],
+                                           'readonly':[('state','!=','draft')]}"
                                    options="{'no_create': True}"/>
                             <field name="mgz_new_id" string="Title"
                                    options="{'no_create': True, 'no_open': True}"
@@ -118,25 +120,27 @@
                             <field name="project_id"
                                    options="{'no_create': True, 'no_open': True}"
                                    attrs="{'invisible': [('type_document', '!=', 'project')],
-                                           'required': [('type_document', '=', 'project')]}"/>
+                                           'required': [('type_document', '=', 'project')],
+                                           'readonly':[('state','!=','draft')]}"/>
                             <field name="meta_project_id"
                                    options="{'no_create': True, 'no_open': True}"
                                    attrs="{'invisible': [('type_document', '!=', 'project')],
-                                           'required': [('type_document', '=', 'project')]}"/>
+                                           'required': [('type_document', '=', 'project')],
+                                           'readonly':[('state','!=','draft')]}"/>
                             <field name="status_document" />
                             <field name="price_doc" attrs="{'invisible': [('state', 'not in', ['fined', 'lost'])]}"/>
                             <field name="is_lost_doc" invisible="1"/>
-                            <field name="return_date" attrs="{'invisible': [('state', 'in', ['draft', 'running'])]}"/>
+                            <field name="return_date" readonly="1" attrs="{'invisible': [('state', 'in', ['draft', 'running'])]}"/>
                         </group>
                     </group>
                     <group string="Fined" attrs="{'invisible':[('state', 'not in', ['lost', 'fined'])]}">
                         <group>
-                            <field name="currency_id"/>
+                            <field name="currency_id" readonly="1"/>
                             <field name="price_penalty" widget="monetary"
                                    attrs="{'required': [('state', '=', 'fined')],
-                                           'readonly': [('is_lost_doc', '=', True)]}"/>
+                                           'readonly': [('state', '=', 'lost')]}"/>
                             <field name="note"
-                                   attrs="{'readonly': [('is_lost_doc', '=', True)]}"/>
+                                   attrs="{'readonly': [('state', '=', 'lost')]}"/>
                         </group>
                     </group>
                 </sheet>
@@ -161,7 +165,6 @@
                 <filter string="Borrowed" name="running_state" domain="[('state','=', 'running')]"/>
                 <filter string="Returned" name="done_state" domain="[('state','=', 'done')]"/>
                 <filter string="Fined" name="fined_state" domain="[('state','=', 'fined')]"/>
-                <filter string="Canceled" name="cancel_state" domain="[('state','=', 'cancel')]"/>
                 <group>
                     <filter string="State" name="state" context="{'group_by': 'state'}"/>
                     <filter string="Card ID" name="card_id" context="{'group_by': 'card_id'}"/>
@@ -175,10 +178,21 @@
         <field name="name">view.kanban.chk.at.lib</field>
         <field name="model">library.checkout.at.lib</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="stage_id">
+            <kanban default_group_by="stage_id" quick_create="false" group_create="false">
+                <field name="state"/>
+                <field name="card_id"/>
+                <field name="type_document"/>
+                <field name="id"/>
+                <field name="book_id"/>
+                <field name="meta_book_id"/>
+                <field name="project_id"/>
+                <field name="meta_project_id"/>
+                <field name="mgz_new_id"/>
+                <field name="meta_mgz_new_id"/>
+                <field name="user_id"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div t-attf-class="oe_kanban_global_click">
+                        <div t-attf-class="oe_kanban_global_click" style="font-size:10px">
                             <t t-if="record.state.raw_value=='draft'">
                                 <div class="o_dropdown_kanban dropdown">
                                     <!-- Top-right drop down menu here... -->
@@ -192,19 +206,23 @@
                                     </div>
                                 </div>
                             </t>
-                            <div class="oe_kanban_details">
+                            <!--<div class="oe_kanban_details">
                                 <strong>
-                                    <a type="open" class="o_text_overflow"><field name="name_seq"/></a>
+                                    <h6>
+                                        <a type="open" class="o_text_overflow">
+                                            <field name="name_seq"/>
+                                        </a>
+                                    </h6>
                                 </strong>
 
-                                <!--<t t-set="red_or_black"
+                                &lt;!&ndash;<t t-set="red_or_black"
                                         t-value="record.state_card.raw_value == 'expire' ?
                                                 'oe_kanban_text_red' : '' "/>
                                 <li style="padding-left:20px" t-att-class="red_or_black">
                                     <field name="card_id"/>
                                     <t t-if="record.state_card.raw_value == 'expire'"> (Expire)</t>
-                                </li>-->
-                                <table style="font-size:11px">
+                                </li>&ndash;&gt;
+                                <table style="font-size:10px" class="o_text_overflow">
                                     <tr>
                                         <th>
                                             Card ID:
@@ -213,19 +231,19 @@
                                             <field name="card_id"/>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    &lt;!&ndash;<tr>
                                         <th>
                                             State Card:
                                         </th>
                                         <td>
                                             <field name="state_card"/>
                                         </td>
-                                    </tr>
+                                    </tr>&ndash;&gt;
                                     <tr>
                                         <th>
                                             Title:
                                         </th>
-                                        <td class="o_text_overflow">
+                                        <td>
                                             <t t-if="record.book_id.raw_value">
                                                 <field name="book_id"/>
                                             </t>
@@ -241,7 +259,7 @@
                                         <th>
                                             ID Doc:
                                         </th>
-                                        <td>
+                                        <td class="o_text_overflow">
                                             <t t-if="record.meta_book_id.raw_value">
                                                 <field name="meta_book_id"/>
                                             </t>
@@ -262,6 +280,58 @@
                                         </td>
                                     </tr>
                                 </table>
+                            </div>-->
+                            <div class="o_kanban_record_top mb16">
+                                    <div class="o_kanban_record_headings mt4">
+                                        <strong class="o_kanban_record_title"><b><span style="color:#7C7BAD"><field name="name_seq"/> - <field name="gt_name"/></span></b></strong>
+                                    </div>
+                                    <strong>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="price_penalty" widget="monetary"
+                                               options="{'currency_field': 'currency_id'}"
+                                               attrs="{'invisible': [('price_penalty', '=', 0)]}"/>
+                                    </strong>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left text-muted o_text_overflow" >
+                                    <span>
+                                        <table>
+                                            <tr>
+                                                <th>Title:</th>
+                                                <td  class="o_text_overflow">
+                                                    <t t-if="record.type_document.raw_value=='book'">
+                                                        <t t-esc="record.book_id.value"/><br/>
+                                                    </t>
+                                                    <t t-elif="record.type_document.raw_value=='magazine'">
+                                                         <t t-esc="record.mgz_new_id.value"/><br/>
+                                                    </t>
+                                                    <t t-else="">
+                                                         <t t-esc="record.project_id.value"/><br/>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    ID:
+                                                </th>
+                                                <td>
+                                                    <t t-if="record.type_document.raw_value=='book'">
+                                                        <t t-esc="record.meta_book_id.value"/><br/>
+                                                    </t>
+                                                    <t t-elif="record.type_document.raw_value=='magazine'">
+                                                         <t t-esc="record.meta_mgz_new_id.value"/><br/>
+                                                    </t>
+                                                    <t t-else="">
+                                                         <t t-esc="record.meta_project_id.value"/><br/>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </span>
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <field name="state" widget="label_selection" options="{'classes': {'draft': 'default', 'running': 'success', 'fined': 'danger', 'lost': 'warning'}}"/>
+                                </div>
                             </div>
                         </div>
                     </t>

@@ -312,7 +312,8 @@
                 <field name="email"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div t-attf-class="oe_kanban_global_click">
+                        <div t-attf-class="oe_kanban_global_click
+                            o_kanban_record_has_image_fill o_hospital_patient_kanban">
                             <div class="o_kanban_image">
                                 <img style="height:60px;width:60px" alt="Avatar"
                                      t-att-src="kanban_image('library.teacher', 'teacher_image', record.id.raw_value)"/>
@@ -333,7 +334,7 @@
                                     <li style="padding-left:5px" class="o_text_overflow"><b>Role: </b><field name="role"/></li>
                                     <li style="padding-left:5px" class="o_text_overflow"><b>Email: </b><field name="email"/></li>
                                 </ul>-->
-                                <table style="font-size:11px">
+                                <table style="font-size:11px" class="o_text_overflow">
                                     <tr>
                                         <th>
                                             Role:

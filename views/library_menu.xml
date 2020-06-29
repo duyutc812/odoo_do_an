@@ -330,14 +330,14 @@
 
     <menuitem id="menu_library_checkout_at_lib" name="Checkout At Library"
               parent="menu_library_checkout" action="action_library_checkout_at_lib"
-              sequence="1"/>
+              sequence="0"/>
 
-    <!--Checkout Book Project-->
+    <!--Checkout Back Home-->
     <record id="action_checkout_back_home" model="ir.actions.act_window">
         <field name="name">Checkout Back Home</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">library.checkout.back.home</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">kanban,tree,form</field>
     </record>
 
     <menuitem id="menu_checkout_back_home" name="Checkout Back Home"

@@ -151,11 +151,11 @@
                                            decoration-success="state == 'available'">
                                          <field name="sequence" widget="handle"/>
                                          <field name="name_seq" readonly="1"/>
-                                         <field name="description" attrs="{'readonly':[('checkout', '=', True)]}"/>
-                                         <field name="state" attrs="{'readonly':[('checkout', '=', True)]}"/>
+                                         <field name="description" attrs="{'readonly':[('checkout', 'not in', ['', False])]}"/>
+                                         <field name="state" attrs="{'readonly':[('checkout', 'not in', ['', False])]}"/>
                                          <field name="is_lost" readonly="1"/>
-                                         <field name="is_active" readonly="1"/>
-                                         <field name="checkout" readonly="1"/>
+                                         <field name="is_active" readonly="1" groups="base.group_no_one"/>
+                                         <field name="checkout" readonly="1" groups="base.group_no_one"/>
                                      </tree>
                                  </field>
                             </page>
@@ -186,7 +186,7 @@
                         <!--<t t-set="color"
                            t-value="kanban_color(record.color.raw_value ||
                            record.book_name.raw_value)"/>-->
-                        <div t-attf-class="oe_kanban_global_click">
+                        <div t-attf-class="oe_kanban_global_click   ">
                             <div class="o_kanban_image">
                                 <img alt="Avatar" style="height:70px;width:50px;"
                                      t-att-src="kanban_image('library.book', 'image',record.id.raw_value)"/>
@@ -239,8 +239,6 @@
             <search>
                 <field name="name_seq" string="Book ID"/>
                 <field name="name" string="Book Name"/>
-                <filter name="state" string="Available" domain="[('state', '=', 'available')]"/>
-                <filter name="state" string="Not Available" domain="[('state', '=', 'not_available')]"/>
                 <filter name="publisher_id" string="Publisher" context="{'group_by':'publisher_id'}"/>
                 <filter name="category" string="Category abc" context="{'group_by':'category'}"/>
             </search>

@@ -23,12 +23,12 @@ class CheckoutBackHome(models.Model):
                                default=_default_stage,
                                group_expand='_group_expand_stage_id',
                                )
-    state = fields.Selection(related='stage_id.state', store=True)
+    state = fields.Selection(related='stage_id.state', store=True, string='State')
 
     card_id = fields.Many2one('library.card', string="Card ID",
                               required=True,
                               domain=[('state', '=', 'running'), ('is_penalty', '=', False)])
-    state_card = fields.Selection(related='card_id.state', store=True)
+    state_card = fields.Selection(related='card_id.state', store=True, string='State Card')
     user_id = fields.Many2one('res.users', 'Librarian',
                               default=lambda s: s.env.uid,
                               readonly=True)
@@ -73,6 +73,8 @@ class CheckoutBackHome(models.Model):
          ('done', 'Borrowed')],
         'Kanban State',
         default='normal')
+    count_doc = fields.Integer(string="Count Document", compute='_compute_count_chk_bh')
+    count_syl = fields.Integer(string="Count Syllabus", compute='_compute_count_chk_bh')
 
     @api.multi
     def name_get(self):
@@ -80,6 +82,47 @@ class CheckoutBackHome(models.Model):
         for chk in self:
             res.append((chk.id, '%s - %s' % (chk.name_seq, chk.gt_name)))
         return res
+
+    @api.onchange('card_id')
+    def onchange_card_id(self):
+        chk_running_syl = self.search([('card_id', '=', self.card_id.id),
+                                       ('state', '=', 'running'),
+                                       ('id', 'not in', self.ids),
+                                       ('type_document', '=', 'book'),
+                                       ('category_doc', '=', 'Giáo Trình')])
+        chk_running_bk = self.search([('card_id', '=', self.card_id.id),
+                                      ('state', '=', 'running'),
+                                      ('id', 'not in', self.ids),
+                                      ('category_doc', '!=', 'Giáo Trình')])
+        if self.card_id :
+            if len(chk_running_syl) >= self.card_id.limit_syllabus and len(chk_running_bk) >= self.card_id.book_limit:
+                self.card_id = ''
+                return {
+                    'warning': {
+                        'title': _('Card ID'),
+                        'message': _('You have borrowed a sufficient number of documents allowed.\nCannot borrow document for this card!'),
+                    }
+                }
+            elif len(chk_running_bk) >= self.card_id.book_limit or len(chk_running_syl) >= self.card_id.limit_syllabus:
+                return {
+                    'warning': {
+                        'title': _('Card ID'),
+                        'message': _('Book Limit on card: %s\nSyllabus limit on card: %s\nYou are borrowing %s book(not syllabus) or document and %s syllabus!')
+                                     % (self.card_id.book_limit,  self.card_id.limit_syllabus, len(chk_running_bk), len(chk_running_syl)),
+                    }
+                }
+
+    @api.constrains('card_id', 'book_id', 'project_id')
+    def _constrains_card_id_book_project(self):
+        lib_checkout = self.env['library.checkout.back.home']
+        domain = [('card_id', '=', self.card_id.id),
+                  ('state', 'in', ['running', 'draft']),
+                  ('book_id', '=', self.book_id.id),
+                  ('project_id', '=', self.project_id.id),
+                  ('id', 'not in', self.ids)]
+        chk_of_card = lib_checkout.search(domain)
+        if chk_of_card:
+            raise ValidationError(_('You cannot borrow book to same card more than once!'))
 
     @api.onchange('type_document')
     def onchange_type_document(self):
@@ -100,7 +143,7 @@ class CheckoutBackHome(models.Model):
             return {
                        'warning': {
                            'title': _('Duration Borrow Document'),
-                           'message': _('Quá hạn mượn sách!')
+                           'message': _('Exceeded deadline for returning books!')
                        }
                    }
         # if self.return_date and self.return_date < date_today.date():
@@ -116,7 +159,7 @@ class CheckoutBackHome(models.Model):
             return {
                 'warning': {
                     'title': _('Card ID'),
-                    'message': _('quá thời hạn thẻ !'),
+                    'message': _('Exceeded term of library card!'),
                 }
             }
 
@@ -124,7 +167,7 @@ class CheckoutBackHome(models.Model):
     def constrains_return_date_end_date(self):
         for chk in self:
             if chk.return_date and chk.end_date and chk.return_date > chk.end_date:
-                raise ValidationError(_('quá hạn thẻ!'))
+                raise ValidationError(_('Exceeded term of library card!'))
 
     @api.onchange('book_id')
     def _onchange_book_id(self):
@@ -167,42 +210,55 @@ class CheckoutBackHome(models.Model):
     @api.onchange('state')
     def _onchange_state(self):
         if self.state == 'draft':
-            self.borrow_date = ''
-            self.return_date = ''
-            self.actual_return_date = ''
-            self.day_overdue = ''
-            self.price_penalty_doc = ''
-            self.price_penalty_chk = ''
-            self.price_total = ''
-            self.note = ''
+            self.update({
+                'borrow_date': '',
+                'return_date': '',
+                'actual_return_date': '',
+                'day_overdue': '',
+                'price_penalty_doc': '',
+                'price_penalty_chk': '',
+                'price_total': '',
+                'note': '',
+            })
+        elif self.state == 'done':
+            self.actual_return_date = fields.Datetime.now()
+            # self.update({
+            #     'day_overdue': '',
+            #     'price_penalty_doc': '',
+            #     'price_penalty_chk': '',
+            #     'price_total': '',
+            #     'note': '',
+            # })
         elif self.state == 'fined':
-            self.day_overdue = (fields.Date.today() - self.return_date).days
+            self.day_overdue = (fields.Date.today() - self.return_date).days if self.return_date < fields.Date.today() else 0
             self.price_penalty_chk = self.day_overdue * 10000
-        elif self.state == 'cancel':
+            self.actual_return_date = fields.Datetime.now()
             self.price_penalty_doc = 0
-
-
-    @api.multi
-    def draft_state(self):
-        stage_draft = self.env['library.checkout.stage'].search([('state', '=', 'draft')])
-        for chk in self:
-            chk.stage_id = stage_draft
-            chk._onchange_state()
-            chk.kanban_state = 'normal'
-            if chk.book_id and chk.meta_book_id.state == 'not_available':
-                chk.meta_book_id.write({
-                    'state': 'available',
-                    'checkout': '',
-                })
-            elif chk.project_id and chk.meta_project_id.state == 'not_available':
-                chk.meta_project_id.write({
-                    'state': 'available',
-                    'checkout': '',
-                })
+            self.note = ''
+        elif self.state == 'lost':
+            self.day_overdue = (fields.Date.today() - self.return_date).days if self.return_date < fields.Date.today() else 0
+            self.price_penalty_chk = self.day_overdue * 10000
+            self.price_penalty_doc = self.price_doc
+            self.actual_return_date = fields.Datetime.now()
 
     def running_state(self):
         state_running = self.env['library.checkout.stage'].search([('state', '=', 'running')])
         for chk in self:
+            chk_running_syl = self.search([('card_id', '=', chk.card_id.id),
+                                           ('state', '=', 'running'),
+                                           ('id', 'not in', chk.ids),
+                                           ('type_document', '=', 'book'),
+                                           ('category_doc', '=', 'Giáo Trình')])
+            chk_running_bk = self.search([('card_id', '=', chk.card_id.id),
+                                          ('state', '=', 'running'),
+                                          ('id', 'not in', chk.ids),
+                                          ('category_doc', '!=', 'Giáo Trình')])
+            print(chk.card_id.limit_syllabus)
+            print(chk.card_id.book_limit)
+            print(len(chk_running_bk))
+            print(len(chk_running_syl))
+            if len(chk_running_bk) >= chk.card_id.book_limit and len(chk_running_syl) >= chk.card_id.limit_syllabus:
+                raise ValidationError(_('Can not borrow more documents'))
             chk.name_seq = self.env['ir.sequence'].next_by_code('library.checkout.sequence') or _('New')
             chk.stage_id = state_running
             chk.kanban_state = 'done'
@@ -226,6 +282,24 @@ class CheckoutBackHome(models.Model):
             chk.borrow_date = fields.Datetime.now()
 
     @api.multi
+    def draft_state(self):
+        stage_draft = self.env['library.checkout.stage'].search([('state', '=', 'draft')])
+        for chk in self:
+            chk.stage_id = stage_draft
+            chk._onchange_state()
+            chk.kanban_state = 'normal'
+            if chk.book_id and chk.meta_book_id.state == 'not_available':
+                chk.meta_book_id.write({
+                    'state': 'available',
+                    'checkout': '',
+                })
+            elif chk.project_id and chk.meta_project_id.state == 'not_available':
+                chk.meta_project_id.write({
+                    'state': 'available',
+                    'checkout': '',
+                })
+
+    @api.multi
     def done_state(self):
         Stages = self.env['library.checkout.stage']
         stage_done = Stages.search([('state', '=', 'done')])
@@ -233,6 +307,7 @@ class CheckoutBackHome(models.Model):
         for chk in self:
             if chk.return_date >= fields.Date.today():
                 chk.stage_id = stage_done
+                chk._onchange_state()
                 chk.kanban_state = 'normal'
                 if chk.book_id and chk.meta_book_id.state == 'not_available':
                     chk.meta_book_id.write({
@@ -245,8 +320,23 @@ class CheckoutBackHome(models.Model):
                         'checkout': '',
                     })
             elif chk.return_date < fields.Date.today():
-                chk.fined_state()
-            chk.actual_return_date = fields.Datetime.now()
+                chk.stage_id = stage_fined
+                chk._onchange_state()
+                if chk.book_id and chk.meta_book_id.state == 'not_available':
+                    chk.meta_book_id.write({
+                        'state': 'available',
+                        'checkout': '',
+                    })
+                elif chk.project_id and chk.meta_project_id.state == 'not_available':
+                    chk.meta_project_id.write({
+                        'state': 'available',
+                        'checkout': '',
+                    })
+                mess = {
+                    'title': _('Not enough inventory!'),
+                    'message': _('bị phạt')
+                }
+                return {'warning': mess}
 
     def fined_state(self):
         stage_fined = self.env['library.checkout.stage'].search([('state', '=', 'fined')])
@@ -263,7 +353,6 @@ class CheckoutBackHome(models.Model):
                     'state': 'available',
                     'checkout': '',
                 })
-            chk.actual_return_date = fields.Datetime.now()
             context = dict(self.env.context)
             context['form_view_initial_mode'] = 'edit'
             return {
@@ -280,6 +369,7 @@ class CheckoutBackHome(models.Model):
         stage_lost = self.env['library.checkout.stage'].search([('state', '=', 'lost')])
         for chk in self:
             chk.stage_id = stage_lost
+            chk._onchange_state()
             dic = {
                     'is_lost': True,
                     'checkout': str(chk.name_get()[0][1]) + _(' - At lib'),
@@ -287,33 +377,112 @@ class CheckoutBackHome(models.Model):
                 }
             if chk.book_id:
                 chk.meta_book_id.write(dic)
+                chk.note = _('lost document: %s') % (str(chk.meta_book_id.name_seq))
             elif chk.project_id:
                 chk.meta_project_id.write(dic)
-            chk.actual_return_date = fields.Datetime.now()
-            chk.price_penalty_doc = chk.price_doc
-            chk.note = 'lost magazine or newspaper'
+                chk.note = _('lost document: %s') % (str(chk.meta_project_id.name_seq))
 
     def cancel_state(self):
-        stage_cancel = self.env['library.checkout.stage'].search([('state', '=', 'cancel')])
+        Stages = self.env['library.checkout.stage']
+        stage_fined = Stages.search([('state', '=', 'fined')])
+        stage_lost = Stages.search([('state', '=', 'lost')])
+        stage_done = Stages.search([('state', '=', 'done')])
         for chk in self:
-            chk.stage_id = stage_cancel
-            chk._onchange_state()
-            dic = {
-                    'state': 'available',
-                    'checkout': '',
-                    'is_lost': False,
-                    'description': chk.status_document,
+            if chk.stage_id == stage_lost:
+                chk.stage_id = stage_fined
+                chk._onchange_state()
+                if chk.book_id and chk.meta_book_id.state == 'not_available':
+                    chk.meta_book_id.write({
+                        'state': 'available',
+                        'checkout': '',
+                        'is_lost': False,
+                    })
+                elif chk.project_id and chk.meta_project_id.state == 'not_available':
+                    chk.meta_project_id.write({
+                        'state': 'available',
+                        'checkout': '',
+                        'is_lost': False,
+                    })
+                context = dict(self.env.context)
+                context['form_view_initial_mode'] = 'edit'
+                return {
+                    'type': 'ir.actions.act_window',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'res_model': 'library.checkout.back.home',
+                    'res_id': chk.id,
+                    'context': context
                 }
-            if chk.book_id:
-                chk.meta_book_id.write(dic)
-            elif chk.project_id:
-                chk.meta_project_id.write(dic)
-            chk.actual_return_date = fields.Datetime.now()
+            if chk.stage_id == stage_fined:
+                if self.return_date >= fields.Date.today():
+                    chk.stage_id = stage_done
+                    chk._onchange_state()
+                else:
+                    if chk.book_id:
+                        chk.meta_book_id.write({
+                            'description': chk.status_document
+                        })
+                    elif chk.project_id:
+                        chk.meta_project_id.write({
+                            'description': chk.status_document
+                        })
+                    chk.price_penalty_doc = 0
+                    chk.note = ''
 
     @api.depends('price_penalty_chk', 'price_penalty_doc')
     def _compute_price_total(self):
         for chk in self:
             chk.price_total = chk.price_penalty_chk + chk.price_penalty_doc
+
+    def _compute_count_chk_bh(self):
+        Checkouts = self.env['library.checkout.back.home']
+        for chk in self:
+            chk_hb = Checkouts.search([('card_id', '=', chk.card_id.id),
+                                      ('state', '=', 'running')])
+            chk.count_syl = len(chk_hb.filtered(lambda a: a.type_document == 'book' and a.category_doc == 'Giáo Trình'))
+            chk.count_doc = len(chk) - chk.count_syl
+
+    @api.multi
+    def open_chk_document(self):
+        return {
+            'name': _('Checkout Document'),
+            'domain': [('card_id', '=', self.card_id.id),
+                       ('state', '=', 'running'),
+                       ('category_doc', '!=', 'Giáo Trình')],
+            'view_type': 'form',
+            'res_model': 'library.checkout.back.home',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+        }
+
+    @api.multi
+    def open_chk_syllabus(self):
+        return {
+            'name': _('Checkout Syllabus'),
+            'domain': [('card_id', '=', self.card_id.id),
+                       ('state', '=', 'running'),
+                       ('type_document', '=', 'book'),
+                       ('category_doc', '=', 'Giáo Trình')],
+            'view_type': 'form',
+            'res_model': 'library.checkout.back.home',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+        }
+
+    @api.multi
+    def open_all_checkout_bh(self):
+        return {
+            'name': _('All Checkout Back Home'),
+            'domain': [('card_id', '=', self.card_id.id),
+                       ('state', '=', 'running')],
+            'view_type': 'form',
+            'res_model': 'library.checkout.back.home',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+        }
 
 
 

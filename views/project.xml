@@ -50,8 +50,8 @@
                                     <!-- editable="top" -->
                                     <field name="sequence" widget="handle"/>
                                     <field name="name_seq" readonly="1"/>
-                                    <field name="description" attrs="{'readonly':[('checkout', '=', True)]}"/>
-                                    <field name="state" attrs="{'readonly':[('checkout', '=', True)]}"/>
+                                    <field name="description" attrs="{'readonly':[('checkout', 'not in', ['', False])]}"/>
+                                    <field name="state" attrs="{'readonly':[('checkout', 'not in', ['', False])]}"/>
                                     <field name="is_lost" readonly="1"/>
                                     <field name="is_active" readonly="1"/>
                                     <field name="checkout" readonly="1"/>

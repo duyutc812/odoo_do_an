@@ -20,14 +20,14 @@ class CheckoutAtLib(models.Model):
     card_id = fields.Many2one('library.card', string="Card ID",
                               required=True,
                               domain=[('state', '=', 'running'), ('is_penalty', '=', False)], track_visibility='always')
-    state_card = fields.Selection(related='card_id.state', store=True)
+    state_card = fields.Selection(related='card_id.state', store=True, string='State Card')
     gt_name = fields.Char(related='card_id.gt_name', store=True, track_visibility='always')
     stage_id = fields.Many2one('library.checkout.stage',
                                default=_default_stage,
                                group_expand='_group_expand_stage_id',
                                track_visibility='always'
                                )
-    state = fields.Selection(related='stage_id.state', store=True)
+    state = fields.Selection(related='stage_id.state', store=True, string='State')
     name_seq = fields.Char(string="Checkout ID", default=lambda self: _('New'), readonly=True)
     borrow_date = fields.Datetime(string='Borrow Date', track_visibility='always')
     return_date = fields.Datetime(string='Return Date', track_visibility='always')
@@ -54,6 +54,19 @@ class CheckoutAtLib(models.Model):
     price_penalty = fields.Monetary('Penalty Price', 'currency_id')
     note = fields.Char('Note')
     is_lost_doc = fields.Boolean('Lost')
+
+    @api.onchange('card_id')
+    def onchange_card_id(self):
+        if self.search([('card_id', '=', self.card_id.id),
+                        ('state', '=', 'running'),
+                        ('id', 'not in', self.ids)]):
+            self.card_id = ''
+            return {
+                'warning': {
+                    'title': _('Card ID'),
+                    'message': _('You are borrowing a document, please return it to continue!'),
+                }
+            }
 
     @api.onchange('type_document')
     def onchange_type_document(self):
@@ -135,8 +148,13 @@ class CheckoutAtLib(models.Model):
 
     @api.onchange('state')
     def _onchange_state(self):
-        if self.state not in ['fined', 'lost']:
-            self.price = 0
+        if self.state == 'draft':
+            self.borrow_date = ''
+            self.return_date = ''
+        elif self.state == 'running':
+            self.return_date = ''
+        if self.state not in ['lost']:
+            self.price_penalty = 0
             self.note = ''
 
     @api.multi
@@ -170,7 +188,6 @@ class CheckoutAtLib(models.Model):
                 else:
                     raise ValidationError(_('Project: " %s " have borrowed.' % (self.project_id.name)))
             chk.borrow_date = fields.Datetime.now()
-            chk.return_date = ''
             return {
                 'effect': {
                     'fadeout': 'slow',
@@ -185,16 +202,16 @@ class CheckoutAtLib(models.Model):
         for chk in self:
             chk.stage_id = stage_draft
             chk._onchange_state()
+            dic = {
+                'state': 'available',
+                'checkout': '',
+            }
             if chk.book_id and chk.meta_book_id.state == 'not_available':
-                chk.meta_book_id.state = 'available'
-                chk.meta_book_id.checkout = ''
+                chk.meta_book_id.write(dic)
             elif chk.mgz_new_id and chk.meta_mgz_new_id.state == 'not_available':
-                chk.meta_mgz_new_id.state = 'available'
-                chk.meta_mgz_new_id.checkout = ''
+                chk.meta_mgz_new_id.write(dic)
             elif chk.project_id and chk.meta_project_id.state == 'not_available':
-                chk.meta_project_id.state = 'available'
-                chk.meta_project_id.checkout = ''
-            chk.borrow_date = ''
+                chk.meta_project_id.write(dic)
 
     @api.multi
     def done_state(self):
@@ -202,15 +219,16 @@ class CheckoutAtLib(models.Model):
         for chk in self:
             chk.stage_id = stage_done
             chk._onchange_state()
+            dic = {
+                'state': 'available',
+                'checkout': '',
+            }
             if chk.book_id:
-                chk.meta_book_id.state = 'available'
-                chk.meta_book_id.checkout = ''
+                chk.meta_book_id.write(dic)
             elif chk.mgz_new_id:
-                chk.meta_mgz_new_id.state = 'available'
-                chk.meta_mgz_new_id.checkout = ''
+                chk.meta_mgz_new_ide.write(dic)
             elif chk.project_id:
-                chk.meta_project_id.state = 'available'
-                chk.meta_project_id.checkout = ''
+                chk.meta_project_id.write(dic)
             chk.return_date = fields.Datetime.now()
 
     @api.multi
@@ -218,15 +236,17 @@ class CheckoutAtLib(models.Model):
         stage_fined = self.env['library.checkout.stage'].search([('state', '=', 'fined')])
         for chk in self:
             chk.stage_id = stage_fined
+            chk._onchange_state()
+            dic = {
+                'state': 'available',
+                'checkout': '',
+            }
             if chk.book_id:
-                chk.meta_book_id.state = 'available'
-                chk.meta_book_id.checkout = ''
+                chk.meta_book_id.write(dic)
             elif chk.mgz_new_id:
-                chk.meta_mgz_new_id.state = 'available'
-                chk.meta_mgz_new_id.checkout = ''
+                chk.meta_mgz_new_id.write(dic)
             elif chk.project_id:
-                chk.meta_project_id.state = 'available'
-                chk.meta_project_id.checkout = ''
+                chk.meta_project_id.write(dic)
             chk.return_date = fields.Datetime.now()
             context = dict(self.env.context)
             context['form_view_initial_mode'] = 'edit'
@@ -244,43 +264,42 @@ class CheckoutAtLib(models.Model):
         stage_lost = self.env['library.checkout.stage'].search([('state', '=', 'lost')])
         for chk in self:
             chk.stage_id = stage_lost
+            chk._onchange_state()
+            dic = {
+                'is_lost': True,
+                'checkout': str(chk.name_get()[0][1]) + _(' - At lib'),
+                'state': 'not_available',
+            }
             if chk.book_id:
-                chk.meta_book_id.is_lost = True
-                chk.meta_book_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
-                chk.meta_book_id.state = 'not_available'
+                chk.meta_book_id.write(dic)
+                chk.note = _('lost document: %s') % (str(chk.meta_book_id.name_seq))
             elif chk.mgz_new_id:
-                chk.meta_mgz_new_id.is_lost = True
-                chk.meta_mgz_new_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
-                chk.meta_mgz_new_id.state = 'not_available'
+                chk.meta_mgz_new_id.write(dic)
+                chk.note = _('lost document: %s') % (str(chk.meta_mgz_new_id.name_seq))
             elif chk.project_id:
-                chk.meta_project_id.is_lost = True
-                chk.meta_project_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
-                chk.meta_project_id.state = 'not_available'
+                chk.meta_project_id.write(dic)
+                chk.note = _('lost document: %s') % (str(chk.meta_project_id.name_seq))
             chk.return_date = fields.Datetime.now()
             chk.price_penalty = chk.price_doc
-            chk.note = 'lost magazine or newspaper'
 
     @api.multi
     def cancel_state(self):
-        stage_cancel = self.env['library.checkout.stage'].search([('state', '=', 'cancel')])
+        stage_done = self.env['library.checkout.stage'].search([('state', '=', 'done')])
         for chk in self:
-            chk.stage_id = stage_cancel
+            chk.stage_id = stage_done
             chk._onchange_state()
+            dic = {
+                'state': 'available',
+                'checkout': '',
+                'description': chk.status_document,
+                'is_lost': False,
+            }
             if chk.book_id:
-                chk.meta_book_id.state = 'available'
-                chk.meta_book_id.checkout = ''
-                chk.meta_book_id.is_lost = False
-                chk.meta_book_id.description = chk.status_document
+                chk.meta_book_id.write(dic)
             elif chk.mgz_new_id:
-                chk.meta_mgz_new_id.state = 'available'
-                chk.meta_mgz_new_id.checkout = ''
-                chk.meta_mgz_new_id.is_lost = False
-                chk.meta_mgz_new_id.description = chk.status_document
+                chk.meta_mgz_new_id.write(dic)
             elif chk.project_id:
-                chk.meta_project_id.state = 'available'
-                chk.meta_project_id.checkout = ''
-                chk.meta_project_id.is_lost = False
-                chk.meta_project_id.description = chk.status_document
+                chk.meta_project_id.write(dic)
             chk.return_date = fields.Datetime.now()
 
     @api.multi

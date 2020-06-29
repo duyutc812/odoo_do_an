@@ -70,6 +70,8 @@ class Card(models.Model):
                                    compute='_compute_end_date_penalty', store=True)
     note = fields.Char('Note')
     count = fields.Integer(compute='_compute_count')
+    student_image = fields.Binary(related='student_id.student_image', store=True, string="Student Image")
+    teacher_image = fields.Binary(related='teacher_id.teacher_image', store=True, string="Teacher Image")
 
     # kanban_state = fields.Selection(
     #     [('grey', 'Draft'),

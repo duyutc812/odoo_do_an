@@ -65,12 +65,6 @@
                             class="oe_highlight"
                             attrs="{'invisible':[('state', '!=', 'fined')]}"/>
 
-                    <!--
-
-                   <button name="%(do_an_tn.action_wizard_modify_descrip_doc)d" string="Modify Description"
-                            type="action"
-                            attrs="{'invisible': [('state', 'in', ['running', 'lost'])]}"/>
-                    -->
                     <button name="cancel_state"
                             type="object"
                             string="Cancel"
@@ -86,13 +80,26 @@
                            /><!--options="{'fold_field': 'fold'}"-->
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="expense_button_box">
-                            <button name="toggle_active"
-                                    type="object"
-                                    confirm="(Un)archiving a project automatically (un)archives its tasks and issues. Do you want to proceed?"
-                                    class="oe_stat_button"
-                                    icon="fa-archive">
-                            </button>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="open_all_checkout_bh"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-bars" string="All checkout back home">
+                        </button>
+
+                        <button name="open_chk_document"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-bars">
+                            <field name="count_doc" string="Count Document" widget="statinfo"/>
+                        </button>
+
+                        <button name="open_chk_syllabus"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-bars">
+                            <field name="count_syl" string="Count Syllabus" widget="statinfo"/>
+                        </button>
                     </div>
                     <div class="oe_title">
                         <h1>
@@ -121,25 +128,29 @@
                             <field name="user_id" required="1"/>
                         </group>
                     </group>
-                    <group string="Others" >
+                    <group string="Others">
                         <group>
-                            <field name="type_document" required="1"/>
+                            <field name="type_document" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="book_id"
                                    attrs="{'invisible': [('type_document', '!=', 'book')],
-                                           'required': [('type_document', '=', 'book')]}"
+                                           'required': [('type_document', '=', 'book')],
+                                           'readonly': [('state', '!=', 'draft')]}"
                                    options="{'no_create': True, 'no_open': True}"/>
                             <field name="meta_book_id"
                                    attrs="{'invisible': [('type_document', '!=', 'book')],
-                                           'required': [('type_document', '=', 'book')]}"
+                                           'required': [('type_document', '=', 'book')],
+                                           'readonly': [('state', '!=', 'draft')]}"
                                    options="{'no_create': True}"/>
                             <field name="project_id"
                                    options="{'no_create': True, 'no_open': True}"
                                    attrs="{'invisible': [('type_document', '!=', 'project')],
-                                           'required': [('type_document', '=', 'project')]}"/>
+                                           'required': [('type_document', '=', 'project')],
+                                           'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="meta_project_id"
                                    options="{'no_create': True, 'no_open': True}"
                                    attrs="{'invisible': [('type_document', '!=', 'project')],
-                                           'required': [('type_document', '=', 'project')]}"/>
+                                           'required': [('type_document', '=', 'project')],
+                                           'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                         <group>
                             <field name="document_term" readonly="1" string="Term"/>
@@ -150,20 +161,24 @@
                     </group>
                     <group string="Return Date">
                         <group>
-                            <field name="return_date" required="1"/>
+                            <field name="return_date" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                         <group>
-                            <field name="actual_return_date" string="Actual Return Date"/>
+                            <field name="actual_return_date" string="Actual Return Date" readonly="1"/>
                         </group>
                     </group>
-                    <group>
+                    <group string="Penalty" attrs="{'invisible': [('state', 'in', ['draft', 'running', 'done'])]}">
                         <group>
-                            <field name="currency_id" invisible="1"/>
-                            <field name="day_overdue" attrs="{'invisible': [('day_overdue', '=', 0)]}"/>
-                            <field name="price_penalty_chk" attrs="{'invisible': [('price_penalty_chk', '=', 0)]}"/>
-                            <field name="price_penalty_doc"/>
+                            <field name="currency_id" invisible="1" readonly="1"/>
+                            <field name="day_overdue" attrs="{'invisible': [('day_overdue', '=', 0)]}" readonly="1"/>
+                            <field name="price_penalty_chk" string="Price Checkout"
+                                   attrs="{'invisible': [('price_penalty_chk', '=', 0)]}"
+                                   readonly="1"/>
+                            <field name="price_penalty_doc" attrs="{'readonly': [('state', '=', 'lost')]}"/>
+                        </group>
+                        <group>
                             <field name="price_total" attrs="{'invisible': [('price_total', '=', 0)]}"/>
-                            <field name="note"/>
+                            <field name="note" attrs="{'readonly': [('state', '=', 'lost')]}"/>
                         </group>
                     </group>
                 </sheet>
@@ -173,6 +188,116 @@
                     <field name="message_ids" widget="mail_thread"/>
                 </div>
             </form>
+        </field>
+    </record>
+
+    <record id="view_search_checkout_bh" model="ir.ui.view">
+        <field name="name">view.search.checkout.bh</field>
+        <field name="model">library.checkout.back.home</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="card_id" string="Card ID"/>
+                <field name="name_seq" string="Checkout ID"/>
+                <field name="gt_name" string="User Name"/>
+                <filter string="Syllabus" name="syllabus" domain="[('type_document', '=', 'book'),
+                                                           ('category_doc', '=', 'Giáo Trình')]"/>
+                <filter string="Document(not syllabus)" name="doc_not_syl" domain="[('category_doc', '!=', 'Giáo Trình')]"/>
+                <filter string="Draft" name="draft_state" domain="[('state', '=', 'draft')]"/>
+                <filter string="Borrowed" name="running_state" domain="[('state', '=', 'running')]"/>
+                <filter string="Returned" name="done_state" domain="[('state', '=', 'done')]"/>
+                <filter string="Fined" name="fined_state" domain="[('state', '=', 'fined')]"/>
+                <filter string="Lost" name="lost_state" domain="[('state', '=', 'lost')]"/>
+                <group>
+                    <filter string="Card ID" name="card_id" context="{'group_by': 'card_id'}"/>
+                    <filter string="State" name="state_group" context="{'group_by': 'state'}"/>
+                    <filter string="Actual Return Date" name="actual_return_date" context="{'group_by': 'actual_return_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_kanban_chk_back_home" model="ir.ui.view">
+        <field name="name">view.kanban.chk.back.home</field>
+        <field name="model">library.checkout.back.home</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="stage_id">
+                 <progressbar
+                     field="kanban_state"
+                     colors='{"done": "success", "blocked": "danger"}' />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <t t-if="record.state.raw_value=='draft'">
+                                <div class="o_dropdown_kanban dropdown">
+                                    <!-- Top-right drop down menu here... -->
+                                    <a class="dropdown-toggle btn" data-toggle="dropdown" role="button" aria-label="Dropdown menu" title="Dropdown menu" href="#">
+                                      <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div class="dropdown-menu" role="menu">
+                                        <t>
+                                            <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                        </t>
+                                    </div>
+                                </div>
+                            </t>
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <h6>
+                                        <a type="open" class="o_text_overflow"><field name="name_seq"/></a>
+                                    </h6>
+                                </strong>
+                                <table style="font-size:10px" class="o_text_overflow">
+                                    <tr>
+                                        <th>
+                                            Card ID:
+                                        </th>
+                                        <td>
+                                            <field name="card_id"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            Title:
+                                        </th>
+                                        <td>
+                                            <t t-if="record.book_id.raw_value">
+                                                <field name="book_id"/>
+                                            </t>
+                                            <t t-else="record.project_id.raw_value">
+                                                <field name="project_id"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            ID Doc:
+                                        </th>
+                                        <td class="o_text_overflow">
+                                            <t t-if="record.meta_book_id.raw_value">
+                                                <field name="meta_book_id"/>
+                                            </t>
+                                            <t t-elif="record.meta_project_id.raw_value">
+                                                <field name="meta_project_id"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            State:
+                                        </th>
+                                        <td>
+                                            <field name="state"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </t>
+                    <searchpanel>
+                        <field name="card_id" string="Card ID" domain="[('state', '=', 'running')]"/>
+                    </searchpanel>
+                </templates>
+            </kanban>
         </field>
     </record>
 
