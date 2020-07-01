@@ -50,14 +50,14 @@ class CheckoutAtLib(models.Model):
                               readonly=True, track_visibility='always')
 
     currency_id = fields.Many2one('res.currency', 'Currency',
-                                  default=lambda s: s.env['res.currency'].search([('name', '=', 'VND')], limit=1))
+                                  default=lambda s: s.env['res.currency'].sudo().search([('name', '=', 'VND')], limit=1))
     price_penalty = fields.Monetary('Penalty Price', 'currency_id')
     note = fields.Char('Note')
     is_lost_doc = fields.Boolean('Lost')
 
     @api.onchange('card_id')
     def onchange_card_id(self):
-        if self.search([('card_id', '=', self.card_id.id),
+        if self.sudo().search([('card_id', '=', self.card_id.id),
                         ('state', '=', 'running'),
                         ('id', 'not in', self.ids)]):
             self.card_id = ''
@@ -133,7 +133,7 @@ class CheckoutAtLib(models.Model):
                   ('mgz_new_id', '=', self.mgz_new_id.id),
                   ('project_id', '=', self.project_id.id),
                   ('id', 'not in', self.ids)]
-        chk_of_card = lib_checkout.search(domain)
+        chk_of_card = lib_checkout.sudo().search(domain)
         if chk_of_card:
             raise ValidationError(_('You cannot borrow book to same card more than once!'))
 
@@ -142,7 +142,7 @@ class CheckoutAtLib(models.Model):
             ('state', '=', 'running'),
             ('id', '!=', self.id)
         ]
-        checkout_of_card2 = lib_checkout.search_count(domain2)
+        checkout_of_card2 = lib_checkout.sudo().search_count(domain2)
         if checkout_of_card2:
             raise ValidationError(_('You have borrowed more than the specified number of books for each card'))
 
@@ -161,7 +161,7 @@ class CheckoutAtLib(models.Model):
     def running_state(self):
         state_running = self.env['library.checkout.stage'].search([('state', '=', 'running')])
         for chk in self:
-            if self.search([('card_id', '=', chk.card_id.id),
+            if self.sudo().search([('card_id', '=', chk.card_id.id),
                             ('state', '=', 'running'),
                             ('id', 'not in', self.ids)]):
                 raise ValidationError(_('You are borrowing a document, please return it to continue!'))
@@ -174,7 +174,7 @@ class CheckoutAtLib(models.Model):
                     chk.meta_book_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
                 else:
                     raise ValidationError(_('Book: "%s - %s" have borrowed.' %
-                                          (self.meta_book_id.name_seq, self.meta_book_id.book_id.name)))
+                                          (self.meta_book_id.name_seq, self.book_id.name)))
             elif chk.mgz_new_id:
                 if self.meta_mgz_new_id.state == 'available':
                     self.meta_mgz_new_id.state = 'not_available'
@@ -302,6 +302,36 @@ class CheckoutAtLib(models.Model):
                 chk.meta_project_id.write(dic)
             chk.return_date = fields.Datetime.now()
 
+    def borrow_back_home(self):
+        chk_bh_obj = self.env['library.checkout.back.home']
+        for chk in self:
+            if chk.type_document == 'magazine':
+                raise ValidationError('Khong the muon ve nha')
+            else:
+                vals={}
+                vals.update({
+                    'card_id': chk.card_id.id,
+                    'type_document': chk.type_document,
+                })
+                if chk.book_id:
+                    vals.update({
+                        'book_id': chk.book_id.id,
+                        'meta_book_id': chk.meta_book_id.id,
+                    })
+                elif chk.project_id:
+                    vals.update({
+                        'project_id': chk.project_id.id,
+                        'meta_project_id': chk.meta_project_id.id,
+                    })
+            chk_bh = chk_bh_obj.create(vals)
+            return {'name': _('Borrow Back Home'),
+                    'view_mode': 'form',
+                    'view_type': 'form',
+                    'res_id': chk_bh.id,
+                    'res_model': 'library.checkout.back.home',
+                    'type': 'ir.actions.act_window',
+                    'target': 'new'}
+
     @api.multi
     def name_get(self):
         res = []
@@ -314,4 +344,10 @@ class CheckoutAtLib(models.Model):
             if chk.state != 'draft':
                 raise ValidationError(_('You can not delete checkout when state not is draft!'))
         return super(CheckoutAtLib, self).unlink()
+
+    @api.multi
+    def print_report(self):
+        return self.env.ref('do_an_tn.action_library_checkout_at_lib_penalty').report_action(self)
+
+
 

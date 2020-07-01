@@ -201,7 +201,7 @@ class Card(models.Model):
         if self.user == 'student':
             print(self.ids)
             """ids la id cua record sap tao"""
-            student_lib_card = self.search([
+            student_lib_card = self.sudo().search([
                 ('student_id', '=', self.student_id.id),
                 ('state', '!=', 'expire'),
                 ('id', 'not in', self.ids)
@@ -211,7 +211,7 @@ class Card(models.Model):
                 raise ValidationError(_('You cannot assign library card to same student more than once!'))
         if self.user == 'teacher':
             # print(self.ids)
-            teacher_lib_card = self.search([
+            teacher_lib_card = self.sudo().search([
                 ('teacher_id', '=', self.teacher_id.id),
                 ('state', '!=', 'expire'),
                 ('id', '!=', self.id)
@@ -239,7 +239,7 @@ class Card(models.Model):
         return super(Card, self).unlink()
 
     def _compute_count(self):
-        chk_at_lib = self.env['library.checkout.at.lib'].search_count([
+        chk_at_lib = self.env['library.checkout.at.lib'].sudo().search_count([
             ('card_id', '=', self.id),
         ])
         self.count = chk_at_lib
@@ -253,7 +253,7 @@ class Card(models.Model):
         date_today = pytz.utc.localize(current_date).astimezone(user_tz)
         print(date_today)
         Stages = self.env['library.card.stage']
-        lib_card_cancel_penalty = self.search([('is_penalty', '=', True),
+        lib_card_cancel_penalty = self.sudo().search([('is_penalty', '=', True),
                                                ('code', '!=', 'New'),
                                                ('state', '=', 'running'),
                                                ('end_date_penalty', '<', date_today)])
@@ -262,11 +262,11 @@ class Card(models.Model):
                 lib_card.is_penalty = False
                 lib_card._onchange_is_penalty()
                 lib_card.message_post(_('Scheduled Action: Canceled Penalty'))
-        lib_card_expire = self.search([('end_date', '<', date_today),
+        lib_card_expire = self.sudo().search([('end_date', '<', date_today),
                                        ('code', '!=', 'New')])
         if lib_card_expire:
             for lib_card in lib_card_expire:
-                lib_card.stage_id = Stages.search([('state', '=', 'expire')])
+                lib_card.stage_id = Stages.sudo().search([('state', '=', 'expire')])
 
         # lib_card_running = self.search([('end_date', '>', date_today),
         #                                 ('code', '!=', 'New')])
@@ -289,7 +289,7 @@ class Card(models.Model):
         print(user_tz)
         date_today = pytz.utc.localize(current_date).astimezone(user_tz)
         print(date_today)
-        lib_card_will_expire = self.search([('end_date', '=', date_today),
+        lib_card_will_expire = self.sudo().search([('end_date', '=', date_today),
                                             ('code', '!=', 'New')])
         print(lib_card_will_expire)
         print('abc')
@@ -306,6 +306,7 @@ class Card(models.Model):
         template = self.env['mail.template'].browse(template_id)
         # trả về id của thằng template
         for lib_card in self:
+            lib_card.email = lib_card.student_id.email if lib_card.student_id else lib_card.teacher_id.email
             if not lib_card.email:
                 raise UserError(_("Cannot send email: user %s has no email address.") % lib_card.gt_name)
             # print('template: ', template, '\n', 'template_id: ', template_id)

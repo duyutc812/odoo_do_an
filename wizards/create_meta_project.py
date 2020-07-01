@@ -18,7 +18,7 @@ class CreateMetaProject(models.TransientModel):
     @api.model
     def default_get(self, field_names):
         defaults = super().default_get(field_names)
-        pro = self.env['document.project'].search([('id', '=', self.env.context.get('active_id'))])
+        pro = self.env['document.project'].sudo().search([('id', '=', self.env.context.get('active_id'))])
         defaults['project_id'] = pro.id
         return defaults
 

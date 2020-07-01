@@ -7,7 +7,8 @@
                 <header>
                     <button name="%(do_an_tn.action_wizard_create_meta_mg_new)d"
                             type="action"
-                            string="Create Meta Magazine Newspaper"/>
+                            string="Create Meta Magazine Newspaper"
+                            groups="do_an_tn.library_group_librarian"/>
                 </header>
                 <sheet>
                     <!--<field name="image" widget="image" class="oe_avatar"/>-->
@@ -63,7 +64,8 @@
                     </group>
                     <notebook>
                         <page string="Meta Magazine-Newspaper">
-                            <field name="meta_mgz_new_ids">
+                            <field name="meta_mgz_new_ids"
+                                   groups="do_an_tn.library_group_librarian">
                                 <tree decoration-success="state == 'available'"
                                       decoration-danger="state == 'not_available'"
                                       editable="bottom">
@@ -74,8 +76,8 @@
                                            attrs="{'readonly':[('checkout', 'not in', ['', False])]}"/>
                                     <field name="state" attrs="{'readonly':[('checkout', 'not in', ['', False])]}"/>
                                     <field name="is_lost" readonly="1"/>
-                                    <field name="is_active" readonly="1"/>
-                                    <field name="checkout" readonly="1"/>
+                                    <field name="is_active" readonly="1" groups="do_an_tn.library_group_librarian"/>
+                                    <field name="checkout" readonly="1" groups="do_an_tn.library_group_librarian"/>
                                 </tree>
                             </field>
                         </page>
@@ -145,6 +147,32 @@
                 <field name="description"/>
                 <field name="state"/>
             </tree>
+        </field>
+    </record>
+
+    <record id="view_form_meta_magazinenewspapers" model="ir.ui.view">
+        <field name="name">view.form.meta.magazinenewspapers</field>
+        <field name="model">meta.magazinenewspapers</field>
+        <field name="arch" type="xml">
+           <form>
+               <sheet>
+                   <div class="oe_title">
+                           <label for="name_seq" class="oe_edit_only"/>
+                           <h1>
+                               <field name="name_seq"/>
+                           </h1>
+                       </div>
+                   <group>
+                       <group>
+                           <field name="mgz_new_id"/>
+                           <field name="state"/>
+                       </group>
+                       <group>
+                           <field name="description"/>
+                       </group>
+                   </group>
+               </sheet>
+           </form>
         </field>
     </record>
 </odoo>

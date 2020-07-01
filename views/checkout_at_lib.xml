@@ -63,9 +63,18 @@
                             string="Cancel"
                             class="oe_highlight"
                             attrs="{'invisible':[('state', 'not in', ['lost', 'fined'])]}"/>
+                    <button name="borrow_back_home"
+                            type="object"
+                            string="Borrow Back Home"
+                            class="oe_highlight"
+                            attrs="{'invisible':[('state', 'not in', ['done', 'fined'])]}"
+                            confirm="Create checkout back home? Are you sure?"/>
+
                     <button name="%(do_an_tn.action_wizard_modify_descrip_doc)d" string="Modify Description"
                             type="action"
                             attrs="{'invisible': [('state', 'in', ['running', 'lost'])]}"/>
+                    <button name="print_report" type="object" string="Print Report" class="oe_highlight"
+                            attrs="{'invisible':[('state', 'not in', ['fined', 'lost'])]}"/>
                     <field name="stage_id"
                            widget="statusbar"
                            options="{'fold_field': 'fold'}"
@@ -166,7 +175,7 @@
                 <filter string="Returned" name="done_state" domain="[('state','=', 'done')]"/>
                 <filter string="Fined" name="fined_state" domain="[('state','=', 'fined')]"/>
                 <group>
-                    <filter string="State" name="state" context="{'group_by': 'state'}"/>
+                    <filter string="State" name="stage_id" context="{'group_by': 'stage_id'}"/>
                     <filter string="Card ID" name="card_id" context="{'group_by': 'card_id'}"/>
                     <filter string="Borrow Date" name="borrow_date" context="{'group_by': 'borrow_date'}"/>
                 </group>
@@ -178,7 +187,7 @@
         <field name="name">view.kanban.chk.at.lib</field>
         <field name="model">library.checkout.at.lib</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="stage_id" quick_create="false" group_create="false">
+            <kanban quick_create="false" group_create="false">
                 <field name="state"/>
                 <field name="card_id"/>
                 <field name="type_document"/>
@@ -206,81 +215,6 @@
                                     </div>
                                 </div>
                             </t>
-                            <!--<div class="oe_kanban_details">
-                                <strong>
-                                    <h6>
-                                        <a type="open" class="o_text_overflow">
-                                            <field name="name_seq"/>
-                                        </a>
-                                    </h6>
-                                </strong>
-
-                                &lt;!&ndash;<t t-set="red_or_black"
-                                        t-value="record.state_card.raw_value == 'expire' ?
-                                                'oe_kanban_text_red' : '' "/>
-                                <li style="padding-left:20px" t-att-class="red_or_black">
-                                    <field name="card_id"/>
-                                    <t t-if="record.state_card.raw_value == 'expire'"> (Expire)</t>
-                                </li>&ndash;&gt;
-                                <table style="font-size:10px" class="o_text_overflow">
-                                    <tr>
-                                        <th>
-                                            Card ID:
-                                        </th>
-                                        <td>
-                                            <field name="card_id"/>
-                                        </td>
-                                    </tr>
-                                    &lt;!&ndash;<tr>
-                                        <th>
-                                            State Card:
-                                        </th>
-                                        <td>
-                                            <field name="state_card"/>
-                                        </td>
-                                    </tr>&ndash;&gt;
-                                    <tr>
-                                        <th>
-                                            Title:
-                                        </th>
-                                        <td>
-                                            <t t-if="record.book_id.raw_value">
-                                                <field name="book_id"/>
-                                            </t>
-                                            <t t-elif="record.mgz_new_id.raw_value">
-                                                <field name="mgz_new_id"/>
-                                            </t>
-                                            <t t-else="record.project_id.raw_value">
-                                                <field name="project_id"/>
-                                            </t>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            ID Doc:
-                                        </th>
-                                        <td class="o_text_overflow">
-                                            <t t-if="record.meta_book_id.raw_value">
-                                                <field name="meta_book_id"/>
-                                            </t>
-                                            <t t-elif="record.meta_project_id.raw_value">
-                                                <field name="meta_project_id"/>
-                                            </t>
-                                            <t t-else="record.meta_mgz_new_id.raw_value">
-                                                <field name="meta_mgz_new_id"/>
-                                            </t>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            State:
-                                        </th>
-                                        <td>
-                                            <field name="state"/>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>-->
                             <div class="o_kanban_record_top mb16">
                                     <div class="o_kanban_record_headings mt4">
                                         <strong class="o_kanban_record_title"><b><span style="color:#7C7BAD"><field name="name_seq"/> - <field name="gt_name"/></span></b></strong>
@@ -335,12 +269,48 @@
                             </div>
                         </div>
                     </t>
-                    <searchpanel>
+                    <!--<searchpanel>
                         <field name="card_id" string="Card ID" domain="[('state', '=', 'running')]"/>
-                    </searchpanel>
+                    </searchpanel>-->
                 </templates>
             </kanban>
         </field>
     </record>
 
+    <record id="view_calendar_chk_at_lib" model="ir.ui.view">
+        <field name="name">view.calendar.chk.at.lib</field>
+        <field name="model">library.checkout.at.lib</field>
+        <field name="arch" type="xml">
+            <calendar date_start="borrow_date" color="card_id" quick_add="False" mode="month" >
+                <field name="card_id"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_graph_chk_at_lib" model="ir.ui.view">
+        <field name="model">library.checkout.at.lib</field>
+        <field name="arch" type="xml">
+            <graph type="bar">
+                <!-- Fields used for the display text -->
+                <field name="stage_id"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="price_penalty" type="measure" widget="monetary"
+                       options="{'currency_field': 'currency_id'}"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_pivot_chk_at_lib" model="ir.ui.view">
+        <field name="model">library.checkout.at.lib</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="stage_id" type="col"/>
+                <field name="card_id" />
+                <field name="borrow_date" interval="week" />
+                <field name="currency_id"/>
+                <field name="price_penalty" type="measure" widget="monetary"/>
+            </pivot>
+      </field>
+    </record>
 </odoo>

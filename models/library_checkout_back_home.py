@@ -32,12 +32,13 @@ class CheckoutBackHome(models.Model):
     user_id = fields.Many2one('res.users', 'Librarian',
                               default=lambda s: s.env.uid,
                               readonly=True)
+    user_image = fields.Binary(related='user_id.image', store=True)
     borrow_date = fields.Datetime(string="Borrow date", readonly=True)
     name_seq = fields.Char(string="Checkout ID", default=lambda self: _('New'), readonly=True)
 
     # limit_book_card = fields.Integer(related='card_id.book_limit', string='Book limit on card')
-    gt_name = fields.Char(related='card_id.gt_name', string='The user\'s card')
-    end_date = fields.Date(related='card_id.end_date', string='End Date')
+    gt_name = fields.Char(related='card_id.gt_name', string='The user\'s card', store=True)
+    end_date = fields.Date(related='card_id.end_date', string='End Date', store=True)
     type_document = fields.Selection([
         ('book', 'Book'),
         ('project', 'Project'),
@@ -51,7 +52,7 @@ class CheckoutBackHome(models.Model):
     category_doc = fields.Char(string='Category', compute='_compute_category_doc', store=True)
     price_doc = fields.Monetary("Price Doc", 'currency_id', compute='_compute_status_document_price_doc', store=True)
     currency_id = fields.Many2one('res.currency', 'Currency',
-                                  default=lambda s: s.env['res.currency'].search([('name', '=', 'VND')], limit=1))
+                                  default=lambda s: s.env['res.currency'].sudo().search([('name', '=', 'VND')], limit=1))
     price_penalty_chk = fields.Monetary('Penalty Price Checkout', 'currency_id')
     price_penalty_doc = fields.Monetary('Penalty Price Book', 'currency_id')
     price_total = fields.Monetary('Penalty Total', 'currency_id', compute="_compute_price_total", store=True)
@@ -68,13 +69,13 @@ class CheckoutBackHome(models.Model):
         'Priority',
         default='0')
     kanban_state = fields.Selection(
-        [('normal', 'Draft'),
-         ('blocked', 'Blocked'),
-         ('done', 'Borrowed')],
+        [('normal', 'In Progress'),
+         ('overdue', 'Borrow Overdue')],
         'Kanban State',
         default='normal')
     count_doc = fields.Integer(string="Count Document", compute='_compute_count_chk_bh')
     count_syl = fields.Integer(string="Count Syllabus", compute='_compute_count_chk_bh')
+    count_penalty = fields.Integer(string="Count Syllabus", compute='_compute_count_chk_bh')
 
     @api.multi
     def name_get(self):
@@ -85,12 +86,12 @@ class CheckoutBackHome(models.Model):
 
     @api.onchange('card_id')
     def onchange_card_id(self):
-        chk_running_syl = self.search([('card_id', '=', self.card_id.id),
+        chk_running_syl = self.sudo().search([('card_id', '=', self.card_id.id),
                                        ('state', '=', 'running'),
                                        ('id', 'not in', self.ids),
                                        ('type_document', '=', 'book'),
                                        ('category_doc', '=', 'Giáo Trình')])
-        chk_running_bk = self.search([('card_id', '=', self.card_id.id),
+        chk_running_bk = self.sudo().search([('card_id', '=', self.card_id.id),
                                       ('state', '=', 'running'),
                                       ('id', 'not in', self.ids),
                                       ('category_doc', '!=', 'Giáo Trình')])
@@ -120,7 +121,7 @@ class CheckoutBackHome(models.Model):
                   ('book_id', '=', self.book_id.id),
                   ('project_id', '=', self.project_id.id),
                   ('id', 'not in', self.ids)]
-        chk_of_card = lib_checkout.search(domain)
+        chk_of_card = lib_checkout.sudo().search(domain)
         if chk_of_card:
             raise ValidationError(_('You cannot borrow book to same card more than once!'))
 
@@ -219,6 +220,7 @@ class CheckoutBackHome(models.Model):
                 'price_penalty_chk': '',
                 'price_total': '',
                 'note': '',
+
             })
         elif self.state == 'done':
             self.actual_return_date = fields.Datetime.now()
@@ -240,28 +242,30 @@ class CheckoutBackHome(models.Model):
             self.price_penalty_chk = self.day_overdue * 10000
             self.price_penalty_doc = self.price_doc
             self.actual_return_date = fields.Datetime.now()
+        self.kanban_state = 'normal'
 
     def running_state(self):
         state_running = self.env['library.checkout.stage'].search([('state', '=', 'running')])
         for chk in self:
-            chk_running_syl = self.search([('card_id', '=', chk.card_id.id),
+            chk_running_syl = self.sudo().search([('card_id', '=', chk.card_id.id),
                                            ('state', '=', 'running'),
                                            ('id', 'not in', chk.ids),
                                            ('type_document', '=', 'book'),
                                            ('category_doc', '=', 'Giáo Trình')])
-            chk_running_bk = self.search([('card_id', '=', chk.card_id.id),
+            chk_running_bk = self.sudo().search([('card_id', '=', chk.card_id.id),
                                           ('state', '=', 'running'),
                                           ('id', 'not in', chk.ids),
                                           ('category_doc', '!=', 'Giáo Trình')])
-            print(chk.card_id.limit_syllabus)
-            print(chk.card_id.book_limit)
-            print(len(chk_running_bk))
-            print(len(chk_running_syl))
             if len(chk_running_bk) >= chk.card_id.book_limit and len(chk_running_syl) >= chk.card_id.limit_syllabus:
                 raise ValidationError(_('Can not borrow more documents'))
+            elif len(chk_running_bk) >= chk.card_id.book_limit:
+                if self.category_doc != 'Giáo Trình':
+                    raise ValidationError(_('Khong the muon them sach'))
+            elif len(chk_running_syl) >= chk.card_id.limit_syllabus:
+                if self.category_doc == 'Giáo Trình':
+                    raise ValidationError(_('Khong the muon them giao trinh'))
             chk.name_seq = self.env['ir.sequence'].next_by_code('library.checkout.sequence') or _('New')
             chk.stage_id = state_running
-            chk.kanban_state = 'done'
             if chk.book_id:
                 if chk.meta_book_id.state == 'available':
                     chk.meta_book_id.write({
@@ -287,7 +291,6 @@ class CheckoutBackHome(models.Model):
         for chk in self:
             chk.stage_id = stage_draft
             chk._onchange_state()
-            chk.kanban_state = 'normal'
             if chk.book_id and chk.meta_book_id.state == 'not_available':
                 chk.meta_book_id.write({
                     'state': 'available',
@@ -308,7 +311,6 @@ class CheckoutBackHome(models.Model):
             if chk.return_date >= fields.Date.today():
                 chk.stage_id = stage_done
                 chk._onchange_state()
-                chk.kanban_state = 'normal'
                 if chk.book_id and chk.meta_book_id.state == 'not_available':
                     chk.meta_book_id.write({
                         'state': 'available',
@@ -435,12 +437,13 @@ class CheckoutBackHome(models.Model):
             chk.price_total = chk.price_penalty_chk + chk.price_penalty_doc
 
     def _compute_count_chk_bh(self):
-        Checkouts = self.env['library.checkout.back.home']
         for chk in self:
-            chk_hb = Checkouts.search([('card_id', '=', chk.card_id.id),
+            chk_hb = self.sudo().search([('card_id', '=', chk.card_id.id),
                                       ('state', '=', 'running')])
             chk.count_syl = len(chk_hb.filtered(lambda a: a.type_document == 'book' and a.category_doc == 'Giáo Trình'))
-            chk.count_doc = len(chk) - chk.count_syl
+            chk.count_doc = len(chk_hb) - chk.count_syl
+            chk.count_penalty = len(self.sudo().search([('card_id', '=', chk.card_id.id),
+                                                 ('state', 'in', ['fined', 'lost'])]))
 
     @api.multi
     def open_chk_document(self):
@@ -483,6 +486,34 @@ class CheckoutBackHome(models.Model):
             'view_mode': 'tree,form',
             'type': 'ir.actions.act_window',
         }
+
+    @api.multi
+    def open_all_penalty_checkout(self):
+        return {
+            'name': _('Penalty Checkout'),
+            'domain': [('card_id', '=', self.card_id.id),
+                       ('state', 'in', ['fined', 'lost'])],
+            'view_type': 'form',
+            'res_model': 'library.checkout.back.home',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+        }
+
+    @api.multi
+    def library_chk_bh_check_ret_date(self):
+        current_date = datetime.now()
+        print('Library checkout back home check return appointment date!')
+        user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz or 'UTC')
+        date_today = pytz.utc.localize(current_date).astimezone(user_tz)
+        print(date_today)
+        CheckoutBH = self.sudo().search([('state', '=', 'running'),
+                                  ('return_date', '<', date_today)])
+        print(CheckoutBH)
+        if CheckoutBH:
+            for chk in CheckoutBH:
+                print(chk)
+                chk.kanban_state = 'overdue'
 
 
 

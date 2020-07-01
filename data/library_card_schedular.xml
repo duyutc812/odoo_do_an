@@ -21,5 +21,16 @@
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
         </record>
+
+        <record id="ir_cron_checkout_check_return_date" model="ir.cron">
+            <field name="name">Checkout Check Return appointment Date</field>
+            <field name="model_id" ref="model_library_checkout_back_home"/>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">model.library_chk_bh_check_ret_date()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+        </record>
     </data>
 </odoo>

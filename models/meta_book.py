@@ -42,6 +42,6 @@ class MetaBook(models.Model):
         chk_lib = self.env['library.checkout.at.lib']
         chk_bh = self.env['library.checkout.back.home']
         for book in self:
-            if book.checkout or chk_lib.search([('meta_book_id', '=', book.id)]) or chk_bh.search([('meta_book_id', '=', book.id)]):
+            if book.checkout or chk_lib.sudo().search([('meta_book_id', '=', book.id)]) or chk_bh.search([('meta_book_id', '=', book.id)]):
                 raise ValidationError(_('You cannot delete record %s!' % (book.name_seq)))
             return super(MetaBook, self).unlink()

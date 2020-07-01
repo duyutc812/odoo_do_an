@@ -11,75 +11,20 @@
         <t t-call="web.html_container">
             <t t-call="web.internal_layout">
                 <t t-foreach="docs" t-as="o">
-                    <!--<div class="page">
-                        <div class="row">
-                            <center>
-                                <div class="col-xs-8" style="margin:auto">
-                                    <table style="border: 3px solid black !important;width:550px;height:300px" >
-                                        <tr style="text-align:center;">
-                                            <td><h3 style="color:#24d9e3">University of Communications and Transport</h3></td>
-                                        </tr>
-                                        <tr style="text-align:center;">
-                                            <td >
-                                                <h4 style="color:red">Library Card</h4>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-left:150px;">
-                                                <table>
-                                                    <tr>
-                                                        <th style="text-align:left;">
-                                                            <t t-if="o.user=='student'">
-                                                                <p>Student: </p>
-                                                                <p>Student ID: </p>
-                                                                <p>Major: </p>
-                                                                <p>Course: </p>
-                                                                &lt;!&ndash;<p>Student ID: </p>&ndash;&gt;
-                                                            </t>
-                                                            <t t-if="o.user=='teacher'">
-                                                                <p>Teacher: </p>
-                                                                <p>Role: </p>
-                                                            </t>
-                                                            <p>Duration: </p>
-                                                            <p>End Date: </p>
-                                                        </th>
-                                                        <td style="text-align:center;padding-left:10px;">
-                                                            <t t-if="o.student_id">
-                                                                <p t-field="o.student_id.name"/>
-                                                                <p t-field="o.student_id.student_id"/>
-                                                                <p t-field="o.student_id.major"/>
-                                                                <p t-field="o.student_id.course"/>
-                                                            </t>
-                                                            <t t-if="o.teacher_id">
-                                                                <p t-field="o.teacher_id.name"/>
-                                                                <p t-field="o.teacher_id.role"/>
-                                                            </t>
-                                                            <p t-field="o.duration_id"/>
-                                                            <p t-field="o.end_date"/>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </center>
-                        </div>
-                    </div>-->
                     <div class="page">
                         <div class="oe_structure"/>
                         <div class="row">
                             <center>
                                 <div class="col-xs-8" style="margin:auto">
-                                    <table style="border: 3px solid black !important;width:500px;height:300px" >
+                                    <table style="border: 3px solid black !important;width:450px;height:300px" >
                                         <tr>
                                             <th colspan="2" style="text-align:center">
-                                                <h3 style="color:blue">Library School ABC XYZ</h3>
+                                                <h3><b>Library School ABC</b></h3>
                                             </th>
                                         </tr>
                                         <tr>
                                             <th colspan="2" style="text-align:center">
-                                                <h4 style="color:red">Library Card</h4>
+                                                <h4><b>Library Card</b></h4>
                                             </th>
                                         </tr>
                                         <tr>

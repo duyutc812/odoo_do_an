@@ -22,7 +22,7 @@ class Project(models.Model):
     # , compute='_compute_state', store=True
     project_term = fields.Integer('Project Term (Days)', default=15)
     currency_id = fields.Many2one('res.currency', 'Currency',
-                                  default=lambda s: s.env['res.currency'].search([('name', '=', 'VND')], limit=1))
+                                  default=lambda s: s.env['res.currency'].sudo().search([('name', '=', 'VND')], limit=1))
     price = fields.Monetary('Price', 'currency_id', track_visibility='always')
     quantity = fields.Integer(string='Quantity', compute='get_quantity_remaining')
     remaining = fields.Integer(string='Remaining', compute='get_quantity_remaining')

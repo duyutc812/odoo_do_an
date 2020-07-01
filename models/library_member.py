@@ -58,7 +58,7 @@ class Student(models.Model):
 
     def _compute_student_card(self):
         domain = [('student_id', '=', self.id), ('state', '=', 'running')]
-        self.count = self.env['library.card'].search_count(domain)
+        self.count = self.env['library.card'].sudo().search_count(domain)
 
     @api.multi
     def name_get(self):

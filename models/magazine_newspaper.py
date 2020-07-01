@@ -20,7 +20,7 @@ class Magazine(models.Model):
     rack = fields.Many2one('library.rack', 'Rack', track_visibility='always', required=True)
 
     currency_id = fields.Many2one('res.currency', 'Currency',
-                                  default=lambda s: s.env['res.currency'].search([('name', '=', 'VND')], limit=1))
+                                  default=lambda s: s.env['res.currency'].sudo().search([('name', '=', 'VND')], limit=1))
     price = fields.Monetary('Price', 'currency_id')
 
     quantity = fields.Integer(string='Quantity', compute='get_quantity_remaining')

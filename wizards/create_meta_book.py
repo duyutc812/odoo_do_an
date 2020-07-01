@@ -18,7 +18,7 @@ class CreateMetaBook(models.TransientModel):
     @api.model
     def default_get(self, field_names):
         defaults = super().default_get(field_names)
-        book = self.env['library.book'].search([('id', '=', self.env.context.get('active_id'))])
+        book = self.env['library.book'].sudo().search([('id', '=', self.env.context.get('active_id'))])
         defaults['book_id'] = book.id
         return defaults
 
@@ -54,7 +54,7 @@ class CreateMetaMagazineNewspaper(models.TransientModel):
     @api.model
     def default_get(self, field_names):
         defaults = super().default_get(field_names)
-        mg_new = self.env['magazine.newspaper'].search([('id', '=', self.env.context.get('active_id'))])
+        mg_new = self.env['magazine.newspaper'].sudo().search([('id', '=', self.env.context.get('active_id'))])
         defaults['mgz_new_id'] = mg_new.id
         return defaults
 

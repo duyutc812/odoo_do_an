@@ -21,7 +21,7 @@ class ModifyDescriptionDoc(models.TransientModel):
         defaults = super().default_get(field_names)
         # print(defaults)
         # {}
-        chk = self.env['library.checkout.at.lib'].search([('id', '=', self.env.context.get('active_id'))])
+        chk = self.env['library.checkout.at.lib'].sudo().search([('id', '=', self.env.context.get('active_id'))])
         if chk.book_id:
             defaults['book_id'] = chk.book_id.id
             defaults['meta_book_id'] = chk.meta_book_id.id
@@ -65,7 +65,7 @@ class ModifyDescriptionDocCHKBH(models.TransientModel):
         defaults = super().default_get(field_names)
         # print(defaults)
         # {}
-        chk = self.env['library.checkout.back.home'].search([('id', '=', self.env.context.get('active_id'))])
+        chk = self.env['library.checkout.back.home'].sudo().search([('id', '=', self.env.context.get('active_id'))])
         if chk.book_id:
             defaults['book_id'] = chk.book_id.id
             defaults['meta_book_id'] = chk.meta_book_id.id

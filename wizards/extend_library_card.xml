@@ -32,5 +32,36 @@
                 </form>
             </field>
         </record>
+
+        <act_window id="action_wizard_extend_checkout_bh"
+                    name="Extend Checkout"
+                    res_model="extend.checkout.bh"
+                    view_type="form"
+                    view_mode="form"
+                    target="new" multi="False"
+        />
+
+        <record  id="wizard_extend_checkout_bh" model="ir.ui.view">
+            <field name="name">wizard.extend.checkout.bh</field>
+            <field name="model">extend.checkout.bh</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="checkout_id" readonly="1"/>
+                        <field name="extend_date" required="1"/>
+                    </group>
+                    <footer>
+                        <button type="object"
+                                name="button_extend_checkout"
+                                string="Extend"
+                                class="btn-primary"
+                                />
+                        <button special="cancel"
+                        string="Cancel"
+                        class="btn-secondary" />
+                    </footer>
+                </form>
+            </field>
+        </record>
     </data>
 </odoo>

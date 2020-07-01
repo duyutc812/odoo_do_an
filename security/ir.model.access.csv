@@ -1,24 +1,37 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_library_duration,Duration Access,model_library_duration,,1,1,1,1
-access_library_author,Author Access,model_library_author,,1,1,1,1
-access_library_translator,Translator Access,model_library_translator,,1,1,1,1
-access_library_publisher,Publisher Access,model_library_publisher,,1,1,1,1
-access_student_major,Major Student Access,model_student_major,,1,1,1,1
-access_teacher_role,Role Teacher Access,model_teacher_role,,1,1,1,1
-access_library_student,Student Access,model_library_student,,1,1,1,1
-access_library_teacher,Teacher Access,model_library_teacher,,1,1,1,1
-access_library_category,Category Access,model_library_category,,1,0,0,0
-access_categories_magazine,Categories Magazine Access,model_categories_magazine,,1,0,0,0
-access_categories_newspaper,Categories Newspaper Access,model_categories_newspaper,,1,0,0,0
-access_library_rack,Library Rack Access,model_library_rack,,1,1,1,1
-access_library_book,Book Access,model_library_book,,1,1,1,1
-access_meta_books,Meta Books Access,model_meta_books,,1,1,1,1
-access_document_project,Project Access,model_document_project,,1,1,1,1
-access_meta_project,Meta Project Access,model_meta_projects,,1,1,1,1
-access_magazine_newspaper,Magazine/Newspaper Access,model_magazine_newspaper,,1,1,1,1
-access_meta_magazine_newspaper,Meta Magazine/Newspaper Access,model_meta_magazinenewspapers,,1,1,1,1
-access_library_card_stage,Card Stage Access,model_library_card_stage,,1,1,1,1
-access_library_checkout_stage,Checkout Stage Access,model_library_checkout_stage,,1,1,1,1
-access_library_card,Card Access,model_library_card,,1,1,1,1
-access_library_checkout_at_lib,Checkout At Lib Access,model_library_checkout_at_lib,,1,1,1,1
-access_library_checkout_back_home,Checkout Back Home Access,model_library_checkout_back_home,,1,1,1,1
+access_library_duration,Duration Access,model_library_duration,do_an_tn.library_group_librarian,1,1,1,1
+access_library_author,Author Access,model_library_author,do_an_tn.library_member_search,1,0,0,0
+access_library_translator,Translator Access,model_library_translator,do_an_tn.library_member_search,1,0,0,0
+access_library_publisher,Publisher Access,model_library_publisher,do_an_tn.library_member_search,1,0,0,0
+access_library_author_for_librarian,Author For Librarian Access,model_library_author,do_an_tn.library_group_librarian,1,1,1,1
+access_library_translator_for_librarian,Translator For Librarian Access,model_library_translator,do_an_tn.library_group_librarian,1,1,1,1
+access_library_publisher_for_librarian,Publisher For Librarian Access,model_library_publisher,do_an_tn.library_group_librarian,1,1,1,1
+access_student_major,Major Student Access,model_student_major,do_an_tn.library_group_librarian,1,1,1,1
+access_teacher_role,Role Teacher Access,model_teacher_role,do_an_tn.library_group_librarian,1,1,1,1
+access_library_student,Student Access,model_library_student,do_an_tn.library_group_librarian,1,1,1,1
+access_library_teacher,Teacher Access,model_library_teacher,do_an_tn.library_group_librarian,1,1,1,1
+access_library_category,Category Access,model_library_category,do_an_tn.library_member_search,1,0,0,0
+access_categories_magazine,Categories Magazine Access,model_categories_magazine,do_an_tn.library_member_search,1,0,0,0
+access_categories_newspaper,Categories Newspaper Access,model_categories_newspaper,do_an_tn.library_member_search,1,0,0,0
+access_library_category_for_librarian,Category For Librarian Access,model_library_category,do_an_tn.library_group_librarian,1,1,1,1
+access_categories_magazine_for_librarian,Categories For Librarian Magazine Access,model_categories_magazine,do_an_tn.library_group_librarian,1,1,1,1
+access_categories_newspaper_for_librarian,Categories For Librarian Newspaper Access,model_categories_newspaper,do_an_tn.library_group_librarian,1,1,1,1
+access_library_rack,Library Rack Access,model_library_rack,do_an_tn.library_member_search,1,0,0,0
+access_library_rack_for_librarian,Library Rack For Librarian Access,model_library_rack,do_an_tn.library_group_librarian,1,1,1,1
+access_library_book,Book Access,model_library_book,do_an_tn.library_member_search,1,0,0,0
+access_library_book_for_librarian,Book For Librarian Access,model_library_book,do_an_tn.library_group_librarian,1,1,1,1
+access_meta_books,Meta Books Access,model_meta_books,do_an_tn.library_member_search,1,0,0,0
+access_meta_books_for_librarian,Meta Books For Librarian Access,model_meta_books,do_an_tn.library_group_librarian,1,1,1,1
+access_document_project,Project Access,model_document_project,do_an_tn.library_member_search,1,0,0,0
+access_document_project_for_librarian,Project For Librarian Access,model_document_project,do_an_tn.library_group_librarian,1,1,1,1
+access_meta_project,Meta Project Access,model_meta_projects,do_an_tn.library_member_search,1,0,0,0
+access_meta_project_for_librarian,Meta Project For Librarian Access,model_meta_projects,do_an_tn.library_group_librarian,1,1,1,1
+access_magazine_newspaper,Magazine/Newspaper Access,model_magazine_newspaper,do_an_tn.library_member_search,1,0,0,0
+access_magazine_newspaper_for_librarian,Magazine/Newspaper For Librarian Access,model_magazine_newspaper,do_an_tn.library_group_librarian,1,1,1,1
+access_meta_magazine_newspaper,Meta Magazine/Newspaper Access,model_meta_magazinenewspapers,do_an_tn.library_member_search,1,0,0,0
+access_meta_magazine_newspape_for_librarian,Meta Magazine/Newspaper For Librarian Access,model_meta_magazinenewspapers,do_an_tn.library_group_librarian,1,1,1,1
+access_library_card_stage,Card Stage Access,model_library_card_stage,do_an_tn.library_group_librarian,1,1,1,1
+access_library_checkout_stage,Checkout Stage Access,model_library_checkout_stage,do_an_tn.library_group_librarian,1,1,1,1
+access_library_card,Card Access,model_library_card,do_an_tn.library_group_librarian,1,1,1,1
+access_library_checkout_at_lib,Checkout At Lib Access,model_library_checkout_at_lib,do_an_tn.library_group_librarian,1,1,1,1
+access_library_checkout_back_home,Checkout Back Home Access,model_library_checkout_back_home,do_an_tn.library_group_librarian,1,1,1,1

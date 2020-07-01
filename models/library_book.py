@@ -27,10 +27,10 @@ class Book(models.Model):
     ], string='Type', default='paper', track_visibility='always')
     notes = fields.Text('Notes', track_visibility='always')
     currency_id = fields.Many2one('res.currency', 'Currency',
-                                  default=lambda s: s.env['res.currency'].search([('name', '=', 'VND')], limit=1))
+                                  default=lambda s: s.env['res.currency'].sudo().search([('name', '=', 'VND')], limit=1))
     price = fields.Monetary('Price', 'currency_id', track_visibility='always')
     language = fields.Many2one('res.lang', 'Language',
-                               default=lambda s: s.env['res.lang'].search([('code', '=', 'vi_VN')], limit=1),
+                               default=lambda s: s.env['res.lang'].sudo().search([('code', '=', 'vi_VN')], limit=1),
                                track_visibility='always')
     category = fields.Many2one('library.category', 'Category', required=True, track_visibility='always')
     num_page = fields.Integer(string='Num Page', track_visibility='always')

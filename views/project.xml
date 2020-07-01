@@ -2,12 +2,14 @@
     <record id="view_form_project" model="ir.ui.view">
         <field name="name">view.form.project</field>
         <field name="model">document.project</field>
+        <field name="group_ids" eval="[(4,ref('library_member_search'))]"/>
         <field name="arch" type="xml">
             <form>
                 <header>
                     <button name="%(do_an_tn.action_wizard_create_meta_project)d"
                             type="action"
-                            string="Create Meta Project"/>
+                            string="Create Meta Project"
+                            groups="do_an_tn.library_group_librarian"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -53,18 +55,13 @@
                                     <field name="description" attrs="{'readonly':[('checkout', 'not in', ['', False])]}"/>
                                     <field name="state" attrs="{'readonly':[('checkout', 'not in', ['', False])]}"/>
                                     <field name="is_lost" readonly="1"/>
-                                    <field name="is_active" readonly="1"/>
-                                    <field name="checkout" readonly="1"/>
+                                    <field name="is_active" readonly="1" groups="do_an_tn.library_group_librarian"/>
+                                    <field name="checkout" readonly="1" groups="do_an_tn.library_group_librarian"/>
                                 </tree>
                             </field>
                         </page>
                     </notebook>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
             </form>
         </field>
     </record>
@@ -102,7 +99,7 @@
                         </div>
                     </t>
                     <searchpanel>
-                        <field name="major" string="major"/>
+                        <field name="major" string="major" groups="do_an_tn.library_group_librarian"/>
                     </searchpanel>
                 </templates>
             </kanban>
@@ -121,5 +118,47 @@
                 </group>
             </search>
        </field>
+    </record>
+
+    <record id="view_form_inherit_project" model="ir.ui.view">
+        <field name="name">view.form.inherit.project</field>
+        <field name="model">document.project</field>
+        <field name="group_ids" eval="[(4,ref('library_group_librarian'))]"/>
+        <field name="inherit_id" ref="do_an_tn.view_form_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="after">
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_form_meta_projects" model="ir.ui.view">
+        <field name="name">view.form.meta.projects</field>
+        <field name="model">meta.projects</field>
+        <field name="arch" type="xml">
+           <form>
+               <sheet>
+                   <div class="oe_title">
+                           <label for="name_seq" class="oe_edit_only"/>
+                           <h1>
+                               <field name="name_seq"/>
+                           </h1>
+                       </div>
+                   <group>
+                       <group>
+                           <field name="project_id"/>
+                           <field name="state"/>
+                       </group>
+                       <group>
+                           <field name="description"/>
+                       </group>
+                   </group>
+               </sheet>
+           </form>
+        </field>
     </record>
 </odoo>
