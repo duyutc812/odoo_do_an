@@ -293,7 +293,7 @@
     <!--Checkout Menuitem-->
     <menuitem id="menu_library_checkout" name="Checkouts"
               parent="menu_library"
-              sequence="0"/>
+              sequence="5"/>
 
     <!--Library Duration-->
     <record id="action_library_duration" model="ir.actions.act_window">
@@ -345,16 +345,41 @@
               parent="menu_library_checkout" action="action_library_checkout_at_lib"
               sequence="0"/>
 
-    Checkout Back Home
+    <!--Checkout Back Home-->
     <record id="action_checkout_back_home" model="ir.actions.act_window">
         <field name="name">Checkout Back Home</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">library.checkout.back.home</field>
+        <field name="context">{'search_default_running_state':1}</field>
         <field name="view_mode">kanban,graph,pivot,tree,form</field>
     </record>
 
     <menuitem id="menu_checkout_back_home" name="Checkout Back Home"
               parent="menu_library_checkout" action="action_checkout_back_home"
               sequence="10"/>
+
+    <record id="action_library_dashboard" model="ir.actions.act_window">
+        <field name="name">Library Dashboard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">board.board</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="board.board_my_dash_view"/>
+    </record>
+
+    <menuitem id="menu_library_dashboard" name="Dashboard"
+              parent="menu_library" action="action_library_dashboard"
+              sequence="1"/>
+
+    <record id="action_library_statistics" model="ir.actions.act_window">
+        <field name="name">Library Statistics</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">library.statistics</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_library_statistics" name="Statistics"
+              parent="menu_library" action="action_library_statistics"
+              sequence="100"/>
+
 
 </odoo>

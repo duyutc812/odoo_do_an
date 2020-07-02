@@ -7,7 +7,7 @@
     'license': "AGPL-3",
     'summary': 'A Module For Library Management For School',
     'complexity': 'easy',
-    'depends': ['base', 'mail', 'muk_web_searchpanel', 'web_notify'],
+    'depends': ['base', 'mail', 'muk_web_searchpanel', 'web_notify', 'board'],
     'data': [
         'data/data.xml',
         'security/ir.model.access.csv',
@@ -31,6 +31,7 @@
         'wizards/modify_descrip.xml',
         'views/checkout_at_lib.xml',
         'views/checkout_back_home.xml',
+        # 'views/dashboard.xml',
         'reports/library_card_report.xml',
         'reports/library_checkout_report.xml',
     ],

@@ -35,3 +35,5 @@ access_library_checkout_stage,Checkout Stage Access,model_library_checkout_stage
 access_library_card,Card Access,model_library_card,do_an_tn.library_group_librarian,1,1,1,1
 access_library_checkout_at_lib,Checkout At Lib Access,model_library_checkout_at_lib,do_an_tn.library_group_librarian,1,1,1,1
 access_library_checkout_back_home,Checkout Back Home Access,model_library_checkout_back_home,do_an_tn.library_group_librarian,1,1,1,1
+access_library_statistics,Library Statistics Access,model_library_statistics,do_an_tn.library_group_manager,1,1,1,1
+

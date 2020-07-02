@@ -156,9 +156,9 @@
                                          <field name="name_seq" readonly="1"/>
                                          <field name="description" attrs="{'readonly':[('checkout', 'not in', ['', False])]}"/>
                                          <field name="state" attrs="{'readonly':[('checkout', 'not in', ['', False])]}"/>
-                                         <field name="is_lost" readonly="1"/>
-                                         <field name="is_active" readonly="1" groups="do_an_tn.library_group_librarian"/>
-                                         <field name="checkout" readonly="1" groups="do_an_tn.library_group_librarian"/>
+                                         <field name="is_lost"/>
+                                         <field name="is_active" groups="do_an_tn.library_group_librarian"/>
+                                         <field name="checkout" groups="do_an_tn.library_group_librarian"/>
                                      </tree>
                                  </field>
                             </page>

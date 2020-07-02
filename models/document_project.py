@@ -18,14 +18,14 @@ class Project(models.Model):
     state = fields.Selection([
         ('available', 'Available'),
         ('not_available', 'Not Available')
-    ], string='Status', compute='get_quantity_remaining')
+    ], string='Status', compute='_compute_quantity_remaining', store=True)
     # , compute='_compute_state', store=True
     project_term = fields.Integer('Project Term (Days)', default=15)
     currency_id = fields.Many2one('res.currency', 'Currency',
                                   default=lambda s: s.env['res.currency'].sudo().search([('name', '=', 'VND')], limit=1))
     price = fields.Monetary('Price', 'currency_id', track_visibility='always')
-    quantity = fields.Integer(string='Quantity', compute='get_quantity_remaining')
-    remaining = fields.Integer(string='Remaining', compute='get_quantity_remaining')
+    quantity = fields.Integer(string='Quantity', compute='_compute_quantity_remaining', store=True)
+    remaining = fields.Integer(string='Remaining', compute='_compute_quantity_remaining', store=True)
     meta_project_ids = fields.One2many('meta.projects', 'project_id')
 
     @api.constrains('project_term')
@@ -40,8 +40,9 @@ class Project(models.Model):
                 raise ValidationError(_('You cannot delete!'))
         return super(Project, self).unlink()
 
+    @api.multi
     @api.depends('meta_project_ids')
-    def get_quantity_remaining(self):
+    def _compute_quantity_remaining(self):
         for project in self:
             project.quantity = len(project.meta_project_ids)
             project.remaining = len(project.meta_project_ids.filtered(
@@ -81,7 +82,7 @@ class MetaProject(models.Model):
         ('available', 'Available'),
         ('not_available', 'Not Available')
     ], string='Status', default='available')
-    checkout = fields.Char(readonly=True)
+    checkout = fields.Char()
     is_lost = fields.Boolean('Lost', default=False)
     is_active = fields.Boolean('Active', default=True)
 

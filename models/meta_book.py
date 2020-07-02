@@ -14,7 +14,7 @@ class MetaBook(models.Model):
         ('available', 'Available'),
         ('not_available', 'Not Available')
     ], string='Status', default='available')
-    checkout = fields.Char(readonly=True)
+    checkout = fields.Char()
     is_lost = fields.Boolean('Lost', default=False)
     is_active = fields.Boolean('Active', default=True)
 

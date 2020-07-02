@@ -154,7 +154,7 @@
                                    attrs="{'invisible': [('type_document', '!=', 'book')],
                                            'required': [('type_document', '=', 'book')],
                                            'readonly': [('state', '!=', 'draft')]}"
-                                   options="{'no_create': True}"/>
+                                   options="{'no_create': True, 'no_open': True}"/>
                             <field name="project_id"
                                    options="{'no_create': True, 'no_open': True}"
                                    attrs="{'invisible': [('type_document', '!=', 'project')],

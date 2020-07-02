@@ -60,3 +60,52 @@ class LibraryCheckoutReport(models.AbstractModel):
             'checkouts_list': checkouts_list,
             'curr_date_lst': curr_date_lst,
         }
+
+
+class PenaltyCheckoutAtLib(models.AbstractModel):
+    _name = 'report.do_an_tn.report_penalty_at_lib_xls'
+    _inherit = 'report.report_xlsx.abstract'
+    _description = 'Penalty Checkout At Lib Excel Report'
+
+    def generate_xlsx_report(self, workbook, data, lines):
+        format1 = workbook.add_format({'font_size': 14, 'align': 'vcenter', 'bold': True})
+        format2 = workbook.add_format({'font_size': 10, 'align': 'vcenter'})
+        # One sheet by partner
+        sheet = workbook.add_worksheet('Penalty Checkout At Lib')
+        # print excel report in right to left format
+        # sheet.right_to_left()
+        if lines.state not in ['fined', 'lost']:
+            sheet.write(2, 2, 'Invalid')
+            return True
+        else:
+            sheet.write(2, 2, 'Card ID', format1)
+            sheet.write(2, 3, lines.name_seq, format2)
+            sheet.write(3, 2, 'Name', format1)
+            sheet.write(3, 3, lines.gt_name, format2)
+            sheet.write(4, 2, 'Type Doc', format1)
+            sheet.write(4, 3, lines.type_document, format2)
+            if lines.type_document == 'book':
+                sheet.write(5, 2, 'Title Doc', format1)
+                sheet.write(5, 3, lines.book_id.name, format2)
+                sheet.write(6, 2, 'Doc ID', format1)
+                sheet.write(6, 3, lines.meta_book_id.name_seq, format2)
+            elif lines.project_id:
+                sheet.write(5, 2, 'Title Doc', format1)
+                sheet.write(5, 3, lines.project_id.name, format2)
+                sheet.write(6, 2, 'Doc ID', format1)
+                sheet.write(6, 3, lines.meta_project_id.name_seq, format2)
+            elif lines.mgz_new_id:
+                sheet.write(5, 2, 'Title Doc', format1)
+                sheet.write(5, 3, lines.mgz_new_id.name_get()[0][1], format2)
+                sheet.write(6, 2, 'Doc ID', format1)
+                sheet.write(6, 3, lines.meta_mgz_new_id.name_seq, format2)
+            sheet.write(7, 2, 'Description', format1)
+            sheet.write(7, 3, lines.status_document, format2)
+            sheet.write(8, 2, 'Price', format1)
+            sheet.write(8, 3, lines.price_doc, format2)
+            sheet.write(9, 2, 'Return Date', format1)
+            sheet.write(9, 3, lines.return_date.strftime('%d-%m-%Y'), format2)
+            sheet.write(10, 2, 'Penalty Price', format1)
+            sheet.write(10, 3, lines.price_penalty, format2)
+            sheet.write(11, 2, 'Note', format1)
+            sheet.write(11, 3, lines.note, format2)

@@ -202,11 +202,11 @@ class CheckoutBackHome(models.Model):
             elif chk.project_id:
                 chk.category_doc = chk.project_id.major.name
 
-    def unlink(self):
-        for chk in self:
-            if chk.state != 'draft':
-                raise ValidationError(_('You can not delete checkout when state not is draft!'))
-        return super(CheckoutBackHome, self).unlink()
+    # def unlink(self):
+    #     for chk in self:
+    #         if chk.state != 'draft':
+    #             raise ValidationError(_('You can not delete checkout when state not is draft!'))
+    #     return super(CheckoutBackHome, self).unlink()
 
     @api.onchange('state')
     def _onchange_state(self):
@@ -272,6 +272,7 @@ class CheckoutBackHome(models.Model):
                         'state': 'not_available',
                         'checkout': str(chk.name_get()[0][1]) + _(' - Back Home'),
                     })
+                    chk.book_id._compute_quantity_remaining()
                 else:
                     raise ValidationError(_('Book: "%s - %s" have borrowed.' %
                                             (str(self.meta_book_id.name_seq), str(self.meta_book_id.book_id.name))))
@@ -281,6 +282,7 @@ class CheckoutBackHome(models.Model):
                         'state': 'not_available',
                         'checkout': str(chk.name_get()[0][1]) + _(' - Back Home'),
                     })
+                    chk.project_id._compute_quantity_remaining()
                 else:
                     raise ValidationError(_('Project: " %s " have borrowed.' % (str(self.project_id.name))))
             chk.borrow_date = fields.Datetime.now()
@@ -296,11 +298,13 @@ class CheckoutBackHome(models.Model):
                     'state': 'available',
                     'checkout': '',
                 })
+                chk.book_id._compute_quantity_remaining()
             elif chk.project_id and chk.meta_project_id.state == 'not_available':
                 chk.meta_project_id.write({
                     'state': 'available',
                     'checkout': '',
                 })
+                chk.project_id._compute_quantity_remaining()
 
     @api.multi
     def done_state(self):
@@ -316,11 +320,13 @@ class CheckoutBackHome(models.Model):
                         'state': 'available',
                         'checkout': '',
                     })
+                    chk.book_id._compute_quantity_remaining()
                 elif chk.project_id and chk.meta_project_id.state == 'not_available':
                     chk.meta_project_id.write({
                         'state': 'available',
                         'checkout': '',
                     })
+                    chk.project_id._compute_quantity_remaining()
             elif chk.return_date < fields.Date.today():
                 chk.stage_id = stage_fined
                 chk._onchange_state()
@@ -329,16 +335,13 @@ class CheckoutBackHome(models.Model):
                         'state': 'available',
                         'checkout': '',
                     })
+                    chk.book_id._compute_quantity_remaining()
                 elif chk.project_id and chk.meta_project_id.state == 'not_available':
                     chk.meta_project_id.write({
                         'state': 'available',
                         'checkout': '',
                     })
-                mess = {
-                    'title': _('Not enough inventory!'),
-                    'message': _('bị phạt')
-                }
-                return {'warning': mess}
+                    chk.project_id._compute_quantity_remaining()
 
     def fined_state(self):
         stage_fined = self.env['library.checkout.stage'].search([('state', '=', 'fined')])
@@ -350,11 +353,13 @@ class CheckoutBackHome(models.Model):
                     'state': 'available',
                     'checkout': '',
                 })
+                chk.book_id._compute_quantity_remaining()
             elif chk.project_id and chk.meta_project_id.state == 'not_available':
                 chk.meta_project_id.write({
                     'state': 'available',
                     'checkout': '',
                 })
+                chk.project_id._compute_quantity_remaining()
             context = dict(self.env.context)
             context['form_view_initial_mode'] = 'edit'
             return {
@@ -379,9 +384,11 @@ class CheckoutBackHome(models.Model):
                 }
             if chk.book_id:
                 chk.meta_book_id.write(dic)
+                chk.book_id._compute_quantity_remaining()
                 chk.note = _('lost document: %s') % (str(chk.meta_book_id.name_seq))
             elif chk.project_id:
                 chk.meta_project_id.write(dic)
+                chk.project_id._compute_quantity_remaining()
                 chk.note = _('lost document: %s') % (str(chk.meta_project_id.name_seq))
 
     def cancel_state(self):
@@ -399,12 +406,14 @@ class CheckoutBackHome(models.Model):
                         'checkout': '',
                         'is_lost': False,
                     })
+                    chk.book_id._compute_quantity_remaining()
                 elif chk.project_id and chk.meta_project_id.state == 'not_available':
                     chk.meta_project_id.write({
                         'state': 'available',
                         'checkout': '',
                         'is_lost': False,
                     })
+                    chk.project_id._compute_quantity_remaining()
                 context = dict(self.env.context)
                 context['form_view_initial_mode'] = 'edit'
                 return {
@@ -439,11 +448,11 @@ class CheckoutBackHome(models.Model):
     def _compute_count_chk_bh(self):
         for chk in self:
             chk_hb = self.sudo().search([('card_id', '=', chk.card_id.id),
-                                      ('state', '=', 'running')])
+                                         ('state', '=', 'running')])
             chk.count_syl = len(chk_hb.filtered(lambda a: a.type_document == 'book' and a.category_doc == 'Giáo Trình'))
             chk.count_doc = len(chk_hb) - chk.count_syl
             chk.count_penalty = len(self.sudo().search([('card_id', '=', chk.card_id.id),
-                                                 ('state', 'in', ['fined', 'lost'])]))
+                                                        ('state', 'in', ['fined', 'lost'])]))
 
     @api.multi
     def open_chk_document(self):
@@ -508,7 +517,7 @@ class CheckoutBackHome(models.Model):
         date_today = pytz.utc.localize(current_date).astimezone(user_tz)
         print(date_today)
         CheckoutBH = self.sudo().search([('state', '=', 'running'),
-                                  ('return_date', '<', date_today)])
+                                         ('return_date', '<', date_today)])
         print(CheckoutBH)
         if CheckoutBH:
             for chk in CheckoutBH:

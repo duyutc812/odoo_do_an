@@ -23,12 +23,12 @@ class Magazine(models.Model):
                                   default=lambda s: s.env['res.currency'].sudo().search([('name', '=', 'VND')], limit=1))
     price = fields.Monetary('Price', 'currency_id')
 
-    quantity = fields.Integer(string='Quantity', compute='get_quantity_remaining')
-    remaining = fields.Integer(string='Remaining', compute='get_quantity_remaining')
+    quantity = fields.Integer(string='Quantity', compute='_compute_quantity_remaining', store=True)
+    remaining = fields.Integer(string='Remaining', compute='_compute_quantity_remaining', store=True)
     state = fields.Selection([
         ('available', 'Available'),
         ('not_available', 'Not Available')
-    ], string='Status', compute='get_quantity_remaining')
+    ], string='Status', compute='_compute_quantity_remaining', store=True)
 
     meta_mgz_new_ids = fields.One2many(
         'meta.magazinenewspapers',
@@ -59,7 +59,7 @@ class Magazine(models.Model):
         self.price = ''
 
     @api.depends('meta_mgz_new_ids')
-    def get_quantity_remaining(self):
+    def _compute_quantity_remaining(self):
         for mgz_new in self:
             mgz_new.quantity = len(mgz_new.meta_mgz_new_ids)
             mgz_new.remaining = len(mgz_new.meta_mgz_new_ids.filtered(
@@ -122,7 +122,7 @@ class MetaMagazineNewspaper(models.Model):
         ('available', 'Available'),
         ('not_available', 'Not Available')
     ], string='Status', default='available')
-    checkout = fields.Char(readonly=True)
+    checkout = fields.Char()
     is_lost = fields.Boolean('Lost', default=False)
     is_active = fields.Boolean('Active', default=True)
 

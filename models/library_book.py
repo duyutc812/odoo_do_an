@@ -55,13 +55,13 @@ class Book(models.Model):
     """name sequence"""
     name_seq = fields.Char(string="Book ID", default=lambda self: _('New'), readonly=True, track_visibility='always')
 
-    quantity = fields.Integer(string='Quantity', compute='_compute_quantity_remaining')
-    remaining = fields.Integer(string='Remaining', compute='_compute_quantity_remaining')
+    quantity = fields.Integer(string='Quantity', compute='_compute_quantity_remaining', store=True)
+    remaining = fields.Integer(string='Remaining', compute='_compute_quantity_remaining', store=True)
 
     state = fields.Selection([
         ('available', 'Available'),
         ('not_available', 'Not Available')
-    ], string='Status', compute='_compute_quantity_remaining')
+    ], string='Status', compute='_compute_quantity_remaining', store=True)
 
     meta_book_ids = fields.One2many(
         'meta.books',

@@ -171,19 +171,22 @@ class CheckoutAtLib(models.Model):
             if chk.book_id:
                 if chk.meta_book_id.state == 'available':
                     chk.meta_book_id.state = 'not_available'
+                    chk.book_id._compute_quantity_remaining()
                     chk.meta_book_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
                 else:
                     raise ValidationError(_('Book: "%s - %s" have borrowed.' %
                                           (self.meta_book_id.name_seq, self.book_id.name)))
             elif chk.mgz_new_id:
-                if self.meta_mgz_new_id.state == 'available':
-                    self.meta_mgz_new_id.state = 'not_available'
+                if chk.meta_mgz_new_id.state == 'available':
+                    chk.meta_mgz_new_id.state = 'not_available'
+                    chk.mgz_new_id._compute_quantity_remaining()
                     chk.meta_mgz_new_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
                 else:
                     raise ValidationError(_('Magazine/Newspaper have borrowed.'))
             elif chk.project_id:
                 if chk.meta_project_id.state == 'available':
                     chk.meta_project_id.state = 'not_available'
+                    chk.project_id._compute_quantity_remaining()
                     chk.meta_project_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
                 else:
                     raise ValidationError(_('Project: " %s " have borrowed.' % (self.project_id.name)))
@@ -208,10 +211,13 @@ class CheckoutAtLib(models.Model):
             }
             if chk.book_id and chk.meta_book_id.state == 'not_available':
                 chk.meta_book_id.write(dic)
+                chk.book_id._compute_quantity_remaining()
             elif chk.mgz_new_id and chk.meta_mgz_new_id.state == 'not_available':
                 chk.meta_mgz_new_id.write(dic)
+                chk.mgz_new_id._compute_quantity_remaining()
             elif chk.project_id and chk.meta_project_id.state == 'not_available':
                 chk.meta_project_id.write(dic)
+                chk.project_id._compute_quantity_remaining()
 
     @api.multi
     def done_state(self):
@@ -225,10 +231,13 @@ class CheckoutAtLib(models.Model):
             }
             if chk.book_id:
                 chk.meta_book_id.write(dic)
+                chk.book_id._compute_quantity_remaining()
             elif chk.mgz_new_id:
-                chk.meta_mgz_new_ide.write(dic)
+                chk.meta_mgz_new_id.write(dic)
+                chk.mgz_new_id._compute_quantity_remaining()
             elif chk.project_id:
                 chk.meta_project_id.write(dic)
+                chk.project_id._compute_quantity_remaining()
             chk.return_date = fields.Datetime.now()
 
     @api.multi
@@ -243,10 +252,13 @@ class CheckoutAtLib(models.Model):
             }
             if chk.book_id:
                 chk.meta_book_id.write(dic)
+                chk.book_id._compute_quantity_remaining()
             elif chk.mgz_new_id:
                 chk.meta_mgz_new_id.write(dic)
+                chk.mgz_new_id._compute_quantity_remaining()
             elif chk.project_id:
                 chk.meta_project_id.write(dic)
+                chk.project_id._compute_quantity_remaining()
             chk.return_date = fields.Datetime.now()
             context = dict(self.env.context)
             context['form_view_initial_mode'] = 'edit'
@@ -255,8 +267,9 @@ class CheckoutAtLib(models.Model):
                 'view_type': 'form',
                 'view_mode': 'form',
                 'res_model': 'library.checkout.at.lib',
+                'context': context,
+                'target': 'current',
                 'res_id': chk.id,
-                'context': context
             }
 
     @api.multi
@@ -272,12 +285,15 @@ class CheckoutAtLib(models.Model):
             }
             if chk.book_id:
                 chk.meta_book_id.write(dic)
+                chk.book_id._compute_quantity_remaining()
                 chk.note = _('lost document: %s') % (str(chk.meta_book_id.name_seq))
             elif chk.mgz_new_id:
                 chk.meta_mgz_new_id.write(dic)
+                chk.mgz_new_id._compute_quantity_remaining()
                 chk.note = _('lost document: %s') % (str(chk.meta_mgz_new_id.name_seq))
             elif chk.project_id:
                 chk.meta_project_id.write(dic)
+                chk.project_id._compute_quantity_remaining()
                 chk.note = _('lost document: %s') % (str(chk.meta_project_id.name_seq))
             chk.return_date = fields.Datetime.now()
             chk.price_penalty = chk.price_doc
@@ -296,10 +312,13 @@ class CheckoutAtLib(models.Model):
             }
             if chk.book_id:
                 chk.meta_book_id.write(dic)
+                chk.book_id._compute_quantity_remaining()
             elif chk.mgz_new_id:
                 chk.meta_mgz_new_id.write(dic)
+                chk.mgz_new_id._compute_quantity_remaining()
             elif chk.project_id:
                 chk.meta_project_id.write(dic)
+                chk.project_id._compute_quantity_remaining()
             chk.return_date = fields.Datetime.now()
 
     def borrow_back_home(self):
@@ -339,11 +358,11 @@ class CheckoutAtLib(models.Model):
             res.append((chk.id, '%s - %s' % (chk.name_seq, chk.gt_name)))
         return res
 
-    def unlink(self):
-        for chk in self:
-            if chk.state != 'draft':
-                raise ValidationError(_('You can not delete checkout when state not is draft!'))
-        return super(CheckoutAtLib, self).unlink()
+    # def unlink(self):
+    #     for chk in self:
+    #         if chk.state != 'draft':
+    #             raise ValidationError(_('You can not delete checkout when state not is draft!'))
+    #     return super(CheckoutAtLib, self).unlink()
 
     @api.multi
     def print_report(self):

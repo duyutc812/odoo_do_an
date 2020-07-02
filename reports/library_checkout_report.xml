@@ -290,7 +290,7 @@
                                                                 <p style="text-align:left" t-field="o.meta_project_id"/>
                                                             </t>
                                                             <p style="text-align:left" t-field="o.status_document"/>
-                                                            <p style="text-align:left" t-field="o.price_doc"/>
+                                                            <p style="text-align:left" t-field="o.price_penalty"/>
                                                             <p style="text-align:left" t-field="o.note"/>
                                                             <p style="text-align:left" t-field="o.user_id"/>
                                                         </td>
@@ -307,5 +307,13 @@
             </t>
         </t>
     </template>
+
+     <report
+            id="report_penalty_checkout_at_lib_xls"
+            model="library.checkout.at.lib"
+            string="Penalty Checkout At Lib"
+            report_type="xlsx"
+            name="do_an_tn.report_penalty_at_lib_xls"
+            file="do_an_tn.report_penalty_at_lib_xls" />
 
 </odoo>
