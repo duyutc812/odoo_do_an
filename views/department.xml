@@ -1,0 +1,67 @@
+<odoo>
+    <record id="view_tree_department" model="ir.ui.view">
+        <field name="name">view.tree.department</field>
+        <field name="model">lib.department</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="group_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_form_department" model="ir.ui.view">
+        <field name="name">view.form.department</field>
+        <field name="model">lib.department</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="expense_button_box">
+                        <button name="open_employee"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-smile-o">
+                            <field name="count_employee" widget="statinfo" string="Employees"/>
+                        </button>
+                    </div>
+                    <group>
+                        <field name="name"/>
+                        <field name="category_id"/>
+                        <field name="group_id" options="{'no_open': True}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_kanban_department" model="ir.ui.view">
+        <field name="name">view.kanban.department</field>
+        <field name="model">lib.department</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <div t-attf-class="o_kanban_card_header">
+                                <div class="o_kanban_card_header_title">
+                                    <div class="o_primary"><h4 style="padding-left:17px"><field name="name"/></h4></div>
+                                </div>
+                            </div>
+                            <br/><br/>
+                            <div class="container o_kanban_card_content">
+                                <div class="row">
+                                    <div class="col-6 o_kanban_primary_left">
+                                        <button class="btn btn-primary" name="open_employee" type="object">Employees</button>
+                                    </div>
+                                    <div class="col-6 o_kanban_primary_right">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+</odoo>

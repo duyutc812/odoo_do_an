@@ -1,35 +1,34 @@
 from odoo import api, fields, models, _
 
 
-class Category(models.Model):
-    _name = 'library.category'
-    _description = 'Category'
+class CategoryBook(models.Model):
+    _name = 'lib.category.book'
+    _description = 'Category Book'
     # _parent_store = True
-    _rec_name = 'name'
 
     name = fields.Char(required=True)
 
-    # parent_id = fields.Many2one('library.category', string='Parent Category',
+    # parent_id = fields.Many2one('lib.category', string='Parent Category',
     #                             ondelete='restrict')
     #
     # parent_path = fields.Char(index=True)
     #
-    # child_ids = fields.One2many('library.category', 'parent_id',
+    # child_ids = fields.One2many('lib.category', 'parent_id',
     #                             string='Subcategories')
 
-    # book_ids = fields.One2many('library.book', 'category')
+    # book_ids = fields.One2many('lib.book', 'category')
 
 
-class CategoriesMagazine(models.Model):
-    _name = 'categories.magazine'
-    _description = 'Categories Magazine'
+class CategoryMagazine(models.Model):
+    _name = 'lib.category.magazine'
+    _description = 'Category Magazine'
 
     name = fields.Char('Name')
 
 
-class CategoriesNewspaper(models.Model):
-    _name = 'categories.newspaper'
-    _description = 'Categories Newspaper'
+class CategoryNewspaper(models.Model):
+    _name = 'lib.category.newspaper'
+    _description = 'Category Newspaper'
 
     name = fields.Char('Name')
 

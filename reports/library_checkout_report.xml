@@ -18,7 +18,7 @@
 
     <report
         id="action_library_checkout_report"
-        model="library.checkout.back.home"
+        model="lib.checkout.back.home"
         report_type="qweb-html"
         string="Checkout Report"
         name="do_an_tn.report_library_checkout_template"/>
@@ -39,7 +39,7 @@
                             <br/>
                         </div>
                         <!--<t t-foreach="doc" t-as="o">
-                            <p t-field="o.card_id.code"/>
+                            <p t-field="o.card_id.name_seq"/>
                             <p t-field="o.gt_name"/>
                             <p t-field="o.card_id.email"/>
                         </t>-->
@@ -49,9 +49,9 @@
                                 <strong>Member Name:</strong>
                                 <p class="m-0" t-field="doc.gt_name"/>
                             </div>
-                            <div t-if="doc.card_id.code" class="col-auto mw-100 mb-2">
+                            <div t-if="doc.card_id.name_seq" class="col-auto mw-100 mb-2">
                                 <strong>Card ID:</strong>
-                                <p class="m-0" t-field="doc.card_id.code"/>
+                                <p class="m-0" t-field="doc.card_id.name_seq"/>
                             </div>
                             <div t-if="doc.card_id.email" class="col-auto mw-100 mb-2">
                                 <strong>Email:</strong>
@@ -93,39 +93,7 @@
                                 <t t-set="total" t-value="0"/>
 
                                 <t t-foreach="checkouts_list" t-as="line">
-
-                                    <!--<t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
-                                    <t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
-                                -->
                                     <tr>
-                                        <!--<t t-if="not line.display_type">
-                                            <td><span t-field="line.name"/></td>
-                                            <td class="text-right">
-                                                <span t-field="line.product_uom_qty"/>
-                                                <span t-field="line.product_uom" groups="uom.group_uom"/>
-                                            </td>
-                                            <td class="text-right">
-                                                <span t-field="line.price_unit"/>
-                                            </td>
-                                            <td t-if="display_discount" class="text-right" groups="sale.group_discount_per_so_line">
-                                                <span t-field="line.discount"/>
-                                            </td>
-                                            <td class="text-right">
-                                                <span t-esc="', '.join(map(lambda x: (x.description or x.name), line.tax_id))"/>
-                                            </td>
-                                            <td class="text-right o_price_total">
-                                                <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
-                                                <span t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
-                                            </td>
-                                        </t>-->
-                                        <!--<t t-if="line.display_type == 'line_section'">
-                                            <td colspan="99">
-                                                <span t-field="line.name"/>
-                                            </td>
-                                            <t t-set="current_section" t-value="line"/>
-                                            <t t-set="current_subtotal" t-value="0"/>
-                                        </t>-->
-
                                         <td class="text-center">
                                             <p t-esc="line['name_seq']"/>
                                         </td>
@@ -154,15 +122,15 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-if="line['actual_return_date']">
-                                                <p style="text-decoration: line-through;" t-esc="line['price_doc']" t-options="{'widget': 'monetary', 'display_currency': line['currency_id']}"/>
+                                                <p style="text-decoration: line-through;" t-esc="line['doc_price']" t-options="{'widget': 'monetary', 'display_currency': line['currency_id']}"/>
                                             </t>
                                             <t t-elif="not line['actual_return_date']">
-                                                <p t-esc="line['price_doc']" t-options="{'widget': 'monetary', 'display_currency': line['currency_id']}"/>
+                                                <p t-esc="line['doc_price']" t-options="{'widget': 'monetary', 'display_currency': line['currency_id']}"/>
 
                                             </t>
                                         </td>
                                         <t t-if="not line['actual_return_date']">
-                                            <t t-set="total" t-value="total + line['price_doc']"/>
+                                            <t t-set="total" t-value="total + line['doc_price']"/>
                                         </t>
 
                                     </tr>
@@ -173,33 +141,6 @@
                             <div id="total" class="row">
                                 <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
                                     <table class="table table-sm;page-break-inside: avoid;">
-                                        <!--<tr class="border-black o_subtotal" style="">
-                                            <td><strong>Subtotal</strong></td>
-                                            <td class="text-right">
-                                                <span t-field="o.amount_untaxed"/>
-                                            </td>
-                                        </tr>-->
-                                        <!--<t t-foreach="o.amount_by_group" t-as="amount_by_group">
-                                            <tr style="">
-                                                <t t-if="len(o.tax_line_ids) == 1 and o.amount_untaxed == amount_by_group[2]">
-                                                    <td><span t-esc="amount_by_group[0]"/></td>
-                                                    <td class="text-right o_price_total">
-                                                        <span t-esc="amount_by_group[3]" />
-                                                    </td>
-                                                </t>
-                                                <t t-else="">
-                                                    <td>
-                                                        <span t-esc="amount_by_group[0]"/>
-                                                        <span>&amp;nbsp;<span>on</span>
-                                                            <t t-esc="amount_by_group[4]"/>
-                                                        </span>
-                                                    </td>
-                                                    <td class="text-right o_price_total">
-                                                        <span t-esc="amount_by_group[3]"/>
-                                                    </td>
-                                                </t>
-                                            </tr>
-                                        </t>-->
                                         <tr class="border-black o_total">
                                             <td><strong>Total(Deposit):</strong></td>
                                             <td class="text-right">
@@ -218,102 +159,5 @@
             </t>
         </t>
     </template>
-
-    <report
-        id="action_library_checkout_at_lib_penalty"
-        model="library.checkout.at.lib"
-        report_type="qweb-html"
-        menu="False"
-        string="Penalty Checkout At Lib"
-        name="do_an_tn.report_penalty_checkout_at_lib_template"/>
-
-    <template id="report_penalty_checkout_at_lib_template">
-        <t t-call="web.html_container">
-            <t t-call="web.internal_layout">
-                <t t-foreach="docs" t-as="o">
-                    <div class="page">
-                        <div class="oe_structure"/>
-                        <div class="row">
-                            <center>
-                                <div class="col-xs-8" style="margin:auto">
-                                    <table style="border: 3px solid black;width:400px;height:270px" >
-                                        <tr>
-                                            <th colspan="2" style="text-align:center">
-                                                <h4><b>Penalty Checkout At Library</b></h4>
-                                            </th>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-size:12px;border: 3px solid black !important;" class="table table-condensed">
-                                                <table width="100%">
-                                                    <tr>
-                                                        <td>
-                                                            <t t-if="o.card_id.user=='student'">
-                                                                <p style="text-align:left"><strong>Card ID: </strong></p>
-                                                                <p style="text-align:left"><strong>Student ID: </strong></p>
-                                                                <p style="text-align:left"><strong>Title Doc</strong></p>
-                                                                <p style="text-align:left"><strong>Meta ID: </strong></p>
-                                                                <p style="text-align:left;"><strong>Description: </strong></p>
-                                                                <p style="text-align:left;"><strong>Penalty Price: </strong></p>
-                                                                <p style="text-align:left;"><strong>Note: </strong></p>
-                                                            </t>
-                                                            <t t-elif="o.card_id.user=='teacher'">
-                                                                <p style="text-align:left;"><strong>Name: </strong></p>
-                                                                <p style="text-align:left;"><strong>Role: </strong></p>
-                                                                <p style="text-align:left;"><strong>Title Doc</strong></p>
-                                                                <p style="text-align:left;"><strong>Meta ID: </strong></p>
-                                                                <p style="text-align:left;"><strong>Description: </strong></p>
-                                                                <p style="text-align:left;"><strong>Penalty Price: </strong></p>
-                                                                <p style="text-align:left;"><strong>Note: </strong></p>
-                                                            </t>
-                                                            <p style="text-align:left;"><strong>Librarian: </strong></p>
-
-                                                        </td>
-                                                        <td>
-                                                            <t t-if="o.card_id.user=='student'">
-                                                                <p style="text-align:left" t-field="o.card_id"/>
-                                                                <p style="text-align:left" t-field="o.card_id.student_id.student_id"/>
-                                                            </t>
-                                                             <t t-if="o.card_id.user=='teacher'">
-                                                                <p style="text-align:left" t-field="o.gt_name"/>
-                                                                <p style="text-align:left" t-field="o.card_id.teacher_id.role"/>
-                                                            </t>
-                                                            <t t-if="o.type_document=='book'">
-                                                                <p style="text-align:left" t-field="o.book_id"/>
-                                                                <p style="text-align:left" t-field="o.meta_book_id"/>
-                                                                </t>
-                                                            <t t-elif="o.type_document=='magazine'">
-                                                                <p style="text-align:left" t-field="o.mgz_new_id"/>
-                                                                <p style="text-align:left" t-field="o.meta_mgz_new_id"/>
-                                                            </t>
-                                                            <t t-else="">
-                                                                <p style="text-align:left" t-field="o.project_id"/>
-                                                                <p style="text-align:left" t-field="o.meta_project_id"/>
-                                                            </t>
-                                                            <p style="text-align:left" t-field="o.status_document"/>
-                                                            <p style="text-align:left" t-field="o.price_penalty"/>
-                                                            <p style="text-align:left" t-field="o.note"/>
-                                                            <p style="text-align:left" t-field="o.user_id"/>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </center>
-                        </div>
-                    </div>
-                </t>
-            </t>
-        </t>
-    </template>
-
-     <report
-            id="report_penalty_checkout_at_lib_xls"
-            model="library.checkout.at.lib"
-            string="Penalty Checkout At Lib"
-            report_type="xlsx"
-            name="do_an_tn.report_penalty_at_lib_xls"
-            file="do_an_tn.report_penalty_at_lib_xls" />
 
 </odoo>

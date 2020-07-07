@@ -5,12 +5,12 @@ class ModifyDescriptionDoc(models.TransientModel):
     _name = 'modify.description.doc'
     _description = 'Modify Description'
 
-    book_id = fields.Many2one('library.book', 'Name Book', readonly=True)
-    meta_book_id = fields.Many2one('meta.books', 'Meta Book', readonly=True)
-    mgz_new_id = fields.Many2one('magazine.newspaper', 'Name Mgz/New', readonly=True)
-    meta_mgz_new_id = fields.Many2one('meta.magazinenewspapers', 'Meta Mgz-New', readonly=True)
-    project_id = fields.Many2one('document.project', 'Name Project', readonly=True)
-    meta_project_id = fields.Many2one('meta.projects', 'Meta Project', readonly=True)
+    book_id = fields.Many2one('lib.book', 'Name Book', readonly=True)
+    meta_book_id = fields.Many2one('lib.meta.books', 'Meta Book', readonly=True)
+    mgz_new_id = fields.Many2one('lib.magazine.newspaper', 'Name Mgz/New', readonly=True)
+    meta_mgz_new_id = fields.Many2one('lib.meta.magazinenewspapers', 'Meta Mgz-New', readonly=True)
+    project_id = fields.Many2one('lib.document.project', 'Name Project', readonly=True)
+    meta_project_id = fields.Many2one('lib.meta.projects', 'Meta Project', readonly=True)
     status_document = fields.Text('Description', track_visibility='always')
     user_id = fields.Many2one('res.users', 'Librarian',
                               default=lambda s: s.env.uid,
@@ -21,7 +21,7 @@ class ModifyDescriptionDoc(models.TransientModel):
         defaults = super().default_get(field_names)
         # print(defaults)
         # {}
-        chk = self.env['library.checkout.at.lib'].sudo().search([('id', '=', self.env.context.get('active_id'))])
+        chk = self.env['lib.checkout.at.lib'].sudo().search([('id', '=', self.env.context.get('active_id'))])
         if chk.book_id:
             defaults['book_id'] = chk.book_id.id
             defaults['meta_book_id'] = chk.meta_book_id.id
@@ -51,10 +51,10 @@ class ModifyDescriptionDocCHKBH(models.TransientModel):
     _name = 'modify.description.doc.chk.bh'
     _description = 'Modify Description Checkout Back Home'
 
-    book_id = fields.Many2one('library.book', 'Name Book', readonly=True)
-    meta_book_id = fields.Many2one('meta.books', 'Meta Book', readonly=True)
-    project_id = fields.Many2one('document.project', 'Name Project', readonly=True)
-    meta_project_id = fields.Many2one('meta.projects', 'Meta Project', readonly=True)
+    book_id = fields.Many2one('lib.book', 'Name Book', readonly=True)
+    meta_book_id = fields.Many2one('lib.meta.books', 'Meta Book', readonly=True)
+    project_id = fields.Many2one('lib.document.project', 'Name Project', readonly=True)
+    meta_project_id = fields.Many2one('lib.meta.projects', 'Meta Project', readonly=True)
     status_document = fields.Text('Description', track_visibility='always')
     user_id = fields.Many2one('res.users', 'Librarian',
                               default=lambda s: s.env.uid,
@@ -65,7 +65,7 @@ class ModifyDescriptionDocCHKBH(models.TransientModel):
         defaults = super().default_get(field_names)
         # print(defaults)
         # {}
-        chk = self.env['library.checkout.back.home'].sudo().search([('id', '=', self.env.context.get('active_id'))])
+        chk = self.env['lib.checkout.back.home'].sudo().search([('id', '=', self.env.context.get('active_id'))])
         if chk.book_id:
             defaults['book_id'] = chk.book_id.id
             defaults['meta_book_id'] = chk.meta_book_id.id

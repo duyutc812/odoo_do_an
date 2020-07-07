@@ -2,7 +2,7 @@
     <record id="open_card_student" model="ir.actions.act_window">
         <field name="name">Open Student Card</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.card</field>
+        <field name="res_model">lib.card</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('student_id', '=', active_id),
                               ('state', '=', 'running')]</field>
@@ -10,17 +10,16 @@
 
     <record id="view_tree_student" model="ir.ui.view">
         <field name="name">view.tree.student</field>
-        <field name="model">library.student</field>
+        <field name="model">lib.student</field>
         <field name="arch" type="xml">
             <tree create="false" delete="false">
                 <field name="name"/>
                 <field name="student_id"/>
                 <field name="email"/>
-                <field name="age"/>
                 <field name="gender"/>
                 <field name="phone"/>
                 <field name="born_date"/>
-                <field name="major"/>
+                <field name="major_id"/>
                 <field name="course"/>
             </tree>
         </field>
@@ -28,7 +27,7 @@
 
     <record id="view_form_student" model="ir.ui.view">
         <field name="name">view.form.student</field>
-        <field name="model">library.student</field>
+        <field name="model">lib.student</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
@@ -39,15 +38,6 @@
                                 icon="fa-bars">
                                 <field name="count" string="Card" widget="statinfo"/>
                         </button>
-                        <!--<button name="toggle_active"
-                                type="object"
-                                class="oe_stat_button"
-                                icon="fa-archive"
-                                groups="base.group_no_one">
-                                <field name="active" widget="boolean_button"
-                                       options='{"terminology": "archive"}'
-                                />
-                        </button>-->
                     </div>
                     <separator string="Student:"/>
                     <field name="student_image" widget="image" class="oe_avatar"/>
@@ -62,7 +52,6 @@
                     </div>
                     <group col="2" colspan="2" string="Information Personal">
                         <group>
-                            <field name="age" attrs="{'invisible':[('age', '=', 0)]}"/>
                             <field name="identity_card" placeholder="Identity Card..."/>
                             <field name="gender"/>
                             <label for="street" string="Address"/>
@@ -83,7 +72,7 @@
                     </group>
                     <group string="Major and Course">
                         <group>
-                            <field name="major" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="major_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="major_name" invisible="1"/>
                         </group>
                         <group>
@@ -104,7 +93,7 @@
 
     <record id="view_search_student" model="ir.ui.view">
        <field name="name">view.search.student</field>
-       <field name="model">library.student</field>
+       <field name="model">lib.student</field>
         <field name="arch" type="xml">
             <search>
                 <field name="student_id" string="Student ID"/>
@@ -112,7 +101,6 @@
                 <filter string="Male" name="male" domain="[('gender', '=', 'male')]"/>
                 <filter string="Female" name="female" domain="[('gender', '=', 'female')]"/>
                 <group>
-                    <filter string="Age" name="age" context="{'group_by': 'age'}"/>
                     <filter string="Course" name="course" context="{'group_by': 'course'}"/>
                     <filter string="Major" name="major_name" context="{'group_by': 'major_name'}"/>
                 </group>
@@ -122,14 +110,14 @@
 
     <record id="view_kanban_student" model="ir.ui.view">
         <field name="name">view.kanban.student</field>
-        <field name="model">library.student</field>
+        <field name="model">lib.student</field>
         <field name="arch" type="xml">
-            <kanban quick_create="false" group_create="false" edit="false" group_edit="false">
+            <kanban default_group_by="major_id" quick_create="false" group_create="false" edit="false" group_edit="false">
                 <field name="name"/>
                 <field name="id"/>
                 <field name="student_image"/>
                 <field name="email"/>
-                <field name="major"/>
+                <field name="major_id"/>
                 <field name="color"/>
                 <field name="course"/>
                 <templates>
@@ -137,7 +125,7 @@
                         <div t-attf-class="oe_kanban_global_click">
                             <div class="o_kanban_image">
                                 <img alt="Avatar" style="height:85px;width:85px"
-                                     t-att-src="kanban_image('library.student', 'student_image',record.id.raw_value)"/>
+                                     t-att-src="kanban_image('lib.student', 'student_image',record.id.raw_value)"/>
                             </div>
                             <div class="oe_kanban_details">
                                 <strong>
@@ -176,7 +164,7 @@
                                             <td valign="top" width="50" align="left">
                                                 <a type="open">
                                                     <img heigh="50" width="50"
-                                                         t-att-src="kanban_image('library.student', 'student_image', record.id.raw_value)"
+                                                         t-att-src="kanban_image('lib.student', 'student_image', record.id.raw_value)"
                                                          alt="image"/>
                                                 </a>
                                             </td>
@@ -194,7 +182,7 @@
                                                     <tr>
                                                         <td><b>Major : </b></td>
                                                         <td style="padding-left:10px;">
-                                                            <field name="major" />
+                                                            <field name="major_id" />
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -245,12 +233,11 @@
 
     <record id="view_tree_teacher" model="ir.ui.view">
         <field name="name">view.tree.teacher</field>
-        <field name="model">library.teacher</field>
+        <field name="model">lib.teacher</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="name"/>
                 <field name="born_date"/>
-                <field name="age"/>
                 <field name="gender"/>
                 <field name="phone"/>
                 <field name="email"/>
@@ -260,7 +247,7 @@
 
     <record id="view_form_teacher" model="ir.ui.view">
         <field name="name">view.form.teacher</field>
-        <field name="model">library.teacher</field>
+        <field name="model">lib.teacher</field>
         <field name="arch" type="xml">
             <form string="Teacher Form">
                 <sheet>
@@ -303,7 +290,7 @@
 
      <record id="view_kanban_teacher" model="ir.ui.view">
         <field name="name">view.kanban.teacher</field>
-        <field name="model">library.teacher</field>
+        <field name="model">lib.teacher</field>
         <field name="arch" type="xml">
             <kanban class="o_kanban_small_column" create="false" nocreate="1">
                 <field name="name"/>
@@ -316,7 +303,7 @@
                             o_kanban_record_has_image_fill o_hospital_patient_kanban">
                             <div class="o_kanban_image">
                                 <img style="height:60px;width:60px" alt="Avatar"
-                                     t-att-src="kanban_image('library.teacher', 'teacher_image', record.id.raw_value)"/>
+                                     t-att-src="kanban_image('lib.teacher', 'teacher_image', record.id.raw_value)"/>
                             </div>
                             <div class="oe_kanban_details">
                                 <h3 class="o_text_overflow">

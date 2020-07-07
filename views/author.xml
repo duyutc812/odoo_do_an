@@ -2,14 +2,14 @@
     <record id="open_books_of_author1" model="ir.actions.act_window">
         <field name="name">All book for author</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.book</field>
+        <field name="res_model">lib.book</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('author_ids', '=', active_id)]</field>
     </record>
 
     <record id="view_tree_author" model="ir.ui.view">
         <field name="name">view.tree.author</field>
-        <field name="model">library.author</field>
+        <field name="model">lib.author</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="name_seq"/>
@@ -24,7 +24,7 @@
 
     <record id="view_form_author" model="ir.ui.view">
         <field name="name">view.form.author</field>
-        <field name="model">library.author</field>
+        <field name="model">lib.author</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
@@ -41,7 +41,7 @@
                         </button>
                         <button class="oe_stat_button" type="object" name="toggle_active" icon="fa-archive"
                                 groups="base.group_no_one"  >
-                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            <field name="is_active" widget="boolean_button" options='{"terminology": "archive"}'/>
                         </button>
                     </div>
                     <separator string="Author"/>
@@ -71,14 +71,13 @@
                     <group>
                         <field name="book_ids" widget="many2many_tags"/>
                     </group>
-                    <notebook>
+                    <!--<notebook>
                         <page string="Biography">
                             <field name="biography"/>
                         </page>
-                        <page string="More Information">
-                            <field name="note"/>
-                        </page>
-                    </notebook>
+                    </notebook>-->
+                    <separator string="Biography" colspan="4"/>
+                    <field name="biography" nolabel="1" placeholder="Biography..."/>
                 </sheet>
             </form>
         </field>
@@ -86,7 +85,7 @@
 
     <record id="view_search_author" model="ir.ui.view">
        <field name="name">view.search.author</field>
-       <field name="model">library.author</field>
+       <field name="model">lib.author</field>
         <field name="arch" type="xml">
             <search>
                 <field name="pen_name" string="Pen Name"/>
@@ -103,7 +102,7 @@
 
     <record id="view_kanban_author" model="ir.ui.view">
         <field name="name">view.kanban.author</field>
-        <field name="model">library.author</field>
+        <field name="model">lib.author</field>
         <field name="arch" type="xml">
             <kanban>
                 <field name="name_seq"/>
@@ -135,14 +134,14 @@
                             <div t-attf-class="oe_kanban_global_click">
 
     <!--                            <img t-att-src="kanban_image(-->
-    <!--                                    'library.author', 'author_image', record.id.raw_value)"-->
+    <!--                                    'lib.author', 'author_image', record.id.raw_value)"-->
     <!--                                    t-att-title="record.pen_name.value"-->
     <!--                                    t-att-alt="record.pen_name.value"-->
     <!--                                    width="50" height="50"-->
     <!--                                    class="oe_kanban_avatar" />-->
                                 <div class="o_kanban_image">
                                     <img alt="Avatar" style="width:55px;height:74px"
-                                         t-att-src="kanban_image('library.author',
+                                         t-att-src="kanban_image('lib.author',
                                                                 'author_image',record.id.raw_value)"/>
                                 </div>
                                 <div class="oe_kanban_details">
@@ -193,7 +192,7 @@
 
     <record id="view_tree_translator" model="ir.ui.view">
         <field name="name">view.tree.translator</field>
-        <field name="model">library.translator</field>
+        <field name="model">lib.translator</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="name"/>
@@ -201,14 +200,14 @@
                 <field name="born_date"/>
                 <field name="death_date"/>
                 <field name="gender"/>
-                <field name="active"/>
+                <field name="is_active"/>
             </tree>
         </field>
     </record>
 
     <record id="view_form_translator" model="ir.ui.view">
         <field name="name">view.form.translator</field>
-        <field name="model">library.translator</field>
+        <field name="model">lib.translator</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
@@ -221,7 +220,7 @@
                         <group>
                             <field name="country_id"/>
                             <field name="gender"/>
-                            <field name="active"/>
+                            <field name="is_active"/>
                         </group>
                     </group>
                     <group string="All book">

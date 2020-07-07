@@ -31,12 +31,26 @@
                eval="[(4, ref('base.group_user'))]"/>
     </record>
 
+    <record id="library_portal_user" model="res.groups">
+        <field name="name">Portal User</field>
+        <field name="category_id" ref="module_library_category"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_portal'))]"/>
+    </record>
+
+  <!--  <record id="checkout_portal_rule" model="ir.rule">
+        <field name="name">Library Checkout Portal Access</field>
+        <field name="model_id" ref="library_checkout.model_library_checkout"/>
+        <field name="domain_force">[('member_id.user_id', '=', user.id)]</field>
+        <field name="groups"
+                eval="[(4,ref('base.group_portal'))]"/>
+    </record>-->
+
     <data noupdate="0">
         <record id="library_author_librarian_rule" model="ir.rule">
             <field name="name">Library Author Librarian Access</field>
-            <field name="model_id" ref="model_library_author"/>
+            <field name="model_id" ref="model_lib_author"/>
             <field name="domain_force">
-                [('active', '=', True)]
+                [('is_active', '=', True)]
             </field>
             <field name="groups" eval="[(4,ref('library_group_librarian'))]"/>
         </record>
@@ -45,38 +59,50 @@
     <data noupdate="0">
         <record id="library_author_manager_rule" model="ir.rule">
             <field name="name">Library Author Manager Access</field>
-            <field name="model_id" ref="model_library_author"/>
+            <field name="model_id" ref="model_lib_author"/>
             <field name="domain_force">
-                [('active', '=', False)]
+                [('is_active', '=', False)]
             </field>
             <field name="groups" eval="[(4, ref('library_group_manager'))]"/>
         </record>
     </data>
 
     <data noupdate="0">
-        <record id="library_card_librarian_rule" model="ir.rule">
+        <!--<record id="library_card_librarian_rule" model="ir.rule">
             <field name="name">Library Card Librarian Access</field>
             <field name="model_id" ref="model_library_card"/>
+            <field name="domain_force">[()]</field>
+            <field name="groups" eval="[(4, ref('library_group_librarian'))]"/>
+            <field eval="0" name="perm_unlink"/>
+            <field eval="0" name="perm_write"/>
+            <field eval="1" name="perm_read"/>
+            <field eval="0" name="perm_create"/>
+        </record>
+-->
+        <record id="library_card_manager_rule" model="ir.rule">
+            <field name="name">Library Card Manager Access</field>
+            <field name="model_id" ref="model_lib_card"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('library_group_manager'))]"/>
+        </record>
+    </data>
+
+<!--    <data noupdate="0">
+        <record id="library_chk_at_lib_librarian_rule" model="ir.rule">
+            <field name="name">Library Checkout At Lib Librarian Access</field>
+            <field name="model_id" ref="model_library_checkout_at_lib"/>
             <field name="domain_force">[('user_id', '=', user.id)]</field>
             <field name="groups" eval="[(4, ref('library_group_librarian'))]"/>
-            <field name="perm_read" eval="1"/>
-            <field name="perm_write" eval="0"/>
-            <field name="perm_create" eval="0"/>
-            <field name="perm_unlink" eval="0"/>
         </record>
 
         <record id="library_card_manager_rule" model="ir.rule">
             <field name="name">Library Card Manager Access</field>
-            <field name="model_id" ref="model_library_card"/>
+            <field name="model_id" ref="model_library_checkout_at_lib"/>
             <field name="domain_force">[(1, '=', 1)]</field>
             <field name="groups" eval="[(4, ref('library_group_manager'))]"/>
-            <field name="perm_read" eval="1"/>
-            <field name="perm_write" eval="1"/>
-            <field name="perm_create" eval="1"/>
-            <field name="perm_unlink" eval="1"/>
         </record>
     </data>
-    
+    -->
 
 
 

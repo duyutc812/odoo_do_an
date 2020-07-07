@@ -6,7 +6,7 @@ class CreateMetaBook(models.TransientModel):
     _name = 'create.meta.book'
     _description = 'Create Meta Book'
 
-    book_id = fields.Many2one('library.book', string='Book')
+    book_id = fields.Many2one('lib.book', string='Book')
     name_seq = fields.Char(string="Meta Book ID", default=lambda self: _('New'), readonly=True)
     description = fields.Text('Description', default='Tài liệu mới')
     state = fields.Selection([
@@ -18,13 +18,13 @@ class CreateMetaBook(models.TransientModel):
     @api.model
     def default_get(self, field_names):
         defaults = super().default_get(field_names)
-        book = self.env['library.book'].sudo().search([('id', '=', self.env.context.get('active_id'))])
+        book = self.env['lib.book'].sudo().search([('id', '=', self.env.context.get('active_id'))])
         defaults['book_id'] = book.id
         return defaults
 
     @api.multi
     def button_create(self):
-        meta_book = self.env['meta.books']
+        meta_book = self.env['lib.meta.books']
         if not self.quantity:
             raise ValidationError(_('The Quantity must be greater than 0!'))
         for k in range(1, self.quantity+1):
@@ -42,7 +42,7 @@ class CreateMetaMagazineNewspaper(models.TransientModel):
     _name = 'create.meta.mg.new'
     _description = 'Create Meta Magazine Newspaper'
 
-    mgz_new_id = fields.Many2one('magazine.newspaper', string='Magazine/Newspaper', track_visibility='always')
+    mgz_new_id = fields.Many2one('lib.magazine.newspaper', string='Magazine/Newspaper', track_visibility='always')
     name_seq = fields.Char(string="Meta Magazine/Newspaper ID", default=lambda self: _('New'), readonly=True)
     description = fields.Text('Description', default='Tài liệu mới')
     state = fields.Selection([
@@ -54,13 +54,13 @@ class CreateMetaMagazineNewspaper(models.TransientModel):
     @api.model
     def default_get(self, field_names):
         defaults = super().default_get(field_names)
-        mg_new = self.env['magazine.newspaper'].sudo().search([('id', '=', self.env.context.get('active_id'))])
+        mg_new = self.env['lib.magazine.newspaper'].sudo().search([('id', '=', self.env.context.get('active_id'))])
         defaults['mgz_new_id'] = mg_new.id
         return defaults
 
     @api.multi
     def button_create(self):
-        meta_mg_new = self.env['meta.magazinenewspapers']
+        meta_mg_new = self.env['lib.meta.magazinenewspapers']
         if not self.quantity:
             raise ValidationError(_('The Quantity must be greater than 0!'))
         for k in range(1, self.quantity + 1):

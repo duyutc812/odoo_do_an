@@ -1,46 +1,46 @@
 <odoo>
     <data noupdate="0">
         <!--data library rack-->
-        <record id="data_rack_1" model="library.rack">
+        <record id="data_rack_1" model="lib.rack">
             <field name="name">Rack 1</field>
-            <field name="code">LR1</field>
+            <field name="name_seq">LR1</field>
         </record>
 
-        <record id="data_rack_2" model="library.rack">
+        <record id="data_rack_2" model="lib.rack">
             <field name="name">Rack 2</field>
-            <field name="code">LR2</field>
+            <field name="name_seq">LR2</field>
         </record>
 
         <!--data library duration-->
-        <record id="data_library_duration_1" model="library.duration">
+        <record id="data_library_duration_1" model="lib.duration">
             <field name="name">3 months(student)</field>
             <field name="duration">3</field>
-            <field name="user_type">student</field>
+            <field name="member_type">student</field>
             <field name="price">20000</field>
-            <field name="book_on_card">1</field>
-            <field name="syllabus_on_card">2</field>
+            <field name="book_limit">1</field>
+            <field name="syllabus_limit">2</field>
         </record>
 
-        <record id="data_library_duration_2" model="library.duration">
+        <record id="data_library_duration_2" model="lib.duration">
             <field name="name">6 months(student)</field>
             <field name="duration">6</field>
-            <field name="user_type">student</field>
+            <field name="member_type">student</field>
             <field name="price">30000</field>
-            <field name="book_on_card">2</field>
-            <field name="syllabus_on_card">2</field>
+            <field name="book_limit">2</field>
+            <field name="syllabus_limit">2</field>
         </record>
 
-        <record id="data_library_duration_3" model="library.duration">
+        <record id="data_library_duration_3" model="lib.duration">
             <field name="name">6 months(teacher)</field>
             <field name="duration">6</field>
-            <field name="user_type">teacher</field>
+            <field name="member_type">teacher</field>
             <field name="price">0</field>
-            <field name="book_on_card">3</field>
-            <field name="syllabus_on_card">2</field>
+            <field name="book_limit">3</field>
+            <field name="syllabus_limit">2</field>
         </record>
 
         <!--data author 1 -> 4-->
-        <record id="data_author_1" model="library.author">
+        <record id="data_author_1" model="lib.author">
             <field name="pen_name">Nguyễn Nhật Ánh</field>
             <field name="name">Nguyễn Nhật Ánh</field>
             <field name="name_seq">AT001</field>
@@ -51,7 +51,7 @@
             <field name="biography">Biography of Nguyễn Nhật Ánh</field>
         </record>
 
-        <record id="data_author_2" model="library.author">
+        <record id="data_author_2" model="lib.author">
             <field name="pen_name">Nam Cao</field>
             <field name="name">Trần Hữu Tri</field>
             <field name="name_seq">AT002</field>
@@ -63,7 +63,7 @@
             <field name="biography">Biography of Nam Cao</field>
         </record>
 
-        <record id="data_author_3" model="library.author">
+        <record id="data_author_3" model="lib.author">
             <field name="pen_name">Arthur Conan Doyle</field>
             <field name="name">Sir Conan Doyle</field>
             <field name="name_seq">AT003</field>
@@ -75,7 +75,7 @@
             <field name="biography">Biography of Sir Conan Doyle</field>
         </record>
 
-        <record id="data_author_4" model="library.author">
+        <record id="data_author_4" model="lib.author">
             <field name="pen_name">Nguyễn Ngọc Tư</field>
             <field name="name">Nguyễn Ngọc Tư</field>
             <field name="name_seq">AT004</field>
@@ -86,109 +86,112 @@
         </record>
 
         <!--data publisher 1 - 4-->
-        <record id="data_publisher_1" model="library.publisher">
+        <record id="data_publisher_1" model="lib.publisher">
             <field name="name_seq">PL001</field>
             <field name="name">Nhà Xuất Bản Trẻ</field>
             <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nxbtre.jpeg"/>
         </record>
 
-        <record id="data_publisher_2" model="library.publisher">
+        <record id="data_publisher_2" model="lib.publisher">
              <field name="name_seq">PL002</field>
             <field name="name">Nhà Xuất Bản Nhã Nam</field>
             <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nhanam.jfif"/>
         </record>
 
-        <record id="data_publisher_3" model="library.publisher">
+        <record id="data_publisher_3" model="lib.publisher">
              <field name="name_seq">PL003</field>
             <field name="name">Nhà Xuất Bản Văn Học</field>
             <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nxbvanhoc.jpg"/>
         </record>
 
-        <record id="data_publisher_4" model="library.publisher">
+        <record id="data_publisher_4" model="lib.publisher">
              <field name="name_seq">PL004</field>
             <field name="name">Nhà Xuất Bản Kim Đồng</field>
             <field name="publisher_image" type="base64" file="do_an_tn\static\publisher\nxbkimdong.jfif"/>
         </record>
 
         <!--data Book Category-->
-        <record id="data_category_1" model="library.category">
+        <record id="data_category_1" model="lib.category.book">
             <field name="name">Tình yêu</field>
         </record>
 
-        <record id="data_category_2" model="library.category">
+        <record id="data_category_2" model="lib.category.book">
             <field name="name">Học Trò</field>
         </record>
 
-        <record id="data_category_3" model="library.category">
+        <record id="data_category_3" model="lib.category.book">
             <field name="name">Tiểu thuyết</field>
         </record>
 
-        <record id="data_category_4" model="library.category">
+        <record id="data_category_4" model="lib.category.book">
             <field name="name">Trinh thám</field>
         </record>
 
-        <record id="data_category_5" model="library.category">
+        <record id="data_category_5" model="lib.category.book">
             <field name="name">Lập Trình</field>
+        </record>
+        <record id="data_category_6" model="lib.category.book">
+            <field name="name">Giáo Trình</field>
         </record>
 
         <!--data Student Major-->
-        <record id="data_student_major_1" model="student.major">
+        <record id="data_student_major_1" model="lib.student.major">
             <field name="name">Công Nghệ Thông Tin</field>
         </record>
 
-        <record id="data_student_major_2" model="student.major">
+        <record id="data_student_major_2" model="lib.student.major">
             <field name="name">Kế Toán</field>
         </record>
 
-        <record id="data_student_major_3" model="student.major">
+        <record id="data_student_major_3" model="lib.student.major">
             <field name="name">Điện Tử Viễn Thông</field>
         </record>
 
-        <record id="data_student_major_4" model="student.major">
+        <record id="data_student_major_4" model="lib.student.major">
             <field name="name">Kinh Tế</field>
         </record>
 
         <!--data Teacher Role-->
-        <record id="data_teacher_role_1" model="teacher.role">
+        <record id="data_teacher_role_1" model="lib.teacher.role">
             <field name="name">Hiệu Trưởng</field>
         </record>
 
-        <record id="data_teacher_role_2" model="teacher.role">
+        <record id="data_teacher_role_2" model="lib.teacher.role">
             <field name="name">Giảng Viên Toán</field>
         </record>
 
-        <record id="data_teacher_role_3" model="teacher.role">
+        <record id="data_teacher_role_3" model="lib.teacher.role">
             <field name="name">Giảng Viên Công Nghệ Thông Tin</field>
         </record>
 
         <!--data Magazine Categories-->
-        <record id="data_category_magazine_1" model="categories.magazine">
+        <record id="data_category_magazine_1" model="lib.category.magazine">
             <field name="name">Tạp Chí Thể Thao</field>
         </record>
 
-        <record id="data_category_magazine_2" model="categories.magazine">
+        <record id="data_category_magazine_2" model="lib.category.magazine">
             <field name="name">Tạp Chí Công Nghệ</field>
         </record>
 
-        <record id="data_category_magazine_3" model="categories.magazine">
+        <record id="data_category_magazine_3" model="lib.category.magazine">
             <field name="name">Tạp Chí Thời Trang</field>
         </record>
 
         <!--data Newspaper Categories-->
-        <record id="data_category_newspaper_1" model="categories.newspaper">
+        <record id="data_category_newspaper_1" model="lib.category.newspaper">
             <field name="name">Báo Tiền Phong</field>
         </record>
 
-        <record id="data_category_newspaper_2" model="categories.newspaper">
+        <record id="data_category_newspaper_2" model="lib.category.newspaper">
             <field name="name">Báo Tuổi Trẻ</field>
         </record>
 
-        <record id="data_category_newspaper_3" model="categories.newspaper">
+        <record id="data_category_newspaper_3" model="lib.category.newspaper">
             <field name="name">Báo Lao Động</field>
         </record>
 
         <!--data Student-->
-        <record id="data_student_1" model="library.student">
+        <record id="data_student_1" model="lib.student">
             <field name="name">Student One</field>
             <field name="student_id">160704523</field>
             <field name="student_image" type="base64" file="do_an_tn\static\default_image.png"/>
@@ -201,12 +204,12 @@
             <field name="city">City A</field>
             <field name="country_id">241</field>
             <field name="email">studentone@gmail.com</field>
-            <field name="major" ref="data_student_major_1"/>
+            <field name="major_id" ref="data_student_major_1"/>
             <field name="course">58</field>
             <field name="gender">female</field>
         </record>
 
-        <record id="data_student_2" model="library.student">
+        <record id="data_student_2" model="lib.student">
             <field name="name">Student Two</field>
             <field name="student_id">160704524</field>
             <field name="student_image" type="base64" file="do_an_tn\static\default_image.png"/>
@@ -219,12 +222,12 @@
             <field name="city">City B</field>
             <field name="country_id">241</field>
             <field name="email">studenttwo@gmail.com</field>
-            <field name="major" ref="data_student_major_2"/>
+            <field name="major_id" ref="data_student_major_2"/>
             <field name="course">59</field>
         </record>
 
         <!--data teacher-->
-        <record id="data_teacher_1" model="library.teacher">
+        <record id="data_teacher_1" model="lib.teacher">
             <field name="name">Teacher One</field>
             <field name="gender">fe_male</field>
             <field name="role" ref="data_teacher_role_1"/>
@@ -233,7 +236,7 @@
             <field name="teacher_image" type="base64" file="do_an_tn\static\default_image.png"/>
         </record>
 
-        <record id="data_teacher_2" model="library.teacher">
+        <record id="data_teacher_2" model="lib.teacher">
             <field name="name">Teacher Three</field>
             <field name="gender">male</field>
             <field name="role" ref="data_teacher_role_3"/>
@@ -243,7 +246,7 @@
         </record>
 
         <!--data Book-->
-        <record id="data_book_1" model="library.book">
+        <record id="data_book_1" model="lib.book">
             <field name="name">Mắt Biếc</field>
             <field name="name_seq">BK001</field>
             <field name="image" type="base64" file="do_an_tn\static\book\matbiec.jpg"/>
@@ -256,7 +259,7 @@
             <field name="book_term">7</field>
         </record>
 
-        <record id="data_book_2" model="library.book">
+        <record id="data_book_2" model="lib.book">
             <field name="name">Sherlock Holmes - Tập 1</field>
             <field name="name_seq">BK002</field>
             <field name="image" type="base64" file="do_an_tn\static\book\holmes1.jpg"/>
@@ -269,7 +272,7 @@
             <field name="book_term">15</field>
         </record>
 
-        <record id="data_book_3" model="library.book">
+        <record id="data_book_3" model="lib.book">
             <field name="name">Odoo 12 Development Essentials</field>
             <field name="name_seq">BK003</field>
             <field name="image" type="base64" file="do_an_tn\static\book\odoo12.png"/>
@@ -283,62 +286,62 @@
         </record>
 
         <!--data Checkout Stage-->
-        <record id="data_card_stage_1" model="library.card.stage">
+        <record id="data_card_stage_1" model="lib.card.stage">
             <field name="name">Draft</field>
             <field name="sequence">10</field>
             <field name="state">draft</field>
         </record>
 
-        <record id="data_card_stage_2" model="library.card.stage">
+        <record id="data_card_stage_2" model="lib.card.stage">
             <field name="name">Confirm</field>
             <field name="sequence">20</field>
             <field name="state">running</field>
         </record>
 
-        <record id="data_card_stage_3" model="library.card.stage">
+        <record id="data_card_stage_3" model="lib.card.stage">
             <field name="name">Expire</field>
             <field name="sequence">30</field>
             <field name="state">expire</field>
         </record>
 
         <!--Checkout Stage-->
-        <record id="data_checkout_stage_1" model="library.checkout.stage">
+        <record id="data_checkout_stage_1" model="lib.checkout.stage">
             <field name="name">Draft</field>
             <field name="sequence">10</field>
             <field name="state">draft</field>
         </record>
 
-        <record id="data_checkout_stage_2" model="library.checkout.stage">
+        <record id="data_checkout_stage_2" model="lib.checkout.stage">
             <field name="name">Borrowed</field>
             <field name="sequence">20</field>
             <field name="state">running</field>
         </record>
 
-        <record id="data_checkout_stage_3" model="library.checkout.stage">
+        <record id="data_checkout_stage_3" model="lib.checkout.stage">
             <field name="name">Returned</field>
             <field name="sequence">30</field>
             <field name="state">done</field>
         </record>
 
-        <record id="data_checkout_stage_4" model="library.checkout.stage">
+        <record id="data_checkout_stage_4" model="lib.checkout.stage">
             <field name="name">Fined</field>
             <field name="sequence">40</field>
             <field name="state">fined</field>
         </record>
 
         <!--data project-->
-        <record id="data_project_1" model="document.project">
+        <record id="data_project_1" model="lib.document.project">
             <field name="name">Quản Lý Thư Viện Sử Dụng Odoo FrameWork</field>
-            <field name="major" ref="data_student_major_1"/>
+            <field name="major_id" ref="data_student_major_1"/>
             <field name="rack" ref="data_rack_2"/>
             <field name="price">50000</field>
             <field name="project_term">15</field>
             <field name="student_id" ref="data_student_1"/>
         </record>
 
-        <record id="data_project_2" model="document.project">
+        <record id="data_project_2" model="lib.document.project">
             <field name="name">Đồ Án Chuyên Ngành Kế Toán</field>
-            <field name="major" ref="data_student_major_2"/>
+            <field name="major_id" ref="data_student_major_2"/>
             <field name="rack" ref="data_rack_2"/>
             <field name="price">50000</field>
             <field name="project_term">15</field>
@@ -346,9 +349,9 @@
         </record>
 
         <!--data Magazine-->
-        <record id="data_magazine_1" model="magazine.newspaper">
+        <record id="data_magazine_1" model="lib.magazine.newspaper">
             <field name="type_mgz_new">magazine</field>
-            <field name="category_mgz" ref="data_category_magazine_1"/>
+            <field name="category_mgz_id" ref="data_category_magazine_1"/>
             <field name="num_mgz_new">21</field>
             <field name="rack" ref="data_rack_2"/>
             <field name="price">21000</field>
@@ -356,15 +359,34 @@
         </record>
 
         <!--data Newspaper-->
-        <record id="data_newspaper_2" model="magazine.newspaper">
+        <record id="data_newspaper_2" model="lib.magazine.newspaper">
             <field name="type_mgz_new">newspaper</field>
-            <field name="category_new" ref="data_category_newspaper_2"/>
+            <field name="category_new_id" ref="data_category_newspaper_2"/>
             <field name="num_mgz_new">11</field>
             <field name="price">11000</field>
             <field name="rack" ref="data_rack_2"/>
             <field name="publish_date">2019-04-03</field>
         </record>
 
+        <!--data Department-->
+         <record id="data_department_1" model="lib.department">
+            <field name="category_id" ref="do_an_tn.module_library_category"/>
+            <field name="group_id" ref="do_an_tn.library_group_manager"/>
+        </record>
 
+        <record id="data_department_2" model="lib.department">
+            <field name="category_id" ref="do_an_tn.module_library_category"/>
+            <field name="group_id" ref="do_an_tn.library_group_librarian"/>
+        </record>
+
+        <record id="data_department_3" model="lib.department">
+            <field name="category_id" ref="do_an_tn.module_library_category"/>
+            <field name="group_id" ref="do_an_tn.library_member_search"/>
+        </record>
+
+        <record id="data_department_4" model="lib.department">
+            <field name="category_id" ref="do_an_tn.module_library_category"/>
+            <field name="group_id" ref="do_an_tn.library_portal_user"/>
+        </record>
     </data>
 </odoo>

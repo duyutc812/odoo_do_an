@@ -1,7 +1,7 @@
 <odoo>
     <record id="view_tree_publisher" model="ir.ui.view">
         <field name="name">view.tree.publisher</field>
-        <field name="model">library.publisher</field>
+        <field name="model">lib.publisher</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="name_seq"/>
@@ -14,7 +14,7 @@
 
     <record id="view_form_publisher" model="ir.ui.view">
         <field name="name">view.form.publisher</field>
-        <field name="model">library.publisher</field>
+        <field name="model">lib.publisher</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
@@ -44,19 +44,10 @@
                             <field name="website2" widget="url" placeholder="Website..."/>
                             <field name="facebook" widget="url" placeholder="e.g facebook.com..."/>
                         </group>
+                        <separator string="All book" colspan="1"/>
+                        <field name="book_ids" widget="many2many_tags" readonly="1"/>
                     </group>
-                    <notebook>
-                        <page string="Books">
-                            <group>
-                                <field name="book_ids" widget="many2many_tags" readonly="1"/>
-                            </group>
-                        </page>
-                        <page string="Notes">
-                            <group>
-                                <field name="note" placeholder="Note" nolabel="1"/>
-                            </group>
-                        </page>
-                    </notebook>
+                    <field name="note" placeholder="Note" nolabel="1"/>
                 </sheet>
             </form>
         </field>
@@ -64,7 +55,7 @@
 
     <record id="view_kanban_publisher" model="ir.ui.view">
         <field name="name">view.kanban.publisher</field>
-        <field name="model">library.publisher</field>
+        <field name="model">lib.publisher</field>
         <field name="arch" type="xml">
             <kanban class="o_kanban_small_column">
                 <field name="name"/>
@@ -74,7 +65,7 @@
                             <div t-attf-class="oe_kanban_global_click">
                                 <div class="o_kanban_image">
                                     <img alt="Avatar"
-                                         t-att-src="kanban_image('library.publisher',
+                                         t-att-src="kanban_image('lib.publisher',
                                          'publisher_image',record.id.raw_value)"/>
                                 </div>
                                 <div class="oe_kanban_details">

@@ -1,7 +1,7 @@
 <odoo>
     <record id="view_tree_checkout_at_lib" model="ir.ui.view">
         <field name="name">view.tree.checkout.at.lib</field>
-        <field name="model">library.checkout.at.lib</field>
+        <field name="model">lib.checkout.at.lib</field>
         <field name="arch" type="xml">
             <tree
                   decoration-success="state == 'done'"
@@ -16,7 +16,7 @@
                 <!--<field name="status_document"/>-->
                 <field name="user_id"/>
                 <field name="currency_id" invisible="1"/>
-                <field name="price_penalty" string="Penalty Price" sum="Total Penalty Price"/>
+                <field name="penalty_price" string="Penalty Price" sum="Total Penalty Price"/>
                 <field name="note"/>
                 <field name="state"/>
             </tree>
@@ -25,7 +25,7 @@
 
     <record id="view_form_checkout_at_lib" model="ir.ui.view">
         <field name="name">view.form.checkout.at.lib</field>
-        <field name="model">library.checkout.at.lib</field>
+        <field name="model">lib.checkout.at.lib</field>
         <field name="arch" type="xml">
             <form>
                 <header>
@@ -52,7 +52,7 @@
                             string="Lost Document"
                             confirm="Lost Magazine or Newspaper? Are you sure ?"
                             class="oe_highlight"
-                            attrs="{'invisible':['|', ('state', '!=', 'fined'), ('is_lost_doc', '=', True)]}"/>
+                            attrs="{'invisible':[('state', '!=', 'fined')]}"/>
                     <button name="fined_state"
                             type="object"
                             string="Penalty"
@@ -75,12 +75,24 @@
                             attrs="{'invisible': [('state', 'in', ['running', 'lost'])]}"/>
                     <button name="print_report" type="object" string="Print Report" class="oe_highlight"
                             attrs="{'invisible':[('state', 'not in', ['fined', 'lost'])]}"/>
+
+                    <button name="print_penalty_report" type="object" string="Print Penalty Report Excel" class="oe_highlight"
+                            attrs="{'invisible':[('state', 'not in', ['fined', 'lost'])]}"/>
                     <field name="stage_id"
                            widget="statusbar"
-                           options="{'fold_field': 'fold'}"
-                           /><!--options="{'fold_field': 'fold'}"-->
+                           options="{'fold_field': 'is_fold'}"
+                           /><!--options="{'fold_field': 'is_fold'}"-->
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="expense_button_box">
+                        <button name="open_checkout_waiting"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-tasks"
+                                attrs="{'invisible': [('state', 'not in', ['done', 'fined'])]}">
+                            <field name="count_waiting" string="Waiting" widget="statinfo"/>
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <label for="name_seq" class="oe_edit_only" />
                         <h1>
@@ -93,6 +105,7 @@
                                    attrs="{'invisible': [('state', '=', 'draft')]}"/>
                         </h3>
                     </div>
+
                     <group col="2" colspan="4">
                         <group string="Card Details">
                            <!-- <separator string="Card Details"/>-->
@@ -110,7 +123,6 @@
                                    options="{'no_create': True, 'no_open': True}"/>
                             <field name="meta_book_id"
                                    attrs="{'invisible': [('type_document', '!=', 'book')],
-                                           'required': [('type_document', '=', 'book')],
                                            'readonly':[('state','!=','draft')]}"
                                    options="{'no_create': True}"/>
                             <field name="mgz_new_id" string="Title"
@@ -123,8 +135,7 @@
                             <field name="meta_mgz_new_id" string="Meta mgz/new"
                                    options="{'no_create': True, 'no_open': True}"
                                    attrs="{'readonly':[('state','!=','draft')],
-                                           'invisible': [('type_document', '!=', 'magazine')],
-                                           'required': [('type_document', '=', 'magazine')]}"/>
+                                           'invisible': [('type_document', '!=', 'magazine')]}"/>
                                    <!--attrs="{'readonly':[('state','!=','draft')]}"-->
                             <field name="project_id"
                                    options="{'no_create': True, 'no_open': True}"
@@ -134,18 +145,16 @@
                             <field name="meta_project_id"
                                    options="{'no_create': True, 'no_open': True}"
                                    attrs="{'invisible': [('type_document', '!=', 'project')],
-                                           'required': [('type_document', '=', 'project')],
                                            'readonly':[('state','!=','draft')]}"/>
                             <field name="status_document" />
-                            <field name="price_doc" attrs="{'invisible': [('state', 'not in', ['fined', 'lost'])]}"/>
-                            <field name="is_lost_doc" invisible="1"/>
+                            <field name="doc_price" attrs="{'invisible': [('state', 'not in', ['fined', 'lost'])]}"/>
                             <field name="return_date" readonly="1" attrs="{'invisible': [('state', 'in', ['draft', 'running'])]}"/>
                         </group>
                     </group>
                     <group string="Fined" attrs="{'invisible':[('state', 'not in', ['lost', 'fined'])]}">
                         <group>
                             <field name="currency_id" readonly="1"/>
-                            <field name="price_penalty" widget="monetary"
+                            <field name="penalty_price" widget="monetary"
                                    attrs="{'required': [('state', '=', 'fined')],
                                            'readonly': [('state', '=', 'lost')]}"/>
                             <field name="note"
@@ -154,8 +163,8 @@
                     </group>
                 </sheet>
                 <div class="oe_chatter">
-                    <!--<field name="message_follower_ids" widget="mail_followers"/>-->
-                    <!--<field name="activity_ids" widget="mail_activity"/>-->
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
                     <field name="message_ids" widget="mail_thread"/>
                 </div>
             </form>
@@ -164,7 +173,7 @@
 
     <record id="view_search_checkout_at_lib" model="ir.ui.view">
        <field name="name">view.search.checkout.at.lib</field>
-       <field name="model">library.checkout.at.lib</field>
+       <field name="model">lib.checkout.at.lib</field>
         <field name="arch" type="xml">
             <search>
                 <field name="name_seq" string="Checkout ID"/>
@@ -185,7 +194,7 @@
 
     <record id="view_kanban_chk_at_lib" model="ir.ui.view">
         <field name="name">view.kanban.chk.at.lib</field>
-        <field name="model">library.checkout.at.lib</field>
+        <field name="model">lib.checkout.at.lib</field>
         <field name="arch" type="xml">
             <kanban quick_create="false" group_create="false">
                 <field name="state"/>
@@ -221,9 +230,9 @@
                                     </div>
                                     <strong>
                                         <field name="currency_id" invisible="1"/>
-                                        <field name="price_penalty" widget="monetary"
+                                        <field name="penalty_price" widget="monetary"
                                                options="{'currency_field': 'currency_id'}"
-                                               attrs="{'invisible': [('price_penalty', '=', 0)]}"/>
+                                               attrs="{'invisible': [('penalty_price', '=', 0)]}"/>
                                     </strong>
                             </div>
                             <div class="o_kanban_record_bottom">
@@ -279,7 +288,7 @@
 
     <record id="view_calendar_chk_at_lib" model="ir.ui.view">
         <field name="name">view.calendar.chk.at.lib</field>
-        <field name="model">library.checkout.at.lib</field>
+        <field name="model">lib.checkout.at.lib</field>
         <field name="arch" type="xml">
             <calendar date_start="borrow_date" color="card_id" quick_add="False" mode="month" >
                 <field name="card_id"/>
@@ -289,27 +298,29 @@
     </record>
 
     <record id="view_graph_chk_at_lib" model="ir.ui.view">
-        <field name="model">library.checkout.at.lib</field>
+        <field name="model">lib.checkout.at.lib</field>
         <field name="arch" type="xml">
             <graph type="bar">
                 <!-- Fields used for the display text -->
                 <field name="stage_id"/>
                 <field name="currency_id" invisible="1"/>
-                <field name="price_penalty" type="measure" widget="monetary"
+                <field name="penalty_price" type="measure" widget="monetary"
                        options="{'currency_field': 'currency_id'}"/>
+                <field name="type_document" type="measure"/>
             </graph>
         </field>
     </record>
 
     <record id="view_pivot_chk_at_lib" model="ir.ui.view">
-        <field name="model">library.checkout.at.lib</field>
+        <field name="model">lib.checkout.at.lib</field>
         <field name="arch" type="xml">
             <pivot>
                 <field name="stage_id" type="col"/>
                 <field name="card_id" />
                 <field name="borrow_date" interval="week" />
                 <field name="currency_id"/>
-                <field name="price_penalty" type="measure" widget="monetary"/>
+                <field name="penalty_price" type="measure" widget="monetary"/>
+                <field name="book_id" type="measure"/>
             </pivot>
       </field>
     </record>

@@ -1,7 +1,7 @@
 <odoo>
     <record id="view_form_project" model="ir.ui.view">
         <field name="name">view.form.project</field>
-        <field name="model">document.project</field>
+        <field name="model">lib.document.project</field>
         <field name="group_ids" eval="[(4,ref('library_member_search'))]"/>
         <field name="arch" type="xml">
             <form>
@@ -19,12 +19,12 @@
                         <group string="Project Details">
                             <field name="name" placeholder="Name project..."/>
                             <field name="publish_date" placeholder="Publish date..."/>
-                            <field name="teacher_name" placeholder="Tutorial teacher..."/>
+                            <field name="teacher_id" placeholder="Tutorial teacher..."/>
                             <field name="rack" placeholder="Library rack..."/>
 
                         </group>
                         <group string="Student Details">
-                            <field name="major" placeholder="Major..."/>
+                            <field name="major_id" placeholder="Major..."/>
                             <field name="student_id" placeholder="Student ID..."/>
                             <field name="student_name"/>
                             <field name="course"/>
@@ -66,9 +66,24 @@
         </field>
     </record>
 
+    <!-- pivot view -->
+    <record id="view_pivot_project" model="ir.ui.view">
+        <field name="name">view.pivot.project</field>
+        <field name="model">lib.document.project</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="name" type="row"/>
+                <field name="quantity" type="measure"/>
+                <field name="remaining" type="measure"/>
+                <field name="major_id" type="col"/>
+                <field name="course"/>
+            </pivot>
+        </field>
+    </record>
+
     <record id="view_kanban_project" model="ir.ui.view">
         <field name="name">view.kanban.project</field>
-        <field name="model">document.project</field>
+        <field name="model">lib.document.project</field>
         <field name="arch" type="xml">
             <kanban>
             <field name="id"/>
@@ -85,7 +100,7 @@
                                         <li class="o_text_overflow">
                                             <strong>Name: </strong><field name="student_name"/>
                                         </li>
-                                        <li><strong>Major: </strong><field name="major" /></li>
+                                        <li><strong>Major: </strong><field name="major_id" /></li>
                                             <t t-set="red_or_black"
                                                 t-value="record.state.raw_value == 'not_available' ?
                                                 'oe_kanban_text_red': '' "/>
@@ -99,7 +114,7 @@
                         </div>
                     </t>
                     <searchpanel>
-                        <field name="major" string="major" groups="do_an_tn.library_group_librarian"/>
+                        <field name="major_id" string="Major" groups="do_an_tn.library_group_librarian"/>
                     </searchpanel>
                 </templates>
             </kanban>
@@ -108,13 +123,13 @@
 
     <record id="view_search_project" model="ir.ui.view">
        <field name="name">view.search.project</field>
-       <field name="model">document.project</field>
+       <field name="model">lib.document.project</field>
         <field name="arch" type="xml">
             <search >
                 <field name="name" string="Name Project"/>
                 <field name="student_name" string="Student Name"/>
                 <group>
-                    <filter string="Major Project" name="major" context="{'group_by': 'major'}"/>
+                    <filter string="Major Project" name="major_id" context="{'group_by': 'major_id'}"/>
                 </group>
             </search>
        </field>
@@ -122,7 +137,7 @@
 
     <record id="view_form_inherit_project" model="ir.ui.view">
         <field name="name">view.form.inherit.project</field>
-        <field name="model">document.project</field>
+        <field name="model">lib.document.project</field>
         <field name="group_ids" eval="[(4,ref('library_group_librarian'))]"/>
         <field name="inherit_id" ref="do_an_tn.view_form_project"/>
         <field name="arch" type="xml">
@@ -138,7 +153,7 @@
 
     <record id="view_form_meta_projects" model="ir.ui.view">
         <field name="name">view.form.meta.projects</field>
-        <field name="model">meta.projects</field>
+        <field name="model">lib.meta.projects</field>
         <field name="arch" type="xml">
            <form>
                <sheet>

@@ -2,10 +2,10 @@
     <data noupdate="0">
         <record id="library_card_email_template" model="mail.template">
             <field name="name">Library Card: Send by email</field>
-            <field name="model_id" ref="do_an_tn.model_library_card"/>
+            <field name="model_id" ref="do_an_tn.model_lib_card"/>
             <field name="email_from">duyutc08121998@gmail.com</field>
             <field name="email_to">${object.email}</field>
-            <field name="subject">Library School: Card ID: (Ref ${object.code})</field>
+            <field name="subject">Library School: Card ID: (Ref ${object.name_seq})</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
@@ -19,7 +19,7 @@
                                     Card ID :
                                 </th>
                                 <td>
-                                    ${object.code}
+                                    ${object.name_seq}
                                 </td>
                             </tr>
                             <tr>
@@ -27,7 +27,7 @@
                                     Doc limit:
                                 </th>
                                 <td>
-                                    ${object.book_limit} (book) and ${object.limit_syllabus} (syllabus)
+                                    ${object.book_limit} (book) and ${object.syllabus_limit} (syllabus)
                                 </td>
                             </tr>
                             <tr>
@@ -59,16 +59,16 @@
                 </div>
             </field>
             <field name="report_template"/>
-            <field name="report_name">Library Card_${(object.code)}</field>
+            <field name="report_name">Library Card_${(object.name_seq)}</field>
         </record>
 
         <!--send email for card will be expire-->
         <record id="lib_card_send_email_expire" model="mail.template">
             <field name="name">Send Email for Card will be expire</field>
-            <field name="model_id" ref="do_an_tn.model_library_card"/>
+            <field name="model_id" ref="do_an_tn.model_lib_card"/>
             <field name="email_from">duyutc08121998@gmail.com</field>
             <field name="email_to">${object.email}</field>
-            <field name="subject">Library Card Notice: (Ref ${object.code})</field>
+            <field name="subject">Library Card Notice: (Ref ${object.name_seq})</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
@@ -76,16 +76,44 @@
                         <br />
                         <br />
                         This is a email from Library School.
-                        Card ID's : ${object.code}
+                        Card ID's : ${object.name_seq}
                         <br/>
-                        End Date Card : ${object.end_date}
+                        End Date Card : ${object.end_date.strftime('%d-%m-%Y')}
                         <br/>
-                        The card of you will be expire in today.
+                        The card of you will be expire on ${object.end_date.strftime('%d-%m-%Y')}.
                     </p>
                 </div>
             </field>
             <field name="report_template"/>
-            <field name="report_name">Library Card_${(object.code)}</field>
+            <field name="report_name">Library Card_${(object.name_seq)}</field>
+        </record>
+
+        <record id="lib_checkout_send_by_email" model="mail.template">
+            <field name="name">Send by email to reader</field>
+            <field name="model_id" ref="do_an_tn.model_lib_checkout_bh_send_email"/>
+            <field name="email_from">duyutc08121998@gmail.com</field>
+            <field name="email_to">${object.email}</field>
+            <field name="subject">${object.message_subject}</field>
+            <field name="body_html" type="html">
+                <div>
+                    ${object.message_body}
+                </div>
+            </field>
+        </record>
+
+        <record id="scheduled_send_mail_chk_overdue" model="mail.template">
+            <field name="name">Send by email to checkout overdue</field>
+            <field name="model_id" ref="do_an_tn.model_lib_checkout_back_home"/>
+            <field name="email_from">duyutc08121998@gmail.com</field>
+            <field name="email_to">${object[0].email}</field>
+            <field name="subject">Library School Notice</field>
+            <field name="body_html" type="html">
+                <div>
+                    <p>Your checkout ID: ${object.name_seq}</p>
+                    <p>Your card ID: ${object.card_id.name_seq}</p>
+                    <p>Return Appointment Date: ${object.return_date.strftime('%d-%m-%Y')}</p>
+                </div>
+            </field>
         </record>
     </data>
 </odoo>

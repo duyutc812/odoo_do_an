@@ -1,18 +1,39 @@
 <odoo>
+    <record id="view_tree_card" model="ir.ui.view">
+        <field name="name">view.tree.card</field>
+        <field name="model">lib.card</field>
+        <field name="arch" type="xml">
+            <tree string="Card Details"
+                  decoration-muted="state=='draft'"
+                  decoration-danger="state=='expire'"
+                  decoration-success="state=='running'">
+                <field name="name_seq" />
+                <field name="member_type" />
+                <field name="book_limit" />
+                <field name="syllabus_limit" />
+                <field name="gt_name" />
+                <field name="end_date" />
+                <field name="currency_id" invisible="1"/>
+                <field name="price" widget="monetary"/>
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
     <record id="open_checkout_at_lib" model="ir.actions.act_window">
         <field name="name">Open checkout at library</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.checkout.at.lib</field>
+        <field name="res_model">lib.checkout.at.lib</field>
+        <field name="context">{"search_default_draft_running_state":1}</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('card_id', '=', active_id)]</field>
     </record>
 
     <record id="view_form_card" model="ir.ui.view">
         <field name="name">view.form.card</field>
-        <field name="model">library.card</field>
+        <field name="model">lib.card</field>
         <field name="arch" type="xml">
             <form string="Card Details">
-                <header>
+                <header groups="do_an_tn.library_group_manager">
                     <!--<button name="check_" type="object" string="ObjectButton"/>-->
                     <field name="state" invisible="1"/>
                     <button name="running_state"
@@ -60,21 +81,21 @@
                         </button>
                     </div>
                     <div class="oe_title">
-                        <label for="code" string="Card ID: " class="oe_edit_only"/>
+                        <label for="name_seq" string="Card ID: " class="oe_edit_only"/>
                         <h1>
-                            <field name="code" style="color:#7C7BAD"/>
+                            <field name="name_seq" style="color:#7C7BAD"/>
                         </h1>
                     </div>
                     <group col="2" colspan="4">
                         <group string="Card Details">
                            <!-- <separator string="Card Details"/>-->
-                            <field name="user" required="1" attrs="{'readonly':[('state','!=','draft')]}" />
+                            <field name="member_type" required="1" attrs="{'readonly':[('state','!=','draft')]}" />
                             <field name="book_limit" readonly="1"/>
-                            <field name="limit_syllabus" readonly="1" string="No of Syllabus"/>
-                            <field name="student_id" attrs="{'invisible':[('user','!=','student')],
+                            <field name="syllabus_limit" readonly="1" string="No of Syllabus"/>
+                            <field name="student_id" attrs="{'invisible':[('member_type','!=','student')],
                                                              'readonly':[('state', '!=', 'draft')]}"
                                    options="{'no_create_edit': True}"/>
-                            <field name="teacher_id" attrs="{'invisible':[('user','!=','teacher')],
+                            <field name="teacher_id" attrs="{'invisible':[('member_type','!=','teacher')],
                                                              'readonly':[('state', '!=', 'draft')]}"
                                    options="{'no_create_edit': True}"/>
                             <field name="email" readonly="1" force_save="1"/>
@@ -114,37 +135,16 @@
         </field>
     </record>
 
-    <record id="view_tree_card" model="ir.ui.view">
-        <field name="name">view.tree.card</field>
-        <field name="model">library.card</field>
-        <field name="arch" type="xml">
-            <tree string="Card Details"
-                  decoration-muted="state=='draft'"
-                  decoration-danger="state=='expire'"
-                  decoration-success="state=='running'">
-                <field name="code" />
-                <field name="user" />
-                <field name="book_limit" />
-                <field name="limit_syllabus" />
-                <field name="gt_name" />
-                <field name="end_date" />
-                <field name="currency_id" invisible="1"/>
-                <field name="price" widget="monetary"/>
-                <field name="state" />
-            </tree>
-        </field>
-    </record>
-
     <record id="view_search_card" model="ir.ui.view">
         <field name="name">view.search.card</field>
-        <field name="model">library.card</field>
+        <field name="model">lib.card</field>
         <field name="arch" type="xml">
             <search>
-                <field name="code" string="Code"/>
+                <field name="name_seq" string="Code"/>
                 <field name="student_id" string="Student ID"/>
                 <field name="teacher_id" string="Teacher ID"/>
-                <filter name="user" string="Teacher" domain="[('user', '=', 'teacher')]"/>
-                <filter name="user" string="Student" domain="[('user', '=', 'student')]"/>
+                <filter name="member_type" string="Teacher" domain="[('member_type', '=', 'teacher')]"/>
+                <filter name="member_type" string="Student" domain="[('member_type', '=', 'student')]"/>
                 <filter name="state_running" string="Confirm" domain="[('state', '=', 'running')]"/>
                 <filter name="state_draft" string="Draft" domain="[('state', '=', 'draft')]"/>
                 <filter name="state_expire" string="Expire" domain="[('state', '=', 'expire')]"/>
@@ -154,18 +154,17 @@
             </search>
         </field>
     </record>
-
     <record id="view_kanban_card" model="ir.ui.view">
         <field name="name">view.kanban.card</field>
-        <field name="model">library.card</field>
+        <field name="model">lib.card</field>
         <field name="arch" type="xml">
             <kanban>
-                <field name="code"/>
+                <field name="name_seq"/>
                 <field name="id"/>
-                <field name="user"/>
+                <field name="member_type"/>
                 <field name="state"/>
                 <field name="book_limit"/>
-                <field name="limit_syllabus"/>
+                <field name="syllabus_limit"/>
                 <field name="end_date"/>
                 <field name="duration_id"/>
                 <field name="is_penalty"/>
@@ -173,15 +172,15 @@
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_global_click o_kanban_record_has_image_fill o_hospital_patient_kanban">
-                            <t t-if="record.user.raw_value=='student'">
+                            <t t-if="record.member_type.raw_value=='student'">
                                 <img t-att-src="kanban_image(
-                                    'library.card', 'student_image', record.id.raw_value)"
+                                    'lib.card', 'student_image', record.id.raw_value)"
                                     class="o_kanban_image"
                                     t-att-alt="record.gt_name.value"/>
                             </t>
-                            <t t-elif="record.user.raw_value=='teacher'">
+                            <t t-elif="record.member_type.raw_value=='teacher'">
                                 <img t-att-src="kanban_image(
-                                    'library.card', 'teacher_image', record.id.raw_value)"
+                                    'lib.card', 'teacher_image', record.id.raw_value)"
                                     class="o_kanban_image"
                                     t-att-alt="record.gt_name.value"/>
                             </t>
@@ -208,7 +207,7 @@
                                 <strong>
                                     <h6>
                                         <a type="open" class="o_text_overflow">
-                                            <field name="code" /> -
+                                            <field name="name_seq" /> -
                                             <field name="gt_name"/>
                                             <t t-if="record.is_penalty.raw_value">
                                                 <span style="color:red; font-size:11px">(Punishment)</span>
@@ -217,12 +216,12 @@
                                     </h6>
                                 </strong>
                                 <table style="font-size:10px" class="o_text_overflow">
-                                    <tr><th>User: </th>
+                                    <tr><th>Member Type: </th>
                                         <t t-set="red_or_black"
-                                           t-value="record.user.raw_value =='teacher'
+                                           t-value="record.member_type.raw_value =='teacher'
                                            ? 'oe_kanban_text_red' : ''" />
                                             <td t-att-class="red_or_black">
-                                                <field name="user" />
+                                                <field name="member_type" />
                                             </td>
                                     </tr>
                                     <!--<tr>
@@ -245,7 +244,7 @@
                                     <tr>
                                         <th>Limit Book: </th>
                                         <td><field name="book_limit"/>(Book) and
-                                            <field name="limit_syllabus"/>(Syllabus)
+                                            <field name="syllabus_limit"/>(Syllabus)
                                         </td>
                                     </tr>
                                     <tr>
@@ -276,11 +275,11 @@
 
     <record id="view_calendar_card" model="ir.ui.view">
         <field name="name">view.calendar.card</field>
-        <field name="model">library.card</field>
+        <field name="model">lib.card</field>
         <field name="arch" type="xml">
-            <calendar string="Card Calendar" date_start="start_date"
+            <calendar date_start="start_date"
                       mode="month" quick_add="False" color="gt_name">
-                <field name="code"/>
+                <field name="name_seq"/>
                 <field name="gt_name"/>
             </calendar>
         </field>
@@ -288,7 +287,7 @@
 
    <!--<record model="ir.ui.view" id="view_graph_card">
         <field name="name">view.graph.card</field>
-        <field name="model">library.card</field>
+        <field name="model">lib.card</field>
         <field name="arch" type="xml">
             <graph>
                 <field name="price"/>

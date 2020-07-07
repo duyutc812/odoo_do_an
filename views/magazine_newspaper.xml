@@ -1,7 +1,7 @@
 <odoo>
     <record id="view_form_magazine" model="ir.ui.view">
         <field name="name">view.form.magazine</field>
-        <field name="model">magazine.newspaper</field>
+        <field name="model">lib.magazine.newspaper</field>
         <field name="arch" type="xml">
             <form>
                 <header>
@@ -19,8 +19,8 @@
                         </group>&ndash;&gt;
                         <group col="2" colspan="2">
                             <field name="type_mgz_new"/>
-                            <field name="category_mgz" attrs="{'invisible':[('type_mgz_new','=','newspaper')]}"/>
-                            <field name="category_new" attrs="{'invisible':[('type_mgz_new','=','magazine')]}"/>
+                            <field name="category_mgz_id" attrs="{'invisible':[('type_mgz_new','=','newspaper')]}"/>
+                            <field name="category_new_id" attrs="{'invisible':[('type_mgz_new','=','magazine')]}"/>
                             <field name="num_mgz_new"/>
                             <field name="publish_date"/>
                         </group>
@@ -44,10 +44,10 @@
                         <separator string="Details Magazine" colspan="4"
                                    attrs="{'invisible': [('type_mgz_new', '=', 'newspaper')]}"/>
                         <group col="2" colspan="2">
-                            <field name="category_mgz" placeholder="Category magazine..."
+                            <field name="category_mgz_id" placeholder="Category magazine..."
                                    attrs="{'invisible': [('type_mgz_new', '=', 'newspaper')],
                                            'required': [('type_mgz_new', '=', 'magazine')]}"/>
-                            <field name="category_new" placeholder="Category newspaper..."
+                            <field name="category_new_id" placeholder="Category newspaper..."
                                    attrs="{'invisible': [('type_mgz_new', '=', 'magazine')],
                                            'required': [('type_mgz_new', '=', 'newspaper')]}"/>
                             <field name="num_mgz_new" placeholder="No."/>
@@ -92,9 +92,24 @@
         </field>
     </record>
 
+    <!-- pivot view -->
+    <record id="view_pivot_mgz_new" model="ir.ui.view">
+        <field name="name">view.pivot.mgz.new</field>
+        <field name="model">lib.magazine.newspaper</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="type_mgz_new" type="row"/>
+                <field name="quantity" type="measure"/>
+                <field name="remaining" type="measure"/>
+                <field name="category_mgz_id"/>
+                <field name="category_new_id"/>
+            </pivot>
+        </field>
+    </record>
+
     <record id="view_kanban_magazine_newspaper" model="ir.ui.view">
         <field name="name">view_kanban_magazine_newspaper</field>
-        <field name="model">magazine.newspaper</field>
+        <field name="model">lib.magazine.newspaper</field>
         <field name="arch" type="xml">
             <kanban>
             <field name="id"/>
@@ -106,12 +121,12 @@
                                 <a type="open" class="o_text_overflow">
                                     <t t-if="record.type_mgz_new.raw_value=='magazine'">
                                         <strong>Magazine: </strong>
-                                        <span style="color:black"><field name="category_mgz"/></span>
+                                        <span style="color:black"><field name="category_mgz_id"/></span>
                                         - No.<field name="num_mgz_new"/> -  <field name="publish_date"/>
                                     </t>
                                     <t t-else="">
                                         <strong>Newspaper: </strong>
-                                        <span style="color:black"><field name="category_new"/></span>
+                                        <span style="color:black"><field name="category_new_id"/></span>
                                         - No.<field name="num_mgz_new"/> -  <field name="publish_date"/>
                                     </t>
                                 </a>
@@ -138,7 +153,7 @@
 
     <record id="view_tree_mgz_new" model="ir.ui.view">
         <field name="name">view.tree.magazine.newspaper</field>
-        <field name="model">meta.magazinenewspapers</field>
+        <field name="model">lib.meta.magazinenewspapers</field>
         <field name="arch" type="xml">
             <tree decoration-success="state=='available'"
                   decoration-danger="state=='not_available'">
@@ -152,7 +167,7 @@
 
     <record id="view_form_meta_magazinenewspapers" model="ir.ui.view">
         <field name="name">view.form.meta.magazinenewspapers</field>
-        <field name="model">meta.magazinenewspapers</field>
+        <field name="model">lib.meta.magazinenewspapers</field>
         <field name="arch" type="xml">
            <form>
                <sheet>

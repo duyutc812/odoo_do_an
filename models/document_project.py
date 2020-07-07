@@ -3,30 +3,31 @@ from odoo.exceptions import ValidationError
 
 
 class Project(models.Model):
-    _name = 'document.project'
+    _name = 'lib.document.project'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Document - Project'
 
     name = fields.Char('Name Project', required=True, track_visibility='always')
-    major = fields.Many2one('student.major', string='Major', requied=True, track_visibility='always')
-    student_id = fields.Many2one('library.student', string='Student ID', track_visibility='always')
+    major_id = fields.Many2one('lib.student.major', string='Major', requied=True, track_visibility='always')
+    student_id = fields.Many2one('lib.student', string='Student ID', track_visibility='always')
     student_name = fields.Char('Name Student', related='student_id.name', store=True, track_visibility='always')
     course = fields.Integer('Course', related='student_id.course', store=True, track_visibility='always')
+    teacher_id = fields.Many2one('lib.teacher', string='Tutorial Teacher ')
     publish_date = fields.Date('Publish Date', track_visibility='always')
-    teacher_name = fields.Many2one('library.teacher', string='Tutorial Teacher ')
-    rack = fields.Many2one('library.rack', 'Rack', track_visibility='always')
+    rack = fields.Many2one('lib.rack', 'Rack', track_visibility='always')
+    project_term = fields.Integer('Project Term (Days)', default=15)
+    currency_id = fields.Many2one('res.currency', 'Currency',
+                                  default=lambda s: s.env['res.currency'].sudo().search([('name', '=', 'VND')],
+                                                                                        limit=1))
+    price = fields.Monetary('Price', 'currency_id', track_visibility='always')
+    quantity = fields.Integer(string='Quantity', compute='_compute_quantity_remaining', store=True)
+    remaining = fields.Integer(string='Remaining', compute='_compute_quantity_remaining', store=True)
     state = fields.Selection([
         ('available', 'Available'),
         ('not_available', 'Not Available')
     ], string='Status', compute='_compute_quantity_remaining', store=True)
     # , compute='_compute_state', store=True
-    project_term = fields.Integer('Project Term (Days)', default=15)
-    currency_id = fields.Many2one('res.currency', 'Currency',
-                                  default=lambda s: s.env['res.currency'].sudo().search([('name', '=', 'VND')], limit=1))
-    price = fields.Monetary('Price', 'currency_id', track_visibility='always')
-    quantity = fields.Integer(string='Quantity', compute='_compute_quantity_remaining', store=True)
-    remaining = fields.Integer(string='Remaining', compute='_compute_quantity_remaining', store=True)
-    meta_project_ids = fields.One2many('meta.projects', 'project_id')
+    meta_project_ids = fields.One2many('lib.meta.projects', 'project_id')
 
     @api.constrains('project_term')
     def _constrains_price(self):
@@ -64,24 +65,24 @@ class Project(models.Model):
          'Publish date must not be in the future!'),
     ]
 
-    @api.onchange('major')
-    def _onchange_student_major(self):
+    @api.onchange('major_id')
+    def _onchange_student_major_id(self):
         self.student_id = ''
-        return {'domain': {'student_id': [('major', '=', self.major.id)]}}
+        return {'domain': {'student_id': [('major_id', '=', self.major_id.id)]}}
 
 
 class MetaProject(models.Model):
-    _name = 'meta.projects'
+    _name = 'lib.meta.projects'
     _description = 'Meta Project'
 
-    project_id = fields.Many2one('document.project', string='Project')
     name_seq = fields.Char(string="Meta Project ID", default=lambda self: _('New'), readonly=True)
-    sequence = fields.Integer()
+    project_id = fields.Many2one('lib.document.project', string='Project')
     description = fields.Text('Description', default='Tài liệu mới')
     state = fields.Selection([
         ('available', 'Available'),
         ('not_available', 'Not Available')
     ], string='Status', default='available')
+    sequence = fields.Integer()
     checkout = fields.Char()
     is_lost = fields.Boolean('Lost', default=False)
     is_active = fields.Boolean('Active', default=True)
@@ -96,7 +97,7 @@ class MetaProject(models.Model):
     @api.model
     def create(self, vals):
         if vals.get('name_seq', _('New')) == _('New'):
-            vals['name_seq'] = self.env['ir.sequence'].next_by_code('library.meta.document.project.sequence') or _(
+            vals['name_seq'] = self.env['ir.sequence'].next_by_code('lib.meta.document.project.sequence') or _(
                 'New')
         result = super(MetaProject, self).create(vals)
         return result

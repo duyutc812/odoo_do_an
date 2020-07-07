@@ -3,7 +3,7 @@ from odoo.exceptions import ValidationError
 
 
 class Magazine(models.Model):
-    _name = 'magazine.newspaper'
+    _name = 'lib.magazine.newspaper'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Magazine and newspaper'
 
@@ -12,12 +12,12 @@ class Magazine(models.Model):
         ('newspaper', 'Newspaper')
     ], string='Type', default='newspaper', required=True, track_visibility='always')
     image = fields.Binary('Cover')
-    category_mgz = fields.Many2one('categories.magazine', string='Category Magazine', track_visibility='always')
-    category_new = fields.Many2one('categories.newspaper', string='Category Newspaper', track_visibility='always')
+    category_mgz_id = fields.Many2one('lib.category.magazine', string='Category Magazine', track_visibility='always')
+    category_new_id = fields.Many2one('lib.category.newspaper', string='Category Newspaper', track_visibility='always')
     num_mgz_new = fields.Integer(string="No.", track_visibility='always')
     publish_date = fields.Date(string='Publish Date', required=True, track_visibility='always')
     publish_year = fields.Integer(compute='get_publish_year', store=True, track_visibility='always')
-    rack = fields.Many2one('library.rack', 'Rack', track_visibility='always', required=True)
+    rack = fields.Many2one('lib.rack', 'Rack', track_visibility='always', required=True)
 
     currency_id = fields.Many2one('res.currency', 'Currency',
                                   default=lambda s: s.env['res.currency'].sudo().search([('name', '=', 'VND')], limit=1))
@@ -29,12 +29,12 @@ class Magazine(models.Model):
         ('available', 'Available'),
         ('not_available', 'Not Available')
     ], string='Status', compute='_compute_quantity_remaining', store=True)
-
+    is_active = fields.Boolean('Active?', default=True)
     meta_mgz_new_ids = fields.One2many(
-        'meta.magazinenewspapers',
+        'lib.meta.magazinenewspapers',
         'mgz_new_id', track_visibility='always'
     )
-    active = fields.Boolean('Active?', default=True)
+
 
     @api.constrains('price')
     def _constrains_price(self):
@@ -50,9 +50,9 @@ class Magazine(models.Model):
     @api.onchange('type_mgz_new')
     def _onchange_type_mgz_new(self):
         if self.type_mgz_new == 'magazine':
-            self.category_new = ''
+            self.category_new_id = ''
         else:
-            self.category_mgz = ''
+            self.category_mgz_id = ''
         self.num_mgz_new = ''
         self.publish_date = ''
         self.rack = ''
@@ -88,7 +88,7 @@ class Magazine(models.Model):
         for rec in self:
             res.append((rec.id, '%s %s - No.%s'
                         % ('Newspaper' if rec.type_mgz_new == 'newspaper' else 'Magazine',
-                           rec.category_mgz.name if rec.category_mgz else rec.category_new.name, rec.num_mgz_new)))
+                           rec.category_mgz_id.name if rec.category_mgz_id else rec.category_new_id.name, rec.num_mgz_new)))
         return res
 
     def unlink(self):
@@ -99,10 +99,10 @@ class Magazine(models.Model):
 
     _sql_constraints = [
         ('unique_category_magazine_num',
-         'unique(category_mgz, num_mgz_new , publish_year)',
+         'unique(category_mgz_id, num_mgz_new , publish_year)',
          'No. Magazine\'s in year does already exist'),
         ('unique_category_newspaper_num',
-         'unique(category_new, num_mgz_new , publish_year)',
+         'unique(category_new_id, num_mgz_new , publish_year)',
          'No. Newspaper\'s in year does already exist'),
         ('mgz_new_check_date',
          'CHECK (publish_date <= current_date)',
@@ -111,11 +111,11 @@ class Magazine(models.Model):
 
 
 class MetaMagazineNewspaper(models.Model):
-    _name = 'meta.magazinenewspapers'
+    _name = 'lib.meta.magazinenewspapers'
     _description = 'Meta Magazine/Newspaper'
 
-    mgz_new_id = fields.Many2one('magazine.newspaper', string='Magazine/Newspaper', track_visibility='always')
     name_seq = fields.Char(string="Meta Magazine/Newspaper ID", default=lambda self: _('New'), readonly=True)
+    mgz_new_id = fields.Many2one('lib.magazine.newspaper', string='Magazine/Newspaper', track_visibility='always')
     description = fields.Text('Description',default='Tài liệu mới', track_visibility='always')
     sequence = fields.Integer()
     state = fields.Selection([
@@ -146,7 +146,7 @@ class MetaMagazineNewspaper(models.Model):
     @api.model
     def create(self, vals):
         if vals.get('name_seq', _('New')) == _('New'):
-            vals['name_seq'] = self.env['ir.sequence'].next_by_code('library.meta.magazine.newspaper.sequence') or _(
+            vals['name_seq'] = self.env['ir.sequence'].next_by_code('lib.meta.magazine.newspaper.sequence') or _(
                 'New')
         result = super(MetaMagazineNewspaper, self).create(vals)
         return result

@@ -11,14 +11,14 @@ def get_default_img():
 
 
 class Author(models.Model):
-    _name = 'library.author'
+    _name = 'lib.author'
     _description = 'Author'
     _rec_name = 'pen_name'
 
+    name_seq = fields.Char(string='Author ID', default=lambda self: _('New'), readonly=True)
     pen_name = fields.Char('Author', required=True)
     name = fields.Char('Name', required=True)
     author_image = fields.Binary('Cover', default=get_default_img())
-    country_id = fields.Many2one('res.country', 'Nationality')
     born_date = fields.Date('Date of Birth')
     death_date = fields.Date('Date of Death')
     gender = fields.Selection([
@@ -26,28 +26,24 @@ class Author(models.Model):
         ('female', 'Female'),
     ], string='Gender', default='male')
     biography = fields.Text('Biography')
-    note = fields.Html('Notes')
-
-    name_seq = fields.Char(string='Author ID', default=lambda self: _('New'), readonly=True)
+    country_id = fields.Many2one('res.country', 'Nationality')
+    is_active = fields.Boolean('Active', default=True)
     color = fields.Integer('Color Index')
-
-    book_ids = fields.Many2many('library.book', 'library_author_library_book_rel',
-                                'library_author_id', 'library_book_id', string='Books')
-
     count = fields.Integer(string="Count", compute='_get_book_count')
-    active = fields.Boolean('Active', default=True)
+    book_ids = fields.Many2many('lib.book', 'lib_author_lib_book_rel',
+                                'lib_author_id', 'lib_book_id', string='Books')
 
     _sql_constraints = [
-        ('library_author_pen_name_uq',
+        ('lib_author_pen_name_uq',
          'UNIQUE (pen_name)',
          'The Pen-Name must be unique.'),
-        ('library_author_born_date_chk',
+        ('lib_author_born_date_chk',
          'CHECK (born_date < current_date)',
          'DOB is should be less then today date'),
-        ('library_author_born_date_death_date_chk',
+        ('lib_author_born_date_death_date_chk',
          'CHECK (born_date < death_date)',
-         'Death date is must be less then born date'),
-        ('library_author_death_date_chk',
+         'Death date is must be great then born date'),
+        ('lib_author_death_date_chk',
          'CHECK (death_date <= current_date)',
          'Death date is must be less then current date'),
     ]
@@ -58,7 +54,7 @@ class Author(models.Model):
             'name': _('All book 2'),
             'domain': [('author_ids', '=', self.id)],
             'view_type': 'form',
-            'res_model': 'library.book',
+            'res_model': 'lib.book',
             'view_id': False,
             'view_mode': 'tree,form',
             'type': 'ir.actions.act_window',
@@ -67,14 +63,14 @@ class Author(models.Model):
     @api.multi
     def _get_book_count(self):
         for author in self:
-            author.count = self.env['library.book'].search_count([('author_ids', '=', author.id)])
+            author.count = self.env['lib.book'].search_count([('author_ids', '=', author.id)])
         # print(self.count)
 
     @api.model
     def create(self, vals):
         """Method to get name_seq"""
         if vals.get('name_seq', _('New')) == _('New'):
-            vals['name_seq'] = self.env['ir.sequence'].next_by_code('library.author.sequence') or _('New')
+            vals['name_seq'] = self.env['ir.sequence'].next_by_code('lib.author.sequence') or _('New')
         result = super(Author, self).create(vals)
 
         return result
@@ -85,9 +81,17 @@ class Author(models.Model):
         self.pen_name = self.pen_name.title() if self.pen_name else ''
         self.name = self.name.title() if self.name else ''
 
+    @api.multi
+    def toggle_active(self):
+        for author in self:
+            if author.is_active:
+                author.is_active = False
+            else:
+                author.is_active = True
+
     def unlink(self):
         for rec in self:
-            check_author_book = self.env['library.book'].search([
+            check_author_book = self.env['lib.book'].search([
                 ('author_ids', '=', rec.id)
             ])
             # print(check_author_book)
@@ -97,20 +101,20 @@ class Author(models.Model):
 
 
 class LibraryTranslator(models.Model):
-    _name = 'library.translator'
+    _name = 'lib.translator'
     _description = 'Library Translator'
 
     name = fields.Char('Name', required=True)
     country_id = fields.Many2one('res.country', 'Nationality')
     born_date = fields.Date('Date of Birth')
     death_date = fields.Date('Date of Death')
-    book_ids = fields.Many2many('library.book', 'library_book_library_translator_rel',
-                                'library_translator_id', 'library_book_id', string='All book')
     gender = fields.Selection([
         ('male', 'Male'),
         ('female', 'Female'),
     ], string='Gender', default='male')
-    active = fields.Boolean('Active', default=True)
+    is_active = fields.Boolean('Active', default=True)
+    book_ids = fields.Many2many('lib.book', 'lib_book_lib_translator_rel',
+                                'lib_translator_id', 'lib_book_id', string='All book')
 
     @api.onchange('name')
     def _onchange_pen_name_and_name_upper(self):

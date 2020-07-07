@@ -1,20 +1,8 @@
 <odoo>
-    <!--inherit search res.lang-->
-    <record id="view_search_inherit_res_lang" model="ir.ui.view">
-        <field name="name">view.search.inherit.res.lang</field>
-        <field name="model">res.lang</field>
-        <field name="inherit_id" ref="base.res_lang_search"/>
-        <field name="arch" type="xml">
-            <search>
-                <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
-            </search>
-        </field>
-    </record>
-
     <!--form view for library rack-->
     <record id="view_form_rack" model="ir.ui.view">
         <field name="name">view.form.rack</field>
-        <field name="model">library.rack</field>
+        <field name="model">lib.rack</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
@@ -24,16 +12,16 @@
                                 class="oe_stat_button"
                                 icon="fa-archive"
                                 groups="do_an_tn.library_group_librarian">
-                                <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                                <field name="is_active" widget="boolean_button" options='{"terminology": "archive"}'/>
                         </button>
                     </div>
                     <group>
                         <field name="name" />
-                        <field name="code" />
+                        <field name="name_seq" />
                         <field name="book_ids" widget="many2many_tags" readonly="1"/>
                         <field name="mg_new_ids" widget="many2many_tags" readonly="1"/>
                         <field name="project_ids" widget="many2many_tags" readonly="1"/>
-                        <!--<field name="active" widget="boolean_toggle"/>-->
+                        <!--<field name="is_active" widget="boolean_toggle"/>-->
                     </group>
                 </sheet>
             </form>
@@ -43,13 +31,13 @@
     <!-- Tree View Of Library Rack -->
     <record id="view_tree_rack" model="ir.ui.view">
         <field name="name">view.tree.rack</field>
-        <field name="model">library.rack</field>
+        <field name="model">lib.rack</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="name" />
-                <field name="code" />
+                <field name="name_seq" />
                 <!--<field name="book_ids" widget="many2many_tags"/>-->
-                <field name="active" widget="boolean_toggle"
+                <field name="is_active" widget="boolean_toggle"
                        groups="do_an_tn.library_group_librarian"/>
             </tree>
         </field>
@@ -58,29 +46,29 @@
     <!--search view for library rack-->
     <record id="view_search_rack" model="ir.ui.view">
         <field name="name">view.search.rack</field>
-        <field name="model">library.rack</field>
+        <field name="model">lib.rack</field>
         <field name="arch" type="xml">
             <search>
                 <field name="name" />
-                <field name="code" />
-                <field name="active" />
+                <field name="name_seq" />
+                <field name="is_active" />
             </search>
         </field>
     </record>
 
     <record id="view_tree_book" model="ir.ui.view">
         <field name="name">view.tree.book</field>
-        <field name="model">library.book</field>
+        <field name="model">lib.book</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="name_seq"/>
                 <field name="name"/>
                 <field name="category"/>
                 <field name="book_type"/>
-                <field name="language"/>
+                <field name="language_id"/>
                 <field name="publisher_id" widget="many2onebutton"/>
                 <field name="author_ids" widget="many2many_tags"/>
-                <field name="active" widget="boolean_toggle"/>
+                <field name="is_active" widget="boolean_toggle" groups="do_an_tn.library_group_librarian"/>
                 <field name="state"/>
             </tree>
         </field>
@@ -88,7 +76,7 @@
 
     <record id="view_form_book" model="ir.ui.view">
         <field name="name">view.form.book</field>
-        <field name="model">library.book</field>
+        <field name="model">lib.book</field>
         <field name="arch" type="xml">
             <form>
                 <header>
@@ -117,7 +105,7 @@
                             <separator string="Information Book" col="2" colspan="4"/>
                             <group colspan="2">
                                 <field name="category"/>
-                                <field name="published_date" placeholder="Enter publish date... "/>
+                                <field name="publish_date" placeholder="Enter publish date... "/>
                                 <field name="publisher_id" placeholder="Enter Publisher... "/>
                                 <field name="author_ids"
                                        placeholder="Choose Author... "
@@ -140,11 +128,11 @@
                                     </group>
                                     <group>
                                         <field name="book_term" widget="integer"/>
-                                        <field name="currency_id" groups="base.group_no_one" placeholder="Choose Currency..."/>
+                                        <field name="currency_id" placeholder="Choose Currency..."/>
                                         <!-- class="oe_edit_only"-->
                                         <field name="price" placeholder="Enter Price..."/>
-                                        <field name="language" placeholder="Choose Language..."/>
-                                        <field name="active"/>
+                                        <field name="language_id" placeholder="Choose Language..."/>
+                                        <field name="is_active"/>
                                     </group>
                                 </group>
                             </page>
@@ -176,7 +164,7 @@
 
     <record id="view_kanban_book" model="ir.ui.view">
         <field name="name">view.kanban.book</field>
-        <field name="model">library.book</field>
+        <field name="model">lib.book</field>
         <field name="arch" type="xml">
             <kanban
                     quick_create="false" group_create="false">
@@ -192,7 +180,7 @@
                         <div t-attf-class="oe_kanban_global_click   ">
                             <div class="o_kanban_image">
                                 <img alt="Avatar" style="height:70px;width:50px;"
-                                     t-att-src="kanban_image('library.book', 'image',record.id.raw_value)"/>
+                                     t-att-src="kanban_image('lib.book', 'image',record.id.raw_value)"/>
                             </div>
                             <!--<div class="o_dropdown_kanban dropdown">
                               &lt;!&ndash; Top-right drop down menu here... &ndash;&gt;
@@ -237,7 +225,7 @@
 
     <record id="view_search_book" model="ir.ui.view">
        <field name="name">view.search.book</field>
-       <field name="model">library.book</field>
+       <field name="model">lib.book</field>
         <field name="arch" type="xml">
             <search>
                 <field name="name" string="Book Name"/>
@@ -248,9 +236,24 @@
         </field>
     </record>
 
+    <!-- pivot view -->
+    <record id="view_pivot_book" model="ir.ui.view">
+        <field name="name">lib.book.pivot</field>
+        <field name="model">lib.book</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="name" type="row"/>
+                <field name="quantity" type="measure"/>
+                <field name="remaining" type="measure"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="price" type="measure" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+            </pivot>
+        </field>
+    </record>
+
     <record id="view_tree_meta_books" model="ir.ui.view">
         <field name="name">view.tree.meta.books</field>
-        <field name="model">meta.books</field>
+        <field name="model">lib.meta.books</field>
         <field name="arch" type="xml">
             <tree decoration-danger="state == 'not_available'"
                   decoration-success="state == 'available'">
@@ -264,7 +267,7 @@
 
     <record id="view_form_meta_books" model="ir.ui.view">
         <field name="name">view.form.meta.books</field>
-        <field name="model">meta.books</field>
+        <field name="model">lib.meta.books</field>
         <field name="arch" type="xml">
            <form>
                <sheet>

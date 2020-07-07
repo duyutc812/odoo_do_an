@@ -1,7 +1,7 @@
 <odoo>
     <report
         id="action_library_card_detail"
-        model="library.card"
+        model="lib.card"
         report_type="qweb-html"
         menu="False"
         string="Card Report"
@@ -30,8 +30,8 @@
                                         <tr>
                                             <td width="35%">
                                                 <p style="text-align:center;padding-top:10px;">
-                                                    <img t-if="o.user=='teacher'" t-att-src="'data:image/png;base64,%s' % to_text(o.teacher_image)" height="120" border="1" width="120"/>
-                                                    <img t-if="o.user=='student'" t-att-src="'data:image/png;base64,%s' % to_text(o.student_image)" height="120" border="1" width="120"/>
+                                                    <img t-if="o.member_type=='teacher'" t-att-src="'data:image/png;base64,%s' % to_text(o.teacher_image)" height="120" border="1" width="120"/>
+                                                    <img t-if="o.member_type=='student'" t-att-src="'data:image/png;base64,%s' % to_text(o.student_image)" height="120" border="1" width="120"/>
                                                 </p>
 
                                                 <!--<h5  style="text-align:center;"><strong><span t-field="o.gt_name"/></strong></h5>-->
@@ -41,14 +41,14 @@
                                                 <table>
                                                     <tr>
                                                         <td>
-                                                            <t t-if="o.user=='student'">
+                                                            <t t-if="o.member_type=='student'">
                                                                 <p style="text-align:left;"><strong>Name: </strong></p>
                                                                 <p style="text-align:left;"><strong>Student ID: </strong></p>
                                                                 <p style="text-align:left;"><strong>Major: </strong></p>
                                                                 <p style="text-align:left;"><strong>Course: </strong></p>
                                                                 <p style="text-align:left;"><strong>End Date: </strong></p>
                                                             </t>
-                                                            <t t-elif="o.user=='teacher'">
+                                                            <t t-elif="o.member_type=='teacher'">
                                                                 <p style="text-align:left;"><strong>Name: </strong></p>
                                                                 <p style="text-align:left;"><strong>Role: </strong></p>
                                                                 <p style="text-align:left;"><strong>Email: </strong></p>
@@ -57,14 +57,14 @@
 
                                                         </td>
                                                         <td>
-                                                            <t t-if="o.user=='student'">
+                                                            <t t-if="o.member_type=='student'">
                                                                 <p style="text-align:left;padding-left:10px;" t-field="o.gt_name"/>
                                                                 <p style="text-align:left;padding-left:10px;" t-field="o.student_id.student_id"/>
-                                                                <p style="text-align:left;padding-left:10px;" t-field="o.student_id.major"/>
+                                                                <p style="text-align:left;padding-left:10px;" t-field="o.student_id.major_id"/>
                                                                 <p style="text-align:left;padding-left:10px;" t-field="o.student_id.course"/>
                                                                 <p style="text-align:left;padding-left:10px;" t-field="o.end_date"/>
                                                             </t>
-                                                            <t t-if="o.user=='teacher'">
+                                                            <t t-if="o.member_type=='teacher'">
                                                                 <p style="text-align:left;padding-left:10px;" t-field="o.gt_name"/>
                                                                 <p style="text-align:left;padding-left:10px;" t-field="o.teacher_id.role"/>
                                                                 <p style="text-align:left;padding-left:10px;" t-field="o.teacher_id.email"/>

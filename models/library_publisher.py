@@ -2,7 +2,7 @@ from odoo import api, fields, models, _
 
 
 class Publisher(models.Model):
-    _name = 'library.publisher'
+    _name = 'lib.publisher'
     _description = 'Publisher'
 
     name_seq = fields.Char(string='Publisher ID', required=True, copy=False, readonly=True, index=True,
@@ -17,14 +17,14 @@ class Publisher(models.Model):
     founding = fields.Char('Founding')
     website = fields.Char('Website')
     website2 = fields.Char('Website 2')
-    note = fields.Html('Notes')
     facebook = fields.Char('Facebook')
-    book_ids = fields.One2many('library.book', 'publisher_id')
+    note = fields.Text('Note')
+    book_ids = fields.One2many('lib.book', 'publisher_id')
 
     @api.model
     def create(self, vals):
         if vals.get('name_seq', _('New')) == _('New'):
-            vals['name_seq'] = self.env['ir.sequence'].next_by_code('library.publisher.sequence') or _('New')
+            vals['name_seq'] = self.env['ir.sequence'].next_by_code('lib.publisher.sequence') or _('New')
         result = super(Publisher, self).create(vals)
         return result
 

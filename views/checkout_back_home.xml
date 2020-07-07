@@ -1,7 +1,7 @@
 <odoo>
     <record id="view_tree_checkout_back_home" model="ir.ui.view">
         <field name="name">view.tree.checkout.back.home</field>
-        <field name="model">library.checkout.back.home</field>
+        <field name="model">lib.checkout.back.home</field>
         <field name="arch" type="xml">
             <tree
                   decoration-success="state == 'done'"
@@ -11,6 +11,7 @@
                 <!--banner_route="/do_an_tn/checkout_mg_new"-->
                 <field name="name_seq"/>
                 <field name="card_id"/>
+                <field name="priority" widget="priority" />
                 <field name="borrow_date"/>
                 <field name="return_date"/>
                 <field name="actual_return_date"/>
@@ -18,7 +19,7 @@
                 <field name="category_doc"/>
                 <field name="user_id"/>
                 <field name="currency_id" invisible="1"/>
-                <field name="price_total" string="Penalty Price" sum="Total Penalty Price"/>
+                <field name="penalty_total" string="Penalty Price" sum="Total Penalty Price"/>
                 <field name="note"/>
                 <field name="state"/>
             </tree>
@@ -27,7 +28,7 @@
 
     <record id="view_form_checkout_back_home" model="ir.ui.view">
         <field name="name">view.form.checkout.back.home</field>
-        <field name="model">library.checkout.back.home</field>
+        <field name="model">lib.checkout.back.home</field>
         <field name="arch" type="xml">
             <form>
                 <header>
@@ -79,39 +80,50 @@
                             type="action"
                             attrs="{'invisible': [('state', '!=', 'running')]}"/>
 
+                    <button name="%(do_an_tn.action_wizard_send_by_email)d" string="Send by Email"
+                            type="action"/>
+
 
                     <field name="stage_id"
                            widget="statusbar"
-                           options="{'fold_field': 'fold'}"
-                           /><!--options="{'fold_field': 'fold'}"-->
+                           options="{'fold_field': 'is_fold'}"
+                           /><!--options="{'fold_field': 'is_fold'}"-->
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="open_all_checkout_bh"
                                 type="object"
                                 class="oe_stat_button"
-                                icon="fa-bars" string="All checkout back home">
+                                icon="fa-tasks" string="All checkout back home">
                         </button>
 
                         <button name="open_chk_document"
                                 type="object"
                                 class="oe_stat_button"
-                                icon="fa-bars">
-                            <field name="count_doc" string="Count Document" widget="statinfo"/>
+                                icon="fa-book">
+                            <field name="count_doc" string="Document" widget="statinfo"/>
                         </button>
 
                         <button name="open_chk_syllabus"
                                 type="object"
                                 class="oe_stat_button"
                                 icon="fa-bars">
-                            <field name="count_syl" string="Count Syllabus" widget="statinfo"/>
+                            <field name="count_syl" string="Syllabus" widget="statinfo"/>
                         </button>
 
                         <button name="open_all_penalty_checkout"
                                 type="object"
                                 class="oe_stat_button"
-                                icon="fa-bars">
+                                icon="fa-times-circle-o">
                             <field name="count_penalty" string="Penalty Checkout" widget="statinfo"/>
+                        </button>
+
+                        <button name="open_checkout_waiting"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-tasks"
+                                attrs="{'invisible': [('state', 'not in', ['done', 'fined'])]}">
+                            <field name="count_waiting" string="Waiting" widget="statinfo"/>
                         </button>
 
                     </div>
@@ -135,7 +147,7 @@
                         <group>
                             <field name="card_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="state_card" readonly="1"/>
-                            <field name="gt_name" readonly="1" invisible="1"/>
+                            <field name="email" readonly="1"/>
                         </group>
                         <group>
                             <field name="end_date"/>
@@ -152,7 +164,6 @@
                                    options="{'no_create': True, 'no_open': True}"/>
                             <field name="meta_book_id"
                                    attrs="{'invisible': [('type_document', '!=', 'book')],
-                                           'required': [('type_document', '=', 'book')],
                                            'readonly': [('state', '!=', 'draft')]}"
                                    options="{'no_create': True, 'no_open': True}"/>
                             <field name="project_id"
@@ -163,13 +174,12 @@
                             <field name="meta_project_id"
                                    options="{'no_create': True, 'no_open': True}"
                                    attrs="{'invisible': [('type_document', '!=', 'project')],
-                                           'required': [('type_document', '=', 'project')],
                                            'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                         <group>
                             <field name="document_term" readonly="1" string="Term"/>
                             <field name="category_doc"/> <!--       attrs="{'invisible': [('type_document', '!=', 'book')]}"-->
-                            <field name="price_doc"/> <!-- attrs="{'invisible': [('state', 'not in', ['fined', 'lost'])]}"-->
+                            <field name="doc_price"/> <!-- attrs="{'invisible': [('state', 'not in', ['fined', 'lost'])]}"-->
                             <field name="status_document" />
                         </group>
                     </group>
@@ -185,20 +195,21 @@
                         <group>
                             <field name="currency_id" invisible="1" readonly="1"/>
                             <field name="day_overdue" attrs="{'invisible': [('day_overdue', '=', 0)]}" readonly="1"/>
-                            <field name="price_penalty_chk" string="Price Checkout"
-                                   attrs="{'invisible': [('price_penalty_chk', '=', 0)]}"
-                                   readonly="1"/>
-                            <field name="price_penalty_doc" attrs="{'readonly': [('state', '=', 'lost')]}"/>
+                            <field name="penalty_chk_price" string="Penalty Checkout Price"
+
+                                   readonly="1"/><!--attrs="{'invisible': [('penalty_chk_price', '=', 0)]}"-->
+                            <field name="penalty_doc_price" string="Penalty Doc Price" attrs="{'readonly': [('state', '=', 'lost')]}"/>
+                            <!--'invisible': [('penalty_doc_price', '=', 0)]-->
                         </group>
                         <group>
-                            <field name="price_total" attrs="{'invisible': [('price_total', '=', 0)]}"/>
+                            <field name="penalty_total" attrs="{'invisible': [('penalty_total', '=', 0)]}"/>
                             <field name="note" attrs="{'readonly': [('state', '=', 'lost')]}"/>
                         </group>
                     </group>
                 </sheet>
                 <div class="oe_chatter">
-                    <!--<field name="message_follower_ids" widget="mail_followers"/>-->
-                    <!--<field name="activity_ids" widget="mail_activity"/>-->
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
                     <field name="message_ids" widget="mail_thread"/>
                 </div>
             </form>
@@ -207,7 +218,7 @@
 
     <record id="view_search_checkout_bh" model="ir.ui.view">
         <field name="name">view.search.checkout.bh</field>
-        <field name="model">library.checkout.back.home</field>
+        <field name="model">lib.checkout.back.home</field>
         <field name="arch" type="xml">
             <search>
                 <field name="card_id" string="Card ID"/>
@@ -232,7 +243,7 @@
 
     <record id="view_kanban_chk_back_home" model="ir.ui.view">
         <field name="name">view.kanban.chk.back.home</field>
-        <field name="model">library.checkout.back.home</field>
+        <field name="model">lib.checkout.back.home</field>
         <field name="arch" type="xml">
             <kanban default_group_by="stage_id" group_create="false" quick_add="false">
                 <field name="id"/>
@@ -243,7 +254,7 @@
                 <field name="meta_project_id"/>
                  <progressbar
                      field="kanban_state"
-                     colors='{"overdue": "danger"}' sum_field="price_total"/>
+                     colors='{"overdue": "danger"}' sum_field="penalty_total"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_global_click">
@@ -265,9 +276,9 @@
                                     <strong class="o_kanban_record_title"><span style="color:#7C7BAD"><field name="name_seq"/> - <field name="gt_name"/></span></strong>
                                 </div>
                                 <div class="text-muted o_kanban_record_subtitle o_text_overflow" style="font-size:10px">
-                                    <t t-if="record.price_total.raw_value!=0">
+                                    <t t-if="record.penalty_total.raw_value!=0">
                                         <field name="currency_id" invisible="1"/>
-                                        <field name="price_total" widget="monetary"/>
+                                        <field name="penalty_total" widget="monetary"/>
                                     </t>
                                 </div>-->
                                 <div class="o_kanban_record_top mb16">
@@ -276,9 +287,9 @@
                                     </div>
                                     <strong>
                                         <field name="currency_id" invisible="1"/>
-                                        <field name="price_total" widget="monetary"
+                                        <field name="penalty_total" widget="monetary"
                                                options="{'currency_field': 'currency_id'}"
-                                               attrs="{'invisible': [('price_total', '=', 0)]}"/>
+                                               attrs="{'invisible': [('penalty_total', '=', 0)]}"/>
                                     </strong>
                                 </div>
                                 <div class="text-muted o_kanban_record_subtitle o_text_overflow" style="font-size:10px">
@@ -332,7 +343,7 @@
                                     </div>
                                     <div class="oe_kanban_bottom_right">
                                         <field name="state" widget="label_selection" options="{'classes': {'draft': 'default', 'running': 'success', 'fined': 'danger', 'lost': 'warning'}}"/>
-                                        <img t-att-src="kanban_image('library.checkout.back.home', 'user_image', record.id.raw_value)"
+                                        <img t-att-src="kanban_image('lib.checkout.back.home', 'user_image', record.id.raw_value)"
                                              t-att-title="record.user_id.value"
                                              t-att-alt="record.user_id.value"
                                              width="30" height="30"
@@ -352,29 +363,79 @@
     </record>
 
     <record id="view_graph_chk_back_home" model="ir.ui.view">
-        <field name="model">library.checkout.back.home</field>
+        <field name="model">lib.checkout.back.home</field>
         <field name="arch" type="xml">
             <graph type="bar">
                 <!-- Fields used for the display text -->
                 <field name="stage_id"/>
                 <field name="currency_id" invisible="1"/>
-                <field name="price_total" type="measure" widget="monetary"
+                <field name="penalty_total" type="measure" widget="monetary"
                        options="{'currency_field': 'currency_id'}"/>
             </graph>
         </field>
     </record>
 
     <record id="view_pivot_chk_at_lib" model="ir.ui.view">
-        <field name="model">library.checkout.back.home</field>
+        <field name="model">lib.checkout.back.home</field>
         <field name="arch" type="xml">
             <pivot>
                 <field name="stage_id" type="col"/>
                 <field name="card_id" />
                 <field name="borrow_date" interval="week" />
                 <field name="currency_id"/>
-                <field name="price_total" type="measure" widget="monetary"/>
+                <field name="penalty_total" type="measure" widget="monetary"/>
             </pivot>
       </field>
     </record>
+
+    <!--<record id="view_timeline_checkout_bh" model="ir.ui.view">
+        <field name="model">lib.checkout.back.home</field>
+        <field name="type">timeline</field>
+        <field name="arch" type="xml">
+            <timeline date_start="borrow_date"
+                      date_stop="return_date"
+                      default_group_by="card_id"
+                      event_open_popup="true"
+                      colors="#ec7063: state == 'draft'; #2ecb71: state == 'done'">
+                <field name="card_id" />
+                <field name="gt_name"/>
+          &lt;!&ndash;      <field name="borrow_date" interval="week" />
+                <field name="currency_id"/>
+                <field name="penalty_total" type="measure" widget="monetary"/>&ndash;&gt;
+                <template>
+                        <div class="o_project_timeline_item">
+                            <div t-name="timeline-item">
+                                <div t-esc="record.display_name"/>
+                                <span t-esc="record.user_id"/>
+                            </div>
+                        </div>
+                </template>
+            </timeline>
+        </field>
+    </record>-->
+
+    <!--<record id="view_task_timeline" model="ir.ui.view">
+        <field name="model">project.task</field>
+        <field name="type">timeline</field>
+        <field name="arch" type="xml">
+            <timeline date_start="date_start"
+                      date_stop="date_end"
+                      string="Tasks"
+                      default_group_by="user_id"
+                      event_open_popup="true"
+                      zoomKey="ctrlKey"
+                      colors="#ec7063:user_id == false;#2ecb71:kanban_state=='done';"
+                      dependency_arrow="task_dependency_ids">
+                <field name="user_id"/>
+                <templates>
+                    <div t-name="timeline-item">
+                        <div t-esc="record.display_name"/>
+                        Assigned to:
+                        <span t-esc="record.user_id[1]"/>
+                    </div>
+                </templates>
+            </timeline>
+        </field>
+    </record>-->
 
 </odoo>

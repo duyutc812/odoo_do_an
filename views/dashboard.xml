@@ -2,7 +2,7 @@
 <odoo>
     <record id="act_library_card" model="ir.actions.act_window">
         <field name="name">Library Card</field>
-        <field name="res_model">library.card</field>
+        <field name="res_model">lib.card</field>
         <field name="view_mode">tree</field>
         <field name="view_id" ref="do_an_tn.view_tree_card"/>
     </record>

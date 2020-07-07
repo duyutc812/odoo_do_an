@@ -1,0 +1,3687 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* do_an_tn
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0-20191222\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-02 17:27+0000\n"
+"PO-Revision-Date: 2020-07-02 17:27+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_at_lib.py:287
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:383
+#, python-format
+msgid " - At lib"
+msgstr "Tại thư viện"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:273
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:283
+#, python-format
+msgid " - Back Home"
+msgstr "Mượn về"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/wizards/modify_descrip.py:41
+#: code:addons/do_an_tn/wizards/modify_descrip.py:44
+#: code:addons/do_an_tn/wizards/modify_descrip.py:47
+#: code:addons/do_an_tn/wizards/modify_descrip.py:82
+#: code:addons/do_an_tn/wizards/modify_descrip.py:85
+#, python-format
+msgid "%s updated by %s"
+msgstr "% cập nhật bởi %s"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/wizards/create_meta_book.py:37
+#: code:addons/do_an_tn/wizards/create_meta_book.py:73
+#: code:addons/do_an_tn/wizards/create_meta_project.py:37
+#, python-format
+msgid "%s updated quantity of %s is %s"
+msgstr "%s cập nhật số lượng của %s là %s"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_card
+msgid "(Book) and"
+msgstr "Sách và"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_card
+msgid "(Syllabus)"
+msgstr "Giáo trình"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_magazine_newspaper
+msgid "- No."
+msgstr "- Số: "
+
+#. module: do_an_tn
+#: selection:library.card,duration_penalty:0
+msgid "1 month"
+msgstr "1 tháng"
+
+#. module: do_an_tn
+#: selection:library.card,duration_penalty:0
+msgid "2 weeks"
+msgstr "2 tuần"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_student
+msgid "<b>Course : </b>"
+msgstr "<b>Khoá : </b>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_student
+msgid "<b>Email : </b>"
+msgstr "<b>Email : </b>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_student
+msgid "<b>ID :</b>"
+msgstr "<b>Mã :</b>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_card_detail_template
+msgid "<b>Library Card</b>"
+msgstr "<b>Thẻ Thư Viện</b>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_card_detail_template
+msgid "<b>Library School ABC</b>"
+msgstr "<b>Thư Viện Trường ĐH ABC</b>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_student
+msgid "<b>Major : </b>"
+msgstr "<b>Ngành : </b>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_at_lib_template
+msgid "<b>Penalty Checkout At Library</b>"
+msgstr "<b>Phiếu Phạt Mượn Tại Thư Viện</b>"
+
+#. module: do_an_tn
+#: model:mail.template,body_html:do_an_tn.library_card_email_template
+msgid "<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                        <h3>Dear ${object.gt_name},</h3>\n"
+"                        <br/>\n"
+"                        This is a email from Library School.\n"
+"                        <br/>\n"
+"                        <table style=\"text-align:left\">\n"
+"                            <tr>\n"
+"                                <th>\n"
+"                                    Card ID :\n"
+"                                </th>\n"
+"                                <td>\n"
+"                                    ${object.code}\n"
+"                                </td>\n"
+"                            </tr>\n"
+"                            <tr>\n"
+"                                <th>\n"
+"                                    Doc limit:\n"
+"                                </th>\n"
+"                                <td>\n"
+"                                    ${object.book_limit} (book) and ${object.limit_syllabus} (syllabus)\n"
+"                                </td>\n"
+"                            </tr>\n"
+"                            <tr>\n"
+"                                <th>\n"
+"                                    Start Date:\n"
+"                                </th>\n"
+"                                <td>\n"
+"                                    ${object.start_date.strftime('%d-%m-%Y')}\n"
+"                                </td>\n"
+"                            </tr>\n"
+"                            <tr>\n"
+"                                <th>\n"
+"                                    End Date:\n"
+"                                </th>\n"
+"                                <td>\n"
+"                                     ${object.end_date.strftime('%d-%m-%Y')}\n"
+"                                </td>\n"
+"                            </tr>\n"
+"                            <tr>\n"
+"                                <th>\n"
+"                                    Price:\n"
+"                                </th>\n"
+"                                <td>\n"
+"                                    ${format_amount(object.price, object.currency_id)}\n"
+"                                </td>\n"
+"                            </tr>\n"
+"                        </table>\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
+msgstr "<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                        <h3>Thân gửi ${object.gt_name},</h3>\n"
+"                        <br/>\n"
+"                        Đây là email từ thư viện trường đại học ABC.\n"
+"                        <br/>\n"
+"                        <table style=\"text-align:left\">\n"
+"                            <tr>\n"
+"                                <th>\n"
+"                                    Mã thẻ :\n"
+"                                </th>\n"
+"                                <td>\n"
+"                                    ${object.code}\n"
+"                                </td>\n"
+"                            </tr>\n"
+"                            <tr>\n"
+"                                <th>\n"
+"                                    Tài liệu giới hạn:\n"
+"                                </th>\n"
+"                                <td>\n"
+"                                    ${object.book_limit} (sách) and ${object.limit_syllabus} (giáo trình)\n"
+"                                </td>\n"
+"                            </tr>\n"
+"                            <tr>\n"
+"                                <th>\n"
+"                                    Ngày bắt đầu:\n"
+"                                </th>\n"
+"                                <td>\n"
+"                                    ${object.start_date.strftime('%d-%m-%Y')}\n"
+"                                </td>\n"
+"                            </tr>\n"
+"                            <tr>\n"
+"                                <th>\n"
+"                                    Ngày hết hạn:\n"
+"                                </th>\n"
+"                                <td>\n"
+"                                     ${object.end_date.strftime('%d-%m-%Y')}\n"
+"                                </td>\n"
+"                            </tr>\n"
+"                            <tr>\n"
+"                                <th>\n"
+"                                    Giá:\n"
+"                                </th>\n"
+"                                <td>\n"
+"                                    ${format_amount(object.price, object.currency_id)}\n"
+"                                </td>\n"
+"                            </tr>\n"
+"                        </table>\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
+
+#. module: do_an_tn
+#: model:mail.template,body_html:do_an_tn.lib_card_send_email_expire
+msgid "<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                        Dear ${object.gt_name}\n"
+"                        <br/>\n"
+"                        <br/>\n"
+"                        This is a email from Library School.\n"
+"                        Card ID's : ${object.code}\n"
+"                        <br/>\n"
+"                        End Date Card : ${object.end_date}\n"
+"                        <br/>\n"
+"                        The card of you will be expire in today.\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
+msgstr "<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                        Thân gửi ${object.gt_name},\n"
+"                        <br/>\n"
+"                        <br/>\n"
+"                        Đây là email từ thư viện trường đại học ABC.\n"
+"                        Thẻ của bạn : ${object.code}\n"
+"                        <br/>\n"
+"                        Ngày hết hạn : ${object.end_date}\n"
+"                        <br/>\n"
+"                        Thẻ thư viện của bạn sẽ hết hạn vào ngày hôm nay.\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_library_checkout_template
+msgid "<i><b>Checkouts:</b></i>"
+msgstr "<i><b>Mã Phiếu:</b></i>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_bh_template
+msgid "<i><b>Details:</b></i>"
+msgstr "<i><b>Chi tiết:</b></i>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_library_checkout_template
+msgid "<i><b>Thông tin:</b></i>"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_at_lib
+msgid "<span class=\"oe_read_only\">On </span>"
+msgstr "<span class=\"oe_read_only\">Vào lúc</span>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_card
+msgid "<span style=\"color:red; font-size:11px\">(Punishment)</span>"
+msgstr "<span style=\"color:red; font-size:11px\">(Bị phạt)</span>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_at_lib_template
+msgid "<strong>Card ID: </strong>"
+msgstr "<strong>Mã thẻ: </strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_library_checkout_template
+msgid "<strong>Card ID:</strong>"
+msgstr "<strong>Mã thẻ:</strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_card_detail_template
+msgid "<strong>Course: </strong>"
+msgstr "<strong>Khoá: </strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_library_checkout_template
+msgid "<strong>Datetime:</strong>"
+msgstr "<strong>Ngày tạo phiếu:</strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_at_lib_template
+msgid "<strong>Description: </strong>"
+msgstr "<strong>Tình trạng: </strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_card_detail_template
+msgid "<strong>Email: </strong>"
+msgstr "<strong>Email: </strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_library_checkout_template
+msgid "<strong>Email:</strong>"
+msgstr "<strong>Email:</strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_card_detail_template
+msgid "<strong>End Date: </strong>"
+msgstr "<strong>Ngày hết hạn: </strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_at_lib_template
+msgid "<strong>Librarian: </strong>"
+msgstr "<strong>Nhân viên thư viện: </strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_library_checkout_template
+msgid "<strong>Librarian:</strong>"
+msgstr "<strong>Nhân viên thư viện: </strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_magazine_newspaper
+msgid "<strong>Magazine: </strong>"
+msgstr "<strong>Tạp chí: </strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_card_detail_template
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_project
+msgid "<strong>Major: </strong>"
+msgstr "<strong>Ngành: </strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_library_checkout_template
+msgid "<strong>Member Name:</strong>"
+msgstr "<strong>Tên độc giả:</strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_at_lib_template
+msgid "<strong>Meta ID: </strong>"
+msgstr "<strong>Mã tài liệu: </strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_card_detail_template
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_at_lib_template
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_project
+msgid "<strong>Name: </strong>"
+msgstr "<strong>Tên: </strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_magazine_newspaper
+msgid "<strong>Newspaper: </strong>"
+msgstr "<strong>Báo: </strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_at_lib_template
+msgid "<strong>Note: </strong>"
+msgstr "<strong>Ghi chú: </strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_at_lib_template
+msgid "<strong>Penalty Price: </strong>"
+msgstr "<strong>Mức Phạt: </strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_card_detail_template
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_at_lib_template
+msgid "<strong>Role: </strong>"
+msgstr "<strong>Chức vụ: </strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_card_detail_template
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_at_lib_template
+msgid "<strong>Student ID: </strong>"
+msgstr "<strong>Mã sinh viên: </strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_at_lib_template
+msgid "<strong>Title Doc</strong>"
+msgstr "<strong>Tên tài liệu</strong>"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_library_checkout_template
+msgid "<strong>Total(Deposit):</strong>"
+msgstr "<strong>Tổng(Đặt cọc):</strong>"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__message_needaction
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__message_needaction
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__message_needaction
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__message_needaction
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__message_needaction
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__message_needaction
+msgid "Action Needed"
+msgstr "Cần có Hành động"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__active
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__active
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card_stage__active
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_stage__active
+#: model:ir.model.fields,field_description:do_an_tn.field_library_rack__active
+#: model:ir.model.fields,field_description:do_an_tn.field_library_translator__active
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_books__is_active
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_magazinenewspapers__is_active
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_projects__is_active
+msgid "Active"
+msgstr "Có hiệu lực"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__active
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__active
+#: model:ir.model.fields,field_description:do_an_tn.field_library_teacher__active
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__active
+msgid "Active?"
+msgstr "Kích Hoạt?"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__activity_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__activity_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__activity_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__activity_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__activity_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__activity_ids
+msgid "Activities"
+msgstr "Các hoạt động"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__activity_state
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__activity_state
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__activity_state
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__activity_state
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__activity_state
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__activity_state
+msgid "Activity State"
+msgstr "Tình trạng hoạt động"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__actual_return_date
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_library_checkout_template
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_bh_template
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_back_home
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_bh
+msgid "Actual Return Date"
+msgstr "Ngày trả thực tế"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher__address
+#: model:ir.model.fields,field_description:do_an_tn.field_library_teacher__address
+#: model:ir.model.fields,field_description:do_an_tn.field_res_users__address
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+msgid "Address"
+msgstr "Địa chỉ"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_publisher
+msgid "Address..."
+msgstr "Địa chỉ..."
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_library_checkout_template
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_bh_template
+msgid "Address: Street A, City B,..."
+msgstr "Đại chỉ: Đường A, Thành Phố B,..."
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__age
+#: model:ir.model.fields,field_description:do_an_tn.field_library_teacher__age
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_student
+msgid "Age"
+msgstr "Tuổi"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_rack__book_ids
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_author
+msgid "All Book"
+msgstr "Tất cả sách"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:490
+#, python-format
+msgid "All Checkout Back Home"
+msgstr "Mượn về nhà"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_rack__project_ids
+msgid "All Project"
+msgstr "Đồ án, luận văn"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_translator__book_ids
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_author
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_translator
+msgid "All book"
+msgstr "Sách"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_author.py:58
+#, python-format
+msgid "All book 2"
+msgstr "Sách"
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.open_books_of_author1
+msgid "All book for author"
+msgstr "Sách của tác giả"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_card
+msgid "All checkout at lib"
+msgstr "Tại thư viện"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_card
+msgid "All checkout at library"
+msgstr "Tại thư viện"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_back_home
+msgid "All checkout back home"
+msgstr "Mượn về nhà"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__message_attachment_count
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__message_attachment_count
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__message_attachment_count
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__message_attachment_count
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__message_attachment_count
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__message_attachment_count
+msgid "Attachment Count"
+msgstr "Số đính kèm"
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_library_author
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__pen_name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__author_ids
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_author
+msgid "Author"
+msgstr "Tác giả"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__name_seq
+msgid "Author ID"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_library_author
+#: model:ir.ui.menu,name:do_an_tn.menu_library_author
+msgid "Authors"
+msgstr "Tác giả"
+
+#. module: do_an_tn
+#: selection:create.meta.book,state:0
+#: selection:create.meta.mg.new,state:0
+#: selection:create.meta.project,state:0
+#: selection:document.project,state:0
+#: selection:library.book,state:0
+#: selection:magazine.newspaper,state:0
+#: selection:meta.books,state:0
+#: selection:meta.magazinenewspapers,state:0
+#: selection:meta.projects,state:0
+msgid "Available"
+msgstr "Có sẵn"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_author
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_book
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_publisher
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_teacher
+msgid "Avatar"
+msgstr "Ảnh đại diện"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__biography
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_author
+msgid "Biography"
+msgstr "Tiểu sử"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_book__book_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher__book_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_books__book_id
+#: model:ir.ui.menu,name:do_an_tn.menu_library_book
+#: selection:library.checkout.at.lib,type_document:0
+#: selection:library.checkout.back.home,type_document:0
+msgid "Book"
+msgstr "Sách"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__name_seq
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_book
+msgid "Book ID"
+msgstr "Mã sách"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_book
+msgid "Book ID:"
+msgstr "Mã sách"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:111
+#, python-format
+msgid "Book Limit on card: %s\n"
+"Syllabus limit on card: %s\n"
+"You are borrowing %s book(not syllabus) or document and %s syllabus!"
+msgstr "Số tài liệu tham khảo: %s\n"
+"Số giáo trình: %s\n"
+"Bạn đang mượn %s tài liệu tham khảo và %s giáo trình!"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_book
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_book
+msgid "Book Name"
+msgstr "Tên sách"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__book_term
+msgid "Book Term (Days)"
+msgstr "Thời hạn mượn(ngày)"
+
+#. module: do_an_tn
+#: model:ir.model.fields,help:do_an_tn.field_library_book__name
+msgid "Book cover title"
+msgstr "Tên sách"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_at_lib.py:182
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:278
+#, python-format
+msgid "Book: \"%s - %s\" have borrowed."
+msgstr "Sách: \"%s - %s\" đã được mượn."
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_library_book
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__book_ids
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_publisher
+msgid "Books"
+msgstr "Sách"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__born_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_teacher__born_date
+msgid "Born Date"
+msgstr "Ngày sinh"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+msgid "Born date..."
+msgstr "Ngày sinh"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_author
+msgid "Born:"
+msgstr "Ngày sinh:"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_at_lib.py:350
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_at_lib
+#, python-format
+msgid "Borrow Back Home"
+msgstr "Mượn về nhà"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__borrow_date
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_at_lib
+msgid "Borrow Date"
+msgstr "Ngày mượn"
+
+#. module: do_an_tn
+#: selection:library.checkout.back.home,kanban_state:0
+msgid "Borrow Overdue"
+msgstr "Mượn quá hạn"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__borrow_date
+msgid "Borrow date"
+msgstr "Ngày mượn"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_bh
+#: selection:library.checkout.stage,state:0
+msgid "Borrowed"
+msgstr "Đã mượn"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__chk_mg_new
+msgid "Borrowed Book"
+msgstr "Đã mượn Sách"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:260
+#, python-format
+msgid "Can not borrow more documents"
+msgstr "Không thể mượn thêm tài liệu!"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_back_home
+#: model_terms:ir.ui.view,arch_db:do_an_tn.wizard_create_meta_book
+#: model_terms:ir.ui.view,arch_db:do_an_tn.wizard_create_meta_mg_new
+#: model_terms:ir.ui.view,arch_db:do_an_tn.wizard_create_meta_project
+#: model_terms:ir.ui.view,arch_db:do_an_tn.wizard_descrip_chk_back_home
+#: model_terms:ir.ui.view,arch_db:do_an_tn.wizard_descrip_doc
+#: model_terms:ir.ui.view,arch_db:do_an_tn.wizard_extend_checkout_bh
+#: model_terms:ir.ui.view,arch_db:do_an_tn.wizard_extend_library_card
+msgid "Cancel"
+msgstr "Hủy"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_card
+msgid "Cancel Penalty"
+msgstr "Huỷ phạt"
+
+#. module: do_an_tn
+#: selection:library.checkout.stage,state:0
+msgid "Canceled"
+msgstr "Đã Huỷ"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_card.py:128
+#, python-format
+msgid "Canceled Penalty Card"
+msgstr "Đã huỷ phạt thẻ thư viện"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_book_project.py:148
+#, python-format
+msgid "Cannot borrow more than %s document"
+msgstr "Không thể mượn nhiều hơn %s tài liệu tham khảo"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_book_project.py:196
+#, python-format
+msgid "Cannot borrow same book on checkout!"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_book_project.py:238
+#, python-format
+msgid "Cannot borrow same project on checkout!"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/reports/library_checkout_back_home_report.py:133
+#, python-format
+msgid "Cannot choose record difference Fined,Lost !"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/reports/library_checkout_back_home_report.py:31
+#, python-format
+msgid "Cannot choose record difference borrowed !"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_book_project.py:135
+#, python-format
+msgid "Cannot delete record when state is not draft!"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_book_project.py:203
+#: code:addons/do_an_tn/models/library_checkout_book_project.py:245
+#, python-format
+msgid "Cannot delete!"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/wizards/extend_library_card.py:63
+#, python-format
+msgid "Cannot extend checkout!"
+msgstr "Không thể gia hạn thẻ thư viện!"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_card.py:311
+#, python-format
+msgid "Cannot send email: user %s has no email address."
+msgstr "Không thể gửi email:độc giả %s, không tìm thấy địa chỉ email."
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+msgid "Card"
+msgstr "Thẻ thư viện"
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_library_card
+#: model:ir.ui.menu,name:do_an_tn.menu_library_card
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_card
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_back_home
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_tree_card
+msgid "Card Details"
+msgstr "Thẻ thư viện"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_at_lib.py:70
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:103
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:110
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:162
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_library_card__card_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__card_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__card_id
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_chk_back_home
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_bh
+#, python-format
+msgid "Card ID"
+msgstr "Mã thẻ"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_bh_template
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_card
+msgid "Card ID:"
+msgstr "Mã thẻ"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/wizards/extend_library_card.py:43
+#, python-format
+msgid "Card ID: %s of %s has been extended about %s months"
+msgstr "Mã thẻ: %s của %s đã được gia hạn thêm %s tháng"
+
+#. module: do_an_tn
+#: model:ir.actions.report,name:do_an_tn.action_library_card_detail
+msgid "Card Report"
+msgstr "In Thẻ"
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_card_stage
+#: model:ir.model,name:do_an_tn.model_library_card_stage
+#: model:ir.ui.menu,name:do_an_tn.menu_card_stage
+msgid "Card Stage"
+msgstr "Giai đoạn"
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_library_category
+#: model:ir.ui.menu,name:do_an_tn.menu_category
+msgid "Categories"
+msgstr "Thể loại"
+
+#. module: do_an_tn
+#: model:ir.ui.menu,name:do_an_tn.menu_library_category
+msgid "Categories Book"
+msgstr "Thể loại sách"
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_categories_magazine
+#: model:ir.model,name:do_an_tn.model_categories_magazine
+#: model:ir.ui.menu,name:do_an_tn.menu_categories_magazine
+msgid "Categories Magazine"
+msgstr "Thể loại tạp chí"
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_categories_newspaper
+#: model:ir.model,name:do_an_tn.model_categories_newspaper
+#: model:ir.ui.menu,name:do_an_tn.menu_categories_newspaper
+msgid "Categories Newspaper"
+msgstr "Thể loại báo"
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_library_category
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__category
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__category_doc
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_category
+msgid "Category"
+msgstr "Danh mục"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__category_mgz
+msgid "Category Magazine"
+msgstr "Thể loại tạp chí"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__category_new
+msgid "Category Newspaper"
+msgstr "Thể loại báo"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_book
+msgid "Category abc"
+msgstr "Thể loại"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_magazine
+msgid "Category magazine..."
+msgstr "Thể loại tạp chí"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_magazine
+msgid "Category newspaper..."
+msgstr "Thể loại báo"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_student
+msgid "Change Color"
+msgstr "Thay đổi màu"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_books__checkout
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_magazinenewspapers__checkout
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_projects__checkout
+msgid "Checkout"
+msgstr "Thông tin phiếu mượn"
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_library_checkout_at_lib
+#: model:ir.ui.menu,name:do_an_tn.menu_library_checkout_at_lib
+msgid "Checkout At Library"
+msgstr "Mượn tại thư viện"
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_checkout_back_home
+#: model:ir.model,name:do_an_tn.model_library_checkout_back_home
+#: model:ir.ui.menu,name:do_an_tn.menu_checkout_back_home
+msgid "Checkout Back Home"
+msgstr "Mượn về nhà"
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_checkout_book_line
+msgid "Checkout Book Line"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_checkout_book_project
+msgid "Checkout Book Project"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_checkout_bp_line
+msgid "Checkout Book Project Line"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.server,name:do_an_tn.ir_cron_checkout_check_return_date_ir_actions_server
+#: model:ir.cron,cron_name:do_an_tn.ir_cron_checkout_check_return_date
+#: model:ir.cron,name:do_an_tn.ir_cron_checkout_check_return_date
+msgid "Checkout Check Return appointment Date"
+msgstr "Kiểm tra ngày hẹn trả trên phiếu mượn"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:461
+#, python-format
+msgid "Checkout Document"
+msgstr "Phiếu mượn tài liệu"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_checkout_bh__checkout_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__name_seq
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__name_seq
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_bh
+msgid "Checkout ID"
+msgstr "Mã phiếu"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/wizards/extend_library_card.py:95
+#, python-format
+msgid "Checkout ID: %s of %s has been extended to %s"
+msgstr "Mã phiếu: %s của %s đã được gia hạn tới %s"
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_library_checkout_at_lib
+#: model:ir.model,name:do_an_tn.model_library_checkout_in_lib
+msgid "Checkout In Lib"
+msgstr "Mượn tại thư viện"
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_library_checkout_magazine_newspaper
+msgid "Checkout Magazine Newspaper"
+msgstr "Phiếu mượn báo-tạp chí"
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_checkout_project_line
+msgid "Checkout Project Line"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.report,name:do_an_tn.action_library_checkout_report
+msgid "Checkout Report"
+msgstr "In phiếu"
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_checkout_stage
+#: model:ir.model,name:do_an_tn.model_library_checkout_stage
+#: model:ir.ui.menu,name:do_an_tn.menu_checkout_stage
+msgid "Checkout Stage"
+msgstr "Giai đoạn"
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_checkout_stage_in_lib
+msgid "Checkout Stage In Lib"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:475
+#, python-format
+msgid "Checkout Syllabus"
+msgstr "Giáo trình"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_book_project.py:49
+#: code:addons/do_an_tn/models/library_checkout_book_project.py:83
+#, python-format
+msgid "Checkout magazine newspaper exists. Please return the document to continue!"
+msgstr "Phiếu mượn tạp chí đang tồn tại. Vui lòng trả lại tạp chí để tiếp tục!"
+
+#. module: do_an_tn
+#: model:ir.ui.menu,name:do_an_tn.menu_library_checkout
+msgid "Checkouts"
+msgstr "Phiếu mượn"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_book
+msgid "Choose Author..."
+msgstr "Tác giả..."
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_book
+msgid "Choose Currency..."
+msgstr "Tiền tệ..."
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_book_project.py:80
+#, python-format
+msgid "Choose Document!"
+msgstr "Tài liệu..."
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_book
+msgid "Choose Language..."
+msgstr "Ngôn ngữ..."
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_book
+msgid "Choose Library Rack..."
+msgstr "Giá để tài liệu..."
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_book
+msgid "Choose Translator..."
+msgstr "Dịch giả..."
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__city
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+msgid "City"
+msgstr "Thành phố"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__code
+#: model:ir.model.fields,field_description:do_an_tn.field_library_rack__code
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_card
+msgid "Code"
+msgstr "Mã"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__color
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__color
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__color
+msgid "Color"
+msgstr "Màu sắc"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__color
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__color
+msgid "Color Index"
+msgstr "Mã màu"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_card
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_back_home
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_card
+#: selection:library.card.stage,state:0
+msgid "Confirm"
+msgstr "Xác nhận"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__count
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__count
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__count
+msgid "Count"
+msgstr "Tổng"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__count_doc
+msgid "Count Document"
+msgstr "Tài liệu tham khảo"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__count_penalty
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__count_syl
+msgid "Count Syllabus"
+msgstr "Giáo trình"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+msgid "Country"
+msgstr "Quốc gia"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__course
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__course
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_student
+msgid "Course"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+msgid "Course..."
+msgstr "Khoá"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__author_image
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__image
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher__publisher_image
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__student_image
+#: model:ir.model.fields,field_description:do_an_tn.field_library_teacher__teacher_image
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__image
+msgid "Cover"
+msgstr "Ảnh"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.wizard_create_meta_book
+#: model_terms:ir.ui.view,arch_db:do_an_tn.wizard_create_meta_mg_new
+#: model_terms:ir.ui.view,arch_db:do_an_tn.wizard_create_meta_project
+msgid "Create"
+msgstr "Tạo"
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_wizard_create_meta_book
+#: model:ir.model,name:do_an_tn.model_create_meta_book
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_book
+msgid "Create Meta Book"
+msgstr "Tạo sách"
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_wizard_create_meta_mg_new
+#: model:ir.model,name:do_an_tn.model_create_meta_mg_new
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_magazine
+msgid "Create Meta Magazine Newspaper"
+msgstr "Tạo báo-tạp chí"
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_wizard_create_meta_project
+#: model:ir.model,name:do_an_tn.model_create_meta_project
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_project
+msgid "Create Meta Project"
+msgstr "Tạo đồ án, luận văn"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_at_lib
+msgid "Create checkout back home? Are you sure?"
+msgstr "Tạo phiếu mượn về nhà? Bạn có chắc chắn không?"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_categories_magazine__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_categories_newspaper__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_book__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_mg_new__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_project__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_checkout_bh__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_library_card__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card_stage__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_category__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_stage__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_duration__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_rack__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_teacher__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_translator__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_books__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_magazinenewspapers__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_projects__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc_chk_bh__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_email_on_card__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_student_major__create_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_teacher_role__create_uid
+msgid "Created by"
+msgstr "Được tạo bởi"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_categories_magazine__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_categories_newspaper__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_book__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_mg_new__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_project__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_checkout_bh__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_library_card__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card_stage__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_category__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_stage__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_duration__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_rack__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_teacher__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_translator__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_books__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_magazinenewspapers__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_projects__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc_chk_bh__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_email_on_card__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_student_major__create_date
+#: model:ir.model.fields,field_description:do_an_tn.field_teacher_role__create_date
+msgid "Created on"
+msgstr "Thời điểm tạo"
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_inherit_res_currency
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__currency_id
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_library_card__currency_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__currency_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__currency_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__currency_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__currency_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_duration__currency_id
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__currency_id
+#: model:ir.ui.menu,name:do_an_tn.menu_inherit_document_currency
+msgid "Currency"
+msgstr "Tiền tệ"
+
+#. module: do_an_tn
+#: sql_constraint:library.author:0
+msgid "DOB is should be less then today date"
+msgstr "Ngày sinh phải nhỏ hơn ngày hiện tại"
+
+#. module: do_an_tn
+#: model:ir.ui.menu,name:do_an_tn.menu_library_dashboard
+msgid "Dashboard"
+msgstr "Bảng thông tin"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__born_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_translator__born_date
+msgid "Date of Birth"
+msgstr "Ngày sinh"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__death_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_translator__death_date
+msgid "Date of Death"
+msgstr "Ngày mất(nếu có)"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_card
+msgid "Date:"
+msgstr "Ngày:"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_bh_template
+msgid "Datetime:"
+msgstr "Ngày tạo phiếu"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__day_overdue
+msgid "Day overdue"
+msgstr "Ngày quá hạn"
+
+#. module: do_an_tn
+#: sql_constraint:library.author:0
+msgid "Death date is must be less then born date"
+msgstr "Ngày mất phải lớn hơn ngày sinh"
+
+#. module: do_an_tn
+#: sql_constraint:library.author:0
+msgid "Death date is must be less then current date"
+msgstr "Ngày mất phải lớn hơn ngày hiện tại"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_author
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_card
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_chk_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_chk_back_home
+msgid "Delete"
+msgstr "Xoá"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_book__description
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_mg_new__description
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_project__description
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__status_document
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__status_document
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_books__description
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_magazinenewspapers__description
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_projects__description
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc__status_document
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc_chk_bh__status_document
+msgid "Description"
+msgstr "Miêu tả"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_teacher
+msgid "Detail"
+msgstr "Chi tiết"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_book
+msgid "Details"
+msgstr "Chi tiết"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_magazine
+msgid "Details Magazine"
+msgstr "Chi tiết tạp chí"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_magazine
+msgid "Details Newspaper"
+msgstr "Chi tiết báo"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_categories_magazine__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_categories_newspaper__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_book__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_mg_new__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_project__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_checkout_bh__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_library_card__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card_stage__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_category__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_stage__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_duration__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_rack__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_teacher__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_translator__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_books__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_magazinenewspapers__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_projects__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc_chk_bh__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_email_on_card__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_report_do_an_tn_report_library_checkout_template__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_report_do_an_tn_report_penalty_at_lib_xls__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_report_do_an_tn_report_penalty_checkout_bh_template__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_student_major__display_name
+#: model:ir.model.fields,field_description:do_an_tn.field_teacher_role__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__district
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+msgid "District"
+msgstr "Phường"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_library_checkout_template
+msgid "Doc ID"
+msgstr "Mã tài liệu"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_back_home
+msgid "Document"
+msgstr "Tài liệu"
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_document_project
+msgid "Document - Project"
+msgstr "Tài liệu tham khảo - đồ án, luận văn"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__document_term
+msgid "Document Term (Days)"
+msgstr "Thời hạn mượn(ngày)"
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_document_lang
+msgid "Document's Language"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_bh
+msgid "Document(not syllabus)"
+msgstr "Tài liệu tham khảo"
+
+#. module: do_an_tn
+#: model:ir.ui.menu,name:do_an_tn.menu_library_document
+msgid "Documents"
+msgstr "Tài liệu"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_card
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_back_home
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_card
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_bh
+#: selection:library.card.stage,state:0
+#: selection:library.checkout.stage,state:0
+msgid "Draft"
+msgstr "Nháp"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_at_lib
+msgid "Draft and Borrowed"
+msgstr "Nháp và đã mượn"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_author
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_card
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_chk_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_chk_back_home
+msgid "Dropdown menu"
+msgstr "Menu lên/xuống"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_library_card__duration_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__duration_id
+msgid "Duration"
+msgstr "Thời hạn"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:146
+#, python-format
+msgid "Duration Borrow Document"
+msgstr "Thời hạn mượn tài liệu"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__duration_penalty
+msgid "Duration Penalty"
+msgstr "Thời hạn phạt"
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_duration.py:30
+#, python-format
+msgid "Duration must be great 0!"
+msgstr "Thời hạn phải lớn hơn 0!"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_duration__duration
+msgid "Duration(month)"
+msgstr "Thời hạn(tháng)"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_author
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_student
+msgid "Edit"
+msgstr "Sửa"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher__email
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__email
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_email_on_card__email
+msgid "Email"
+msgstr "Email"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_publisher
+msgid "Email 1...."
+msgstr "Email 1...."
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_publisher
+msgid "Email 2"
+msgstr "Email 2"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_teacher__email
+msgid "Email Contact"
+msgstr "Email"
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_email_template
+#: model:ir.ui.menu,name:do_an_tn.menu_email_template
+msgid "Email Template"
+msgstr "Mẫu email"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__email
+msgid "Email User"
+msgstr "Email"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_bh_template
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_teacher
+msgid "Email:"
+msgstr "Email:"
+
+#. module: do_an_tn
+#: model:ir.ui.menu,name:do_an_tn.menu_library_employee
+msgid "Employee"
+msgstr "Nhân viên"
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_library_employee
+msgid "Employees"
+msgstr "Nhân viên"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__end_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__end_date
+msgid "End Date"
+msgstr "Ngày kết thúc"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__end_date_penalty
+msgid "End Date Penalty"
+msgstr "Ngày hết hạn phạt"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_book
+msgid "Enter Num Page...."
+msgstr "Trang..."
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_book
+msgid "Enter Price..."
+msgstr "Giá tiền..."
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_book
+msgid "Enter Publisher..."
+msgstr "Nhà sản xuất..."
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_book
+msgid "Enter publish date..."
+msgstr "Ngày sản xuât..."
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/reports/library_checkout_back_home_report.py:31
+#: code:addons/do_an_tn/reports/library_checkout_back_home_report.py:133
+#, python-format
+msgid "Error"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:147
+#: code:addons/do_an_tn/wizards/extend_library_card.py:89
+#, python-format
+msgid "Exceeded deadline for returning books!"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:163
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:171
+#: code:addons/do_an_tn/wizards/extend_library_card.py:91
+#, python-format
+msgid "Exceeded term of library card!"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_card
+#: selection:library.card.stage,state:0
+msgid "Expire"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_back_home
+#: model_terms:ir.ui.view,arch_db:do_an_tn.wizard_extend_checkout_bh
+#: model_terms:ir.ui.view,arch_db:do_an_tn.wizard_extend_library_card
+msgid "Extend"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_card
+msgid "Extend Card"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_wizard_extend_checkout_bh
+msgid "Extend Checkout"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_extend_checkout_bh
+msgid "Extend Checkout Back Home"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_wizard_extend_library_card
+#: model:ir.model,name:do_an_tn.model_extend_library_card
+msgid "Extend Library Card"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_checkout_bh__extend_date
+msgid "Extend date to :"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher__facebook
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__facebook
+#: model:ir.model.fields,field_description:do_an_tn.field_res_users__facebook
+msgid "Facebook"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher__fax
+msgid "Fax"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_publisher
+msgid "Fax..."
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_author
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_student
+#: selection:library.author,gender:0
+#: selection:library.student,gender:0
+#: selection:library.teacher,gender:0
+#: selection:library.translator,gender:0
+msgid "Female"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_bh
+#: selection:library.checkout.stage,state:0
+msgid "Fined"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card_stage__fold
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_stage__fold
+msgid "Fold"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__message_follower_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__message_follower_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__message_follower_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__message_follower_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__message_follower_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__message_follower_ids
+msgid "Followers"
+msgstr "Theo dõi"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__message_channel_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__message_channel_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__message_channel_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__message_channel_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__message_channel_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__message_channel_ids
+msgid "Followers (Channels)"
+msgstr "Người theo dõi (Các kênh)"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__message_partner_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__message_partner_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__message_partner_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__message_partner_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__message_partner_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "Người theo dõi (Các đối tác)"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher__founding
+msgid "Founding"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_publisher
+msgid "Founding..."
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__gender
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__gender
+#: model:ir.model.fields,field_description:do_an_tn.field_library_teacher__gender
+#: model:ir.model.fields,field_description:do_an_tn.field_library_translator__gender
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_author
+msgid "Gender"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_author
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_teacher
+msgid "Gender:"
+msgstr ""
+
+#. module: do_an_tn
+#: selection:library.book,book_type:0
+msgid "Hardcover"
+msgstr ""
+
+#. module: do_an_tn
+#: selection:library.checkout.back.home,priority:0
+msgid "High"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_categories_magazine__id
+#: model:ir.model.fields,field_description:do_an_tn.field_categories_newspaper__id
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_book__id
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_mg_new__id
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_project__id
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__id
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_checkout_bh__id
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_library_card__id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card_stage__id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_category__id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_stage__id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_duration__id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher__id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_rack__id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_teacher__id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_translator__id
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__id
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_books__id
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_magazinenewspapers__id
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_projects__id
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc__id
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc_chk_bh__id
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_email_on_card__id
+#: model:ir.model.fields,field_description:do_an_tn.field_report_do_an_tn_report_library_checkout_template__id
+#: model:ir.model.fields,field_description:do_an_tn.field_report_do_an_tn_report_penalty_at_lib_xls__id
+#: model:ir.model.fields,field_description:do_an_tn.field_report_do_an_tn_report_penalty_checkout_bh_template__id
+#: model:ir.model.fields,field_description:do_an_tn.field_student_major__id
+#: model:ir.model.fields,field_description:do_an_tn.field_teacher_role__id
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_library_checkout_template
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_bh_template
+msgid "ID"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_author
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_chk_at_lib
+msgid "ID:"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__identity_card
+msgid "Identity Card"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+msgid "Identity Card..."
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,help:do_an_tn.field_document_project__message_unread
+#: model:ir.model.fields,help:do_an_tn.field_library_book__message_unread
+#: model:ir.model.fields,help:do_an_tn.field_library_card__message_unread
+#: model:ir.model.fields,help:do_an_tn.field_library_checkout_at_lib__message_unread
+#: model:ir.model.fields,help:do_an_tn.field_library_checkout_back_home__message_unread
+#: model:ir.model.fields,help:do_an_tn.field_magazine_newspaper__message_unread
+msgid "If checked new messages require your attention."
+msgstr "Nếu đánh dấu chọn, các thông điệp mới yêu cầu sự có mặt của bạn."
+
+#. module: do_an_tn
+#: model:ir.model.fields,help:do_an_tn.field_document_project__message_needaction
+#: model:ir.model.fields,help:do_an_tn.field_library_book__message_needaction
+#: model:ir.model.fields,help:do_an_tn.field_library_card__message_needaction
+#: model:ir.model.fields,help:do_an_tn.field_library_checkout_at_lib__message_needaction
+#: model:ir.model.fields,help:do_an_tn.field_library_checkout_back_home__message_needaction
+#: model:ir.model.fields,help:do_an_tn.field_magazine_newspaper__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "Nếu đánh dấu chọn, các thông điệp mới yêu cầu sự có mặt của bạn."
+
+#. module: do_an_tn
+#: model:ir.model.fields,help:do_an_tn.field_document_project__message_has_error
+#: model:ir.model.fields,help:do_an_tn.field_library_book__message_has_error
+#: model:ir.model.fields,help:do_an_tn.field_library_card__message_has_error
+#: model:ir.model.fields,help:do_an_tn.field_library_checkout_at_lib__message_has_error
+#: model:ir.model.fields,help:do_an_tn.field_library_checkout_back_home__message_has_error
+#: model:ir.model.fields,help:do_an_tn.field_magazine_newspaper__message_has_error
+msgid "If checked, some messages have a delivery error."
+msgstr "Nếu chọn, sẽ hiển thị thông báo lỗi."
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__user_image
+msgid "Image"
+msgstr "Hình ảnh"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_book
+msgid "Image Book"
+msgstr ""
+
+#. module: do_an_tn
+#: selection:library.checkout.back.home,kanban_state:0
+msgid "In Progress"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_inherit_res_lang
+msgid "Inactive"
+msgstr "Không hiệu lực"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_publisher
+msgid "Information"
+msgstr "Thông tin"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_book
+msgid "Information Book"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_author
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+msgid "Information Personal"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_library_checkout_template
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_bh_template
+msgid "Invalid"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__message_is_follower
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__message_is_follower
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__message_is_follower
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__message_is_follower
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__message_is_follower
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__message_is_follower
+msgid "Is Follower"
+msgstr "Trở thành người theo dõi"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__kanban_state
+msgid "Kanban State"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:266
+#, python-format
+msgid "Khong the muon them giao trinh"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:263
+#, python-format
+msgid "Khong the muon them sach"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_inherit_res_lang
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__language
+msgid "Language"
+msgstr "Ngôn ngữ"
+
+#. module: do_an_tn
+#: model:ir.ui.menu,name:do_an_tn.menu_inherit_res_lang
+msgid "Languages"
+msgstr "Ngôn ngữ"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_categories_magazine____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_categories_newspaper____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_book____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_mg_new____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_project____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_checkout_bh____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_library_card____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card_stage____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_library_category____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_stage____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_library_duration____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_library_rack____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_library_teacher____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_library_translator____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_books____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_magazinenewspapers____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_projects____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc_chk_bh____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_email_on_card____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_report_do_an_tn_report_library_checkout_template____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_report_do_an_tn_report_penalty_at_lib_xls____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_report_do_an_tn_report_penalty_checkout_bh_template____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_student_major____last_update
+#: model:ir.model.fields,field_description:do_an_tn.field_teacher_role____last_update
+msgid "Last Modified on"
+msgstr "Sửa lần cuối vào"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_categories_magazine__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_categories_newspaper__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_book__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_mg_new__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_project__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_checkout_bh__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_library_card__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card_stage__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_category__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_stage__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_duration__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_rack__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_teacher__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_library_translator__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_books__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_magazinenewspapers__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_projects__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc_chk_bh__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_email_on_card__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_student_major__write_uid
+#: model:ir.model.fields,field_description:do_an_tn.field_teacher_role__write_uid
+msgid "Last Updated by"
+msgstr "Cập nhật lần cuối bởi"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_categories_magazine__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_categories_newspaper__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_book__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_mg_new__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_project__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_checkout_bh__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_library_card__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card_stage__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_category__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_stage__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_duration__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_rack__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_teacher__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_library_translator__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_books__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_magazinenewspapers__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_projects__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc_chk_bh__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_email_on_card__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_student_major__write_date
+#: model:ir.model.fields,field_description:do_an_tn.field_teacher_role__write_date
+msgid "Last Updated on"
+msgstr "Cập nhật lần cuối vào"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__user_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__user_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__user_id
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc__user_id
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc_chk_bh__user_id
+#: model:res.groups,name:do_an_tn.library_group_librarian
+msgid "Librarian"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_bh_template
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_card
+msgid "Librarian:"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.ui.menu,name:do_an_tn.menu_library_library
+msgid "Library"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_library_book
+msgid "Library Book"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.server,name:do_an_tn.ir_cron_card_ir_actions_server
+#: model:ir.cron,cron_name:do_an_tn.ir_cron_card
+#: model:ir.cron,name:do_an_tn.ir_cron_card
+msgid "Library Card Cron"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_library_card
+msgid "Library Card Information"
+msgstr ""
+
+#. module: do_an_tn
+#: model:mail.template,subject:do_an_tn.lib_card_send_email_expire
+msgid "Library Card Notice: (Ref ${object.code})"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.server,name:do_an_tn.ir_cron_card_send_email_ir_actions_server
+#: model:ir.cron,cron_name:do_an_tn.ir_cron_card_send_email
+#: model:ir.cron,name:do_an_tn.ir_cron_card_send_email
+msgid "Library Card Send Email"
+msgstr ""
+
+#. module: do_an_tn
+#: model:mail.template,report_name:do_an_tn.lib_card_send_email_expire
+#: model:mail.template,report_name:do_an_tn.library_card_email_template
+msgid "Library Card_${(object.code)}"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_library_checkout
+msgid "Library Checkout"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_report_do_an_tn_report_library_checkout_template
+msgid "Library Checkout Back Home Report"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_library_dashboard
+msgid "Library Dashboard"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_library_duration
+#: model:ir.model,name:do_an_tn.model_library_duration
+#: model:ir.ui.menu,name:do_an_tn.menu_library_duration
+msgid "Library Duration"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.module.category,name:do_an_tn.module_category_school
+#: model:ir.module.category,name:do_an_tn.module_library_category
+msgid "Library Management"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_library_rack
+#: model:ir.model,name:do_an_tn.model_library_rack
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__rack
+msgid "Library Rack"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.ui.menu,name:do_an_tn.menu_library_rack
+msgid "Library Racks"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.ui.menu,name:do_an_tn.menu_library
+msgid "Library School"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_library_checkout_template
+msgid "Library School ABC"
+msgstr ""
+
+#. module: do_an_tn
+#: model:mail.template,subject:do_an_tn.library_card_email_template
+msgid "Library School: Card ID: (Ref ${object.code})"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_library_statistics
+msgid "Library Statistics"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_library_translator
+msgid "Library Translator"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_magazine
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_project
+msgid "Library rack..."
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_card
+msgid "Limit Book:"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__is_lost_doc
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_books__is_lost
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_magazinenewspapers__is_lost
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_projects__is_lost
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_bh
+#: selection:library.checkout.stage,state:0
+msgid "Lost"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_back_home
+msgid "Lost Document"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_back_home
+msgid "Lost Magazine or Newspaper? Are you sure ?"
+msgstr ""
+
+#. module: do_an_tn
+#: selection:library.checkout.back.home,priority:0
+msgid "Low"
+msgstr ""
+
+#. module: do_an_tn
+#: selection:magazine.newspaper,type_mgz_new:0
+msgid "Magazine"
+msgstr ""
+
+#. module: do_an_tn
+#: selection:library.checkout.at.lib,type_document:0
+msgid "Magazine And Newspaper"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_magazine_newspaper
+msgid "Magazine and Newspaper"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_magazine_newspaper
+msgid "Magazine and newspaper"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_mg_new__mgz_new_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_rack__mg_new_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_magazinenewspapers__mgz_new_id
+#: model:ir.ui.menu,name:do_an_tn.menu_magazine_newspaper
+msgid "Magazine/Newspaper"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_at_lib.py:189
+#, python-format
+msgid "Magazine/Newspaper have borrowed."
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__message_main_attachment_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__message_main_attachment_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__message_main_attachment_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__message_main_attachment_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__message_main_attachment_id
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "Đính kèm chính"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__major
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__major
+#: model:ir.model.fields,field_description:do_an_tn.field_student_major__name
+#: model:ir.ui.menu,name:do_an_tn.menu_student_major
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_student
+msgid "Major"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_project
+msgid "Major Project"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+msgid "Major and Course"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__major_name
+msgid "Major name"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_project
+msgid "Major..."
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_student_major
+msgid "Majors"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_author
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_student
+#: selection:library.author,gender:0
+#: selection:library.student,gender:0
+#: selection:library.teacher,gender:0
+#: selection:library.translator,gender:0
+msgid "Male"
+msgstr ""
+
+#. module: do_an_tn
+#: model:res.groups,name:do_an_tn.library_group_manager
+msgid "Manager"
+msgstr "Quản lý"
+
+#. module: do_an_tn
+#: model:res.groups,name:do_an_tn.library_member_search
+msgid "Member Search"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_bh_template
+msgid "Member:"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.ui.menu,name:do_an_tn.menu_library_member
+msgid "Members"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__message_has_error
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__message_has_error
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__message_has_error
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__message_has_error
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__message_has_error
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__message_has_error
+msgid "Message Delivery error"
+msgstr "Thông báo gửi đi gặp lỗi"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__message_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__message_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__message_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__message_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__message_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__message_ids
+msgid "Messages"
+msgstr "Thông điệp"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__meta_book_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__meta_book_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__meta_book_id
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc__meta_book_id
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc_chk_bh__meta_book_id
+msgid "Meta Book"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_book__name_seq
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_books__name_seq
+msgid "Meta Book ID"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_book
+msgid "Meta Books"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_magazine
+msgid "Meta Magazine-Newspaper"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_meta_magazinenewspapers
+msgid "Meta Magazine/Newspaper"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_mg_new__name_seq
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_magazinenewspapers__name_seq
+msgid "Meta Magazine/Newspaper ID"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__meta_mgz_new_ids
+msgid "Meta Mgz New"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__meta_mgz_new_id
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc__meta_mgz_new_id
+msgid "Meta Mgz-New"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_meta_projects
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__meta_project_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__meta_project_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__meta_project_id
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc__meta_project_id
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc_chk_bh__meta_project_id
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_project
+msgid "Meta Project"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_project__name_seq
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_projects__name_seq
+msgid "Meta Project ID"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_meta_books
+msgid "Meta book"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_at_lib
+msgid "Meta mgz/new"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_wizard_modify_descrip_chk_bh
+#: model:ir.actions.act_window,name:do_an_tn.action_wizard_modify_descrip_doc
+#: model:ir.model,name:do_an_tn.model_modify_description
+#: model:ir.model,name:do_an_tn.model_modify_description_doc
+#: model:ir.model,name:do_an_tn.model_modify_description_mg_new
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_back_home
+msgid "Modify Description"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_modify_description_book
+msgid "Modify Description Book"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_modify_description_book_project
+msgid "Modify Description Book Project"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_modify_description_doc_chk_bh
+msgid "Modify Description Checkout Back Home"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_modify_description_project
+msgid "Modify Description Project"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_modify_email_on_card
+msgid "Modify Email On Card"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_author
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_teacher
+msgid "More Information"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_categories_magazine__name
+#: model:ir.model.fields,field_description:do_an_tn.field_categories_newspaper__name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__gt_name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card_stage__name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_category__name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__gt_name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_stage__name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_duration__name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_rack__name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_teacher__name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_translator__name
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_author
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_student
+msgid "Name"
+msgstr "Tên"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__book_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__book_id
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc__book_id
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc_chk_bh__book_id
+msgid "Name Book"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__mgz_new_id
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc__mgz_new_id
+msgid "Name Mgz/New"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__name
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__project_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__project_id
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc__project_id
+#: model:ir.model.fields,field_description:do_an_tn.field_modify_description_doc_chk_bh__project_id
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_project
+msgid "Name Project"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__student_name
+msgid "Name Student"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_project
+msgid "Name project..."
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__country_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__country_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_teacher__country_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_translator__country_id
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_author
+msgid "Nationality"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/document_project.py:78
+#: code:addons/do_an_tn/models/document_project.py:98
+#: code:addons/do_an_tn/models/document_project.py:99
+#: code:addons/do_an_tn/models/library_author.py:31
+#: code:addons/do_an_tn/models/library_author.py:76
+#: code:addons/do_an_tn/models/library_author.py:77
+#: code:addons/do_an_tn/models/library_book.py:56
+#: code:addons/do_an_tn/models/library_book.py:103
+#: code:addons/do_an_tn/models/library_book.py:104
+#: code:addons/do_an_tn/models/library_card.py:58
+#: code:addons/do_an_tn/models/library_card.py:134
+#: code:addons/do_an_tn/models/library_checkout_at_lib.py:31
+#: code:addons/do_an_tn/models/library_checkout_at_lib.py:172
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:37
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:267
+#: code:addons/do_an_tn/models/library_checkout_book_project.py:20
+#: code:addons/do_an_tn/models/library_checkout_book_project.py:84
+#: code:addons/do_an_tn/models/library_publisher.py:9
+#: code:addons/do_an_tn/models/library_publisher.py:26
+#: code:addons/do_an_tn/models/library_publisher.py:27
+#: code:addons/do_an_tn/models/magazine_newspaper.py:118
+#: code:addons/do_an_tn/models/magazine_newspaper.py:148
+#: code:addons/do_an_tn/models/magazine_newspaper.py:149
+#: code:addons/do_an_tn/models/meta_book.py:10
+#: code:addons/do_an_tn/models/meta_book.py:36
+#: code:addons/do_an_tn/models/meta_book.py:37
+#: code:addons/do_an_tn/wizards/create_meta_book.py:10
+#: code:addons/do_an_tn/wizards/create_meta_book.py:46
+#: code:addons/do_an_tn/wizards/create_meta_project.py:10
+#, python-format
+msgid "New"
+msgstr ""
+
+#. module: do_an_tn
+#: selection:magazine.newspaper,type_mgz_new:0
+msgid "Newspaper"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__activity_date_deadline
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__activity_date_deadline
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__activity_date_deadline
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__activity_date_deadline
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__activity_date_deadline
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "Hạn chót lần hành động kế tiếp"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__activity_summary
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__activity_summary
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__activity_summary
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__activity_summary
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__activity_summary
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__activity_summary
+msgid "Next Activity Summary"
+msgstr "Tóm tắt hoạt động tiếp theo"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__activity_type_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__activity_type_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__activity_type_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__activity_type_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__activity_type_id
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__activity_type_id
+msgid "Next Activity Type"
+msgstr "Kiểu hành động kế tiếp"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_duration__book_on_card
+msgid "No book on card"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__book_limit
+msgid "No of Book on Card"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_card
+msgid "No of Syllabus"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__limit_syllabus
+msgid "No of Syllabus on Card"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_duration__syllabus_on_card
+msgid "No syllabus on card"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__num_mgz_new
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_magazine
+msgid "No."
+msgstr ""
+
+#. module: do_an_tn
+#: sql_constraint:magazine.newspaper:0
+msgid "No. Magazine's in year does already exist"
+msgstr ""
+
+#. module: do_an_tn
+#: sql_constraint:magazine.newspaper:0
+msgid "No. Newspaper's in year does already exist"
+msgstr ""
+
+#. module: do_an_tn
+#: selection:library.checkout.back.home,priority:0
+msgid "Normal"
+msgstr ""
+
+#. module: do_an_tn
+#: selection:create.meta.book,state:0
+#: selection:create.meta.mg.new,state:0
+#: selection:create.meta.project,state:0
+#: selection:document.project,state:0
+#: selection:library.book,state:0
+#: selection:magazine.newspaper,state:0
+#: selection:meta.books,state:0
+#: selection:meta.magazinenewspapers,state:0
+#: selection:meta.projects,state:0
+msgid "Not Available"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__note
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__note
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__note
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_bh_template
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_publisher
+msgid "Note"
+msgstr "Ghi chú"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_author__note
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__notes
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher__note
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__note
+#: model:ir.model.fields,field_description:do_an_tn.field_library_teacher__note
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_publisher
+msgid "Notes"
+msgstr "Ghi chú"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__num_page
+msgid "Num Page"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__message_needaction_counter
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__message_needaction_counter
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__message_needaction_counter
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__message_needaction_counter
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__message_needaction_counter
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__message_needaction_counter
+msgid "Number of Actions"
+msgstr "Số lượng Hành động"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__message_has_error_counter
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__message_has_error_counter
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__message_has_error_counter
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__message_has_error_counter
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__message_has_error_counter
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__message_has_error_counter
+msgid "Number of error"
+msgstr "Số lỗi"
+
+#. module: do_an_tn
+#: model:ir.model.fields,help:do_an_tn.field_document_project__message_needaction_counter
+#: model:ir.model.fields,help:do_an_tn.field_library_book__message_needaction_counter
+#: model:ir.model.fields,help:do_an_tn.field_library_card__message_needaction_counter
+#: model:ir.model.fields,help:do_an_tn.field_library_checkout_at_lib__message_needaction_counter
+#: model:ir.model.fields,help:do_an_tn.field_library_checkout_back_home__message_needaction_counter
+#: model:ir.model.fields,help:do_an_tn.field_magazine_newspaper__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr "Số thông điệp cần có hành động"
+
+#. module: do_an_tn
+#: model:ir.model.fields,help:do_an_tn.field_document_project__message_has_error_counter
+#: model:ir.model.fields,help:do_an_tn.field_library_book__message_has_error_counter
+#: model:ir.model.fields,help:do_an_tn.field_library_card__message_has_error_counter
+#: model:ir.model.fields,help:do_an_tn.field_library_checkout_at_lib__message_has_error_counter
+#: model:ir.model.fields,help:do_an_tn.field_library_checkout_back_home__message_has_error_counter
+#: model:ir.model.fields,help:do_an_tn.field_magazine_newspaper__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "Số tin gửi đi bị lỗi"
+
+#. module: do_an_tn
+#: model:ir.model.fields,help:do_an_tn.field_document_project__message_unread_counter
+#: model:ir.model.fields,help:do_an_tn.field_library_book__message_unread_counter
+#: model:ir.model.fields,help:do_an_tn.field_library_card__message_unread_counter
+#: model:ir.model.fields,help:do_an_tn.field_library_checkout_at_lib__message_unread_counter
+#: model:ir.model.fields,help:do_an_tn.field_library_checkout_back_home__message_unread_counter
+#: model:ir.model.fields,help:do_an_tn.field_magazine_newspaper__message_unread_counter
+msgid "Number of unread messages"
+msgstr "Số thông điệp chưa đọc"
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.open_card_student
+msgid "Open Student Card"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.open_checkout_at_lib
+msgid "Open checkout at library"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.ui.menu,name:do_an_tn.menu_library_others
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_card
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_back_home
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_project
+msgid "Others"
+msgstr ""
+
+#. module: do_an_tn
+#: selection:document.project,activity_state:0
+#: selection:library.book,activity_state:0
+#: selection:library.card,activity_state:0
+#: selection:library.checkout.at.lib,activity_state:0
+#: selection:library.checkout.back.home,activity_state:0
+#: selection:magazine.newspaper,activity_state:0
+msgid "Overdue"
+msgstr ""
+
+#. module: do_an_tn
+#: selection:library.book,book_type:0
+msgid "Paperback"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_author
+msgid "Pen Name"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_author
+msgid "Pen Name:"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__is_penalty
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_card
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_back_home
+msgid "Penalty"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_card.py:112
+#, python-format
+msgid "Penalty Card"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:503
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_back_home
+#, python-format
+msgid "Penalty Checkout"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.report,name:do_an_tn.action_library_checkout_at_lib_penalty
+#: model:ir.actions.report,name:do_an_tn.report_penalty_checkout_at_lib_xls
+msgid "Penalty Checkout At Lib"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_report_do_an_tn_report_penalty_at_lib_xls
+msgid "Penalty Checkout At Lib Excel Report"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.report,name:do_an_tn.action_library_checkout_back_home_penalty
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_bh_template
+msgid "Penalty Checkout Back Home"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_report_do_an_tn_report_penalty_checkout_bh_template
+msgid "Penalty Checkout Back Home Report"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__price_penalty
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_tree_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_tree_checkout_back_home
+msgid "Penalty Price"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__price_penalty_doc
+msgid "Penalty Price Book"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__price_penalty_chk
+msgid "Penalty Price Checkout"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__price_total
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_bh_template
+msgid "Penalty Total"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher__phone
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__phone
+#: model:ir.model.fields,field_description:do_an_tn.field_library_teacher__phone
+msgid "Phone"
+msgstr "Điện thoại"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+msgid "Phone number..."
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_publisher
+msgid "Phone..."
+msgstr ""
+
+#. module: do_an_tn
+#: selection:document.project,activity_state:0
+#: selection:library.book,activity_state:0
+#: selection:library.card,activity_state:0
+#: selection:library.checkout.at.lib,activity_state:0
+#: selection:library.checkout.back.home,activity_state:0
+#: selection:magazine.newspaper,activity_state:0
+msgid "Planned"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_book_project.py:146
+#, python-format
+msgid "Please select document for checkout!"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__price
+#: model:ir.model.fields,field_description:do_an_tn.field_extend_library_card__price
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__price
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__price
+#: model:ir.model.fields,field_description:do_an_tn.field_library_duration__price
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__price
+msgid "Price"
+msgstr "Giá"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_back_home
+msgid "Price Checkout"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__price_doc
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__price_doc
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_library_checkout_template
+msgid "Price Doc"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_at_lib
+msgid "Print Penalty Report Excel"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_card
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_at_lib
+msgid "Print Report"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__priority
+msgid "Priority"
+msgstr "Độ ưu tiên"
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_document_project
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_project__project_id
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_projects__project_id
+#: model:ir.ui.menu,name:do_an_tn.menu_document_project
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_project
+#: selection:library.checkout.at.lib,type_document:0
+#: selection:library.checkout.back.home,type_document:0
+msgid "Project"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_project
+msgid "Project Details"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__project_term
+msgid "Project Term (Days)"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_at_lib.py:196
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:287
+#, python-format
+msgid "Project: \" %s \" have borrowed."
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+msgid "Province/City"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__publish_date
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__publish_date
+msgid "Publish Date"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__publish_year
+msgid "Publish Year"
+msgstr ""
+
+#. module: do_an_tn
+#: sql_constraint:document.project:0
+msgid "Publish date must not be in the future!"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_magazine
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_project
+msgid "Publish date..."
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__published_date
+msgid "Published Date"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_library_publisher
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__publisher_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher__name
+#: model:ir.ui.menu,name:do_an_tn.menu_library_publisher
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_publisher
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_book
+msgid "Publisher"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher__name_seq
+msgid "Publisher ID"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_publisher
+msgid "Publisher name..."
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_library_publisher
+msgid "Publishers"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_book__quantity
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_mg_new__quantity
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_project__quantity
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__quantity
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__quantity
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__quantity
+msgid "Quantity"
+msgstr "Số lượng"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_book
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_magazine_newspaper
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_project
+msgid "Quantity:"
+msgstr "Số lượng:"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__rack
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__rack
+msgid "Rack"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.ui.menu,name:do_an_tn.menu_record_rules
+msgid "Record Rule"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_record_rules
+msgid "Record Rules"
+msgstr "Quy tắc truy cập"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__remaining
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__remaining
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__remaining
+msgid "Remaining"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_book
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_magazine_newspaper
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_project
+msgid "Remaining:"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_card
+msgid "Report"
+msgstr "Báo cáo"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__activity_user_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__activity_user_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__activity_user_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__activity_user_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__activity_user_id
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__activity_user_id
+msgid "Responsible User"
+msgstr "Người chịu trách nhiệm"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_back_home
+msgid "Return"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__return_date
+msgid "Return Appointment Date"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__return_date
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_library_checkout_template
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_bh_template
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_back_home
+msgid "Return Date"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_bh
+#: selection:library.checkout.stage,state:0
+msgid "Returned"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_teacher__role
+#: model:ir.model.fields,field_description:do_an_tn.field_teacher_role__name
+msgid "Role"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_teacher_role
+#: model:ir.ui.menu,name:do_an_tn.menu_teacher_role
+msgid "Role Teacher"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_teacher
+msgid "Role:"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.ui.menu,name:do_an_tn.menu_scheduled_action
+msgid "Scheduled Action"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_scheduled_action_inherit
+msgid "Scheduled Action Inherit"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_card.py:264
+#, python-format
+msgid "Scheduled Action: Canceled Penalty"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.ui.menu,name:do_an_tn.menu_library_school
+msgid "School"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_book_project.py:198
+#, python-format
+msgid "Select meta book for %s"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_book_project.py:240
+#, python-format
+msgid "Select meta project for %s"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_card
+msgid "Send Email"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_card.py:316
+#, python-format
+msgid "Send Email for Card"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card_stage__sequence
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_stage__sequence
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_books__sequence
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_magazinenewspapers__sequence
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_projects__sequence
+msgid "Sequence"
+msgstr "Thứ tự"
+
+#. module: do_an_tn
+#: model:ir.ui.menu,name:do_an_tn.menu_library_setting
+msgid "Settings"
+msgstr "Thiết lập"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__stage_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__stage_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__stage_id
+#: model:ir.ui.menu,name:do_an_tn.menu_Others_stage
+msgid "Stage"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__start_date
+msgid "Start Date"
+msgstr "Ngày bắt đầu"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__state
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card_stage__state
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__state
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__state
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_stage__state
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_card
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_bh
+msgid "State"
+msgstr "Tỉnh/TP"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__state_card
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__state_card
+msgid "State Card"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_card
+msgid "State:"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_book__state
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_mg_new__state
+#: model:ir.model.fields,field_description:do_an_tn.field_create_meta_project__state
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__state
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__state
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__state
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_books__state
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_magazinenewspapers__state
+#: model:ir.model.fields,field_description:do_an_tn.field_meta_projects__state
+msgid "Status"
+msgstr "Trạng thái"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_library_checkout_template
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_bh_template
+msgid "Status Doc"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,help:do_an_tn.field_document_project__activity_state
+#: model:ir.model.fields,help:do_an_tn.field_library_book__activity_state
+#: model:ir.model.fields,help:do_an_tn.field_library_card__activity_state
+#: model:ir.model.fields,help:do_an_tn.field_library_checkout_at_lib__activity_state
+#: model:ir.model.fields,help:do_an_tn.field_library_checkout_back_home__activity_state
+#: model:ir.model.fields,help:do_an_tn.field_magazine_newspaper__activity_state
+msgid "Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr "Trạng thái dựa trên hoạt động\n"
+"Quá hạn: Ngày đến hạn phải được chuyển\n"
+"Hôm nay: Hôm nay là ngày phải thực hiện\n"
+"Kế hoạch: Các hoạt động trong tương lai."
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__street
+msgid "Street"
+msgstr "Địa chỉ"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+msgid "Street..."
+msgstr "Địa chỉ..."
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_library_student
+#: model:ir.ui.menu,name:do_an_tn.menu_library_student
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_card
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_card
+#: selection:library.card,user:0
+#: selection:library.duration,user_type:0
+msgid "Student"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_project
+msgid "Student Details"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__student_id
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__student_id
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_card
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_student
+msgid "Student ID"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_project
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+msgid "Student ID..."
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__student_image
+msgid "Student Image"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_student_major
+msgid "Student Major"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__student_id
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_project
+msgid "Student Name"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+msgid "Student name..."
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+msgid "Student:"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_library_student
+msgid "Students"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_student__sub_district
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+msgid "Sub District"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_back_home
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_bh
+msgid "Syllabus"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_library_teacher
+#: model:ir.ui.menu,name:do_an_tn.menu_library_teacher
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_card
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_card
+#: selection:library.card,user:0
+#: selection:library.duration,user_type:0
+msgid "Teacher"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_teacher
+msgid "Teacher Form"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_card
+msgid "Teacher ID"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__teacher_image
+msgid "Teacher Image"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__teacher_id
+msgid "Teacher Name"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_teacher_role
+msgid "Teacher Role"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_teacher
+msgid "Teacher:"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_library_teacher
+msgid "Teachers"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_back_home
+msgid "Term"
+msgstr ""
+
+#. module: do_an_tn
+#: sql_constraint:library.student:0
+msgid "The Email must be unique."
+msgstr ""
+
+#. module: do_an_tn
+#: sql_constraint:library.student:0
+msgid "The Identity Card must be unique."
+msgstr ""
+
+#. module: do_an_tn
+#: sql_constraint:library.author:0
+msgid "The Pen-Name must be unique."
+msgstr ""
+
+#. module: do_an_tn
+#: sql_constraint:magazine.newspaper:0
+msgid "The Published Date must be less than the current date"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/wizards/create_meta_book.py:29
+#: code:addons/do_an_tn/wizards/create_meta_book.py:65
+#: code:addons/do_an_tn/wizards/create_meta_project.py:29
+#, python-format
+msgid "The Quantity must be greater than 0!"
+msgstr ""
+
+#. module: do_an_tn
+#: sql_constraint:library.student:0
+msgid "The Student ID must be unique."
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_book_project.py:89
+#, python-format
+msgid "The book : %s has been borrowed"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_book.py:79
+#, python-format
+msgid "The book term must be greater than 0!"
+msgstr ""
+
+#. module: do_an_tn
+#: sql_constraint:library.duration:0
+msgid "The duration and user type must be unique !"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_book.py:77
+#, python-format
+msgid "The num page must be greater than 0!"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_book.py:75
+#: code:addons/do_an_tn/models/magazine_newspaper.py:43
+#, python-format
+msgid "The price must be greater than 0!"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_book_project.py:97
+#, python-format
+msgid "The project : %s has been borrowed"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/document_project.py:35
+#, python-format
+msgid "The project term must be greater than 0!"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/wizards/extend_library_card.py:93
+#, python-format
+msgid "The return appointment date must be great than current date!"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__gt_name
+msgid "The user's card"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,help:do_an_tn.field_library_checkout_back_home__user_image
+msgid "This field holds the image used as avatar for this contact, limited to 1024x1024px"
+msgstr "Trường này lưu hình dùng làm hình đại diện của liên hệ, giới hạn là  1024x1024px"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__name
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_checkout_at_lib
+msgid "Title"
+msgstr "Xưng hô"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_library_checkout_template
+#: model_terms:ir.ui.view,arch_db:do_an_tn.report_penalty_checkout_bh_template
+msgid "Title Doc"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_chk_at_lib
+msgid "Title:"
+msgstr ""
+
+#. module: do_an_tn
+#: selection:document.project,activity_state:0
+#: selection:library.book,activity_state:0
+#: selection:library.card,activity_state:0
+#: selection:library.checkout.at.lib,activity_state:0
+#: selection:library.checkout.back.home,activity_state:0
+#: selection:magazine.newspaper,activity_state:0
+msgid "Today"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_tree_checkout_at_lib
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_tree_checkout_back_home
+msgid "Total Penalty Price"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.actions.act_window,name:do_an_tn.action_library_translator
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__translator_ids
+#: model:ir.ui.menu,name:do_an_tn.menu_library_translator
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_translator
+msgid "Translator"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__teacher_name
+msgid "Tutorial Teacher "
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_project
+msgid "Tutorial teacher..."
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__book_type
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__type_mgz_new
+msgid "Type"
+msgstr "Loại"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__type_document
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__type_document
+msgid "Type Document"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__message_unread
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__message_unread
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__message_unread
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__message_unread
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__message_unread
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__message_unread
+msgid "Unread Messages"
+msgstr "Tin chưa đọc"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__message_unread_counter
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__message_unread_counter
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__message_unread_counter
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__message_unread_counter
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__message_unread_counter
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr "Bộ đếm Thông điệp chưa đọc"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.wizard_descrip_chk_back_home
+#: model_terms:ir.ui.view,arch_db:do_an_tn.wizard_descrip_doc
+msgid "Update"
+msgstr "Cập nhật"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__user
+msgid "User"
+msgstr "Người dùng"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_search_checkout_bh
+msgid "User Name"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_duration__user_type
+msgid "User Type"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_card
+msgid "User:"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model,name:do_an_tn.model_res_users
+msgid "Users"
+msgstr "Người dùng"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher__website
+msgid "Website"
+msgstr "Trang web"
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_library_publisher__website2
+msgid "Website 2"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,field_description:do_an_tn.field_document_project__website_message_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_book__website_message_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_card__website_message_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_at_lib__website_message_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_library_checkout_back_home__website_message_ids
+#: model:ir.model.fields,field_description:do_an_tn.field_magazine_newspaper__website_message_ids
+msgid "Website Messages"
+msgstr "Thông điệp Website"
+
+#. module: do_an_tn
+#: model:ir.model.fields,help:do_an_tn.field_document_project__website_message_ids
+#: model:ir.model.fields,help:do_an_tn.field_library_book__website_message_ids
+#: model:ir.model.fields,help:do_an_tn.field_library_card__website_message_ids
+#: model:ir.model.fields,help:do_an_tn.field_library_checkout_at_lib__website_message_ids
+#: model:ir.model.fields,help:do_an_tn.field_library_checkout_back_home__website_message_ids
+#: model:ir.model.fields,help:do_an_tn.field_magazine_newspaper__website_message_ids
+msgid "Website communication history"
+msgstr "Lịch sử thông tin liên lạc website"
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_publisher
+msgid "Website..."
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_at_lib.py:71
+#: code:addons/do_an_tn/models/library_checkout_at_lib.py:171
+#, python-format
+msgid "You are borrowing a document, please return it to continue!"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_book.py:115
+#, python-format
+msgid "You can not delete book!"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_card.py:211
+#, python-format
+msgid "You cannot assign library card to same student more than once!"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_card.py:221
+#, python-format
+msgid "You cannot assign library card to same teacher more than once!"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_book_project.py:53
+#, python-format
+msgid "You cannot borrow Book or Project to same card more than once!"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_at_lib.py:142
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:126
+#, python-format
+msgid "You cannot borrow book to same card more than once!"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/magazine_newspaper.py:97
+#, python-format
+msgid "You cannot delete !"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_card.py:227
+#, python-format
+msgid "You cannot delete a confirmed or expire library card!"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/document_project.py:107
+#: code:addons/do_an_tn/models/magazine_newspaper.py:157
+#: code:addons/do_an_tn/models/meta_book.py:46
+#, python-format
+msgid "You cannot delete record %s!"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/document_project.py:40
+#, python-format
+msgid "You cannot delete!"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:104
+#, python-format
+msgid "You have borrowed a sufficient number of documents allowed.\n"
+"Cannot borrow document for this card!"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_at_lib.py:151
+#, python-format
+msgid "You have borrowed more than the specified number of books for each card"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_author.py:95
+#, python-format
+msgid "can not delete author!"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_publisher
+msgid "e.g facebook.com..."
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_teacher
+msgid "e.g. 0988327192"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_teacher
+msgid "e.g. @gmail.com"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+msgid "e.g. abc@gmail.com"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_teacher
+msgid "e.g. adress"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_student
+msgid "http://facebook.com"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_student
+msgid "image"
+msgstr ""
+
+#. module: do_an_tn
+#: model:ir.model.fields,help:do_an_tn.field_library_rack__name
+msgid "it will be show the position of book"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_at_lib.py:293
+#: code:addons/do_an_tn/models/library_checkout_at_lib.py:297
+#: code:addons/do_an_tn/models/library_checkout_at_lib.py:301
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:389
+#: code:addons/do_an_tn/models/library_checkout_back_home.py:393
+#, python-format
+msgid "lost document: %s"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_kanban_project
+msgid "major"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_author
+msgid "type_action"
+msgstr ""
+
+#. module: do_an_tn
+#: model_terms:ir.ui.view,arch_db:do_an_tn.view_form_author
+msgid "type_object"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_book_project.py:109
+#, python-format
+msgid "you need to return book : %s"
+msgstr ""
+
+#. module: do_an_tn
+#: code:addons/do_an_tn/models/library_checkout_book_project.py:112
+#, python-format
+msgid "you need to return project : %s"
+msgstr ""
+

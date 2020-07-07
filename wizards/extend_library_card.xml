@@ -2,15 +2,15 @@
     <data>
         <act_window id="action_wizard_extend_library_card"
                     name="Extend Library Card"
-                    res_model="extend.library.card"
+                    res_model="extend.lib.card"
                     view_type="form"
                     view_mode="form"
                     target="new" multi="False"
         />
 
         <record  id="wizard_extend_library_card" model="ir.ui.view">
-            <field name="name">wizard.extend.library.card</field>
-            <field name="model">extend.library.card</field>
+            <field name="name">wizard.extend.lib.card</field>
+            <field name="model">extend.lib.card</field>
             <field name="arch" type="xml">
                 <form>
                     <group>

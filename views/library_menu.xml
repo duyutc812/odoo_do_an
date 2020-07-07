@@ -19,7 +19,7 @@
     <record id="action_library_author" model="ir.actions.act_window">
         <field name="name">Authors</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.author</field>
+        <field name="res_model">lib.author</field>
         <field name="view_mode">kanban,tree,form</field>
         <!--<field name="context">{"search_default_country_id":0}</field>-->
     </record>
@@ -33,7 +33,7 @@
     <record id="action_library_publisher" model="ir.actions.act_window">
         <field name="name">Publishers</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.publisher</field>
+        <field name="res_model">lib.publisher</field>
         <field name="view_mode">kanban,tree,form</field>
     </record>
     <menuitem id="menu_library_publisher" name="Publisher" parent="menu_library_library"
@@ -43,7 +43,7 @@
     <record id="action_student_major" model="ir.actions.act_window">
         <field name="name">Majors</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">student.major</field>
+        <field name="res_model">lib.student.major</field>
         <field name="view_mode">kanban,form</field>
     </record>
 
@@ -54,7 +54,7 @@
     <record id="action_teacher_role" model="ir.actions.act_window">
         <field name="name">Role Teacher</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">teacher.role</field>
+        <field name="res_model">lib.teacher.role</field>
         <field name="view_mode">tree,form</field>
     </record>
 
@@ -64,21 +64,21 @@
     <!--Category of Others Menuitem-->
     <menuitem id="menu_category" name="Categories" parent="menu_library_others" sequence="20"/>
     <!--Book Categories-->
-    <record id="action_library_category" model="ir.actions.act_window">
+    <record id="action_categories_book" model="ir.actions.act_window">
         <field name="name">Categories</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.category</field>
+        <field name="res_model">lib.category.book</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_library_category" name="Categories Book" parent="menu_category" action="action_library_category"
+    <menuitem id="menu_library_category" name="Categories Book" parent="menu_category" action="action_categories_book"
               sequence="20"/>
 
     <!--Magazine Categories-->
     <record id="action_categories_magazine" model="ir.actions.act_window">
         <field name="name">Categories Magazine</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">categories.magazine</field>
+        <field name="res_model">lib.category.magazine</field>
         <field name="view_mode">tree,form</field>
     </record>
 
@@ -90,7 +90,7 @@
     <record id="action_categories_newspaper" model="ir.actions.act_window">
         <field name="name">Categories Newspaper</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">categories.newspaper</field>
+        <field name="res_model">lib.category.newspaper</field>
         <field name="view_mode">tree,form</field>
     </record>
 
@@ -107,7 +107,7 @@
     <record id="action_card_stage" model="ir.actions.act_window">
         <field name="name">Card Stage</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.card.stage</field>
+        <field name="res_model">lib.card.stage</field>
         <field name="view_mode">tree,form</field>
     </record>
 
@@ -120,7 +120,7 @@
     <record id="action_checkout_stage" model="ir.actions.act_window">
         <field name="name">Checkout Stage</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.checkout.stage</field>
+        <field name="res_model">lib.checkout.stage</field>
         <field name="view_mode">tree,form</field>
     </record>
 
@@ -137,7 +137,7 @@
     <record id="action_library_student" model="ir.actions.act_window">
         <field name="name">Students</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.student</field>
+        <field name="res_model">lib.student</field>
         <field name="context">{"search_default_major_name":1}</field>
         <field name="view_mode">kanban,tree,form</field>
     </record>
@@ -151,7 +151,7 @@
     <record id="action_library_teacher" model="ir.actions.act_window">
         <field name="name">Teachers</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.teacher</field>
+        <field name="res_model">lib.teacher</field>
         <field name="view_mode">kanban,tree,form</field>
     </record>
 
@@ -159,7 +159,7 @@
               parent="menu_library_member" action="action_library_teacher"
               sequence="10"/>
 
-    <record id="action_library_employee" model="ir.actions.act_window">
+    <!--<record id="action_library_employee" model="ir.actions.act_window">
         <field name="name">Employees</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">res.users</field>
@@ -168,9 +168,8 @@
 
     <menuitem id="menu_library_employee" name="Employee"
               parent="menu_library_member" action="action_library_employee"
-              sequence="20"
-              groups="do_an_tn.library_group_manager"/>
-
+              sequence="20"/>
+-->
     <!--Document Menuitem-->
     <menuitem id="menu_library_document" name="Documents" parent="menu_library"
               sequence="30"/>
@@ -220,7 +219,7 @@
     <record id="action_library_rack" model="ir.actions.act_window">
         <field name="name">Library Rack</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.rack</field>
+        <field name="res_model">lib.rack</field>
         <field name="view_mode">tree,form</field>
     </record>
 
@@ -232,7 +231,7 @@
     <record id="action_library_translator" model="ir.actions.act_window">
         <field name="name">Translator</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.translator</field>
+        <field name="res_model">lib.translator</field>
         <field name="view_mode">tree,form</field>
     </record>
 
@@ -244,8 +243,8 @@
     <record id="action_library_book" model="ir.actions.act_window">
         <field name="name">Books</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.book</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="res_model">lib.book</field>
+        <field name="view_mode">kanban,pivot,tree,form</field>
     </record>
 
     <menuitem id="menu_library_book" name="Book"
@@ -256,8 +255,8 @@
     <record id="action_document_project" model="ir.actions.act_window">
         <field name="name">Project</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">document.project</field>
-        <field name="view_mode">kanban,form</field>
+        <field name="res_model">lib.document.project</field>
+        <field name="view_mode">kanban,pivot,form</field>
     </record>
 
     <menuitem id="menu_document_project" name="Project"
@@ -268,8 +267,8 @@
     <record id="action_magazine_newspaper" model="ir.actions.act_window">
         <field name="name">Magazine and Newspaper</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">magazine.newspaper</field>
-        <field name="view_mode">kanban,form</field>
+        <field name="res_model">lib.magazine.newspaper</field>
+        <field name="view_mode">kanban,pivot,form</field>
     </record>
 
     <menuitem id="menu_magazine_newspaper" name="Magazine/Newspaper"
@@ -280,7 +279,7 @@
     <record id="action_library_card" model="ir.actions.act_window">
         <field name="name">Card Details</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.card</field>
+        <field name="res_model">lib.card</field>
         <field name="limit">80</field>
         <field name="context">{"search_default_state_running":1}</field>
         <field name="view_mode">kanban,calendar,tree,form</field>
@@ -299,7 +298,7 @@
     <record id="action_library_duration" model="ir.actions.act_window">
         <field name="name">Library Duration</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.duration</field>
+        <field name="res_model">lib.duration</field>
         <field name="view_mode">tree,form</field>
     </record>
 
@@ -336,7 +335,7 @@
     <record id="action_library_checkout_at_lib" model="ir.actions.act_window">
         <field name="name">Checkout At Library</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.checkout.at.lib</field>
+        <field name="res_model">lib.checkout.at.lib</field>
         <field name="context">{'search_default_draft_running_state':1}</field>
         <field name="view_mode">kanban,calendar,graph,pivot,tree,form</field>
     </record>
@@ -349,7 +348,7 @@
     <record id="action_checkout_back_home" model="ir.actions.act_window">
         <field name="name">Checkout Back Home</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.checkout.back.home</field>
+        <field name="res_model">lib.checkout.back.home</field>
         <field name="context">{'search_default_running_state':1}</field>
         <field name="view_mode">kanban,graph,pivot,tree,form</field>
     </record>
@@ -368,18 +367,18 @@
 
     <menuitem id="menu_library_dashboard" name="Dashboard"
               parent="menu_library" action="action_library_dashboard"
-              sequence="1"/>
+              sequence="1"
+              groups="do_an_tn.library_group_librarian"/>
 
-    <record id="action_library_statistics" model="ir.actions.act_window">
-        <field name="name">Library Statistics</field>
+    <record id="action_library_department" model="ir.actions.act_window">
+        <field name="name">Library Department</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">library.statistics</field>
-        <field name="view_mode">tree,form</field>
+        <field name="res_model">lib.department</field>
+        <field name="view_mode">lib,tree,form</field>
     </record>
 
-    <menuitem id="menu_library_statistics" name="Statistics"
-              parent="menu_library" action="action_library_statistics"
-              sequence="100"/>
-
+    <menuitem id="menu_library_department" name="Department"
+              parent="menu_library" action="action_library_department"
+              sequence="2"/>
 
 </odoo>

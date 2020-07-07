@@ -14,24 +14,24 @@ class ModifyEmailCard(models.TransientModel):
 
     @api.multi
     def button_modify_email_on_card(self):
-        card = self.env['library.card'].sudo().search([('id', '=', self.env.context.get('active_id'))])
+        card = self.env['lib.card'].sudo().search([('id', '=', self.env.context.get('active_id'))])
         card.email = self.email
         return True
 
 
 class ExtendLibraryCard(models.TransientModel):
-    _name = 'extend.library.card'
+    _name = 'extend.lib.card'
     _description = 'Extend Library Card'
 
-    card_id = fields.Many2one('library.card', string="Card ID")
-    duration_id = fields.Many2one('library.duration', string='Duration')
+    card_id = fields.Many2one('lib.card', string="Card ID")
+    duration_id = fields.Many2one('lib.duration', string='Duration')
     currency_id = fields.Many2one('res.currency', 'Currency', related='duration_id.currency_id', store=True)
     price = fields.Monetary('Price', 'currency_id', related='duration_id.price')
 
     @api.model
     def default_get(self, field_names):
         defaults = super().default_get(field_names)
-        card = self.env['library.card'].sudo().search([('id', '=', self.env.context.get('active_id'))])
+        card = self.env['lib.card'].sudo().search([('id', '=', self.env.context.get('active_id'))])
         defaults['card_id'] = card.id
         defaults['duration_id'] = card.duration_id.id
         return defaults
@@ -48,7 +48,7 @@ class ExtendLibraryCheckoutBackHome(models.TransientModel):
     _name = 'extend.checkout.bh'
     _description = 'Extend Checkout Back Home'
 
-    checkout_id = fields.Many2one('library.checkout.back.home', string="Checkout ID", readonly=True)
+    checkout_id = fields.Many2one('lib.checkout.back.home', string="Checkout ID", readonly=True)
     extend_date = fields.Date(string='Extend date to :')
 
     @api.model
@@ -57,7 +57,7 @@ class ExtendLibraryCheckoutBackHome(models.TransientModel):
         user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz or 'UTC')
         date_today = pytz.utc.localize(current_date).astimezone(user_tz)
         defaults = super().default_get(field_names)
-        chk = self.env['library.checkout.back.home'].sudo().search([('id', '=', self.env.context.get('active_id'))])
+        chk = self.env['lib.checkout.back.home'].sudo().search([('id', '=', self.env.context.get('active_id'))])
         defaults['checkout_id'] = chk.id
         if chk.return_date < date_today.date():
             raise ValidationError(_('Cannot extend checkout!'))

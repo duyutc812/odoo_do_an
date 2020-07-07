@@ -6,7 +6,7 @@ class CreateMetaProject(models.TransientModel):
     _name = 'create.meta.project'
     _description = 'Create Meta Project'
 
-    project_id = fields.Many2one('document.project', string='Project')
+    project_id = fields.Many2one('lib.document.project', string='Project')
     name_seq = fields.Char(string="Meta Project ID", default=lambda self: _('New'), readonly=True)
     description = fields.Text('Description', default='Tài liệu mới')
     state = fields.Selection([
@@ -18,13 +18,13 @@ class CreateMetaProject(models.TransientModel):
     @api.model
     def default_get(self, field_names):
         defaults = super().default_get(field_names)
-        pro = self.env['document.project'].sudo().search([('id', '=', self.env.context.get('active_id'))])
+        pro = self.env['lib.document.project'].sudo().search([('id', '=', self.env.context.get('active_id'))])
         defaults['project_id'] = pro.id
         return defaults
 
     @api.multi
     def button_create(self):
-        meta_project = self.env['meta.projects']
+        meta_project = self.env['lib.meta.projects']
         if not self.quantity:
             raise ValidationError(_('The Quantity must be greater than 0!'))
         for k in range(1, self.quantity+1):
