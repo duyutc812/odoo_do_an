@@ -374,7 +374,7 @@
         <field name="name">Library Department</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.department</field>
-        <field name="view_mode">lib,tree,form</field>
+        <field name="view_mode">kanban,tree,form</field>
     </record>
 
     <menuitem id="menu_library_department" name="Department"

@@ -8,7 +8,7 @@ class Project(models.Model):
 
     name = fields.Char('Department', related='group_id.name', store=True)
     category_id = fields.Many2one('ir.module.category', string='Category', readonly=True,
-                                  default=lambda s: s.env.ref('do_an_tn.module_lib_category').id)
+                                  default=lambda s: s.env.ref('do_an_tn.module_library_category').id)
     group_id = fields.Many2one('res.groups', string="Group")
     count_employee = fields.Integer(compute='_compute_count_employee')
 

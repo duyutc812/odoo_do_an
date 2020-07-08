@@ -26,7 +26,7 @@
                             <field name="name"/>
                             <field name="duration"/>
                             <field name="currency_id"/>
-                            <field name="price"/>
+                            <field name="price" widget="monetary"/>
                         </group>
                         <group>
                             <field name="member_type" required="1"/>
