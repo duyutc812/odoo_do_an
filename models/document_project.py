@@ -17,8 +17,8 @@ class Project(models.Model):
     rack = fields.Many2one('lib.rack', 'Rack', track_visibility='always')
     project_term = fields.Integer('Project Term (Days)', default=15)
     currency_id = fields.Many2one('res.currency', 'Currency',
-                                  default=lambda s: s.env['res.currency'].sudo().search([('name', '=', 'VND')],
-                                                                                        limit=1))
+                                  default=lambda s: s.env['res.currency'].sudo().search([('name', '=', 'VND')], limit=1)
+                                  )
     price = fields.Monetary('Price', 'currency_id', track_visibility='always')
     quantity = fields.Integer(string='Quantity', compute='_compute_quantity_remaining', store=True)
     remaining = fields.Integer(string='Remaining', compute='_compute_quantity_remaining', store=True)

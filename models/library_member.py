@@ -17,8 +17,10 @@ def get_default_img():
 class Employee(models.Model):
     _inherit = 'res.users'
 
+    born_date = fields.Date('Born date')
     address = fields.Text('Address')
     facebook = fields.Char('Facebook')
+    email = fields.Char('Email')
 
 
 class Student(models.Model):
@@ -65,6 +67,18 @@ class Student(models.Model):
         for student in self:
             res.append((student.id, '%s - %s - %s%s' % (student.name, student.student_id, 'K', student.course)))
         return res
+
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100):
+        if args is None:
+            args = []
+        domain = args + ['|', '|', '|', '|', '|', ('name', operator, name),
+                         ('email', operator, name),
+                         ('student_id', operator, name),
+                         ('identity_card', operator, name),
+                         ('phone', operator, name),
+                         ('major_name', operator, name)]
+        return super(Student, self).search(domain, limit=limit).name_get()
 
     # @api.depends('born_date')
     # def _compute_age(self):
@@ -124,6 +138,16 @@ class Teacher(models.Model):
     #     self.age = curr_date.year - born_date.year -\
     #               ((curr_date.month, curr_date.day) < (born_date.month, born_date.day))\
     #         if born_date else ''
+
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100):
+        if args is None:
+            args = []
+        domain = args + ['|', '|', '|', ('name', operator, name),
+                         ('email', operator, name),
+                         ('role', operator, name),
+                         ('phone', operator, name)]
+        return super(Teacher, self).search(domain, limit=limit).name_get()
 
     @api.onchange('name')
     def _onchange_name_upper(self):

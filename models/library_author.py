@@ -28,7 +28,6 @@ class Author(models.Model):
     biography = fields.Text('Biography')
     country_id = fields.Many2one('res.country', 'Nationality')
     is_active = fields.Boolean('Active', default=True)
-    color = fields.Integer('Color Index')
     count = fields.Integer(string="Count", compute='_get_book_count')
     book_ids = fields.Many2many('lib.book', 'lib_author_lib_book_rel',
                                 'lib_author_id', 'lib_book_id', string='Books')

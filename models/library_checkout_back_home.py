@@ -42,7 +42,7 @@ class CheckoutBackHome(models.Model):
     project_id = fields.Many2one('lib.document.project', 'Name Project')
     meta_project_id = fields.Many2one('lib.meta.projects', string='Meta Project')
     status_document = fields.Text('Description', compute='_compute_status_document_doc_price', store=True)
-    category_doc = fields.Char(string='Category', compute='_compute_category_doc', store=True)
+    category_doc = fields.Many2one(string='Category', related='book_id.category', store=True)
     doc_price = fields.Monetary("Price Doc", 'currency_id', compute='_compute_status_document_doc_price', store=True)
     currency_id = fields.Many2one('res.currency', 'Currency',
                                   default=lambda s: s.env['res.currency'].sudo().search([('name', '=', 'VND')], limit=1))
@@ -60,7 +60,6 @@ class CheckoutBackHome(models.Model):
     borrow_date = fields.Datetime(string="Borrow date", readonly=True)
     return_date = fields.Date(string="Return Appointment Date")
     actual_return_date = fields.Datetime(string="Actual Return Date")
-    color = fields.Integer('Color Index')
     priority = fields.Selection(
         [('0', 'Low'),
          ('1', 'Normal'),
@@ -75,8 +74,8 @@ class CheckoutBackHome(models.Model):
     email = fields.Char('Email',related='card_id.email', store=True)
     count_doc = fields.Integer(string="Count Document", compute='_compute_count_chk_bh')
     count_syl = fields.Integer(string="Count Syllabus", compute='_compute_count_chk_bh')
-    count_penalty = fields.Integer(string="Count Syllabus", compute='_compute_count_chk_bh')
-    count_waiting = fields.Integer(string="Count Syllabus", compute='_compute_count_chk_bh')
+    count_penalty = fields.Integer(string="Count Penalty", compute='_compute_count_chk_bh')
+    count_waiting = fields.Integer(string="Count Waiting", compute='_compute_count_chk_bh')
 
     @api.multi
     def name_get(self):
@@ -87,15 +86,15 @@ class CheckoutBackHome(models.Model):
 
     @api.onchange('card_id')
     def onchange_card_id(self):
+        syll_cate = self.env.ref('do_an_tn.data_category_6').id
         chk_running_syl = self.sudo().search([('card_id', '=', self.card_id.id),
-                                       ('state', '=', 'running'),
-                                       ('id', 'not in', self.ids),
-                                       ('type_document', '=', 'book'),
-                                       ('category_doc', '=', 'Giáo Trình')])
+                                              ('state', '=', 'running'),
+                                              ('id', 'not in', self.ids),
+                                              ('category_doc', '=', syll_cate)])
         chk_running_bk = self.sudo().search([('card_id', '=', self.card_id.id),
-                                      ('state', '=', 'running'),
-                                      ('id', 'not in', self.ids),
-                                      ('category_doc', '!=', 'Giáo Trình')])
+                                             ('state', '=', 'running'),
+                                             ('id', 'not in', self.ids),
+                                             ('category_doc', '!=', syll_cate)])
         if self.card_id :
             if len(chk_running_syl) >= self.card_id.syllabus_limit and len(chk_running_bk) >= self.card_id.book_limit:
                 self.card_id = ''
@@ -124,9 +123,9 @@ class CheckoutBackHome(models.Model):
     @api.onchange('meta_book_id', 'meta_project_id')
     def _onchange_meta_book_id(self):
         if self.book_id:
-            return {'domain': {'meta_book_id': [('book_id', '=', self.book_id.id)]}}
+            return {'domain': {'meta_book_id': [('book_id', '=', self.book_id.id), ('state', '=', 'available')]}}
         elif self.project_id:
-            return {'domain': {'meta_project_id': [('project_id', '=', self.project_id.id)]}}
+            return {'domain': {'meta_project_id': [('project_id', '=', self.project_id.id), ('state', '=', 'available')]}}
 
     @api.constrains('card_id', 'book_id', 'project_id')
     def _constrains_card_id_book_project(self):
@@ -209,13 +208,13 @@ class CheckoutBackHome(models.Model):
                 chk.doc_price = chk.project_id.price
                 chk.document_term = chk.project_id.project_term
 
-    @api.depends('book_id', 'project_id')
-    def _compute_category_doc(self):
-        for chk in self:
-            if chk.book_id:
-                chk.category_doc = chk.book_id.category.name
-            elif chk.project_id:
-                chk.category_doc = chk.project_id.major_id.name
+    # @api.depends('book_id', 'project_id')
+    # def _compute_category_doc(self):
+    #     for chk in self:
+    #         if chk.book_id:
+    #             chk.category_doc = chk.book_id.category.name
+    #         elif chk.project_id:
+    #             chk.category_doc = chk.project_id.major_id.name
 
     # def unlink(self):
     #     for chk in self:
@@ -259,25 +258,26 @@ class CheckoutBackHome(models.Model):
         self.kanban_state = 'normal'
 
     def running_state(self):
+        syll_cate = self.env.ref('do_an_tn.data_category_6').id
         state_running = self.env['lib.checkout.stage'].search([('state', '=', 'running')])
         for chk in self:
             chk_running_syl = self.sudo().search([('card_id', '=', chk.card_id.id),
                                            ('state', '=', 'running'),
                                            ('id', 'not in', chk.ids),
                                            ('type_document', '=', 'book'),
-                                           ('category_doc', '=', 'Giáo Trình')])
+                                           ('category_doc', '=', syll_cate)])
             chk_running_bk = self.sudo().search([('card_id', '=', chk.card_id.id),
                                           ('state', '=', 'running'),
                                           ('id', 'not in', chk.ids),
-                                          ('category_doc', '!=', 'Giáo Trình')])
+                                          ('category_doc', '!=', syll_cate)])
             if len(chk_running_bk) >= chk.card_id.book_limit and len(chk_running_syl) >= chk.card_id.syllabus_limit:
                 raise ValidationError(_('Can not borrow more documents'))
             elif len(chk_running_bk) >= chk.card_id.book_limit:
-                if self.category_doc != 'Giáo Trình':
-                    raise ValidationError(_('Khong the muon them sach'))
+                if self.category_doc.id != syll_cate:
+                    raise ValidationError(_('Unable to borrow more books!'))
             elif len(chk_running_syl) >= chk.card_id.syllabus_limit:
-                if self.category_doc == 'Giáo Trình':
-                    raise ValidationError(_('Khong the muon them giao trinh'))
+                if self.category_doc.id == syll_cate:
+                    raise ValidationError(_('Can not borrow more textbooks!'))
             chk.name_seq = self.env['ir.sequence'].next_by_code('lib.checkout.sequence') or _('New')
             chk.stage_id = state_running
             if chk.book_id:
@@ -465,25 +465,27 @@ class CheckoutBackHome(models.Model):
             chk.penalty_total = chk.penalty_chk_price + chk.penalty_doc_price
 
     def _compute_count_chk_bh(self):
+        syll_cate = self.env.ref('do_an_tn.data_category_6').id
         for chk in self:
             chk_hb = self.sudo().search([('card_id', '=', chk.card_id.id),
                                          ('state', '=', 'running')])
-            chk.count_syl = len(chk_hb.filtered(lambda a: a.type_document == 'book' and a.category_doc == 'Giáo Trình'))
+            chk.count_syl = len(chk_hb.filtered(lambda a: a.category_doc.id == syll_cate))
             chk.count_doc = len(chk_hb) - chk.count_syl
             chk.count_penalty = len(self.sudo().search([('card_id', '=', chk.card_id.id),
                                                         ('state', 'in', ['fined', 'lost'])]))
 
             chk.count_waiting = self.search_count([('state', '=', 'draft'),
-                       ('book_id', '=', self.book_id.id),
-                       ('project_id', '=', self.project_id.id)])
+                                                   ('book_id', '=', self.book_id.id),
+                                                   ('project_id', '=', self.project_id.id)])
 
     @api.multi
     def open_chk_document(self):
+        syll_cate = self.env.ref('do_an_tn.data_category_6').id
         return {
             'name': _('Checkout Document'),
             'domain': [('card_id', '=', self.card_id.id),
                        ('state', '=', 'running'),
-                       ('category_doc', '!=', 'Giáo Trình')],
+                       ('category_doc', '!=', syll_cate)],
             'view_type': 'form',
             'res_model': 'lib.checkout.back.home',
             'view_id': False,
@@ -493,12 +495,13 @@ class CheckoutBackHome(models.Model):
 
     @api.multi
     def open_chk_syllabus(self):
+        syll_cate = self.env.ref('do_an_tn.data_category_6').id
         return {
             'name': _('Checkout Syllabus'),
             'domain': [('card_id', '=', self.card_id.id),
                        ('state', '=', 'running'),
                        ('type_document', '=', 'book'),
-                       ('category_doc', '=', 'Giáo Trình')],
+                       ('category_doc', '=', syll_cate)],
             'view_type': 'form',
             'res_model': 'lib.checkout.back.home',
             'view_id': False,
@@ -544,8 +547,8 @@ class CheckoutBackHome(models.Model):
         template_id = self.env.ref('do_an_tn.scheduled_send_mail_chk_overdue').id
         template = self.env['mail.template'].browse(template_id)
         for chk in CheckoutBH:
-            template.send_mail(chk.id, force_send=True, raise_exception=True)
-            chk.message_post(_('Send Email for Checkout'))
+            # template.send_mail(chk.id, force_send=True, raise_exception=True)
+            # chk.message_post(_('Send Email for Checkout'))
             chk.kanban_state = 'overdue'
 
     @api.multi

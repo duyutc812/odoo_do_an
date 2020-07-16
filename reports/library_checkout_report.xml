@@ -121,12 +121,14 @@
                                              </t>
                                         </td>
                                         <td class="text-center">
-                                            <t t-if="line['actual_return_date']">
+                                            <!--<t t-if="line['actual_return_date']">
                                                 <p style="text-decoration: line-through;" t-esc="line['doc_price']" t-options="{'widget': 'monetary', 'display_currency': line['currency_id']}"/>
-                                            </t>
-                                            <t t-elif="not line['actual_return_date']">
+                                            </t>-->
+                                            <t t-if="line['currency_id']">
                                                 <p t-esc="line['doc_price']" t-options="{'widget': 'monetary', 'display_currency': line['currency_id']}"/>
-
+                                            </t>
+                                            <t t-elif="not line['currency_id']">
+                                                <p t-esc="line['doc_price']"/>
                                             </t>
                                         </td>
                                         <t t-if="not line['actual_return_date']">

@@ -11,8 +11,8 @@ class CheckoutMassMessage(models.TransientModel):
     checkout_id = fields.Many2one(
         'lib.checkout.back.home',
         string='Checkout')
-    message_subject = fields.Char(default='Library School notice!')
-    message_body = fields.Html()
+    message_subject = fields.Char(default=_('Library School notice!'))
+    message_body = fields.Text()
     email = fields.Char()
 
     @api.model

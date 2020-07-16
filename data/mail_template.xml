@@ -95,8 +95,12 @@
             <field name="email_to">${object.email}</field>
             <field name="subject">${object.message_subject}</field>
             <field name="body_html" type="html">
-                <div>
-                    ${object.message_body}
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        This is a email from Library School.
+                        <h5>Checkout ID: ${object.checkout_id.name_seq</h5>
+                        <p>${object.message_body}</p>
+                    </p>
                 </div>
             </field>
         </record>

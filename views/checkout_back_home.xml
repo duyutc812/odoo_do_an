@@ -178,7 +178,7 @@
                         </group>
                         <group>
                             <field name="document_term" readonly="1" string="Term"/>
-                            <field name="category_doc"/> <!--       attrs="{'invisible': [('type_document', '!=', 'book')]}"-->
+                            <field name="category_doc"  attrs="{'invisible': [('type_document', '=', 'project')]}"/>
                             <field name="doc_price"/> <!-- attrs="{'invisible': [('state', 'not in', ['fined', 'lost'])]}"-->
                             <field name="status_document" />
                         </group>
@@ -362,18 +362,18 @@
         </field>
     </record>
 
-    <record id="view_graph_chk_back_home" model="ir.ui.view">
+    <!--<record id="view_graph_chk_back_home" model="ir.ui.view">
         <field name="model">lib.checkout.back.home</field>
         <field name="arch" type="xml">
             <graph type="bar">
-                <!-- Fields used for the display text -->
+                &lt;!&ndash; Fields used for the display text &ndash;&gt;
                 <field name="stage_id"/>
                 <field name="currency_id" invisible="1"/>
                 <field name="penalty_total" type="measure" widget="monetary"
                        options="{'currency_field': 'currency_id'}"/>
             </graph>
         </field>
-    </record>
+    </record>-->
 
     <record id="view_pivot_chk_at_lib" model="ir.ui.view">
         <field name="model">lib.checkout.back.home</field>

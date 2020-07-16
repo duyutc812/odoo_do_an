@@ -109,12 +109,13 @@
                     <group col="2" colspan="4">
                         <group string="Card Details">
                            <!-- <separator string="Card Details"/>-->
-                            <field name="card_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="card_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"
+                                   options="{'no_create': True, 'no_open': True}"/>
                             <field name="state_card" readonly="1"/>
                             <field name="gt_name" readonly="1"/>
                             <field name="user_id" required="1"/>
                         </group>
-                        <group string="Others" >
+                        <group string="Others">
                             <field name="type_document" attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="book_id"
                                    attrs="{'invisible': [('type_document', '!=', 'book')],
@@ -297,11 +298,11 @@
         </field>
     </record>
 
-    <record id="view_graph_chk_at_lib" model="ir.ui.view">
+    <!--<record id="view_graph_chk_at_lib" model="ir.ui.view">
         <field name="model">lib.checkout.at.lib</field>
         <field name="arch" type="xml">
             <graph type="bar">
-                <!-- Fields used for the display text -->
+                &lt;!&ndash; Fields used for the display text &ndash;&gt;
                 <field name="stage_id"/>
                 <field name="currency_id" invisible="1"/>
                 <field name="penalty_price" type="measure" widget="monetary"
@@ -309,7 +310,7 @@
                 <field name="type_document" type="measure"/>
             </graph>
         </field>
-    </record>
+    </record>-->
 
     <record id="view_pivot_chk_at_lib" model="ir.ui.view">
         <field name="model">lib.checkout.at.lib</field>

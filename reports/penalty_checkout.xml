@@ -12,75 +12,90 @@
             <t t-call="web.internal_layout">
                 <t t-foreach="docs" t-as="o">
                     <div class="page">
-                        <div class="oe_structure"/>
-                        <div class="row">
-                            <center>
-                                <div class="col-xs-8" style="margin:auto">
-                                    <table style="border: 3px solid black;width:400px;height:270px" >
-                                        <tr>
-                                            <th colspan="2" style="text-align:center">
-                                                <h4><b>Penalty Checkout At Library</b></h4>
-                                            </th>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-size:12px;border: 3px solid black !important;" class="table table-condensed">
-                                                <table width="100%">
-                                                    <tr>
-                                                        <td>
-                                                            <t t-if="o.card_id.member_type=='student'">
-                                                                <p style="text-align:left"><strong>Card ID: </strong></p>
-                                                                <p style="text-align:left"><strong>Student ID: </strong></p>
-                                                                <p style="text-align:left"><strong>Title Doc</strong></p>
-                                                                <p style="text-align:left"><strong>Meta ID: </strong></p>
-                                                                <p style="text-align:left;"><strong>Description: </strong></p>
-                                                                <p style="text-align:left;"><strong>Penalty Price: </strong></p>
-                                                                <p style="text-align:left;"><strong>Note: </strong></p>
-                                                            </t>
-                                                            <t t-elif="o.card_id.member_type=='teacher'">
-                                                                <p style="text-align:left;"><strong>Name: </strong></p>
-                                                                <p style="text-align:left;"><strong>Role: </strong></p>
-                                                                <p style="text-align:left;"><strong>Title Doc</strong></p>
-                                                                <p style="text-align:left;"><strong>Meta ID: </strong></p>
-                                                                <p style="text-align:left;"><strong>Description: </strong></p>
-                                                                <p style="text-align:left;"><strong>Penalty Price: </strong></p>
-                                                                <p style="text-align:left;"><strong>Note: </strong></p>
-                                                            </t>
-                                                            <p style="text-align:left;"><strong>Librarian: </strong></p>
+                        <div class="container">
+                             <h1 style="text-align:center">Penalty Checkout At Library</h1>
+                            <i><h5 style="text-align:right;padding-right:200px" >Address: Street A, City B,...</h5></i>
+                        <br/>
+                        <div style="text-align:left">
+                            <table>
+                                <tr>
+                                    <th>
+                                    Member:
+                                    </th>
+                                    <td style="padding-left: 20px">
+                                        <span t-field="o.gt_name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Card ID:</th>
+                                    <td style="padding-left: 20px">
+                                        <span t-field="o.card_id.name_seq"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Email:</th>
+                                    <td style="padding-left: 20px">
+                                        <span t-field="o.card_id.email"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Librarian:</th>
+                                    <td style="padding-left: 20px">
+                                        <span t-field="o.user_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Datetime:</th>
+                                    <td style="padding-left: 20px">
+                                        <span t-esc="o['return_date'].strftime('%d-%m-%Y %H:%M:%S')"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br/>
 
-                                                        </td>
-                                                        <td>
-                                                            <t t-if="o.card_id.member_type=='student'">
-                                                                <p style="text-align:left" t-field="o.card_id"/>
-                                                                <p style="text-align:left" t-field="o.card_id.student_id.student_id"/>
-                                                            </t>
-                                                             <t t-if="o.card_id.member_type=='teacher'">
-                                                                <p style="text-align:left" t-field="o.gt_name"/>
-                                                                <p style="text-align:left" t-field="o.card_id.teacher_id.role"/>
-                                                            </t>
-                                                            <t t-if="o.type_document=='book'">
-                                                                <p style="text-align:left" t-field="o.book_id"/>
-                                                                <p style="text-align:left" t-field="o.meta_book_id"/>
-                                                                </t>
-                                                            <t t-elif="o.type_document=='magazine'">
-                                                                <p style="text-align:left" t-field="o.mgz_new_id"/>
-                                                                <p style="text-align:left" t-field="o.meta_mgz_new_id"/>
-                                                            </t>
-                                                            <t t-else="">
-                                                                <p style="text-align:left" t-field="o.project_id"/>
-                                                                <p style="text-align:left" t-field="o.meta_project_id"/>
-                                                            </t>
-                                                            <p style="text-align:left" t-field="o.status_document"/>
-                                                            <p style="text-align:left" t-field="o.penalty_price"/>
-                                                            <p style="text-align:left" t-field="o.note"/>
-                                                            <p style="text-align:left" t-field="o.user_id"/>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </center>
+                            <h4><i><b>Details:</b></i></h4>
+                            <table class="table table-sm o_main_table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">ID</th>
+                                        <th class="text-center">Title Doc</th>
+                                        <!--<th class="text-center">Category Doc</th>-->
+                                        <th class="text-center">Status Doc</th>
+                                        <th class="text-center">Return Date</th>
+                                        <th class="text-center">Penalty Price</th>
+                                        <th class="text-center">Note</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="sale_tbody" style="font-size:13px">
+                                    <tr>
+                                        <td>
+                                            <p style="text-align:center" t-field="o.name_seq"/>
+                                        </td>
+                                        <t t-if="o.type_document=='book'">
+                                            <td><p style="text-align:center" t-field="o.book_id"/></td>
+                                            <td><p style="text-align:center" t-field="o.meta_book_id"/></td>
+                                        </t>
+                                        <t t-elif="o.type_document=='magazine'">
+                                            <td><p style="text-align:center" t-field="o.mgz_new_id"/></td>
+                                            <td><p style="text-align:center" t-field="o.meta_mgz_new_id"/></td>
+                                        </t>
+                                        <t t-else="">
+                                            <td><p style="text-align:center" t-field="o.project_id"/></td>
+                                            <td><p style="text-align:center" t-field="o.meta_project_id"/></td>
+                                        </t>
+                                        <td>
+                                            <p style="text-align:center" t-field="o.status_document"/>
+                                        </td>
+                                        <td>
+                                            <p style="text-align:center" t-field="o.penalty_price"/>
+                                        </td>
+                                        <td>
+                                            <p style="text-align:center" t-field="o.note"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
                         </div>
                     </div>
                 </t>
@@ -215,7 +230,7 @@
                                             </td>
                                             <td>
                                                 <t t-if="line['overdue']">
-                                                    <p t-esc="'overdue: '+ str(line['overdue']) + ' day. ' + line['note']"/>
+                                                    <p t-esc="'overdue: '+ str(line['overdue']) + ' days. ' + line['note']"/>
                                                 </t>
                                                 <t t-else="">
                                                     <p t-esc="line['note']"/>

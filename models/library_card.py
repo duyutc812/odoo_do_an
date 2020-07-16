@@ -68,7 +68,6 @@ class Card(models.Model):
     chk_mg_new = fields.Integer(string="Borrowed Book",
                                 compute='_compute_chk_mg_new',
                                 readonly=True)
-    color = fields.Integer('Color')
     count = fields.Integer(compute='_compute_count')
 
     # kanban_state = fields.Selection(
@@ -173,6 +172,13 @@ class Card(models.Model):
         for lib_card in self:
             res.append((lib_card.id, '%s - %s' % (lib_card.name_seq, lib_card.gt_name)))
         return res
+
+    @api.model
+    def _name_search(self, name, args=None, operator='ilike', limit=100):
+        if args is None:
+            args = []
+        domain = args + ['|', '|', '|', ('email', operator, name), ('name_seq', operator, name), ('student_id.name', operator, name), ('teacher_id.name', operator, name)]
+        return super(Card, self).search(domain, limit=limit).name_get()
 
     @api.depends('duration_id', 'stage_id')
     def _compute_price(self):

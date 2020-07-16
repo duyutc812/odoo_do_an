@@ -329,6 +329,12 @@
             <field name="state">fined</field>
         </record>
 
+        <!--<record id="data_checkout_stage_5" model="lib.checkout.stage">
+            <field name="name">Lost</field>
+            <field name="sequence">50</field>
+            <field name="state">lost</field>
+        </record>-->
+
         <!--data project-->
         <record id="data_project_1" model="lib.document.project">
             <field name="name">Quản Lý Thư Viện Sử Dụng Odoo FrameWork</field>

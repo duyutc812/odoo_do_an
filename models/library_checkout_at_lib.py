@@ -70,11 +70,11 @@ class CheckoutAtLib(models.Model):
     @api.onchange('meta_book_id', 'meta_project_id', 'meta_mgz_new_id')
     def _onchange_meta_book_id(self):
         if self.book_id:
-            return {'domain': {'meta_book_id': [('book_id', '=', self.book_id.id)]}}
+            return {'domain': {'meta_book_id': [('book_id', '=', self.book_id.id), ('state', '=', 'available')]}}
         elif self.mgz_new_id:
-            return {'domain': {'meta_mgz_new_id': [('mgz_new_id', '=', self.mgz_new_id.id)]}}
+            return {'domain': {'meta_mgz_new_id': [('mgz_new_id', '=', self.mgz_new_id.id), ('state', '=', 'available')]}}
         elif self.project_id:
-            return {'domain': {'meta_project_id': [('project_id', '=', self.project_id.id)]}}
+            return {'domain': {'meta_project_id': [('project_id', '=', self.project_id.id), ('state', '=', 'available')]}}
 
     @api.onchange('card_id')
     def onchange_card_id(self):
@@ -195,7 +195,7 @@ class CheckoutAtLib(models.Model):
                 if chk.meta_book_id.state == 'available':
                     chk.meta_book_id.state = 'not_available'
                     chk.book_id._compute_quantity_remaining()
-                    chk.meta_book_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
+                    chk.meta_book_id.checkout = str(chk.name_get()[0][1]) + _(' - At lib')
                 else:
                     raise ValidationError(_('Book: "%s - %s" have borrowed.' %
                                           (self.meta_book_id.name_seq, self.book_id.name)))
@@ -205,7 +205,7 @@ class CheckoutAtLib(models.Model):
                 if chk.meta_mgz_new_id.state == 'available':
                     chk.meta_mgz_new_id.state = 'not_available'
                     chk.mgz_new_id._compute_quantity_remaining()
-                    chk.meta_mgz_new_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
+                    chk.meta_mgz_new_id.checkout = str(chk.name_get()[0][1]) + _(' - At lib')
                 else:
                     raise ValidationError(_('Magazine/Newspaper have borrowed.'))
             elif chk.project_id:
@@ -214,14 +214,14 @@ class CheckoutAtLib(models.Model):
                 if chk.meta_project_id.state == 'available':
                     chk.meta_project_id.state = 'not_available'
                     chk.project_id._compute_quantity_remaining()
-                    chk.meta_project_id.checkout = str(chk.name_get()[0][1]) + ' - At lib'
+                    chk.meta_project_id.checkout = str(chk.name_get()[0][1]) + _(' - At lib')
                 else:
                     raise ValidationError(_('Project: " %s " have borrowed.' % (self.project_id.name)))
             chk.borrow_date = fields.Datetime.now()
             return {
                 'effect': {
                     'fadeout': 'slow',
-                    'message': 'Checkout Cofirmed .... Thank You',
+                    'message': _('Checkout Cofirmed .... Thank You'),
                     'type': 'rainbow_man',
                 }
             }
@@ -414,8 +414,8 @@ class CheckoutAtLib(models.Model):
     def _compute_count_waiting(self):
         for chk in self:
             chk.count_waiting = self.search_count([('state', '=', 'draft'),
-                                             ('book_id', '=', chk.book_id.id),
-                                             ('mgz_new_id', '=', chk.mgz_new_id.id),
-                                             ('project_id', '=', chk.project_id.id)])
+                                                   ('book_id', '=', chk.book_id.id),
+                                                   ('mgz_new_id', '=', chk.mgz_new_id.id),
+                                                   ('project_id', '=', chk.project_id.id)])
 
 

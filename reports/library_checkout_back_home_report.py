@@ -142,7 +142,7 @@ class PenaltyCheckoutBHReport(models.AbstractModel):
                     'return_appointment_date': chk.return_date,
                     'category_doc': chk.category_doc,
                     'currency_id': chk.currency_id,
-                    'doc_price': chk.price_doc,
+                    'doc_price': chk.doc_price,
                     'status_doc': chk.status_document,
                     'actual_return_date': chk.actual_return_date if chk.actual_return_date else '',
                     'overdue': chk.day_overdue,

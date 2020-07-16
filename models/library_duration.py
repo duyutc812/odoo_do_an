@@ -15,7 +15,8 @@ class LibraryDuration(models.Model):
     book_limit = fields.Integer('No book on card', required=True)
     syllabus_limit = fields.Integer('No syllabus on card', required=True)
 
-    currency_id = fields.Many2one('res.currency', 'Currency')
+    currency_id = fields.Many2one('res.currency', 'Currency',
+                                  default=lambda s: s.env['res.currency'].sudo().search([('name', '=', 'VND')], limit=1))
     price = fields.Monetary('Price', 'currency_id')
 
     @api.depends('duration', 'member_type')

@@ -54,7 +54,9 @@
                     <group col="2" colspan="4" string="Card Details">
                         <group>
                            <!-- <separator string="Card Details"/>-->
-                            <field name="card_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="card_id" required="1"
+                                   attrs="{'readonly':[('state','!=','draft')]}"
+                                   options="{'no_create': True, 'no_open': True}"/>
                             <field name="gt_name" readonly="1"/>
                         </group>
                         <group>

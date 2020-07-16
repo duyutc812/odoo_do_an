@@ -92,12 +92,13 @@
                             <field name="member_type" required="1" attrs="{'readonly':[('state','!=','draft')]}" />
                             <field name="book_limit" readonly="1"/>
                             <field name="syllabus_limit" readonly="1" string="No of Syllabus"/>
-                            <field name="student_id" attrs="{'invisible':[('member_type','!=','student')],
-                                                             'readonly':[('state', '!=', 'draft')]}"
-                                   options="{'no_create_edit': True}"/>
+                            <field name="student_id"
+                                   options="{'no_create': True, 'no_open': True}"
+                                   attrs="{'invisible':[('member_type','!=','student')],
+                                           'readonly':[('state', '!=', 'draft')]}"/>
                             <field name="teacher_id" attrs="{'invisible':[('member_type','!=','teacher')],
                                                              'readonly':[('state', '!=', 'draft')]}"
-                                   options="{'no_create_edit': True}"/>
+                                   options="{'no_create': True, 'no_open': True}"/>
                             <field name="email" readonly="1" force_save="1"/>
                         </group>
                         <group string="Others" >
@@ -207,10 +208,12 @@
                                 <strong>
                                     <h6>
                                         <a type="open" class="o_text_overflow">
-                                            <field name="name_seq" /> -
-                                            <field name="gt_name"/>
                                             <t t-if="record.is_penalty.raw_value">
-                                                <span style="color:red; font-size:11px">(Punishment)</span>
+                                                <span style="color:red"><field name="name_seq" /> -
+                                            <field name="gt_name"/></span>
+                                            </t>
+                                            <t t-else="">
+                                                <field name="name_seq" /> - <field name="gt_name"/>
                                             </t>
                                         </a>
                                     </h6>
@@ -285,15 +288,20 @@
         </field>
     </record>
 
-   <!--<record model="ir.ui.view" id="view_graph_card">
-        <field name="name">view.graph.card</field>
+   <!-- pivot view -->
+    <record id="view_pivot_card" model="ir.ui.view">
+        <field name="name">view.pivot.card</field>
         <field name="model">lib.card</field>
         <field name="arch" type="xml">
-            <graph>
-                <field name="price"/>
-                <field name="student_id" type="measure"/>
-            </graph>
+            <pivot>
+                <field name="name_seq" type="row"/>
+                <!--<field name="start_date" interval="day" type="row"/>-->
+
+                <field name="book_limit" type="measure"/>
+                <field name="syllabus_limit" type="measure"/>
+            </pivot>
         </field>
-    </record>-->
+    </record>
+
 
 </odoo>

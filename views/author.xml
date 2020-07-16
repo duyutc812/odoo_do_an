@@ -90,6 +90,7 @@
             <search>
                 <field name="pen_name" string="Pen Name"/>
                 <field name="name" string="Name"/>
+                <field name="born_date" string="Date of Birth"/>
                 <filter string="Male" name="male" domain="[('gender', '=', 'male')]"/>
                 <filter string="Female" name="female" domain="[('gender', '=', 'female')]"/>
                 <group>
@@ -109,12 +110,9 @@
                 <field name="id"/>
                 <field name="author_image"/>
                 <field name="pen_name"/>
-                <field name="color"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div t-attf-class="
-                            oe_kanban_color_#{kanban_getcolor(record.color.raw_value)}
-                            oe_kanban_global_click">
+                        <div t-attf-class="oe_kanban_global_click">
                             <div class="o_dropdown_kanban dropdown">
                           <!-- Top-right drop down menu here... -->
                                 <a class="dropdown-toggle btn"
@@ -127,7 +125,6 @@
                                 <div class="dropdown-menu" role="menu">
                                     <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
                                     <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
-                                    <ul class="oe_kanban_colorpicker" data-field="color"/>
                                 </div>
                             </div>
 
@@ -187,6 +184,19 @@
                     </t>
                 </templates>
             </kanban>
+        </field>
+    </record>
+
+    <!-- pivot view -->
+    <record id="view_pivot_author" model="ir.ui.view">
+        <field name="name">view.pivot.author</field>
+        <field name="model">lib.author</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="pen_name" type="row"/>
+                <field name="name" type="col"/>
+                <!--<field name="born_date" type="measure"/>-->
+            </pivot>
         </field>
     </record>
 

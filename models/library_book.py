@@ -47,14 +47,17 @@ class Book(models.Model):
         ('not_available', 'Not Available')
     ], string='Status', compute='_compute_quantity_remaining', store=True)
     currency_id = fields.Many2one('res.currency', 'Currency',
-                                  default=lambda s: s.env['res.currency'].sudo().search([('name', '=', 'VND')], limit=1))
+                                  default=lambda s: s.env['res.currency'].sudo().search([('name', '=', 'VND')], limit=1)
+                                  )
     price = fields.Monetary('Price', 'currency_id', track_visibility='always')
     is_active = fields.Boolean('Active?', default=True)
-    color = fields.Integer('Color')
     meta_book_ids = fields.One2many(
         'lib.meta.books',
         'book_id',
     )
+
+    def test(self):
+        print(self.message_main_attachment_id)
 
     @api.constrains('price', 'num_page', 'book_term')
     def _constrains_price(self):
@@ -110,7 +113,7 @@ class MetaBook(models.Model):
 
     name_seq = fields.Char(string="Meta Book ID", default=lambda self: _('New'), readonly=True)
     book_id = fields.Many2one('lib.book', string='Book')
-    description = fields.Text('Description', default='Tài liệu mới')
+    description = fields.Text('Description', default=_('Tài liệu mới'))
     sequence = fields.Integer()
     state = fields.Selection([
         ('available', 'Available'),
