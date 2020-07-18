@@ -275,6 +275,7 @@
                                 </div>
                                 <div class="oe_kanban_bottom_right">
                                     <field name="state" widget="label_selection" options="{'classes': {'draft': 'default', 'running': 'success', 'fined': 'danger', 'lost': 'warning'}}"/>
+                                    <img t-att-src="kanban_image('lib.checkout.back.home', 'user_image', record.id.raw_value)" t-att-title="record.user_id.value" t-att-alt="record.user_id.value" width="30" height="30" class="oe_kanban_avatar"/>
                                 </div>
                             </div>
                         </div>

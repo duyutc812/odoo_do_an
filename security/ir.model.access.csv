@@ -1,52 +1,47 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_library_duration,Duration Access,model_lib_duration,do_an_tn.library_group_librarian,1,1,1,1
-access_library_author,Author Access,model_lib_author,do_an_tn.library_member_search,1,0,0,0
-access_library_author_portal_user,Author Portal User Access,model_lib_author,do_an_tn.library_portal_user,1,0,0,0
-access_library_translator,Translator Access,model_lib_translator,do_an_tn.library_member_search,1,0,0,0
-access_library_translator_portal_user,Translator Portal User Access,model_lib_translator,do_an_tn.library_portal_user,1,0,0,0
-access_library_publisher,Publisher Access,model_lib_publisher,do_an_tn.library_member_search,1,0,0,0
-access_library_publisher_portal_user,Publisher Portal User Access,model_lib_publisher,do_an_tn.library_portal_user,1,0,0,0
-access_library_author_for_librarian,Author For Librarian Access,model_lib_author,do_an_tn.library_group_librarian,1,1,1,1
-access_library_translator_for_librarian,Translator For Librarian Access,model_lib_translator,do_an_tn.library_group_librarian,1,1,1,1
-access_library_publisher_for_librarian,Publisher For Librarian Access,model_lib_publisher,do_an_tn.library_group_librarian,1,1,1,1
-access_student_major,Major Student Access,model_lib_student_major,do_an_tn.library_group_librarian,1,1,1,1
-access_teacher_role,Role Teacher Access,model_lib_teacher_role,do_an_tn.library_group_librarian,1,1,1,1
-access_library_student,Student Access,model_lib_student,do_an_tn.library_group_librarian,1,1,1,1
-access_library_teacher,Teacher Access,model_lib_teacher,do_an_tn.library_group_librarian,1,1,1,1
-access_category_book,Category Book Access,model_lib_category_book,do_an_tn.library_member_search,1,0,0,0
-access_categories_magazine,Categories Magazine Access,model_lib_category_magazine,do_an_tn.library_member_search,1,0,0,0
-access_categories_magazine_portal_user,Categories Magazine Portal User Access,model_lib_category_magazine,do_an_tn.library_portal_user,1,0,0,0
-access_categories_newspaper,Categories Newspaper Access,model_lib_category_newspaper,do_an_tn.library_member_search,1,0,0,0
-access_categories_newspaper_portal_user,Categories Newspaper Portal User Access,model_lib_category_newspaper,do_an_tn.library_portal_user,1,0,0,0
-access_category_book_for_librarian,Category For Librarian Access,model_lib_category_book,do_an_tn.library_group_librarian,1,1,1,1
-access_categories_magazine_for_librarian,Categories For Librarian Magazine Access,model_lib_category_magazine,do_an_tn.library_group_librarian,1,1,1,1
-access_categories_newspaper_for_librarian,Categories For Librarian Newspaper Access,model_lib_category_newspaper,do_an_tn.library_group_librarian,1,1,1,1
-access_library_rack,Library Rack Access,model_lib_rack,do_an_tn.library_member_search,1,0,0,0
-access_library_rack_portal_user,Library Rack Portal UserAccess,model_lib_rack,do_an_tn.library_portal_user,1,0,0,0
-access_library_rack_for_librarian,Library Rack For Librarian Access,model_lib_rack,do_an_tn.library_group_librarian,1,1,1,1
-access_library_book,Book Access,model_lib_book,do_an_tn.library_member_search,1,0,0,0
-access_library_book_portal_user,Book Rack Portal Access,model_lib_book,do_an_tn.library_portal_user,1,0,0,0
-access_library_book_for_librarian,Book For Librarian Access,model_lib_book,do_an_tn.library_group_librarian,1,0,0,0
-access_meta_books,Meta Books Access,model_lib_meta_books,do_an_tn.library_member_search,1,0,0,0
-access_meta_books_portal_user,Meta Books Portal User Access,model_lib_meta_books,do_an_tn.library_portal_user,1,0,0,0
-access_meta_books_for_librarian,Meta Books For Librarian Access,model_lib_meta_books,do_an_tn.library_group_librarian,1,0,0,0
-access_document_project,Project Access,model_lib_document_project,do_an_tn.library_member_search,1,0,0,0
-access_document_project_portal_user,Project Portal User Access,model_lib_document_project,do_an_tn.library_portal_user,1,0,0,0
-access_document_project_for_librarian,Project For Librarian Access,model_lib_document_project,do_an_tn.library_group_librarian,1,0,0,0
-access_meta_project,Meta Project Access,model_lib_meta_projects,do_an_tn.library_member_search,1,0,0,0
-access_meta_project_portal_user,Meta Project c Access,model_lib_meta_projects,do_an_tn.library_portal_user,1,0,0,0
-access_meta_project_for_librarian,Meta Project For Librarian Access,model_lib_meta_projects,do_an_tn.library_group_librarian,1,0,0,0
-access_magazine_newspaper,Magazine/Newspaper Access,model_lib_magazine_newspaper,do_an_tn.library_member_search,1,0,0,0
-access_magazine_newspaper_portal_user,Magazine/Newspaper Portal User Access,model_lib_magazine_newspaper,do_an_tn.library_portal_user,1,0,0,0
-access_magazine_newspaper_for_librarian,Magazine/Newspaper For Librarian Access,model_lib_magazine_newspaper,do_an_tn.library_group_librarian,1,0,0,0
-access_meta_magazine_newspaper,Meta Magazine/Newspaper Access,model_lib_meta_magazinenewspapers,do_an_tn.library_member_search,1,0,0,0
-access_meta_magazine_newspaper_portal_user,Meta Magazine/Newspaper Portal User Access,model_lib_meta_magazinenewspapers,do_an_tn.library_portal_user,1,0,0,0
-access_meta_magazine_newspape_for_librarian,Meta Magazine/Newspaper For Librarian Access,model_lib_meta_magazinenewspapers,do_an_tn.library_group_librarian,1,0,0,0
-access_library_card_stage,Card Stage Access,model_lib_card_stage,do_an_tn.library_group_librarian,1,1,1,1
-access_library_checkout_stage,Checkout Stage Access,model_lib_checkout_stage,do_an_tn.library_group_librarian,1,1,1,1
-access_library_card,Card Access,model_lib_card,do_an_tn.library_group_manager,1,1,1,1
-access_library_card_for_librarian,Card For Librarian Access,model_lib_card,do_an_tn.library_group_librarian,1,0,0,0
+access_duration,Duration Access,model_lib_duration,,1,0,0,0
+access_duration_for_manager,Duration Access For Manager,model_lib_duration,do_an_tn.library_group_manager,1,1,1,1
+access_library_author,Author Access,model_lib_author,,1,0,0,0
+access_library_author_for_manager,Author Access For Manager ,model_lib_author,do_an_tn.library_group_manager,1,1,1,1
+access_library_translator,Translator Access,model_lib_translator,,1,0,0,0
+access_library_translator_for_manager,Translator Access For Manager,model_lib_translator,do_an_tn.library_group_manager,1,1,1,1
+access_library_publisher,Publisher Access,model_lib_publisher,,1,0,0,0
+access_library_publisher_for_manager,Publisher Access For Manager,model_lib_publisher,do_an_tn.library_group_manager,1,1,1,1
+access_student_major,Major Student Access,model_lib_student_major,,1,0,0,0
+access_student_major_for_manager,Major Student Access For Manager,model_lib_student_major,do_an_tn.library_group_manager,1,1,1,1
+access_teacher_role,Role Teacher Access,model_lib_teacher_role,,1,0,0,0
+access_teacher_role_for_manager,Role Teacher Access For Manager,model_lib_teacher_role,do_an_tn.library_group_manager,1,1,1,1
+access_library_student,Student Access,model_lib_student,,1,0,0,0
+access_library_student_for_manager,Student Access For Manager,model_lib_student,do_an_tn.library_group_manager,1,1,1,1
+access_library_teacher,Teacher Access,model_lib_teacher,,1,0,0,0
+access_library_teacher_for_manager,Teacher Access For Manager,model_lib_teacher,do_an_tn.library_group_manager,1,1,1,1
+access_category_book,Category Book Access,model_lib_category_book,,1,0,0,0
+access_category_book_for_manager,Category Access For Manager,model_lib_category_book,do_an_tn.library_group_manager,1,1,1,1
+access_categories_magazine,Categories Magazine Access,model_lib_category_magazine,,1,0,0,0
+access_categories_magazine_for_manager,Categories Magazine Access For Manager,model_lib_category_magazine,do_an_tn.library_group_manager,1,1,1,1
+access_categories_newspaper,Categories Newspaper Access,model_lib_category_newspaper,,1,0,0,0
+access_categories_newspaper_for_manager,Categories Newspaper Access For Manager,model_lib_category_newspaper,do_an_tn.library_group_manager,1,0,0,0
+access_library_rack,Library Rack Access,model_lib_rack,,1,0,0,0
+access_library_rack_for_manager,Library Rack Access For Manager,model_lib_rack,do_an_tn.library_group_manager,1,1,1,1
+access_library_book,Book Access,model_lib_book,,1,0,0,0
+access_library_book_for_manager,Book Access For Manager,model_lib_book,do_an_tn.library_group_manager,1,1,1,1
+access_meta_books,Meta Books Access,model_lib_meta_books,,1,0,0,0
+access_meta_books_for_manager,Meta Books Access For Manager,model_lib_meta_books,do_an_tn.library_group_manager,1,1,1,1
+access_document_project,Project Access,model_lib_document_project,,1,0,0,0
+access_document_project_for_manager,Project Access For Manager,model_lib_document_project,do_an_tn.library_group_manager,1,1,1,1
+access_meta_project,Meta Project Access,model_lib_meta_projects,,1,0,0,0
+access_meta_project_for_manager,Meta Project Access For Manager,model_lib_meta_projects,do_an_tn.library_group_manager,1,1,1,1
+access_magazine_newspaper,Magazine/Newspaper Access,model_lib_magazine_newspaper,,1,0,0,0
+access_magazine_newspaper_for_manager,Magazine/Newspaper Access For Manager,model_lib_magazine_newspaper,do_an_tn.library_group_manager,1,1,1,1
+access_meta_magazine_newspaper,Meta Magazine/Newspaper Access,model_lib_meta_magazinenewspapers,,1,0,0,0
+access_meta_magazine_newspape_for_manager,Meta Magazine/Newspaper Access For Manager,model_lib_meta_magazinenewspapers,do_an_tn.library_group_manager,1,1,1,1
+access_library_card_stage,Card Stage Access,model_lib_card_stage,,1,0,0,0
+access_library_card_stage_for_manager,Card Stage Access For Manager,model_lib_card_stage,do_an_tn.library_group_manager,1,1,1,1
+access_library_checkout_stage,Checkout Stage Access,model_lib_checkout_stage,,1,0,0,0
+access_library_checkout_stage_for_manager,Checkout Stage Access For Manager,model_lib_checkout_stage,do_an_tn.library_group_manager,1,1,1,1
+access_library_card,Card Access,model_lib_card,,1,0,0,0
+access_library_card_for_librarian,Card Access For Librarian,model_lib_card,do_an_tn.library_librarian_create_card,0,0,1,0
+access_library_card_for_manager,Card Access For Manager,model_lib_card,do_an_tn.library_group_manager,1,1,1,1
 access_library_checkout_at_lib,Checkout At Lib Access,model_lib_checkout_at_lib,do_an_tn.library_group_librarian,1,1,1,1
 access_library_checkout_back_home,Checkout Back Home Access,model_lib_checkout_back_home,do_an_tn.library_group_librarian,1,1,1,1
-access_library_department,Library Department Access,model_lib_department,do_an_tn.library_group_librarian,1,1,1,1
-
+access_library_department,Library Department Access,model_lib_department,do_an_tn.library_group_manager,1,0,0,0

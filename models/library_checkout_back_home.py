@@ -55,7 +55,7 @@ class CheckoutBackHome(models.Model):
 
     user_id = fields.Many2one('res.users', 'Librarian',
                               default=lambda s: s.env.uid,
-                              readonly=True)
+                              readonly=True, required=True)
     user_image = fields.Binary(related='user_id.image', store=True)
     borrow_date = fields.Datetime(string="Borrow date", readonly=True)
     return_date = fields.Date(string="Return Appointment Date")

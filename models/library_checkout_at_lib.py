@@ -49,7 +49,7 @@ class CheckoutAtLib(models.Model):
     note = fields.Char('Note')
     user_id = fields.Many2one('res.users', 'Librarian',
                               default=lambda s: s.env.uid,
-                              readonly=True, track_visibility='always')
+                              readonly=True, track_visibility='always', required=True)
     borrow_date = fields.Datetime(string='Borrow Date', track_visibility='always')
     return_date = fields.Datetime(string='Return Date', track_visibility='always')
     count_waiting = fields.Integer(compute='_compute_count_waiting')

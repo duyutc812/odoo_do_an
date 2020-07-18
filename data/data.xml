@@ -389,10 +389,5 @@
             <field name="category_id" ref="do_an_tn.module_library_category"/>
             <field name="group_id" ref="do_an_tn.library_member_search"/>
         </record>
-
-        <record id="data_department_4" model="lib.department">
-            <field name="category_id" ref="do_an_tn.module_library_category"/>
-            <field name="group_id" ref="do_an_tn.library_portal_user"/>
-        </record>
     </data>
 </odoo>

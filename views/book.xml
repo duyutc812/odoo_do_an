@@ -102,11 +102,11 @@
                         </h1>
                     </div>
                     <group col="3" colspan="3">
-                        <group col="1" colspan="1" string="Image Book">
+                        <group col="1" colspan="1">
                             <field name="image" widget="image" class="oe_avatar" style="width:60px;height:70px" nolabel="1"/>
                         </group>
                         <group col="2" colspan="2">
-                            <separator string="Information Book" col="2" colspan="4"/>
+                            <!--<separator string="Information Book" col="2" colspan="4"/>-->
                             <group colspan="2">
                                 <field name="category"/>
                                 <field name="publish_date" placeholder="Enter publish date... "/>
@@ -207,16 +207,16 @@
                                     </a>
                                 </strong>
                                 <ul>
-                                    <li>Book ID: <field name="name_seq" /></li>
+                                    <li><field name="name_seq" /></li>
                                     <!--<li class="o_text_overflow">Publisher: <field name="publisher_id" /></li>
                                     --><t t-set="red_or_black"
                                        t-value="record.state.raw_value == 'not_available' ?
                                        'oe_kanban_text_red': '' "/>
                                     <li t-att-class="red_or_black">
-                                       <field name="state"/>
+                                       <field name="state"/>: <field name="remaining"/>/<field name="quantity"/>
                                     </li>
-                                    <li>Quantity: <field name="quantity"/></li>
-                                    <li>Remaining: <field name="remaining"/></li>
+                                    <!--<li>Số lượng: <field name="quantity"/></li>
+                                    <li>Còn lại: <field name="remaining"/></li>-->
                                 </ul>
                             </div>
                         </div>

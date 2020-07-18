@@ -39,10 +39,10 @@
                         </h1>
                     </div>
                     <group col="4" colspan="4" >
-                        <separator string="Details Newspaper" colspan="4"
+                        <!--<separator string="Details Newspaper" colspan="4"
                                    attrs="{'invisible': [('type_mgz_new', '=', 'magazine')]}"/>
                         <separator string="Details Magazine" colspan="4"
-                                   attrs="{'invisible': [('type_mgz_new', '=', 'newspaper')]}"/>
+                                   attrs="{'invisible': [('type_mgz_new', '=', 'newspaper')]}"/>-->
                         <group col="2" colspan="2">
                             <field name="category_mgz_id" placeholder="Category magazine..."
                                    attrs="{'invisible': [('type_mgz_new', '=', 'newspaper')],
@@ -64,8 +64,7 @@
                     </group>
                     <notebook>
                         <page string="Meta Magazine-Newspaper">
-                            <field name="meta_mgz_new_ids"
-                                   groups="do_an_tn.library_group_librarian">
+                            <field name="meta_mgz_new_ids">
                                 <tree decoration-success="state == 'available'"
                                       decoration-danger="state == 'not_available'"
                                       editable="bottom">
@@ -120,14 +119,12 @@
                             <div class="oe_kanban_details">
                                 <a type="open" class="o_text_overflow">
                                     <t t-if="record.type_mgz_new.raw_value=='magazine'">
-                                        <strong>Magazine: </strong>
-                                        <span style="color:black"><field name="category_mgz_id"/></span>
-                                        - No.<field name="num_mgz_new"/> -  <field name="publish_date"/>
+                                        <span style="color:black"><field name="category_mgz_id"/>
+                                        - <field name="num_mgz_new"/> -  <field name="publish_date"/></span>
                                     </t>
                                     <t t-else="">
-                                        <strong>Newspaper: </strong>
-                                        <span style="color:black"><field name="category_new_id"/></span>
-                                        - No.<field name="num_mgz_new"/> -  <field name="publish_date"/>
+                                        <span style="color:black"><field name="category_new_id"/>
+                                        - <field name="num_mgz_new"/> -  <field name="publish_date"/></span>
                                     </t>
                                 </a>
                                 <ul>
@@ -135,10 +132,10 @@
                                            t-value="record.state.raw_value == 'not_available' ?
                                            'oe_kanban_text_red': '' "/>
                                     <li t-att-class="red_or_black">
-                                        <field name="state"/>
+                                        <field name="state"/>: <field name="remaining"/>/<field name="quantity"/>
                                     </li>
-                                    <li>Quantity: <field name="quantity"/></li>
-                                    <li>Remaining: <field name="remaining"/></li>
+                                    <!--<li>Quantity: <field name="quantity"/></li>
+                                    <li>Remaining: <field name="remaining"/></li>-->
                                 </ul>
                             </div>
                         </div>

@@ -203,14 +203,14 @@ class Card(models.Model):
     @api.constrains('student_id', 'teacher_id')
     def _constrains_check_member_card(self):
         if self.member_type == 'student':
-            print(self.ids)
+            # print(self.ids)
             """ids la id cua record sap tao"""
             student_lib_card = self.sudo().search([
                 ('student_id', '=', self.student_id.id),
                 ('state', '!=', 'expire'),
                 ('id', 'not in', self.ids)
             ])
-            print(student_lib_card)
+            # print(student_lib_card)
             if student_lib_card:
                 raise ValidationError(_('You cannot assign library card to same student more than once!'))
         if self.member_type == 'teacher':

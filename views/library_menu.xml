@@ -13,7 +13,8 @@
 
     <!--Library Menuitem-->
     <menuitem id="menu_library_school" name="School" parent="menu_library_others"
-              sequence="10"/>
+              sequence="10"
+              groups="do_an_tn.library_group_librarian"/>
 
     <!--Author-->
     <record id="action_library_author" model="ir.actions.act_window">
@@ -159,17 +160,6 @@
               parent="menu_library_member" action="action_library_teacher"
               sequence="10"/>
 
-    <!--<record id="action_library_employee" model="ir.actions.act_window">
-        <field name="name">Employees</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">res.users</field>
-        <field name="view_mode">kanban,tree,form</field>
-    </record>
-
-    <menuitem id="menu_library_employee" name="Employee"
-              parent="menu_library_member" action="action_library_employee"
-              sequence="20"/>
--->
     <!--Document Menuitem-->
     <menuitem id="menu_library_document" name="Documents" parent="menu_library"
               sequence="30"/>
@@ -177,7 +167,8 @@
     <!--Setting-->
     <menuitem id="menu_library_setting" name="Settings"
               parent="menu_library_others"
-              sequence="40"/>
+              sequence="40"
+              groups="do_an_tn.library_group_manager"/>
 
     <!--Language-->
     <record id="action_inherit_res_lang" model="ir.actions.act_window">
@@ -203,7 +194,7 @@
               parent="menu_library_setting" action="action_inherit_res_currency"
               sequence="10"/>
 
-    <!--inherit scheduled acrion-->
+    <!--inherit scheduled action-->
     <record id="action_scheduled_action_inherit" model="ir.actions.act_window">
         <field name="name">Scheduled Action Inherit</field>
         <field name="type">ir.actions.act_window</field>
@@ -292,7 +283,8 @@
     <!--Checkout Menuitem-->
     <menuitem id="menu_library_checkout" name="Checkouts"
               parent="menu_library"
-              sequence="5"/>
+              sequence="5"
+              groups="do_an_tn.library_group_librarian"/>
 
     <!--Library Duration-->
     <record id="action_library_duration" model="ir.actions.act_window">
@@ -379,6 +371,7 @@
 
     <menuitem id="menu_library_department" name="Department"
               parent="menu_library" action="action_library_department"
-              sequence="2"/>
+              sequence="2"
+              groups="do_an_tn.library_group_librarian"/>
 
 </odoo>

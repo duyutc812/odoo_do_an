@@ -12,18 +12,17 @@
                             groups="do_an_tn.library_group_librarian"/>
                 </header>
                 <sheet>
-                    <div class="oe_title">
+                    <!--<div class="oe_title">
                         <separator string="Project"/>
-                    </div>
+                    </div>-->
                     <group>
-                        <group string="Project Details">
+                        <group><!-- string="Project Details"-->
                             <field name="name" placeholder="Name project..."/>
                             <field name="publish_date" placeholder="Publish date..."/>
                             <field name="teacher_id" placeholder="Tutorial teacher..."/>
                             <field name="rack" placeholder="Library rack..."/>
-
                         </group>
-                        <group string="Student Details">
+                        <group> <!-- string="Student Details"-->
                             <field name="major_id" placeholder="Major..."/>
                             <field name="student_id" placeholder="Student ID..."/>
                             <field name="student_name"/>
@@ -31,7 +30,7 @@
                         </group>
                     </group>
                     <group>
-                        <separator string="Others" colspan="4"/>
+                        <!--<separator string="Others" colspan="4"/>-->
                         <group>
                             <field name="quantity" readonly="1"/>
                             <field name="remaining" readonly="1"/>
@@ -97,18 +96,18 @@
                                     </a>
                                 </strong>
                                     <ul>
+                                        <li><field name="major_id" /></li>
                                         <li class="o_text_overflow">
-                                            <strong>Name: </strong><field name="student_name"/>
+                                            <field name="student_name"/>
                                         </li>
-                                        <li><strong>Major: </strong><field name="major_id" /></li>
                                             <t t-set="red_or_black"
                                                 t-value="record.state.raw_value == 'not_available' ?
                                                 'oe_kanban_text_red': '' "/>
-                                                <li t-att-class="red_or_black">
-                                                <field name="state"/>
+                                        <li t-att-class="red_or_black">
+                                            <field name="state"/>: <field name="remaining"/>/<field name="quantity"/>
                                         </li>
-                                        <li>Quantity: <field name="quantity"/></li>
-                                        <li>Remaining: <field name="remaining"/></li>
+                                        <!--<li>Quantity: <field name="quantity"/></li>
+                                        <li>Remaining: <field name="remaining"/></li>-->
                                     </ul>
                             </div>
                         </div>
