@@ -1,12 +1,12 @@
 <?xml version="1.0" ?>
 <odoo>
     <record id="module_library_category" model="ir.module.category">
-       <field name="name">Library Management</field>
+       <field name="name">Quản lý thư viên</field>
         <field name="sequence">100</field>
     </record>
 
     <record id="library_group_librarian" model="res.groups">
-        <field name="name">Librarian</field>
+        <field name="name">Nhân viên thư viện</field>
         <field name="category_id"
                ref="module_library_category"/>
         <field name="implied_ids"
@@ -14,7 +14,7 @@
     </record>
 
     <record id="library_group_manager" model="res.groups">
-        <field name="name">Manager</field>
+        <field name="name">Quản lý</field>
         <field name="category_id"
                ref="module_library_category"/>
         <field name="implied_ids"
@@ -25,15 +25,26 @@
     </record>
 
     <record id="library_member_search" model="res.groups">
-        <field name="name">Member Search</field>
+        <field name="name">Độc giả</field>
         <field name="category_id" ref="module_library_category"/>
-        <field name="implied_ids"
-               eval="[(4, ref('base.group_user'))]"/>
     </record>
 
-    <record id="library_librarian_create_card" model="res.groups">
-        <field name="name">Librarian Create Card</field>
+    <record id="library_member_create_card" model="res.groups">
+        <field name="name">Chỉ được phép tạo thẻ thư viện</field>
         <field name="category_id" ref="module_library_category"/>
+        <!--<field name="menu_access" eval="[(4, ref('do_an_tn.menu_library_card'))]"/>--><!--(4, ref('do_an_tn.menu_library_member')),-->
+    </record>
+
+    <record id="library_member_create_checkout" model="res.groups">
+        <field name="name">Chỉ được phép tạo phiếu mượn</field>
+        <field name="category_id" ref="module_library_category"/>
+         <!--<field name="menu_access" eval="[(4, ref('do_an_tn.menu_library_checkout'))]"/>-->
+    </record>
+
+    <record id="library_member_edit_book" model="res.groups">
+        <field name="name">Chỉ được phép sửa thông tin sách</field>
+        <field name="category_id" ref="module_library_category"/>
+         <!--<field name="menu_access" eval="[(4, ref('do_an_tn.menu_library_checkout'))]"/>-->
     </record>
 
 </odoo>

@@ -18,7 +18,7 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <separator string="Publisher"/>
+                    <separator string="Nhà xuất bản"/>
                     <field name="publisher_image" widget="image" class="oe_avatar"/>
                     <div class="oe_title">
                         <h5>
@@ -26,28 +26,28 @@
                         </h5>
                         <h1>
                             <label for="name" class="oe_edit_only"/>
-                            <field name="name" placeholder="Publisher name..."/>
+                            <field name="name" placeholder="Tên nhà xuất bản..."/>
                         </h1>
                     </div>
 
                     <group col="2" colspan="2">
-                        <separator string="Information" colspan="4"/>
+                        <separator string="Thông tin nhà xuất bản" colspan="4"/>
                         <group>
-                            <field name="founding" placeholder="Founding..."/>
-                            <field name="phone" widget="phone" placeholder="Phone..."/>
-                            <field name="fax" placeholder="Fax..."/>
-                            <field name="address" placeholder="Address..."/>
+                            <field name="founding" placeholder="Thành lập..."/>
+                            <field name="phone" widget="phone" placeholder="Số điện thoại..."/>
+                            <field name="fax" placeholder="Số Fax..."/>
+                            <field name="address" placeholder="Địa chỉ..."/>
                         </group>
                         <group>
                             <field name="email" widget="email" placeholder="Email 1...."/>
-                            <field name="email" widget="email" placeholder="Email 2"/>
-                            <field name="website2" widget="url" placeholder="Website..."/>
-                            <field name="facebook" widget="url" placeholder="e.g facebook.com..."/>
+                            <field name="website" widget="url" placeholder="Địa chỉ website"/>
+                            <field name="website2" widget="url" placeholder="Địa chỉ website2"/>
+                            <field name="facebook" widget="url" placeholder="VD: http://facebook.com"/>
                         </group>
-                        <separator string="All book" colspan="1"/>
+                        <separator string="Tất cả sách" colspan="1"/>
                         <field name="book_ids" widget="many2many_tags" readonly="1"/>
                     </group>
-                    <field name="note" placeholder="Note" nolabel="1"/>
+                    <field name="note" placeholder="Ghi chú" nolabel="1"/>
                 </sheet>
             </form>
         </field>

@@ -7,7 +7,7 @@
                 <header>
                     <button name="%(do_an_tn.action_wizard_create_meta_mg_new)d"
                             type="action"
-                            string="Create Meta Magazine Newspaper"
+                            string="Tạo meta tạp chí - báo"
                             groups="do_an_tn.library_group_librarian"/>
                 </header>
                 <sheet>
@@ -44,26 +44,26 @@
                         <separator string="Details Magazine" colspan="4"
                                    attrs="{'invisible': [('type_mgz_new', '=', 'newspaper')]}"/>-->
                         <group col="2" colspan="2">
-                            <field name="category_mgz_id" placeholder="Category magazine..."
+                            <field name="category_mgz_id" placeholder="Thể loại tạp chí..."
                                    attrs="{'invisible': [('type_mgz_new', '=', 'newspaper')],
                                            'required': [('type_mgz_new', '=', 'magazine')]}"/>
-                            <field name="category_new_id" placeholder="Category newspaper..."
+                            <field name="category_new_id" placeholder="Thể loại báo..."
                                    attrs="{'invisible': [('type_mgz_new', '=', 'magazine')],
                                            'required': [('type_mgz_new', '=', 'newspaper')]}"/>
-                            <field name="num_mgz_new" placeholder="No."/>
-                            <field name="publish_date" placeholder="Publish date..."/>
-                            <field name="currency_id"/>
+                            <field name="num_mgz_new" placeholder="Số tạp chí/báo"/>
+                            <field name="publish_date" placeholder="Ngày xuất bản..."/>
+                            <field name="currency_id" placeholder="Tiền tệ"/>
                             <field name="price"/>
                         </group>
                         <group col="2" colspan="2">
                             <field name="quantity"/>
                             <field name="remaining"/>
                             <field name="rack" placeholder="Library rack..."/>
-                            <field name="state"/>
+                            <field name="state" placeholder="Trạng thái..."/>
                         </group>
                     </group>
                     <notebook>
-                        <page string="Meta Magazine-Newspaper">
+                        <page string="Meta Tạp chí - báo">
                             <field name="meta_mgz_new_ids">
                                 <tree decoration-success="state == 'available'"
                                       decoration-danger="state == 'not_available'"
@@ -72,11 +72,12 @@
                                     <field name="sequence" widget="handle"/>
                                     <field name="name_seq" readonly="1"/>
                                     <field name="description"
-                                           attrs="{'readonly':[('checkout', 'not in', ['', False])]}"/>
+                                           attrs="{'readonly':[('checkout', 'not in', ['', False])]}"
+                                           placeholder="Tình trạng..."/>
                                     <field name="state" attrs="{'readonly':[('checkout', 'not in', ['', False])]}"/>
                                     <field name="is_lost"/>
                                     <field name="is_active" groups="do_an_tn.library_group_librarian"/>
-                                    <field name="checkout"  groups="do_an_tn.library_group_librarian"/>
+                                    <field name="checkout"  groups="do_an_tn.library_group_librarian" placeholder="Phiếu mượn..."/>
                                 </tree>
                             </field>
                         </page>

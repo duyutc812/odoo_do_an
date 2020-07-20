@@ -3,7 +3,7 @@
         <field name="name">view.tree.card</field>
         <field name="model">lib.card</field>
         <field name="arch" type="xml">
-            <tree string="Card Details"
+            <tree string="Thẻ thư viện"
                   decoration-muted="state=='draft'"
                   decoration-danger="state=='expire'"
                   decoration-success="state=='running'">
@@ -19,11 +19,21 @@
             </tree>
         </field>
     </record>
+
     <record id="open_checkout_at_lib" model="ir.actions.act_window">
-        <field name="name">Open checkout at library</field>
+        <field name="name">Phiếu mượn tại thư viện</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.checkout.at.lib</field>
         <field name="context">{"search_default_draft_running_state":1}</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('card_id', '=', active_id)]</field>
+    </record>
+
+    <record id="open_checkout_back_home" model="ir.actions.act_window">
+        <field name="name">Phiếu mượn về</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">lib.checkout.back.home</field>
+        <field name="context">{"search_default_running_state":1}</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('card_id', '=', active_id)]</field>
     </record>
@@ -32,41 +42,41 @@
         <field name="name">view.form.card</field>
         <field name="model">lib.card</field>
         <field name="arch" type="xml">
-            <form string="Card Details">
+            <form string="Thông tin thẻ thư viện">
                 <header groups="do_an_tn.library_group_manager">
                     <!--<button name="check_" type="object" string="ObjectButton"/>-->
                     <field name="state" invisible="1"/>
                     <button name="running_state"
                             icon="fa-check"
                             type="object"
-                            string="Confirm"
+                            string="Xác nhận"
                             attrs="{'invisible':[('state', '!=', 'draft')]}" class="oe_highlight"/>
                             <!--groups="library.group_librarian" -->
 
                     <button name="draft_state"
                             type="object"
-                            string="Draft"
-                            class="oe_highlight"/>
-                    <!--attrs="{'invisible':[('state', '!=', 'running')]}" -->
-
-                    <button name="print_report" type="object" string="Print Report" class="oe_highlight"
+                            string="Nháp"
+                            class="oe_highlight"
                             attrs="{'invisible':[('state', '!=', 'running')]}"/>
-                    <button name="send_email" type="object" string="Send Email"
+                    <!-- -->
+
+                    <button name="print_report" type="object" string="In thẻ" class="oe_highlight"
+                            attrs="{'invisible':[('state', '!=', 'running')]}"/>
+                    <button name="send_email" type="object" string="Gửi email"
                             attrs="{'invisible':[('state', '!=', 'running')]}"/>
                     <!--<button name="delete_state" type="object" string="Delete Card" class="oe_highlight"/>
                             &lt;!&ndash;groups="library.group_librarian"&ndash;&gt;-->
                     <button name="penalty_card"
                             type="object"
-                            string="Penalty"
+                            string="Phạt thẻ"
                             attrs="{'invisible':['|', ('state', '!=', 'running'), ('is_penalty', '=', True)]}"/>
                     <button name="cancel_penalty_card"
                             type="object"
-                            string="Cancel Penalty"
+                            string="Huỷ phạt thẻ"
                             attrs="{'invisible':['|', ('state', '!=', 'running'), ('is_penalty', '=', False)]}"/>
                     <button name="%(do_an_tn.action_wizard_extend_library_card)d"
                             type="action"
-                            string="Extend Card"/>
-
+                            string="Gia hạn thẻ"/>
                     <field name="stage_id" widget="statusbar"/> <!-- clickable="True"-->
 
                 </header>
@@ -76,22 +86,29 @@
                                 type="action"
                                 class="oe_stat_button"
                                 icon="fa-eject"
-                                help="All checkout at library">
-                                <field name="count" string="All checkout at lib" widget="statinfo"/>
+                                help="Tất cả phiếu đã mượn: tại thư viện">
+                                <field name="count_al" string="Mượn tại thư viện" widget="statinfo"/>
+                        </button>
+                        <button name="%(open_checkout_back_home)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-eject"
+                                help="Tất cả phiếu đã mượn: mượn về">
+                                <field name="count_bh" string="Mượn về" widget="statinfo"/>
                         </button>
                     </div>
                     <div class="oe_title">
-                        <label for="name_seq" string="Card ID: " class="oe_edit_only"/>
+                        <label for="name_seq" string="Mã thẻ mượn: " class="oe_edit_only"/>
                         <h1>
                             <field name="name_seq" style="color:#7C7BAD"/>
                         </h1>
                     </div>
                     <group col="2" colspan="4">
-                        <group string="Card Details">
+                        <group string="Thông tin thẻ mượn">
                            <!-- <separator string="Card Details"/>-->
                             <field name="member_type" required="1" attrs="{'readonly':[('state','!=','draft')]}" />
                             <field name="book_limit" readonly="1"/>
-                            <field name="syllabus_limit" readonly="1" string="No of Syllabus"/>
+                            <field name="syllabus_limit" readonly="1"/>
                             <field name="student_id"
                                    options="{'no_create': True, 'no_open': True}"
                                    attrs="{'invisible':[('member_type','!=','student')],
@@ -101,7 +118,7 @@
                                    options="{'no_create': True, 'no_open': True}"/>
                             <field name="email" readonly="1" force_save="1"/>
                         </group>
-                        <group string="Others" >
+                        <group string="Thông tin khác" >
                             <!--<separator string="Others" />-->
                             <field name="start_date" required="1"
                                    options="{'datepicker': {'warn_future': true, 'daysOfWeekDisabled': [0]}}"
@@ -112,12 +129,12 @@
                                    force_save="1"/>
                             <field name="end_date"/>
                             <field name="user_id" options="{'no_open': True}"/>
-                            <field name="currency_id"/>
+                            <field name="currency_id" invisible="1"/>
                             <field name="price" readonly="1" attrs="{'invisible': [('price', '=', 0)]}"/>
                             <!--attrs="{'readonly':['|', ('state','!=','draft'), ('user', '=', 'teacher')]}"/>-->
                         </group>
                     </group>
-                    <group string="Penalty" attrs="{'invisible':[('is_penalty', '=', False)]}">
+                    <group string="Phạt thẻ mượn" attrs="{'invisible':[('is_penalty', '=', False)]}">
                         <group>
                             <field name="is_penalty"/>
                             <field name="duration_penalty"  attrs="{'required': [('is_penalty', '=', True)]}"/>
@@ -141,16 +158,16 @@
         <field name="model">lib.card</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name_seq" string="Code"/>
-                <field name="student_id" string="Student ID"/>
-                <field name="teacher_id" string="Teacher ID"/>
-                <filter name="member_type" string="Teacher" domain="[('member_type', '=', 'teacher')]"/>
-                <filter name="member_type" string="Student" domain="[('member_type', '=', 'student')]"/>
-                <filter name="state_running" string="Confirm" domain="[('state', '=', 'running')]"/>
-                <filter name="state_draft" string="Draft" domain="[('state', '=', 'draft')]"/>
-                <filter name="state_expire" string="Expire" domain="[('state', '=', 'expire')]"/>
+                <field name="name_seq" string="Mã thẻ mượn"/>
+                <field name="student_id" string="Mã sinh viên"/>
+                <field name="teacher_id" string="Mã giảng viên"/>
+                <filter name="member_type" string="Giảng viên" domain="[('member_type', '=', 'teacher')]"/>
+                <filter name="member_type" string="Sinh viên" domain="[('member_type', '=', 'student')]"/>
+                <filter name="state_running" string="Xác nhận" domain="[('state', '=', 'running')]"/>
+                <filter name="state_draft" string="Nháp" domain="[('state', '=', 'draft')]"/>
+                <filter name="state_expire" string="Hết hạn" domain="[('state', '=', 'expire')]"/>
                 <group>
-                    <filter string="State" name="state" context="{'group_by': 'state'}"/>
+                    <filter string="Trạng thái" name="state" context="{'group_by': 'state'}"/>
                 </group>
             </search>
         </field>
@@ -169,7 +186,6 @@
                 <field name="end_date"/>
                 <field name="duration_id"/>
                 <field name="is_penalty"/>
-
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_global_click o_kanban_record_has_image_fill o_hospital_patient_kanban">
@@ -195,11 +211,11 @@
                                         <div class="dropdown-menu" role="menu">
                                             <t t-if="record.state.raw_value=='running'">
                                                 <div role="menuitem">
-                                                    <a name="print_report" type="object" class="dropdown-item">Report</a>
+                                                    <a name="print_report" type="object" class="dropdown-item">In thẻ</a>
                                                 </div>
                                             </t>
                                             <t t-if="record.state.raw_value=='draft'">
-                                                <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                                <a role="menuitem" type="delete" class="dropdown-item">Xoá</a>
                                             </t>
                                         </div>
                                 </div>
@@ -219,7 +235,7 @@
                                     </h6>
                                 </strong>
                                 <table style="font-size:10px" class="o_text_overflow">
-                                    <tr><th>Member Type: </th>
+                                    <tr><th>Loại độc giả: </th>
                                         <t t-set="red_or_black"
                                            t-value="record.member_type.raw_value =='teacher'
                                            ? 'oe_kanban_text_red' : ''" />
@@ -227,37 +243,24 @@
                                                 <field name="member_type" />
                                             </td>
                                     </tr>
-                                    <!--<tr>
-                                        <th>Duration: </th>
-                                        <t t-if="record.duration_id.raw_value=='6'">
-                                            <td>
-                                                <strong><field name="duration_id"/></strong>
-                                            </td>
-                                        </t>
-                                        <t t-else="">
-                                            <td>
-                                                <field name="duration_id"/>
-                                            </td>
-                                        </t>
-                                    </tr>-->
                                     <tr>
-                                        <th>Date: </th>
+                                        <th>Thời hạn: </th>
                                         <td><field name="start_date"/> - <field name="end_date"/></td>
                                     </tr>
                                     <tr>
-                                        <th>Limit Book: </th>
-                                        <td><field name="book_limit"/>(Book) and
-                                            <field name="syllabus_limit"/>(Syllabus)
+                                        <th>Tài liệu: </th>
+                                        <td><field name="book_limit"/> sách,
+                                            <field name="syllabus_limit"/> giáo trình
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>State: </th>
+                                        <th>Tình trạng: </th>
                                         <td>
                                             <field name="state"/>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>Librarian: </th>
+                                        <th>Nhân viên: </th>
                                         <td>
                                             <field name="user_id"/>
                                         </td>
@@ -268,8 +271,8 @@
                     </t>
                     <searchpanel>
                         <!--<field name="user" string="User"/>-->
-                        <field name="student_id" string="Student" icon="fa-tags" select="multi"/>
-                        <field name="teacher_id" string="Teacher"/>
+                        <field name="student_id" string="Sinh viên" icon="fa-tags" select="multi"/>
+                        <field name="teacher_id" string="Giảng viên"/>
                     </searchpanel>
                 </templates>
             </kanban>

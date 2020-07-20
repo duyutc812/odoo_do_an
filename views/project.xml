@@ -2,48 +2,47 @@
     <record id="view_form_project" model="ir.ui.view">
         <field name="name">view.form.project</field>
         <field name="model">lib.document.project</field>
-        <field name="group_ids" eval="[(4,ref('library_member_search'))]"/>
         <field name="arch" type="xml">
             <form>
                 <header>
                     <button name="%(do_an_tn.action_wizard_create_meta_project)d"
                             type="action"
-                            string="Create Meta Project"
+                            string="Tạo meta đồ án - luận văn"
                             groups="do_an_tn.library_group_librarian"/>
                 </header>
                 <sheet>
-                    <!--<div class="oe_title">
-                        <separator string="Project"/>
-                    </div>-->
+                    <div class="oe_title">
+                        <separator string="Đồ án - luận văn - đề cương"/>
+                    </div>
                     <group>
-                        <group><!-- string="Project Details"-->
-                            <field name="name" placeholder="Name project..."/>
-                            <field name="publish_date" placeholder="Publish date..."/>
-                            <field name="teacher_id" placeholder="Tutorial teacher..."/>
-                            <field name="rack" placeholder="Library rack..."/>
+                        <group string="Thông tin chi tiết"><!-- -->
+                            <field name="name" placeholder="Tên đồ án - luận văn..."/>
+                            <field name="publish_date" placeholder="Ngày thực hiên..."/>
+                            <field name="teacher_id" placeholder="Giảng viên hướng dẫn..."/>
+                            <field name="rack" placeholder="Giá chứa tài liệu..."/>
                         </group>
-                        <group> <!-- string="Student Details"-->
-                            <field name="major_id" placeholder="Major..."/>
-                            <field name="student_id" placeholder="Student ID..."/>
-                            <field name="student_name"/>
-                            <field name="course"/>
+                        <group string="Thông tin sinh viên"> <!---->
+                            <field name="major_id" placeholder="Chuyên ngành..."/>
+                            <field name="student_id" placeholder="Mã sinh viên..."/>
+                            <field name="student_name" placeholder="Tên sinh viên..."/>
+                            <field name="course" placeholder="Khoá học..."/>
                         </group>
                     </group>
                     <group>
-                        <!--<separator string="Others" colspan="4"/>-->
+                        <separator string="Thông tin khác" colspan="4"/>
                         <group>
                             <field name="quantity" readonly="1"/>
                             <field name="remaining" readonly="1"/>
-                            <field name="state"/>
+                            <field name="state" placeholder="Trạng thái"/>
                         </group>
                         <group>
-                            <field name="project_term"/>
-                            <field name="currency_id"/>
+                            <field name="project_term" placeholder="Giới hạn ngày mượn..."/>
+                            <field name="currency_id" placeholder="Tiền tệ"/>
                             <field name="price"/>
                         </group>
                     </group>
                     <notebook>
-                         <page string="Meta Project">
+                         <page string="Meta đồ án - luận văn">
                             <field name="meta_project_ids">
                                 <tree decoration-success="state == 'available'"
                                       decoration-danger="state == 'not_available'"
@@ -55,7 +54,7 @@
                                     <field name="state" attrs="{'readonly':[('checkout', 'not in', ['', False])]}"/>
                                     <field name="is_lost"/>
                                     <field name="is_active" groups="do_an_tn.library_group_librarian"/>
-                                    <field name="checkout" groups="do_an_tn.library_group_librarian"/>
+                                    <field name="checkout" groups="do_an_tn.library_group_librarian" placeholder="Phiếu mượn"/>
                                 </tree>
                             </field>
                         </page>
@@ -113,7 +112,7 @@
                         </div>
                     </t>
                     <searchpanel>
-                        <field name="major_id" string="Major" groups="do_an_tn.library_group_librarian"/>
+                        <field name="major_id" string="Chuyên ngành" groups="do_an_tn.library_group_librarian"/>
                     </searchpanel>
                 </templates>
             </kanban>
@@ -128,7 +127,7 @@
                 <field name="name" string="Name Project"/>
                 <field name="student_name" string="Student Name"/>
                 <group>
-                    <filter string="Major Project" name="major_id" context="{'group_by': 'major_id'}"/>
+                    <filter string="Chuyên ngành" name="major_id" context="{'group_by': 'major_id'}"/>
                 </group>
             </search>
        </field>

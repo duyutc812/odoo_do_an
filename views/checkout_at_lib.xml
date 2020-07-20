@@ -16,7 +16,7 @@
                 <!--<field name="status_document"/>-->
                 <field name="user_id"/>
                 <field name="currency_id" invisible="1"/>
-                <field name="penalty_price" string="Penalty Price" sum="Total Penalty Price"/>
+                <field name="penalty_price" string="Tổng tiền phạt" sum="Tổng tiền phạt"/>
                 <field name="note"/>
                 <field name="state"/>
             </tree>
@@ -32,51 +32,51 @@
                     <field name="state" invisible="1"/>
                     <button name="running_state"
                             type="object"
-                            string="Confirm"
+                            string="Xác nhận"
                             class="oe_highlight"
                             attrs="{'invisible':[('state', '!=', 'draft')]}"
                             />
                     <button name="draft_state"
                             type="object"
-                            string="Draft"
+                            string="Nháp"
                             class="oe_highlight"
                             attrs="{'invisible':[('state', '!=', 'running')]}"
                             /> <!---->
                     <button name="done_state"
                             type="object"
-                            string="Return"
+                            string="Trả tài liệu"
                             class="oe_highlight"
                             attrs="{'invisible':[('state', '!=', 'running')]}"/>
                     <button name="lost_document"
                             type="object"
-                            string="Lost Document"
-                            confirm="Lost Magazine or Newspaper? Are you sure ?"
+                            string="Mất tài liệu"
+                            confirm="Mất tài liệu? Bạn có chắc không?"
                             class="oe_highlight"
                             attrs="{'invisible':[('state', '!=', 'fined')]}"/>
                     <button name="fined_state"
                             type="object"
-                            string="Penalty"
+                            string="Phạt"
                             class="oe_highlight"
                             attrs="{'invisible':[('state', 'not in', ['running', 'lost'])]}"/>
                     <button name="cancel_state"
                             type="object"
-                            string="Cancel"
+                            string="Huỷ"
                             class="oe_highlight"
                             attrs="{'invisible':[('state', 'not in', ['lost', 'fined'])]}"/>
                     <button name="borrow_back_home"
                             type="object"
-                            string="Borrow Back Home"
+                            string="Chuyển phiếu mượn về"
                             class="oe_highlight"
                             attrs="{'invisible':[('state', 'not in', ['done', 'fined'])]}"
-                            confirm="Create checkout back home? Are you sure?"/>
+                            confirm="Tạo phiếu mượn về? Bạn có chắc không?"/>
 
-                    <button name="%(do_an_tn.action_wizard_modify_descrip_doc)d" string="Modify Description"
+                    <button name="%(do_an_tn.action_wizard_modify_descrip_doc)d" string="Thay đổi tình trạng TL"
                             type="action"
                             attrs="{'invisible': [('state', 'in', ['running', 'lost'])]}"/>
-                    <button name="print_report" type="object" string="Print Report" class="oe_highlight"
+                    <button name="print_report" type="object" string="In phiếu phạt: PDF" class="oe_highlight"
                             attrs="{'invisible':[('state', 'not in', ['fined', 'lost'])]}"/>
 
-                    <button name="print_penalty_report" type="object" string="Print Penalty Report Excel" class="oe_highlight"
+                    <button name="print_penalty_report" type="object" string="In phiếu phạt: Excel" class="oe_highlight"
                             attrs="{'invisible':[('state', 'not in', ['fined', 'lost'])]}"/>
                     <field name="stage_id"
                            widget="statusbar"
@@ -90,7 +90,7 @@
                                 class="oe_stat_button"
                                 icon="fa-tasks"
                                 attrs="{'invisible': [('state', 'not in', ['done', 'fined'])]}">
-                            <field name="count_waiting" string="Waiting" widget="statinfo"/>
+                            <field name="count_waiting" string="Đang chờ" widget="statinfo"/>
                         </button>
                     </div>
                     <div class="oe_title">
@@ -99,7 +99,7 @@
                             <field name="name_seq" readonly="1"/>
                         </h1>
                         <h3>
-                            <span class="oe_read_only">On </span>
+                            <span class="oe_read_only">Vào </span>
                             <label for="borrow_date" class="oe_edit_only" />
                             <field name="borrow_date" class="oe_inline" readonly="1"
                                    attrs="{'invisible': [('state', '=', 'draft')]}"/>
@@ -107,7 +107,7 @@
                     </div>
 
                     <group col="2" colspan="4">
-                        <group string="Card Details">
+                        <group string="Thông tin thẻ mượn">
                            <!-- <separator string="Card Details"/>-->
                             <field name="card_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"
                                    options="{'no_create': True, 'no_open': True}"/>
@@ -115,7 +115,7 @@
                             <field name="gt_name" readonly="1"/>
                             <field name="user_id" required="1"/>
                         </group>
-                        <group string="Others">
+                        <group string="Thông tin tài liệu">
                             <field name="type_document" attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="book_id"
                                    attrs="{'invisible': [('type_document', '!=', 'book')],
@@ -126,14 +126,13 @@
                                    attrs="{'invisible': [('type_document', '!=', 'book')],
                                            'readonly':[('state','!=','draft')]}"
                                    options="{'no_create': True}"/>
-                            <field name="mgz_new_id" string="Title"
+                            <field name="mgz_new_id" string="Tiêu đề"
                                    options="{'no_create': True, 'no_open': True}"
                                    attrs="{'readonly':[('state','!=','draft')],
                                            'invisible': [('type_document', '!=', 'magazine')],
                                            'required': [('type_document', '=', 'magazine')]}"/>
                                   <!-- attrs="{'readonly':[('state','!=','draft')]}"-->
-
-                            <field name="meta_mgz_new_id" string="Meta mgz/new"
+                            <field name="meta_mgz_new_id" string="Meta tạp chí - báo"
                                    options="{'no_create': True, 'no_open': True}"
                                    attrs="{'readonly':[('state','!=','draft')],
                                            'invisible': [('type_document', '!=', 'magazine')]}"/>
@@ -152,7 +151,7 @@
                             <field name="return_date" readonly="1" attrs="{'invisible': [('state', 'in', ['draft', 'running'])]}"/>
                         </group>
                     </group>
-                    <group string="Fined" attrs="{'invisible':[('state', 'not in', ['lost', 'fined'])]}">
+                    <group string="Đã bị phạt" attrs="{'invisible':[('state', 'not in', ['lost', 'fined'])]}">
                         <group>
                             <field name="currency_id" readonly="1"/>
                             <field name="penalty_price" widget="monetary"
@@ -177,17 +176,18 @@
        <field name="model">lib.checkout.at.lib</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name_seq" string="Checkout ID"/>
-                <filter string="Draft and Borrowed" name="draft_running_state"
+                <field name="name_seq" string="Mã phiếu mượn"/>
+                <filter string="Nháp và đã mượn" name="draft_running_state"
                         domain="[('state','in', ['draft', 'running'])]"/>
-                <filter string="Draft" name="draft_state" domain="[('state','=', 'draft')]"/>
-                <filter string="Borrowed" name="running_state" domain="[('state','=', 'running')]"/>
-                <filter string="Returned" name="done_state" domain="[('state','=', 'done')]"/>
-                <filter string="Fined" name="fined_state" domain="[('state','=', 'fined')]"/>
+                <filter string="Nháp" name="draft_state" domain="[('state','=', 'draft')]"/>
+                <filter string="Đã mượn" name="running_state" domain="[('state','=', 'running')]"/>
+                <filter string="Đã trả" name="done_state" domain="[('state','=', 'done')]"/>
+                <filter string="Bị phạt" name="fined_state" domain="[('state','=', 'fined')]"/>
+                <filter string="Mất tài liệu" name="lost_state" domain="[('state','=', 'lost')]"/>
                 <group>
-                    <filter string="State" name="stage_id" context="{'group_by': 'stage_id'}"/>
-                    <filter string="Card ID" name="card_id" context="{'group_by': 'card_id'}"/>
-                    <filter string="Borrow Date" name="borrow_date" context="{'group_by': 'borrow_date'}"/>
+                    <filter string="Trạng thái phiếu" name="stage_id" context="{'group_by': 'stage_id'}"/>
+                    <filter string="Mã thẻ mượn" name="card_id" context="{'group_by': 'card_id'}"/>
+                    <filter string="Ngày mượn" name="borrow_date" context="{'group_by': 'borrow_date'}"/>
                 </group>
             </search>
        </field>
@@ -220,7 +220,7 @@
                                     </a>
                                     <div class="dropdown-menu" role="menu">
                                         <t>
-                                            <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                            <a role="menuitem" type="delete" class="dropdown-item">Xoá</a>
                                         </t>
                                     </div>
                                 </div>
@@ -241,7 +241,6 @@
                                     <span>
                                         <table>
                                             <tr>
-                                                <th>Title:</th>
                                                 <td  class="o_text_overflow">
                                                     <t t-if="record.type_document.raw_value=='book'">
                                                         <t t-esc="record.book_id.value"/><br/>
@@ -255,9 +254,6 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th>
-                                                    ID:
-                                                </th>
                                                 <td>
                                                     <t t-if="record.type_document.raw_value=='book'">
                                                         <t t-esc="record.meta_book_id.value"/><br/>
@@ -275,7 +271,6 @@
                                 </div>
                                 <div class="oe_kanban_bottom_right">
                                     <field name="state" widget="label_selection" options="{'classes': {'draft': 'default', 'running': 'success', 'fined': 'danger', 'lost': 'warning'}}"/>
-                                    <img t-att-src="kanban_image('lib.checkout.back.home', 'user_image', record.id.raw_value)" t-att-title="record.user_id.value" t-att-alt="record.user_id.value" width="30" height="30" class="oe_kanban_avatar"/>
                                 </div>
                             </div>
                         </div>

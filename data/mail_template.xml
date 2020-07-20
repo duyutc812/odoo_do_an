@@ -1,22 +1,22 @@
 <odoo>
     <data noupdate="0">
         <record id="library_card_email_template" model="mail.template">
-            <field name="name">Library Card: Send by email</field>
+            <field name="name">Gửi email thông tin thẻ thư viện</field>
             <field name="model_id" ref="do_an_tn.model_lib_card"/>
             <field name="email_from">duyutc08121998@gmail.com</field>
             <field name="email_to">${object.email}</field>
-            <field name="subject">Library School: Card ID: (Ref ${object.name_seq})</field>
+            <field name="subject">Thư viện Trường Đại Học ABC</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                        <h3>Dear ${object.gt_name},</h3>
+                        <h3>Thân gửi ${object.gt_name},</h3>
                         <br />
-                        This is a email from Library School.
+                        Đây là email được gửi từ thư viện trường Đại học ABC.
                         <br/>
                         <table style="text-align:left">
                             <tr>
                                 <th>
-                                    Card ID :
+                                    Mã thẻ mượn :
                                 </th>
                                 <td>
                                     ${object.name_seq}
@@ -24,15 +24,15 @@
                             </tr>
                             <tr>
                                 <th>
-                                    Doc limit:
+                                    Tài liệu có thể mượn:
                                 </th>
                                 <td>
-                                    ${object.book_limit} (book) and ${object.syllabus_limit} (syllabus)
+                                    ${object.book_limit} sách và ${object.syllabus_limit} giáo trình
                                 </td>
                             </tr>
                             <tr>
                                 <th>
-                                    Start Date:
+                                    Ngày bắt đầu:
                                 </th>
                                 <td>
                                     ${object.start_date.strftime('%d-%m-%Y')}
@@ -40,7 +40,7 @@
                             </tr>
                             <tr>
                                 <th>
-                                    End Date:
+                                    Ngày kết thúc:
                                 </th>
                                 <td>
                                      ${object.end_date.strftime('%d-%m-%Y')}
@@ -48,7 +48,7 @@
                             </tr>
                             <tr>
                                 <th>
-                                    Price:
+                                    Giá tiền:
                                 </th>
                                 <td>
                                     ${format_amount(object.price, object.currency_id)}
@@ -59,54 +59,54 @@
                 </div>
             </field>
             <field name="report_template"/>
-            <field name="report_name">Library Card_${(object.name_seq)}</field>
+            <field name="report_name">Thẻ thư viện ${(object.name_seq)}</field>
         </record>
 
         <!--send email for card will be expire-->
         <record id="lib_card_send_email_expire" model="mail.template">
-            <field name="name">Send Email for Card will be expire</field>
+            <field name="name">Gửi email thông báo thẻ mượn sắp hết hạn</field>
             <field name="model_id" ref="do_an_tn.model_lib_card"/>
             <field name="email_from">duyutc08121998@gmail.com</field>
             <field name="email_to">${object.email}</field>
-            <field name="subject">Library Card Notice: (Ref ${object.name_seq})</field>
+            <field name="subject">Thư viện trường Đại học ABC</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                        Dear ${object.gt_name}
+                        Thân gửi ${object.gt_name},
                         <br />
-                        <br />
-                        This is a email from Library School.
-                        Card ID's : ${object.name_seq}
+                        Đây là email được gửi từ thư viện trường Đại học ABC.
+                        Mã thẻ mượn : ${object.name_seq}
                         <br/>
-                        End Date Card : ${object.end_date.strftime('%d-%m-%Y')}
+                        Ngày hết hạn: ${object.end_date.strftime('%d-%m-%Y')}
                         <br/>
-                        The card of you will be expire on ${object.end_date.strftime('%d-%m-%Y')}.
+                        Thẻ mượn của bạn sẽ hết hạn vào ${object.end_date.strftime('%d-%m-%Y')}.
                     </p>
                 </div>
             </field>
             <field name="report_template"/>
-            <field name="report_name">Library Card_${(object.name_seq)}</field>
+            <field name="report_name">Thẻ thư viện ${(object.name_seq)}</field>
         </record>
 
         <record id="lib_checkout_send_by_email" model="mail.template">
-            <field name="name">Send by email to reader</field>
+            <field name="name">Gửi email cho độc giả mượn tài liệu về</field>
             <field name="model_id" ref="do_an_tn.model_lib_checkout_bh_send_email"/>
             <field name="email_from">duyutc08121998@gmail.com</field>
             <field name="email_to">${object.email}</field>
-            <field name="subject">${object.message_subject}</field>
+            <field name="subject">Thư viện trường Đại học ABC</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                        This is a email from Library School.
-                        <h5>Checkout ID: ${object.checkout_id.name_seq</h5>
+                        Đây là email được gửi từ thư viện trường Đại học ABC.
+                        <h3>${object.message_subject}</h3>
+                        <h5>Mã phiếu mượn: ${object.checkout_id.name_seq}</h5>
                         <p>${object.message_body}</p>
                     </p>
                 </div>
             </field>
         </record>
 
-        <record id="scheduled_send_mail_chk_overdue" model="mail.template">
-            <field name="name">Send by email to checkout overdue</field>
+        <!--<record id="scheduled_send_mail_chk_overdue" model="mail.template">
+            <field name="name">Gửi email cho độc gi</field>
             <field name="model_id" ref="do_an_tn.model_lib_checkout_back_home"/>
             <field name="email_from">duyutc08121998@gmail.com</field>
             <field name="email_to">${object[0].email}</field>
@@ -118,6 +118,6 @@
                     <p>Return Appointment Date: ${object.return_date.strftime('%d-%m-%Y')}</p>
                 </div>
             </field>
-        </record>
+        </record>-->
     </data>
 </odoo>

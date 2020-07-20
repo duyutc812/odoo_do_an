@@ -1,7 +1,7 @@
 <odoo>
     <data noupdate='0'>
         <record id="ir_cron_card" model="ir.cron">
-            <field name="name">Library Card Cron</field>
+            <field name="name">Kiểm tra thẻ hết hạn và huỷ phạt thẻ</field>
             <field name="model_id" ref="model_lib_card"/>
             <field name="type">ir.actions.server</field>
             <field name="state">code</field>
@@ -12,7 +12,7 @@
         </record>
 
         <record id="ir_cron_card_send_email" model="ir.cron">
-            <field name="name">Library Card Send Email</field>
+            <field name="name">Gửi email thông báo ngày hết hạn trước 1 tuần</field>
             <field name="model_id" ref="model_lib_card"/>
             <field name="type">ir.actions.server</field>
             <field name="state">code</field>
@@ -23,7 +23,7 @@
         </record>
 
         <record id="ir_cron_checkout_check_return_date" model="ir.cron">
-            <field name="name">Checkout Check Return appointment Date</field>
+            <field name="name">Kiểm tra ngày hẹn trả tài liệu: Phiếu mượn về</field>
             <field name="model_id" ref="model_lib_checkout_back_home"/>
             <field name="type">ir.actions.server</field>
             <field name="state">code</field>

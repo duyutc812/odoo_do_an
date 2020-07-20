@@ -1,7 +1,7 @@
 <odoo>
     <data>
         <act_window id="action_wizard_create_meta_project"
-                    name="Create Meta Project"
+                    name="Tạo meta đồ án - luận văn"
                     res_model="create.meta.project"
                     view_type="form"
                     view_mode="form"
@@ -15,18 +15,18 @@
                 <form>
                     <group>
                         <field name="project_id" readonly="1"/>
-                        <field name="description"/>
+                        <field name="description" placeholder="Tình trạng..."/>
                         <field name="state" readonly="1"/>
-                        <field name="quantity"/>
+                        <field name="quantity" placeholder="Số lượng..."/>
                     </group>
                     <footer>
                         <button type="object"
                                 name="button_create"
-                                string="Create"
+                                string="Tạo"
                                 class="btn-primary"
                                 />
                         <button special="cancel"
-                        string="Cancel"
+                        string="Huỷ"
                         class="btn-secondary" />
                     </footer>
                 </form>

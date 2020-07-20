@@ -5,42 +5,41 @@ from odoo.exceptions import ValidationError
 class Magazine(models.Model):
     _name = 'lib.magazine.newspaper'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _description = 'Magazine and newspaper'
+    _description = 'Tạp chí - báo'
 
     type_mgz_new = fields.Selection([
-        ('magazine', 'Magazine'),
-        ('newspaper', 'Newspaper')
-    ], string='Type', default='newspaper', required=True, track_visibility='always')
+        ('magazine', 'Tạp chí'),
+        ('newspaper', 'Báo')
+    ], string='Loại', default='newspaper', required=True, track_visibility='always')
     image = fields.Binary('Cover')
-    category_mgz_id = fields.Many2one('lib.category.magazine', string='Category Magazine', track_visibility='always')
-    category_new_id = fields.Many2one('lib.category.newspaper', string='Category Newspaper', track_visibility='always')
-    num_mgz_new = fields.Integer(string="No.", track_visibility='always')
-    publish_date = fields.Date(string='Publish Date', required=True, track_visibility='always')
+    category_mgz_id = fields.Many2one('lib.category.magazine', string='Thể loại tạp chí', track_visibility='always')
+    category_new_id = fields.Many2one('lib.category.newspaper', string='Thể loại báo', track_visibility='always')
+    num_mgz_new = fields.Integer(string="Số tạp chí/báo", track_visibility='always')
+    publish_date = fields.Date(string='Ngày xuất bản', required=True, track_visibility='always')
     publish_year = fields.Integer(compute='get_publish_year', store=True, track_visibility='always')
-    rack = fields.Many2one('lib.rack', 'Rack', track_visibility='always', required=True)
+    rack = fields.Many2one('lib.rack', 'Giá chứa', track_visibility='always', required=True)
 
-    currency_id = fields.Many2one('res.currency', 'Currency',
+    currency_id = fields.Many2one('res.currency', 'Tiền tệ',
                                   default=lambda s: s.env['res.currency'].sudo().search([('name', '=', 'VND')], limit=1))
-    price = fields.Monetary('Price', 'currency_id')
+    price = fields.Monetary('Giá tiền', 'currency_id')
 
-    quantity = fields.Integer(string='Quantity', compute='_compute_quantity_remaining', store=True)
-    remaining = fields.Integer(string='Remaining', compute='_compute_quantity_remaining', store=True)
+    quantity = fields.Integer(string='Số lượng', compute='_compute_quantity_remaining', store=True)
+    remaining = fields.Integer(string='Còn lại', compute='_compute_quantity_remaining', store=True)
     state = fields.Selection([
-        ('available', 'Available'),
-        ('not_available', 'Not Available')
+        ('available', 'Có sẵn'),
+        ('not_available', 'Không có sẵn')
     ], string='Status', compute='_compute_quantity_remaining', store=True)
-    is_active = fields.Boolean('Active?', default=True)
+    is_active = fields.Boolean('Có hiệu lực?', default=True)
     meta_mgz_new_ids = fields.One2many(
         'lib.meta.magazinenewspapers',
         'mgz_new_id', track_visibility='always'
     )
 
-
     @api.constrains('price')
     def _constrains_price(self):
         for mg_new in self:
             if mg_new.price <= 0:
-                raise ValidationError(_('The price must be greater than 0!'))
+                raise ValidationError(_('Giá tiền phải lớn hơn 0!'))
 
     @api.depends('publish_date')
     def get_publish_year(self):
@@ -86,45 +85,45 @@ class Magazine(models.Model):
     def name_get(self):
         res = []
         for rec in self:
-            res.append((rec.id, '%s %s - No.%s'
-                        % ('Newspaper' if rec.type_mgz_new == 'newspaper' else 'Magazine',
+            res.append((rec.id, '%s %s - Số %s'
+                        % ('Báo' if rec.type_mgz_new == 'newspaper' else 'Tạp chí',
                            rec.category_mgz_id.name if rec.category_mgz_id else rec.category_new_id.name, rec.num_mgz_new)))
         return res
 
     def unlink(self):
         for mg_new in self:
             if len(mg_new.meta_mgz_new_ids):
-                raise ValidationError(_('You cannot delete !'))
+                raise ValidationError(_('Bạn không thể xoá !'))
             return super(Magazine, self).unlink()
 
     _sql_constraints = [
         ('unique_category_magazine_num',
          'unique(category_mgz_id, num_mgz_new , publish_year)',
-         'No. Magazine\'s in year does already exist'),
+         'Số tap chí của thể loại tạp chí này trong năm này đã tồn tại!'),
         ('unique_category_newspaper_num',
          'unique(category_new_id, num_mgz_new , publish_year)',
-         'No. Newspaper\'s in year does already exist'),
+         'Số báo của thể loại báo này trong năm này đã tồn tại!'),
         ('mgz_new_check_date',
          'CHECK (publish_date <= current_date)',
-         'The Published Date must be less than the current date'),
+         'Ngày xuất bản phải nhỏ hơn ngày hiện tại!'),
     ]
 
 
 class MetaMagazineNewspaper(models.Model):
     _name = 'lib.meta.magazinenewspapers'
-    _description = 'Meta Magazine/Newspaper'
+    _description = 'Meta Tạp chí - báo'
 
-    name_seq = fields.Char(string="Meta Magazine/Newspaper ID", default=lambda self: _('New'), readonly=True)
-    mgz_new_id = fields.Many2one('lib.magazine.newspaper', string='Magazine/Newspaper', track_visibility='always')
-    description = fields.Text('Description',default='Tài liệu mới', track_visibility='always')
+    name_seq = fields.Char(string="Mã meta tạp chí/báo", default=lambda self: _('New'), readonly=True)
+    mgz_new_id = fields.Many2one('lib.magazine.newspaper', string='Tạp chí-báo', track_visibility='always')
+    description = fields.Text('Tình trạng', default='Tài liệu mới', track_visibility='always')
     sequence = fields.Integer()
     state = fields.Selection([
-        ('available', 'Available'),
-        ('not_available', 'Not Available')
-    ], string='Status', default='available')
-    checkout = fields.Char()
-    is_lost = fields.Boolean('Lost', default=False)
-    is_active = fields.Boolean('Active', default=True)
+        ('available', 'Có sẵn'),
+        ('not_available', 'Không có sẵn')
+    ], string='Trạng thái', default='available')
+    checkout = fields.Char('Phiếu mượn')
+    is_lost = fields.Boolean('Đã mất', default=False)
+    is_active = fields.Boolean('Có hiệu lực', default=True)
 
     @api.onchange('is_lost')
     def onchange_is_lost(self):
@@ -154,5 +153,5 @@ class MetaMagazineNewspaper(models.Model):
     def unlink(self):
         for meta_mg in self:
             if meta_mg.checkout:
-                raise ValidationError(_('You cannot delete record %s!' %(meta_mg.name_seq)))
+                raise ValidationError(_('Bạn không thể xoá: %s khi meta tạp chí - báo đang được mượn!' %(meta_mg.name_seq)))
         return super(MetaMagazineNewspaper, self).unlink()

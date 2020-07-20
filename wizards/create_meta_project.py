@@ -6,14 +6,14 @@ class CreateMetaProject(models.TransientModel):
     _name = 'create.meta.project'
     _description = 'Create Meta Project'
 
-    project_id = fields.Many2one('lib.document.project', string='Project')
-    name_seq = fields.Char(string="Meta Project ID", default=lambda self: _('New'), readonly=True)
-    description = fields.Text('Description', default='Tài liệu mới')
+    project_id = fields.Many2one('lib.document.project', string='Đồ án/luận văn')
+    name_seq = fields.Char(string="Mã meta Đồ án/Luận văn", default=lambda self: _('New'), readonly=True)
+    description = fields.Text('Tình trạng', default='Tài liệu mới')
     state = fields.Selection([
-        ('available', 'Available'),
-        ('not_available', 'Not Available')
-    ], string='Status', default='available')
-    quantity = fields.Integer('Quantity')
+        ('available', 'Có sẵn'),
+        ('not_available', 'Không có sẵn')
+    ], string='Trạng thái', default='available')
+    quantity = fields.Integer('Số lượng')
 
     @api.model
     def default_get(self, field_names):
@@ -26,7 +26,7 @@ class CreateMetaProject(models.TransientModel):
     def button_create(self):
         meta_project = self.env['lib.meta.projects']
         if not self.quantity:
-            raise ValidationError(_('The Quantity must be greater than 0!'))
+            raise ValidationError(_('Số lượng phải lớn hơn 0!'))
         for k in range(1, self.quantity+1):
             project_fields = list(meta_project._fields)
             project_vals = meta_project.default_get(project_fields)
@@ -34,7 +34,7 @@ class CreateMetaProject(models.TransientModel):
                                  'description': self.description,
                                  'state': 'available'})
             meta_project.create(project_vals)
-        self.project_id.message_post(_('%s updated quantity of %s is %s' % (str(self.create_uid.name), str(self.project_id.name), str(self.quantity))))
+        self.project_id.message_post(_('%s đã cập nhật số lượng của \'%s\' là %s' % (str(self.create_uid.name), str(self.project_id.name), str(self.quantity))))
         return True
 
 

@@ -4,7 +4,7 @@
         model="lib.card"
         report_type="qweb-html"
         menu="False"
-        string="Card Report"
+        string="In thẻ thư viện"
         name="do_an_tn.report_card_detail_template"/>
 
     <template id="report_card_detail_template">
@@ -19,12 +19,12 @@
                                     <table style="border: 3px solid black !important;width:450px;height:300px" >
                                         <tr>
                                             <th colspan="2" style="text-align:center">
-                                                <h3><b>Library School ABC</b></h3>
+                                                <h3><b>Thư viện Trường Đại học ABC</b></h3>
                                             </th>
                                         </tr>
                                         <tr>
                                             <th colspan="2" style="text-align:center">
-                                                <h4><b>Library Card</b></h4>
+                                                <h4><b>Thẻ thư viện</b></h4>
                                             </th>
                                         </tr>
                                         <tr>
@@ -42,17 +42,17 @@
                                                     <tr>
                                                         <td>
                                                             <t t-if="o.member_type=='student'">
-                                                                <p style="text-align:left;"><strong>Name: </strong></p>
-                                                                <p style="text-align:left;"><strong>Student ID: </strong></p>
-                                                                <p style="text-align:left;"><strong>Major: </strong></p>
-                                                                <p style="text-align:left;"><strong>Course: </strong></p>
-                                                                <p style="text-align:left;"><strong>End Date: </strong></p>
+                                                                <p style="text-align:left;"><strong>Họ tên: </strong></p>
+                                                                <p style="text-align:left;"><strong>Mã sinh viên: </strong></p>
+                                                                <p style="text-align:left;"><strong>Chuyên ngành: </strong></p>
+                                                                <p style="text-align:left;"><strong>Khoá: </strong></p>
+                                                                <p style="text-align:left;"><strong>Ngày hết hạn: </strong></p>
                                                             </t>
                                                             <t t-elif="o.member_type=='teacher'">
-                                                                <p style="text-align:left;"><strong>Name: </strong></p>
-                                                                <p style="text-align:left;"><strong>Role: </strong></p>
+                                                                <p style="text-align:left;"><strong>Họ tên: </strong></p>
+                                                                <p style="text-align:left;"><strong>Chức vụ: </strong></p>
                                                                 <p style="text-align:left;"><strong>Email: </strong></p>
-                                                                <p style="text-align:left;"><strong>End Date: </strong></p>
+                                                                <p style="text-align:left;"><strong>Ngày hết hạn: </strong></p>
                                                             </t>
 
                                                         </td>

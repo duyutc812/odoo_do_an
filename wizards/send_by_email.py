@@ -6,13 +6,13 @@ _logger = logging.getLogger(__name__)
 
 class CheckoutMassMessage(models.TransientModel):
     _name = 'lib.checkout.bh.send.email'
-    _description = 'Send Email to Reader'
+    _description = 'Gửi email cho độc giả mượn về'
 
     checkout_id = fields.Many2one(
         'lib.checkout.back.home',
         string='Checkout')
-    message_subject = fields.Char(default=_('Library School notice!'))
-    message_body = fields.Text()
+    message_subject = fields.Char(default=_('Thư viện Trường Đại học ABC!'), string="Tiêu đề")
+    message_body = fields.Text('Nội dung')
     email = fields.Char()
 
     @api.model
@@ -29,13 +29,13 @@ class CheckoutMassMessage(models.TransientModel):
         self.ensure_one()
         if not self.message_body:
             raise exceptions.UserError(
-                'Write a message body to send.')
+                'Nhập nội dung để có thể gửi!')
         if not self.message_subject:
             raise exceptions.UserError(
-                'Write a subject to send.')
+                'Nhập tiêu đề để có thể gửi!')
         if not self.email:
             raise exceptions.UserError(
-                'Enter email to send.')
+                'Nhập email để có thể gửi.')
         self.checkout_id.message_post(
             body=self.message_body,
             subject=self.message_subject,
@@ -43,5 +43,4 @@ class CheckoutMassMessage(models.TransientModel):
         template_id = self.env.ref('do_an_tn.lib_checkout_send_by_email').id
         template = self.env['mail.template'].browse(template_id)
         template.send_mail(self.id, force_send=True, raise_exception=True)
-        print('Send Email to : ', self.id)
         return True

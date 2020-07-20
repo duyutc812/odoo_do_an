@@ -6,22 +6,25 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <!--<div class="oe_button_box" name="expense_button_box">
-                        <button name="toggle_active"
-                                type="object"
-                                class="oe_stat_button"
-                                icon="fa-archive"
-                                groups="do_an_tn.library_group_librarian">
-                                <field name="is_active" widget="boolean_button" options='{"terminology": "archive"}'/>
-                        </button>
-                    </div>-->
+                    <separator string="Giá chứa tài liệu" colspan="4"/>
                     <group>
-                        <field name="name" />
-                        <field name="name_seq" />
-                        <field name="book_ids" widget="many2many_tags" readonly="1"/>
-                        <field name="mg_new_ids" widget="many2many_tags" readonly="1"/>
-                        <field name="project_ids" widget="many2many_tags" readonly="1"/>
-                        <!--<field name="is_active" widget="boolean_toggle"/>-->
+                        <group colspan="4">
+                            <group>
+                                <field name="name_seq" placeholder="Mã giá..."/>
+                            </group>
+                            <group>
+                                <field name="name" placeholder="Tên giá chứa..."/>
+                            </group>
+                        </group>
+                        <group colspan="4">
+                            <separator string="Sách" colspan="4"/>
+                            <field name="book_ids" widget="many2many_tags" nolabel="1" placeholder="Các cuốn sách..."/>
+                            <separator string="Tạp chí - báo" colspan="4"/>
+                            <field name="mg_new_ids" widget="many2many_tags" nolabel="1" placeholder="Các cuốn tạp chí - báo..."/>
+                            <separator string="Đồ án - luận văn - đề cươngs" colspan="4"/>
+                            <field name="project_ids" widget="many2many_tags" nolabel="1" placeholder="Các cuốn đồ án - luận văn..."/>
+                            <!--<field name="is_active" widget="boolean_toggle"/>-->
+                        </group>
                     </group>
                 </sheet>
             </form>
@@ -37,8 +40,8 @@
                 <field name="name" />
                 <field name="name_seq" />
                 <!--<field name="book_ids" widget="many2many_tags"/>-->
-                <field name="is_active" widget="boolean_toggle"
-                       groups="do_an_tn.library_group_librarian"/>
+                <!--<field name="is_active" widget="boolean_toggle"
+                       groups="do_an_tn.library_group_librarian"/>-->
             </tree>
         </field>
     </record>
@@ -49,7 +52,7 @@
         <field name="model">lib.rack</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name" />
+                <field name="name"/>
                 <field name="name_seq" />
                 <field name="is_active"/>
             </search>
@@ -68,8 +71,8 @@
                 <field name="language_id"/>
                 <field name="publisher_id" widget="many2onebutton"/>
                 <field name="author_ids" widget="many2many_tags"/>
-                <field name="is_active" widget="boolean_toggle" groups="do_an_tn.library_group_librarian"/>
                 <field name="state"/>
+                <field name="is_active" widget="boolean_toggle" groups="do_an_tn.library_group_librarian"/>
             </tree>
         </field>
     </record>
@@ -82,19 +85,19 @@
                 <header>
                     <button name="%(do_an_tn.action_wizard_create_meta_book)d"
                             type="action"
-                            string="Create Meta Book"
+                            string="Tạo meta sách"
                             groups="do_an_tn.library_group_librarian"/>
-                    <button name="test"
+                    <!--<button name="test"
                             type="object"
                             string="Test"
-                            invisible="1"/>
+                            invisible="1"/>-->
                 </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
                             <field name="name_seq" style="font-size: 24px; color:gray" /> -
                             <field name="name"
-                                   placeholder="Book Name"
+                                   placeholder="Tiêu đề..."
                                    nolabel="1"
                                    style="color:#7C7BAD"
                                    class="o_text_overflow"
@@ -102,45 +105,45 @@
                         </h1>
                     </div>
                     <group col="3" colspan="3">
-                        <group col="1" colspan="1">
+                        <group col="1" colspan="1" string="Ảnh">
                             <field name="image" widget="image" class="oe_avatar" style="width:60px;height:70px" nolabel="1"/>
                         </group>
                         <group col="2" colspan="2">
-                            <!--<separator string="Information Book" col="2" colspan="4"/>-->
+                            <separator string="Thông tin sách" col="2" colspan="4"/>
                             <group colspan="2">
-                                <field name="category"/>
-                                <field name="publish_date" placeholder="Enter publish date... "/>
-                                <field name="publisher_id" placeholder="Enter Publisher... "/>
+                                <field name="category" placeholder="Thể loại..."/>
+                                <field name="publish_date" placeholder="Ngày xuất bản... "/>
+                                <field name="publisher_id" placeholder="Nhà xuất bản... "/>
                                 <field name="author_ids"
-                                       placeholder="Choose Author... "
+                                       placeholder="Tác giả... "
                                        widget="many2many_tags"
                                        required="1"/>
                                 <field name="translator_ids"
-                                       placeholder="Choose Translator... "
+                                       placeholder="Dịch giả... "
                                        widget="many2many_tags"/>
                             </group>
                         </group>
                         <notebook colspan="4">
-                            <page string="Details">
+                            <page string="Thông tin khác">
                                 <group>
                                      <group>
-                                        <field name="book_type"/>
-                                        <field name="num_page" placeholder="Enter Num Page...."/>
-                                        <field name="rack" placeholder="Choose Library Rack..." required="1"/>
+                                        <field name="book_type" placeholder="Loại bìa..."/>
+                                        <field name="num_page" placeholder="Số trang...."/>
+                                        <field name="rack" placeholder="Giá chứa..." required="1"/>
                                         <field name="quantity"/>
                                         <field name="remaining"/>
                                     </group>
                                     <group>
-                                        <field name="book_term" widget="integer"/>
-                                        <field name="currency_id" placeholder="Choose Currency..."/>
+                                        <field name="book_term" widget="integer" placeholder="Giới hạn ngày mượn..."/>
+                                        <field name="currency_id" placeholder="Tiền tệ..."/>
                                         <!-- class="oe_edit_only"-->
-                                        <field name="price" placeholder="Enter Price..."/>
-                                        <field name="language_id" placeholder="Choose Language..."/>
+                                        <field name="price" placeholder="Giá tiền..."/>
+                                        <field name="language_id" placeholder="Ngôn ngữ..."/>
                                         <field name="is_active"/>
                                     </group>
                                 </group>
                             </page>
-                             <page string="Meta Books" >
+                             <page string="Meta Sách" >
                                  <field name="meta_book_ids" >
                                      <tree editable="bottom" decoration-danger="state == 'not_available'"
                                            decoration-success="state == 'available'">
@@ -150,7 +153,7 @@
                                          <field name="state" attrs="{'readonly':[('checkout', 'not in', ['', False])]}"/>
                                          <field name="is_lost"/>
                                          <field name="is_active" groups="do_an_tn.library_group_librarian"/>
-                                         <field name="checkout" groups="do_an_tn.library_group_librarian"/>
+                                         <field name="checkout" groups="do_an_tn.library_group_librarian" placeholder="Phiếu mượn(Nếu có)..."/>
                                      </tree>
                                  </field>
                             </page>
@@ -231,10 +234,10 @@
        <field name="model">lib.book</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name" string="Book Name"/>
-                <field name="name_seq" string="Book ID"/>
-                <filter name="publisher_id" string="Publisher" context="{'group_by':'publisher_id'}"/>
-                <filter name="category" string="Category abc" context="{'group_by':'category'}"/>
+                <field name="name" string="Tiêu đề"/>
+                <field name="name_seq" string="Mã sách"/>
+                <filter name="publisher_id" string="Nhà xuất bản" context="{'group_by':'publisher_id'}"/>
+                <filter name="category" string="Thể loại" context="{'group_by':'category'}"/>
             </search>
         </field>
     </record>
@@ -282,11 +285,11 @@
                        </div>
                    <group>
                        <group>
-                           <field name="book_id"/>
-                           <field name="state"/>
+                           <field name="book_id" placeholder="Mã sách..."/>
+                           <field name="state" placeholder="Trạng thái..."/>
                        </group>
                        <group>
-                           <field name="description"/>
+                           <field name="description" placeholder="Tình trạng..."/>
                        </group>
                    </group>
                </sheet>

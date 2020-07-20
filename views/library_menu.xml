@@ -1,274 +1,274 @@
 <?xml version="1.0"?>
 <odoo>
     <!--Library School Menuitem-->
-    <menuitem id="menu_library" name="Library School" web_icon="do_an_tn,static/description/icon.png" sequence="-1"/>
+    <menuitem id="menu_library" name="Thư viện trường học" web_icon="do_an_tn,static/description/icon.png" sequence="-1"/>
 
     <!--Other Menuitem-->
-    <menuitem id="menu_library_others" name="Others" parent="menu_library"
+    <menuitem id="menu_library_others" name="Khác" parent="menu_library"
               sequence="40"/>
 
     <!--Library Menuitem-->
-    <menuitem id="menu_library_library" name="Library" parent="menu_library_others"
+    <menuitem id="menu_library_library" name="Thư viện" parent="menu_library_others"
               sequence="0"/>
 
     <!--Library Menuitem-->
-    <menuitem id="menu_library_school" name="School" parent="menu_library_others"
-              sequence="10"
-              groups="do_an_tn.library_group_librarian"/>
+    <menuitem id="menu_library_school" name="Trường đại học" parent="menu_library_others"
+              sequence="10"/>
 
     <!--Author-->
     <record id="action_library_author" model="ir.actions.act_window">
-        <field name="name">Authors</field>
+        <field name="name">Tác giả</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.author</field>
         <field name="view_mode">kanban,pivot,tree,form</field>
         <!--<field name="context">{"search_default_country_id":0}</field>-->
     </record>
     <menuitem id="menu_library_author"
-              name="Authors"
+              name="Tác giả"
               parent="menu_library_library"
               action="action_library_author"
               sequence="0"/>
 
     <!--Publisher-->
     <record id="action_library_publisher" model="ir.actions.act_window">
-        <field name="name">Publishers</field>
+        <field name="name">Nhà xuất bản</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.publisher</field>
         <field name="view_mode">kanban,tree,form</field>
     </record>
-    <menuitem id="menu_library_publisher" name="Publisher" parent="menu_library_library"
+    <menuitem id="menu_library_publisher" name="Nhà xuất bản" parent="menu_library_library"
               action="action_library_publisher" sequence="10"/>
 
     <!--Student Major-->
     <record id="action_student_major" model="ir.actions.act_window">
-        <field name="name">Majors</field>
+        <field name="name">Chuyên ngành</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.student.major</field>
         <field name="view_mode">kanban,form</field>
     </record>
 
-    <menuitem id="menu_student_major" name="Major" parent="menu_library_school" action="action_student_major"
+    <menuitem id="menu_student_major" name="Chuyên ngành" parent="menu_library_school" action="action_student_major"
               sequence="20"/>
 
     <!--Teacher Role-->
     <record id="action_teacher_role" model="ir.actions.act_window">
-        <field name="name">Role Teacher</field>
+        <field name="name">Chức vụ giảng viên</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.teacher.role</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_teacher_role" name="Role Teacher" parent="menu_library_school" action="action_teacher_role"
+    <menuitem id="menu_teacher_role" name="Chức vụ giảng viên" parent="menu_library_school" action="action_teacher_role"
               sequence="30"/>
 
     <!--Category of Others Menuitem-->
-    <menuitem id="menu_category" name="Categories" parent="menu_library_others" sequence="20"/>
+    <menuitem id="menu_category" name="Thể loại" parent="menu_library_others" sequence="20"/>
     <!--Book Categories-->
     <record id="action_categories_book" model="ir.actions.act_window">
-        <field name="name">Categories</field>
+        <field name="name">Thể loại sách</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.category.book</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_library_category" name="Categories Book" parent="menu_category" action="action_categories_book"
+    <menuitem id="menu_library_category" name="Thể loại sách" parent="menu_category" action="action_categories_book"
               sequence="20"/>
 
     <!--Magazine Categories-->
     <record id="action_categories_magazine" model="ir.actions.act_window">
-        <field name="name">Categories Magazine</field>
+        <field name="name">Thể loại tạp chí</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.category.magazine</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_categories_magazine" name="Categories Magazine"
+    <menuitem id="menu_categories_magazine" name="Thể loại tạp chí"
               parent="menu_category"
               action="action_categories_magazine" sequence="0"/>
 
     <!--Newspaper Categories-->
     <record id="action_categories_newspaper" model="ir.actions.act_window">
-        <field name="name">Categories Newspaper</field>
+        <field name="name">Thể loại báo</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.category.newspaper</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_categories_newspaper" name="Categories Newspaper"
+    <menuitem id="menu_categories_newspaper" name="Thể loại báo"
               parent="menu_category"
               action="action_categories_newspaper" sequence="10"/>
 
     <!--Stage-->
-    <menuitem id="menu_Others_stage" name="Stage"
+    <menuitem id="menu_Others_stage" name="Giai đoạn"
               parent="menu_library_others"
-              sequence="30"/>
+              sequence="30"
+              groups="do_an_tn.library_group_librarian"/>
 
     <!--Card Stage-->
     <record id="action_card_stage" model="ir.actions.act_window">
-        <field name="name">Card Stage</field>
+        <field name="name">Giai đoạn thẻ mượn</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.card.stage</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_card_stage" name="Card Stage"
+    <menuitem id="menu_card_stage" name="Giai đoạn thẻ mượn"
               parent="menu_Others_stage"
               action="action_card_stage"
               sequence="50"/>
 
     <!--Checkout Stage-->
     <record id="action_checkout_stage" model="ir.actions.act_window">
-        <field name="name">Checkout Stage</field>
+        <field name="name">Giai đoạn phiếu mượn</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.checkout.stage</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_checkout_stage" name="Checkout Stage"
+    <menuitem id="menu_checkout_stage" name="Giai đoạn phiếu mượn"
               parent="menu_Others_stage"
               action="action_checkout_stage"
               sequence="60"/>
 
     <!--Member Menuitem-->
-    <menuitem id="menu_library_member" name="Members" parent="menu_library"
+    <menuitem id="menu_library_member" name="Độc giả" parent="menu_library"
               sequence="20"/>
 
     <!--Student of Member-->
     <record id="action_library_student" model="ir.actions.act_window">
-        <field name="name">Students</field>
+        <field name="name">Sinh viên</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.student</field>
         <field name="context">{"search_default_major_name":1}</field>
         <field name="view_mode">kanban,tree,form</field>
     </record>
 
-    <menuitem id="menu_library_student" name="Student"
+    <menuitem id="menu_library_student" name="Sinh viên"
               parent="menu_library_member"
               action="action_library_student"
               sequence="0"/>
 
     <!--Teacher of Member-->
     <record id="action_library_teacher" model="ir.actions.act_window">
-        <field name="name">Teachers</field>
+        <field name="name">Giảng viên</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.teacher</field>
         <field name="view_mode">kanban,tree,form</field>
     </record>
 
-    <menuitem id="menu_library_teacher" name="Teacher"
+    <menuitem id="menu_library_teacher" name="Giảng viên"
               parent="menu_library_member" action="action_library_teacher"
               sequence="10"/>
 
     <!--Document Menuitem-->
-    <menuitem id="menu_library_document" name="Documents" parent="menu_library"
+    <menuitem id="menu_library_document" name="Tài liệu" parent="menu_library"
               sequence="30"/>
 
     <!--Setting-->
-    <menuitem id="menu_library_setting" name="Settings"
+    <menuitem id="menu_library_setting" name="Thiết lập"
               parent="menu_library_others"
               sequence="40"
-              groups="do_an_tn.library_group_manager"/>
+              groups="do_an_tn.library_group_librarian"/>
 
     <!--Language-->
     <record id="action_inherit_res_lang" model="ir.actions.act_window">
-        <field name="name">Language</field>
+        <field name="name">Ngôn ngữ sách</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">res.lang</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_inherit_res_lang" name="Languages"
+    <menuitem id="menu_inherit_res_lang" name="Ngôn ngữ sách"
               parent="menu_library_setting" action="action_inherit_res_lang"
               sequence="0"/>
 
     <!--Currency-->
     <record id="action_inherit_res_currency" model="ir.actions.act_window">
-        <field name="name">Currency</field>
+        <field name="name">Tiền tệ</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">res.currency</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_inherit_document_currency" name="Currency"
+    <menuitem id="menu_inherit_document_currency" name="Tiền tệ"
               parent="menu_library_setting" action="action_inherit_res_currency"
               sequence="10"/>
 
     <!--inherit scheduled action-->
     <record id="action_scheduled_action_inherit" model="ir.actions.act_window">
-        <field name="name">Scheduled Action Inherit</field>
+        <field name="name">Hoạt động theo lịch trình</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">ir.cron</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_scheduled_action" name="Scheduled Action"
+    <menuitem id="menu_scheduled_action" name="Hoạt động theo lịch trình"
               parent="menu_library_setting" action="action_scheduled_action_inherit"
               sequence="20"/>
 
     <!--Library Rack-->
     <record id="action_library_rack" model="ir.actions.act_window">
-        <field name="name">Library Rack</field>
+        <field name="name">Giá chứa tài liệu</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.rack</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_library_rack" name="Library Racks"
+    <menuitem id="menu_library_rack" name="Giá chứa tài liệu"
               parent="menu_library_library" action="action_library_rack"
               sequence="40"/>
 
      <!--Translator-->
     <record id="action_library_translator" model="ir.actions.act_window">
-        <field name="name">Translator</field>
+        <field name="name">Dịch giả</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.translator</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_library_translator" name="Translator"
+    <menuitem id="menu_library_translator" name="Dịch giả"
               parent="menu_library_library" action="action_library_translator"
               sequence="20"/>
 
     <!--Book-->
     <record id="action_library_book" model="ir.actions.act_window">
-        <field name="name">Books</field>
+        <field name="name">Sách</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.book</field>
         <field name="view_mode">kanban,pivot,tree,form</field>
     </record>
 
-    <menuitem id="menu_library_book" name="Book"
+    <menuitem id="menu_library_book" name="Sách"
               parent="menu_library_document" action="action_library_book"
               sequence="0"/>
 
     <!--Project-->
     <record id="action_document_project" model="ir.actions.act_window">
-        <field name="name">Project</field>
+        <field name="name">Đồ án, luận văn</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.document.project</field>
         <field name="view_mode">kanban,pivot,form</field>
     </record>
 
-    <menuitem id="menu_document_project" name="Project"
+    <menuitem id="menu_document_project" name="Đồ án, luận văn"
               parent="menu_library_document" action="action_document_project"
               sequence="10"/>
 
     <!--Magazine/Newspaper-->
     <record id="action_magazine_newspaper" model="ir.actions.act_window">
-        <field name="name">Magazine and Newspaper</field>
+        <field name="name">Tạp chí - báo</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.magazine.newspaper</field>
         <field name="view_mode">kanban,pivot,form</field>
     </record>
 
-    <menuitem id="menu_magazine_newspaper" name="Magazine/Newspaper"
+    <menuitem id="menu_magazine_newspaper" name="Tạp chí - báo"
               parent="menu_library_document" action="action_magazine_newspaper"
               sequence="20"/>
 
     <!--Card-->
     <record id="action_library_card" model="ir.actions.act_window">
-        <field name="name">Card Details</field>
+        <field name="name">Thẻ thư viện</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.card</field>
         <field name="limit">80</field>
@@ -276,102 +276,100 @@
         <field name="view_mode">kanban,pivot,calendar,tree,form</field>
     </record>
 
-    <menuitem id="menu_library_card" name="Card Details"
+    <menuitem id="menu_library_card" name="Thẻ thư viện"
               parent="menu_library" action="action_library_card"
               sequence="10"/>
 
-    <!--Checkout Menuitem-->
-    <menuitem id="menu_library_checkout" name="Checkouts"
-              parent="menu_library"
-              sequence="5"
-              groups="do_an_tn.library_group_librarian"/>
-
     <!--Library Duration-->
     <record id="action_library_duration" model="ir.actions.act_window">
-        <field name="name">Library Duration</field>
+        <field name="name">Thông tin thời hạn</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.duration</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_library_duration" name="Library Duration"
+    <menuitem id="menu_library_duration" name="Thông tin thời hạn"
               parent="menu_library_library" action="action_library_duration"
               sequence="30"/>
 
     <!--Email Template-->
     <record id="action_email_template" model="ir.actions.act_window">
-        <field name="name">Email Template</field>
+        <field name="name">Mẫu Email</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">mail.template</field>
         <field name="context">{"search_default_model":1}</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_email_template" name="Email Template"
+    <menuitem id="menu_email_template" name="Mẫu Email"
               parent="menu_library_setting" action="action_email_template"
               sequence="30"/>
 
     <!--Record Rules-->
     <record id="action_record_rules" model="ir.actions.act_window">
-        <field name="name">Record Rules</field>
+        <field name="name">Quy tắc truy cập</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">ir.rule</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_record_rules" name="Record Rule"
+    <menuitem id="menu_record_rules" name="Quy tắc truy cập"
               parent="menu_library_setting" action="action_record_rules"
               sequence="40"/>
 
+    <!--Checkout Menuitem-->
+    <menuitem id="menu_library_checkout" name="Phiếu mượn"
+              parent="menu_library"
+              sequence="5"/>
+
     <!--Checkout At Lib-->
     <record id="action_library_checkout_at_lib" model="ir.actions.act_window">
-        <field name="name">Checkout At Library</field>
+        <field name="name">Mượn tại thư viện</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.checkout.at.lib</field>
         <field name="context">{'search_default_draft_running_state':1}</field>
         <field name="view_mode">kanban,calendar,pivot,tree,form</field>
     </record>
 
-    <menuitem id="menu_library_checkout_at_lib" name="Checkout At Library"
+    <menuitem id="menu_library_checkout_at_lib" name="Mượn tại thư viện"
               parent="menu_library_checkout" action="action_library_checkout_at_lib"
               sequence="0"/>
 
     <!--Checkout Back Home-->
     <record id="action_checkout_back_home" model="ir.actions.act_window">
-        <field name="name">Checkout Back Home</field>
+        <field name="name">Mượn về nhà</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.checkout.back.home</field>
         <field name="context">{'search_default_running_state':1}</field>
         <field name="view_mode">kanban,pivot,tree,form</field>
     </record>
 
-    <menuitem id="menu_checkout_back_home" name="Checkout Back Home"
+    <menuitem id="menu_checkout_back_home" name="Mượn về nhà"
               parent="menu_library_checkout" action="action_checkout_back_home"
               sequence="10"/>
 
     <record id="action_library_dashboard" model="ir.actions.act_window">
-        <field name="name">Library Dashboard</field>
+        <field name="name">Bảng thông tin</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">board.board</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="board.board_my_dash_view"/>
     </record>
 
-    <menuitem id="menu_library_dashboard" name="Dashboard"
+    <menuitem id="menu_library_dashboard" name="Bảng thông tin"
               parent="menu_library" action="action_library_dashboard"
               sequence="1"
               groups="do_an_tn.library_group_librarian"/>
 
     <record id="action_library_department" model="ir.actions.act_window">
-        <field name="name">Library Department</field>
+        <field name="name">Phòng ban</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.department</field>
         <field name="view_mode">kanban,tree,form</field>
     </record>
 
-    <menuitem id="menu_library_department" name="Department"
+    <menuitem id="menu_library_department" name="Phòng ban"
               parent="menu_library" action="action_library_department"
-              sequence="2"
-              groups="do_an_tn.library_group_librarian"/>
+              sequence="2"/>
 
 </odoo>

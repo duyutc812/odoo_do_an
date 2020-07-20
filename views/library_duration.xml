@@ -9,8 +9,9 @@
                 <field name="duration"/>
                 <field name="book_limit"/>
                 <field name="syllabus_limit"/>
-                <field name="currency_id"/>
                 <field name="price"/>
+                <field name="currency_id"/>
+
             </tree>
         </field>
     </record>

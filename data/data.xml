@@ -2,18 +2,18 @@
     <data noupdate="0">
         <!--data library rack-->
         <record id="data_rack_1" model="lib.rack">
-            <field name="name">Rack 1</field>
+            <field name="name">Giá chứa 1</field>
             <field name="name_seq">LR1</field>
         </record>
 
         <record id="data_rack_2" model="lib.rack">
-            <field name="name">Rack 2</field>
+            <field name="name">Giá chứa 2</field>
             <field name="name_seq">LR2</field>
         </record>
 
         <!--data library duration-->
         <record id="data_library_duration_1" model="lib.duration">
-            <field name="name">3 months(student)</field>
+            <field name="name">3 tháng(SV)</field>
             <field name="duration">3</field>
             <field name="member_type">student</field>
             <field name="price">20000</field>
@@ -22,7 +22,7 @@
         </record>
 
         <record id="data_library_duration_2" model="lib.duration">
-            <field name="name">6 months(student)</field>
+            <field name="name">6 tháng(SV)</field>
             <field name="duration">6</field>
             <field name="member_type">student</field>
             <field name="price">30000</field>
@@ -31,7 +31,7 @@
         </record>
 
         <record id="data_library_duration_3" model="lib.duration">
-            <field name="name">6 months(teacher)</field>
+            <field name="name">6 tháng(GV)</field>
             <field name="duration">6</field>
             <field name="member_type">teacher</field>
             <field name="price">0</field>
@@ -48,7 +48,7 @@
             <field name="gender">male</field>
             <field name="country_id">241</field>
             <field name="born_date">1955-05-07</field>
-            <field name="biography">Biography of Nguyễn Nhật Ánh</field>
+            <field name="biography">Tiểu sử của tác giả Nguyễn Nhật Ánh</field>
         </record>
 
         <record id="data_author_2" model="lib.author">
@@ -60,7 +60,7 @@
             <field name="country_id">241</field>
             <field name="born_date">1917-10-29</field>
             <field name="death_date">1951-11-30</field>
-            <field name="biography">Biography of Nam Cao</field>
+            <field name="biography">Tiểu sử của tác giả Nam Cao</field>
         </record>
 
         <record id="data_author_3" model="lib.author">
@@ -72,7 +72,7 @@
             <field name="country_id">231</field>
             <field name="born_date">1900-05-22</field>
             <field name="death_date">1930-07-07</field>
-            <field name="biography">Biography of Sir Conan Doyle</field>
+            <field name="biography">Tiểu sử của tác giả Sir Conan Doyle</field>
         </record>
 
         <record id="data_author_4" model="lib.author">
@@ -82,7 +82,7 @@
             <field name="author_image" type="base64" file="do_an_tn\static\default_image.png"/>
             <field name="gender">female</field>
             <field name="country_id">241</field>
-            <field name="biography">Biography of Gao</field>
+            <field name="biography">Tiểu sử của tác giả Nguyễn Ngọc Tư</field>
         </record>
 
         <!--data publisher 1 - 4-->
@@ -198,10 +198,10 @@
             <field name="born_date">1996-03-26</field>
             <field name="phone">0982712312</field>
             <field name="identity_card">1242312331</field>
-            <field name="street">Street A</field>
-            <field name="sub_district">Sub District A</field>
-            <field name="district">District A</field>
-            <field name="city">City A</field>
+            <field name="street">Đường A</field>
+            <field name="sub_district">Xã A</field>
+            <field name="district">Huyện A</field>
+            <field name="city">Thành Phố A</field>
             <field name="country_id">241</field>
             <field name="email">studentone@gmail.com</field>
             <field name="major_id" ref="data_student_major_1"/>
@@ -216,10 +216,10 @@
             <field name="born_date">1998-08-10</field>
             <field name="phone">0982742312</field>
             <field name="identity_card">1242314521</field>
-            <field name="street">Street B</field>
-            <field name="sub_district">Sub District B</field>
-            <field name="district">District B</field>
-            <field name="city">City B</field>
+            <field name="street">Đường B</field>
+            <field name="sub_district">Thị trấn B</field>
+            <field name="district">Huyện B</field>
+            <field name="city">Thành Phố B</field>
             <field name="country_id">241</field>
             <field name="email">studenttwo@gmail.com</field>
             <field name="major_id" ref="data_student_major_2"/>
@@ -285,55 +285,55 @@
             <field name="book_term">30</field>
         </record>
 
-        <!--data Checkout Stage-->
+        <!--data Card Stage-->
         <record id="data_card_stage_1" model="lib.card.stage">
-            <field name="name">Draft</field>
+            <field name="name">Nháp</field>
             <field name="sequence">10</field>
             <field name="state">draft</field>
         </record>
 
         <record id="data_card_stage_2" model="lib.card.stage">
-            <field name="name">Confirm</field>
+            <field name="name">Xác nhận</field>
             <field name="sequence">20</field>
             <field name="state">running</field>
         </record>
 
         <record id="data_card_stage_3" model="lib.card.stage">
-            <field name="name">Expire</field>
+            <field name="name">Hết hạn</field>
             <field name="sequence">30</field>
             <field name="state">expire</field>
         </record>
 
         <!--Checkout Stage-->
         <record id="data_checkout_stage_1" model="lib.checkout.stage">
-            <field name="name">Draft</field>
+            <field name="name">Nháp</field>
             <field name="sequence">10</field>
             <field name="state">draft</field>
         </record>
 
         <record id="data_checkout_stage_2" model="lib.checkout.stage">
-            <field name="name">Borrowed</field>
+            <field name="name">Đã mượn</field>
             <field name="sequence">20</field>
             <field name="state">running</field>
         </record>
 
         <record id="data_checkout_stage_3" model="lib.checkout.stage">
-            <field name="name">Returned</field>
+            <field name="name">Đã trả</field>
             <field name="sequence">30</field>
             <field name="state">done</field>
         </record>
 
         <record id="data_checkout_stage_4" model="lib.checkout.stage">
-            <field name="name">Fined</field>
+            <field name="name">Bị phạt</field>
             <field name="sequence">40</field>
             <field name="state">fined</field>
         </record>
 
-        <!--<record id="data_checkout_stage_5" model="lib.checkout.stage">
-            <field name="name">Lost</field>
+        <record id="data_checkout_stage_5" model="lib.checkout.stage">
+            <field name="name">Mất tài liệu</field>
             <field name="sequence">50</field>
             <field name="state">lost</field>
-        </record>-->
+        </record>
 
         <!--data project-->
         <record id="data_project_1" model="lib.document.project">

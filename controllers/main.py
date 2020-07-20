@@ -9,11 +9,9 @@ class CheckoutMagazineNewspaperController(http.Controller):
     def checkout_mg_new_banner(self):
         return {
             'html': """
-                
-                        <center>
+                    <center>
                         <h1 style="color:red">
-                            Notice: Magazine and newspaper only borrowed at the library.
+                            Lưu ý: Tạp chí - báo chỉ được mượn tại thư viện.
                         </h1>
-        
-                        </center>"""
+                    </center>"""
         }

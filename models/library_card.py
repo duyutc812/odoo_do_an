@@ -9,7 +9,7 @@ import pytz
 class Card(models.Model):
     _name = 'lib.card'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _description = "Library Card Information"
+    _description = "Thẻ thư viện"
     _rec_name = 'name_seq'
 
     @api.model
@@ -28,53 +28,59 @@ class Card(models.Model):
     def print_report(self):
         return self.env.ref('do_an_tn.action_library_card_detail').report_action(self)
 
-    name_seq = fields.Char(string='Code', required=True, copy=False, readonly=True, index=True,
+    name_seq = fields.Char(string='Mã thẻ mượn', required=True, copy=False, readonly=True, index=True,
                            default=lambda self: _('New'))
-    member_type = fields.Selection([('student', 'Student'), ('teacher', 'Teacher')], string='Member', track_visibility='always')
-    student_id = fields.Many2one('lib.student', string='Student Name', track_visibility='always')
-    teacher_id = fields.Many2one('lib.teacher', string='Teacher Name', track_visibility='always')
-    gt_name = fields.Char(compute="_compute_gt_name", method=True, string='Name')
-    email = fields.Char('Email User', compute='_compute_email', method=True, store=True)
-    student_image = fields.Binary(related='student_id.student_image', store=True, string="Student Image")
-    teacher_image = fields.Binary(related='teacher_id.teacher_image', store=True, string="Teacher Image")
-    book_limit = fields.Integer('No of Book on Card', readonly=True,
+    member_type = fields.Selection([
+        ('student', 'Sinh viên'),
+        ('teacher', 'Giảng viên')],
+        string='Độc giả', track_visibility='always')
+    student_id = fields.Many2one('lib.student', string='Mã sinh viên', track_visibility='always')
+    teacher_id = fields.Many2one('lib.teacher', string='Mã giảng viên', track_visibility='always')
+    gt_name = fields.Char(compute="_compute_gt_name", method=True, string='Tên độc giả')
+    email = fields.Char('Email độc giả', compute='_compute_email', method=True, store=True)
+    student_image = fields.Binary(related='student_id.student_image', store=True, string="Ảnh sinh viên")
+    teacher_image = fields.Binary(related='teacher_id.teacher_image', store=True, string="Ảnh giảng viên")
+    book_limit = fields.Integer('Tài liệu tham khảo', readonly=True,
                                 related='duration_id.book_limit', store=True)
-    syllabus_limit = fields.Integer('No of Syllabus on Card', readonly=True,
+    syllabus_limit = fields.Integer('Giáo trình', readonly=True,
                                     related='duration_id.syllabus_limit', store=True)
     stage_id = fields.Many2one('lib.card.stage',
                                default=_default_stage,
                                group_expand='_group_expand_stage_id',
                                track_visibility='always')
     state = fields.Selection(related='stage_id.state', store=True)
-    start_date = fields.Date('Start Date', default=fields.Date.today(), track_visibility='always')
-    duration_id = fields.Many2one('lib.duration', string='Duration', track_visibility='always')
-    end_date = fields.Date('End Date', compute="_compute_end_date", store=True, track_visibility='always')
+    start_date = fields.Date('Ngày bắt đầu', default=fields.Date.today(), track_visibility='always')
+    duration_id = fields.Many2one('lib.duration', string='Thời hạn', track_visibility='always')
+    end_date = fields.Date('Ngày hết hạn', compute="_compute_end_date", store=True, track_visibility='always')
 
-    currency_id = fields.Many2one('res.currency', 'Currency', related='duration_id.currency_id', store=True)
-    price = fields.Monetary('Price', 'currency_id', compute='_compute_price', store=True)
-    user_id = fields.Many2one('res.users', 'Librarian',
+    currency_id = fields.Many2one('res.currency', 'Tiền tệ', related='duration_id.currency_id', store=True)
+    price = fields.Monetary('Giá tiền', 'currency_id', compute='_compute_price', store=True)
+    user_id = fields.Many2one('res.users', 'Nhân viên thư viện',
                               default=lambda s: s.env.uid,
                               readonly=True, required=True,
                               )
-    is_penalty = fields.Boolean('Penalty', default=False)
+    is_penalty = fields.Boolean('Bị Phạt?', default=False)
     duration_penalty = fields.Selection([
-        ('2_week', '2 weeks'),
-        ('1_month', '1 month'),
-    ], string='Duration Penalty')
-    end_date_penalty = fields.Date('End Date Penalty',
+        ('2_week', '2 tuần'),
+        ('1_month', '1 tháng'),
+    ], string='Thời hạn phạt')
+    end_date_penalty = fields.Date('Ngày kết thúc phạt',
                                    compute='_compute_end_date_penalty', store=True)
-    note = fields.Char('Note')
-    is_active = fields.Boolean('Active', default=True)
-    chk_mg_new = fields.Integer(string="Borrowed Book",
-                                compute='_compute_chk_mg_new',
-                                readonly=True)
-    count = fields.Integer(compute='_compute_count')
+    note = fields.Char('Ghi chú')
+    is_active = fields.Boolean('Có hiệu lực?', default=True)
+    count_al = fields.Integer(compute='_compute_count')
+    count_bh = fields.Integer(compute='_compute_count')
 
     # kanban_state = fields.Selection(
     #     [('grey', 'Draft'),
     #      ('red', 'Penalty'),
     #      ('green', 'Confirm')],
     #     string='Kanban State', compute='_compute_kanban_state')
+
+    @api.constrains('member_type', 'duration_id')
+    def _constraint_member_type_duration_id(self):
+        if self.member_type != self.duration_id.member_type:
+            raise ValidationError(_('Hãy chọn lại thời hạn của thẻ thư viện!'))
 
     @api.onchange('is_penalty')
     def _onchange_is_penalty(self):
@@ -106,7 +112,7 @@ class Card(models.Model):
             # message = 'Penalty Card from %s' % \
             #           (str(date_today.date()) + '%s' % ('to ' + str(lib_card.end_date_penalty) if lib_card.end_date_penalty else '')
             #            + str(lib_card.note))
-            lib_card.message_post(_('Penalty Card'))
+            lib_card.message_post(_('Thẻ mượn đã bị phạt'))
             context = dict(self.env.context)
             context['form_view_initial_mode'] = 'edit'
             return {
@@ -122,7 +128,7 @@ class Card(models.Model):
         for lib_card in self:
             lib_card.is_penalty = False
             lib_card._onchange_is_penalty()
-            lib_card.message_post(_('Canceled Penalty Card'))
+            lib_card.message_post(_('Đã huỷ phạt thẻ mượn'))
 
     @api.multi
     def running_state(self):
@@ -136,7 +142,7 @@ class Card(models.Model):
                 # effect when confirm Library card record
                 'effect': {
                     'fadeout': 'slow',
-                    'message': 'Library Card ' + str(lib_card.name_seq) + ' confirmed .... Thank You',
+                    'message': 'Thẻ thư viện ' + str(lib_card.name_seq) + ' đã được tạo thành công!',
                     'type': 'rainbow_man',
                 }
             }
@@ -144,7 +150,14 @@ class Card(models.Model):
     @api.multi
     def draft_state(self):
         stage_draft = self.env['lib.card.stage'].search([('state', '=', 'draft')])
+        stage_running = self.env['lib.card.stage'].search([('state', '=', 'running')])
+        chk_at_lib = self.env['lib.checkout.at.lib'].search([('state', '=', 'running')])
+        chk_back_home = self.env['lib.checkout.back.home'].search([('state', '=', 'running')])
         for lib_card in self:
+            if lib_card.stage_id == stage_running:
+                if chk_at_lib.filtered(lambda s: s.card_id.id == lib_card.id) or \
+                        chk_back_home.filtered(lambda s: s.card_id.id == lib_card.id):
+                    raise ValidationError(_('Không thể chuyển trạng thái \'Nháp\' khi có phiếu mượn đang hoạt động!'))
             lib_card.stage_id = stage_draft
             lib_card.price = 0
             lib_card.is_penalty = False
@@ -187,13 +200,11 @@ class Card(models.Model):
             if lib_card.duration_id and lib_card.stage_id != stage_draft:
                 lib_card.price = lib_card.duration_id.price
 
-    """get name for user : student or teacher"""
     @api.depends('student_id')
     def _compute_gt_name(self):
         for lib_card in self:
             lib_card.gt_name = lib_card.student_id.name if lib_card.student_id else lib_card.teacher_id.name
 
-    """get end_date for card"""
     @api.depends('start_date', 'duration_id')
     def _compute_end_date(self):
         for lib_card in self:
@@ -212,7 +223,7 @@ class Card(models.Model):
             ])
             # print(student_lib_card)
             if student_lib_card:
-                raise ValidationError(_('You cannot assign library card to same student more than once!'))
+                raise ValidationError(_('Không thể tạo nhiều thẻ với cùng một sinh viên!'))
         if self.member_type == 'teacher':
             # print(self.ids)
             teacher_lib_card = self.sudo().search([
@@ -222,37 +233,23 @@ class Card(models.Model):
             ])
             # print(teacher_lib_card)
             if teacher_lib_card:
-                raise ValidationError(_('You cannot assign library card to same teacher more than once!'))
-
-    # @api.multi
-    # def unlink(self):
-    #     for rec in self:
-    #         if rec.state == 'running' or rec.state == 'expire':
-    #             raise ValidationError(_('You cannot delete a confirmed or expire library card!'))
-    #         # elif rec.state == 'draft':
-    #         #     checkout_card = self.env['lib.checkout'].search_count([
-    #         #         ('card_id', '=', rec.id)
-    #         #     ])
-    #         #     if checkout_card:
-    #         #         raise ValidationError('Can not delete! related record')elif rec.state == 'draft':
-    #         #     checkout_card = self.env['lib.checkout'].search_count([
-    #         #         ('card_id', '=', rec.id)
-    #         #     ])
-    #         #     if checkout_card:
-    #         #         raise ValidationError('Can not delete! related record')
-    #     return super(Card, self).unlink()
+                raise ValidationError(_('Không thể tạo nhiều thẻ với cùng một giảng viên!'))
 
     def _compute_count(self):
         chk_at_lib = self.env['lib.checkout.at.lib'].sudo().search_count([
             ('card_id', '=', self.id),
         ])
-        self.count = chk_at_lib
+        chk_back_home = self.env['lib.checkout.back.home'].sudo().search_count([
+            ('card_id', '=', self.id),
+        ])
+        self.count_al = chk_at_lib
+        self.count_bh = chk_back_home
 
     @api.multi
     def library_check_card_expire(self):
         """method get card expire and confirm"""
         current_date = datetime.now()
-        print('scheduled action check card expire and cancel penalty card')
+        print('Hoạt động theo lịch trình: kiểm tra thẻ hết hạn và thẻ bị phạt')
         user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz or 'UTC')
         date_today = pytz.utc.localize(current_date).astimezone(user_tz)
         print(date_today)
@@ -265,7 +262,7 @@ class Card(models.Model):
             for lib_card in lib_card_cancel_penalty:
                 lib_card.is_penalty = False
                 lib_card._onchange_is_penalty()
-                lib_card.message_post(_('Scheduled Action: Canceled Penalty'))
+                lib_card.message_post(_('Hoạt động lịch trình: Huỷ phạt thẻ'))
         lib_card_expire = self.sudo().search([('end_date', '<', date_today),
                                        ('name_seq', '!=', _('New'))])
         if lib_card_expire:
@@ -288,7 +285,7 @@ class Card(models.Model):
     @api.multi
     def library_card_send_email(self):
         current_date = datetime.now()
-        print('scheduled of send email')
+        print('Hoạt động lịch trình gửi email')
         user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz or 'UTC')
         date_today = pytz.utc.localize(current_date).astimezone(user_tz)
         lib_card_will_expire = self.sudo().search([('end_date', '=', (date_today + rd(days=7))),
@@ -310,12 +307,31 @@ class Card(models.Model):
         for lib_card in self:
             lib_card.email = lib_card.student_id.email if lib_card.student_id else lib_card.teacher_id.email
             if not lib_card.email:
-                raise UserError(_("Cannot send email: user %s has no email address.") % lib_card.gt_name)
+                raise UserError(_("Không thể gửi email: độc giả %s không có địa chỉ email.") % lib_card.gt_name)
             # print('template: ', template, '\n', 'template_id: ', template_id)
             # self.env['email.template'].browse(template_id).send_mail(self.id, force_send=True)
             template.send_mail(lib_card.id, force_send=True, raise_exception=True)
-            print('Send Email to user ID: ', lib_card.id)
-            return self.message_post(_('Send Email for Card'))
+            print('Gửi email tới người dùng có ID: ', lib_card.id)
+            return self.message_post(_('Đã gửi email cho độc giả của thẻ này!'))
+
+    @api.multi
+    def unlink(self):
+        for rec in self:
+            if rec.state == 'running':
+                # or rec.state == 'expire'
+                raise ValidationError(_('Không thể xoá thẻ thư viện ở trạng thái đang hoạt động!'))
+            # elif rec.state == 'draft':
+            #     checkout_card = self.env['lib.checkout'].search_count([
+            #         ('card_id', '=', rec.id)
+            #     ])
+            #     if checkout_card:
+            #         raise ValidationError('Can not delete! related record')elif rec.state == 'draft':
+            #     checkout_card = self.env['lib.checkout'].search_count([
+            #         ('card_id', '=', rec.id)
+            #     ])
+            #     if checkout_card:
+            #         raise ValidationError('Can not delete! related record')
+        return super(Card, self).unlink()
 
 
 

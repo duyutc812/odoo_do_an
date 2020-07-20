@@ -6,7 +6,7 @@ import pytz
 
 class LibraryCheckoutReport(models.AbstractModel):
     _name = 'report.do_an_tn.report_library_checkout_template'
-    _description = 'Library Checkout Back Home Report'
+    _description = 'In phiếu mượn về'
 
     @api.model
     def _get_report_values(self, docids, data=None):
@@ -23,12 +23,12 @@ class LibraryCheckoutReport(models.AbstractModel):
         chk_set = {x.card_id.id for x in checkouts}
         if len(chk_set) != 1:
             checkouts_list = []
-            self.env.user.notify_danger(title='Error', message='Please select records with 1 card!')
+            self.env.user.notify_danger(_(title='Lỗi', message='Chỉ được chọn phiếu mượn của 1 thẻ mượn!'))
         else:
             user_list = [{'user': self.env.user.name}]
             for chk in checkouts:
                 if chk.state != 'running':
-                    self.env.user.notify_danger(title=_('Error'), message=_('Cannot choose record difference borrowed !'))
+                    self.env.user.notify_danger(title=_('Lỗi'), message=_('Không thể chọn bản ghi khác \'Đã mượn\'!'))
                     checkouts_list = []
                     break
                 vals = {
@@ -61,7 +61,7 @@ class LibraryCheckoutReport(models.AbstractModel):
 class PenaltyCheckoutAtLib(models.AbstractModel):
     _name = 'report.do_an_tn.report_penalty_at_lib_xls'
     _inherit = 'report.report_xlsx.abstract'
-    _description = 'Penalty Checkout At Lib Excel Report'
+    _description = 'In phiếu phạt: mượn tại thư viện : Excel'
 
     def generate_xlsx_report(self, workbook, data, lines):
         format1 = workbook.add_format({'font_size': 14, 'align': 'vcenter', 'bold': True})
@@ -74,42 +74,42 @@ class PenaltyCheckoutAtLib(models.AbstractModel):
             sheet.write(2, 2, 'Invalid')
             return True
         else:
-            sheet.write(2, 2, 'Card ID', format1)
+            sheet.write(2, 2, 'Thẻ thư viện', format1)
             sheet.write(2, 3, lines.name_seq, format2)
-            sheet.write(3, 2, 'Name', format1)
+            sheet.write(3, 2, 'Tên độc giả', format1)
             sheet.write(3, 3, lines.gt_name, format2)
-            sheet.write(4, 2, 'Type Doc', format1)
+            sheet.write(4, 2, 'Loại tài liệu', format1)
             sheet.write(4, 3, lines.type_document, format2)
             if lines.type_document == 'book':
-                sheet.write(5, 2, 'Title Doc', format1)
+                sheet.write(5, 2, 'Tiêu đề sách', format1)
                 sheet.write(5, 3, lines.book_id.name, format2)
-                sheet.write(6, 2, 'Doc ID', format1)
+                sheet.write(6, 2, 'Meta sách', format1)
                 sheet.write(6, 3, lines.meta_book_id.name_seq, format2)
             elif lines.project_id:
-                sheet.write(5, 2, 'Title Doc', format1)
+                sheet.write(5, 2, 'Đồ án - luận văn', format1)
                 sheet.write(5, 3, lines.project_id.name, format2)
-                sheet.write(6, 2, 'Doc ID', format1)
+                sheet.write(6, 2, 'Meta đồ án - luận văn', format1)
                 sheet.write(6, 3, lines.meta_project_id.name_seq, format2)
             elif lines.mgz_new_id:
-                sheet.write(5, 2, 'Title Doc', format1)
+                sheet.write(5, 2, 'Tạp chí - báo', format1)
                 sheet.write(5, 3, lines.mgz_new_id.name_get()[0][1], format2)
                 sheet.write(6, 2, 'Doc ID', format1)
                 sheet.write(6, 3, lines.meta_mgz_new_id.name_seq, format2)
-            sheet.write(7, 2, 'Description', format1)
+            sheet.write(7, 2, 'Tình trạng', format1)
             sheet.write(7, 3, lines.status_document, format2)
-            sheet.write(8, 2, 'Price', format1)
+            sheet.write(8, 2, 'Giá tài liệu', format1)
             sheet.write(8, 3, lines.doc_price, format2)
-            sheet.write(9, 2, 'Return Date', format1)
+            sheet.write(9, 2, 'Ngày trả', format1)
             sheet.write(9, 3, lines.return_date.strftime('%d-%m-%Y'), format2)
-            sheet.write(10, 2, 'Penalty Price', format1)
+            sheet.write(10, 2, 'Tiền phạt', format1)
             sheet.write(10, 3, lines.penalty_price, format2)
-            sheet.write(11, 2, 'Note', format1)
+            sheet.write(11, 2, 'Ghi chú', format1)
             sheet.write(11, 3, lines.note, format2)
 
 
 class PenaltyCheckoutBHReport(models.AbstractModel):
     _name = 'report.do_an_tn.report_penalty_checkout_bh_template'
-    _description = 'Penalty Checkout Back Home Report'
+    _description = 'In phiếu phạt: mượn về nhà'
 
     @api.model
     def _get_report_values(self, docids, data=None):
@@ -125,12 +125,14 @@ class PenaltyCheckoutBHReport(models.AbstractModel):
         chk_set = {x.card_id.id for x in checkouts}
         if len(chk_set) != 1:
             checkouts_list = []
-            self.env.user.notify_danger(title='Error', message='Please select records with 1 card!')
+            self.env.user.notify_danger(_(title='Lỗi', message='Chọn các bản ghi của cùng 1 thẻ thư viện'))
         else:
             user_list = [{'user': self.env.user.name}]
             for chk in checkouts:
                 if chk.state not in ['fined', 'lost']:
-                    self.env.user.notify_danger(title=_('Error'), message=_('Cannot choose record difference Fined,Lost !'))
+                    self.env.user.notify_danger(title=_('Error'),
+                                                message=_('Không thể chọn các bản ghi ở trạng thái khác '
+                                                          '\'Bị phạt , Mất tài liệu\'!'))
                     checkouts_list = []
                     break
                 vals = {

@@ -1,6 +1,6 @@
 <odoo>
     <record id="open_books_of_author1" model="ir.actions.act_window">
-        <field name="name">All book for author</field>
+        <field name="name">Tất cả sách</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.book</field>
         <field name="view_mode">tree,form</field>
@@ -29,45 +29,44 @@
             <form>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="open_books_of_author2" type="object"
+                        <!--<button name="open_books_of_author2" type="object"
                                 class="oe_stat_button" icon="fa-book"
                                 help="type_object">
-                            <field name="count" string="All book" widget="statinfo"/>
-                        </button>
+                            <field name="count" string="Tất cả sách" widget="statinfo"/>
+                        </button>-->
                         <button name="%(open_books_of_author1)d" type="action"
-                                class="oe_stat_button" icon="fa-book"
-                                help="type_action">
-                            <field name="count" string="All book" widget="statinfo"/>
+                                class="oe_stat_button" icon="fa-book">
+                            <field name="count" string="Sách" widget="statinfo"/>
                         </button>
                         <button class="oe_stat_button" type="object" name="toggle_active" icon="fa-archive"
                                 groups="base.group_no_one"  >
                             <field name="is_active" widget="boolean_button" options='{"terminology": "archive"}'/>
                         </button>
                     </div>
-                    <separator string="Author"/>
+                    <separator string="Tác giả"/>
                     <field name="author_image" widget="image" class="oe_avatar"/>
                     <div class="oe_title">
                         <h5>
-                            ID: <field name="name_seq" />
+                            Mã TG: <field name="name_seq" />
                         </h5>
                         <h1>
                             <label for="pen_name" class="oe_edit_only"/>
-                            <field name="pen_name" style="color:#7C7BAD"/>
+                            <field name="pen_name" style="color:#7C7BAD" placeholder="Bút danh tác giả..."/>
                         </h1>
                     </div>
                     <group col="2" colspan="2">
-                        <separator string="Information Personal" colspan="4"/>
+                        <separator string="Thông tin tác giả" colspan="4"/>
                         <group>
-                            <field name="name"/>
-                            <field name="born_date"/>
-                            <field name="death_date"/>
+                            <field name="name" placeholder="Tên tác giả..."/>
+                            <field name="born_date" placeholder="Ngày sinh..."/>
+                            <field name="death_date" placeholder="Ngày mất..."/>
                         </group>
                         <group>
-                            <field name="gender"/>
-                            <field name="country_id"/>
+                            <field name="gender" placeholder="Giới tính..."/>
+                            <field name="country_id" placeholder="Quốc tịch..."/>
                         </group>
                     </group>
-                    <separator string="All Book" colspan="4" col="4"/>
+                    <separator string="Tất cả sách" colspan="4" col="4"/>
                     <group>
                         <field name="book_ids" widget="many2many_tags"/>
                     </group>
@@ -76,8 +75,8 @@
                             <field name="biography"/>
                         </page>
                     </notebook>-->
-                    <separator string="Biography" colspan="4"/>
-                    <field name="biography" nolabel="1" placeholder="Biography..."/>
+                    <separator string="Tiểu sử" colspan="4"/>
+                    <field name="biography" nolabel="1" placeholder="Tiểu sử..."/>
                 </sheet>
             </form>
         </field>
@@ -88,14 +87,14 @@
        <field name="model">lib.author</field>
         <field name="arch" type="xml">
             <search>
-                <field name="pen_name" string="Pen Name"/>
-                <field name="name" string="Name"/>
-                <field name="born_date" string="Date of Birth"/>
-                <filter string="Male" name="male" domain="[('gender', '=', 'male')]"/>
-                <filter string="Female" name="female" domain="[('gender', '=', 'female')]"/>
+                <field name="pen_name" string="Bút danh"/>
+                <field name="name" string="Tên thật"/>
+                <field name="born_date" string="Ngày sinh"/>
+                <filter string="Nam" name="male" domain="[('gender', '=', 'male')]"/>
+                <filter string="Nữ" name="female" domain="[('gender', '=', 'female')]"/>
                 <group>
-                    <filter string="Nationality" name="country_id" context="{'group_by': 'country_id'}"/>
-                    <filter string="Gender" name="gender" context="{'group_by': 'gender'}"/>
+                    <filter string="Quốc tịch" name="country_id" context="{'group_by': 'country_id'}"/>
+                    <filter string="Giới tính" name="gender" context="{'group_by': 'gender'}"/>
                 </group>
             </search>
        </field>
@@ -151,17 +150,11 @@
                                     </strong>
                                     <table valign="top" align="left" style="padding-left:10px;font-size:11px">
                                         <tr>
-                                            <th>
-                                                Pen Name:
-                                            </th>
                                             <td>
                                                 <field name="pen_name"/>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th>
-                                                Born:
-                                            </th>
                                             <td>
                                                 <field name="born_date" />
                                                 <t t-if="record.death_date.value">
@@ -170,9 +163,6 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th>
-                                                Gender:
-                                            </th>
                                             <td>
                                                 <field name="gender"/>
                                             </td>
@@ -221,19 +211,19 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <group string="Translator">
+                    <group string="Thông tin dịch giả">
                         <group>
-                            <field name="name"/>
-                            <field name="born_date"/>
-                            <field name="death_date"/>
+                            <field name="name" placeholder="Tên dịch giả..."/>
+                            <field name="born_date" placeholder="Ngày sinh..."/>
+                            <field name="death_date" placeholder="Ngày mất..."/>
                         </group>
                         <group>
-                            <field name="country_id"/>
-                            <field name="gender"/>
-                            <field name="is_active"/>
+                            <field name="country_id" placeholder="Quốc tịch..."/>
+                            <field name="gender" placeholder="Giới tính..."/>
+                            <field name="is_active" placeholder="Có hiệu lực"/>
                         </group>
                     </group>
-                    <group string="All book">
+                    <group string="Tất cả sách">
                         <field name="book_ids" widget="many2many_tags"/>
                     </group>
                 </sheet>

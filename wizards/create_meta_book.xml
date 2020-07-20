@@ -1,7 +1,7 @@
 <odoo>
     <data>
         <act_window id="action_wizard_create_meta_book"
-                    name="Create Meta Book"
+                    name="Tạo meta sách"
                     res_model="create.meta.book"
                     view_type="form"
                     view_mode="form"
@@ -15,18 +15,18 @@
                 <form>
                     <group>
                         <field name="book_id" readonly="1"/>
-                        <field name="description"/>
+                        <field name="description" placeholder="Tình trạng..."/>
                         <field name="state" readonly="1"/>
-                        <field name="quantity"/>
+                        <field name="quantity" placeholder="Số lượng..."/>
                     </group>
                     <footer>
                         <button type="object"
                                 name="button_create"
-                                string="Create"
+                                string="Tạo"
                                 class="btn-primary"
                                 />
                         <button special="cancel"
-                        string="Cancel"
+                        string="Huỷ"
                         class="btn-secondary" />
                     </footer>
                 </form>
@@ -34,7 +34,7 @@
         </record>
 
         <act_window id="action_wizard_create_meta_mg_new"
-                    name="Create Meta Magazine Newspaper"
+                    name="Tạo meta tạp chí - báo "
                     res_model="create.meta.mg.new"
                     view_type="form"
                     view_mode="form"
@@ -48,18 +48,18 @@
                 <form>
                     <group>
                         <field name="mgz_new_id" readonly="1"/>
-                        <field name="description"/>
+                        <field name="description" placeholder="Tình trạng..."/>
                         <field name="state" readonly="1"/>
-                        <field name="quantity"/>
+                        <field name="quantity" placeholder="Số lượng..."/>
                     </group>
                     <footer>
                         <button type="object"
                                 name="button_create"
-                                string="Create"
+                                string="Tạo"
                                 class="btn-primary"
                                 />
                         <button special="cancel"
-                        string="Cancel"
+                        string="Huỷ"
                         class="btn-secondary" />
                     </footer>
                 </form>

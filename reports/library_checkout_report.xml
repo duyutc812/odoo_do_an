@@ -20,7 +20,7 @@
         id="action_library_checkout_report"
         model="lib.checkout.back.home"
         report_type="qweb-html"
-        string="Checkout Report"
+        string="In phiếu mượn về"
         name="do_an_tn.report_library_checkout_template"/>
         <!--paperformat="paperformat_euro_landscape"-->
 
@@ -29,13 +29,13 @@
         <t t-call="web.html_container">
             <t t-call="web.internal_layout">
                 <t t-if="not checkouts_list">
-                    <h1>Invalid</h1>
+                    <h1>Không hợp lệ</h1>
                 </t>
                 <t t-elif="checkouts_list">
                     <div class="page">
                         <div class="container">
-                            <h1 style="text-align:center">Library School ABC</h1>
-                            <i><h5 style="text-align:right;padding-right:200px" >Address: Street A, City B,...</h5></i>
+                            <h1 style="text-align:center">Thư viện Trường Đại học ABC</h1>
+                            <i><h5 style="text-align:right;padding-right:200px" >Đại chỉ: Đường A, Quận A, Thành phố A,...</h5></i>
                             <br/>
                         </div>
                         <!--<t t-foreach="doc" t-as="o">
@@ -43,14 +43,14 @@
                             <p t-field="o.gt_name"/>
                             <p t-field="o.card_id.email"/>
                         </t>-->
-                        <h4><i><b>Information:</b></i></h4>
+                        <h4><i><b>Thông tin độc giả:</b></i></h4>
                         <div class="row mt32 mb32" id="informations" style="padding-left:40px">
                             <div t-if="doc.gt_name" class="col-auto mw-100 mb-2">
-                                <strong>Member Name:</strong>
+                                <strong>Tên độc giả:</strong>
                                 <p class="m-0" t-field="doc.gt_name"/>
                             </div>
                             <div t-if="doc.card_id.name_seq" class="col-auto mw-100 mb-2">
-                                <strong>Card ID:</strong>
+                                <strong>Mã thẻ mượn:</strong>
                                 <p class="m-0" t-field="doc.card_id.name_seq"/>
                             </div>
                             <div t-if="doc.card_id.email" class="col-auto mw-100 mb-2">
@@ -59,33 +59,31 @@
                             </div>
                             <div class="col-auto mw-100 mb-2">
                                 <t t-foreach="user_list" t-as="o">
-                                    <strong>Librarian:</strong>
+                                    <strong>Nhân viên thư viện:</strong>
                                     <p class="m-0" t-esc="o['user']"/>
                                 </t>
                             </div>
                             <div class="col-auto mw-100 mb-2">
                                 <t t-foreach="curr_date_lst" t-as="o">
-                                    <strong>Datetime:</strong>
+                                    <strong>Ngày mượn:</strong>
                                     <p class="m-0" t-esc="o['curr_date'].strftime('%H:%M:%S %d-%m-%Y')"/>
                                 </t>
                             </div>
                         </div>
-                        <h4><i><b>Checkouts:</b></i></h4>
+                        <h4><i><b>Thông tin phiếu mượn:</b></i></h4>
                         <br/>
-                        <!--report_saleorder_document-->
                         <table class="table table-sm o_main_table">
                             <thead>
                                 <tr>
-                                    <!-- TODO: remove in master -->
                                     <!--<t t-set="colspan" t-value="5"/>-->
-                                    <th class="text-center">ID</th>
-                                    <th class="text-center">Title Doc</th>
-                                    <th class="text-center">Doc ID</th>
+                                    <th class="text-center">Mã phiếu</th>
+                                    <th class="text-center">Tài liệu</th>
+                                    <th class="text-center">Mã tài liệu</th>
                                     <!--<th class="text-center">Category Doc</th>-->
-                                    <th class="text-center">Status Doc</th>
-                                    <th class="text-center">Return Date</th>
-                                    <th class="text-center">Actual Return Date</th>
-                                    <th class="text-center">Price Doc</th>
+                                    <th class="text-center">Tình trạng</th>
+                                    <th class="text-center">Ngày hẹn trả</th>
+                                    <th class="text-center">Ngày trả thực tế</th>
+                                    <th class="text-center">Giá tài liệu</th>
                                 </tr>
                             </thead>
                             <tbody class="sale_tbody" style="font-size:13px">
@@ -144,7 +142,7 @@
                                 <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
                                     <table class="table table-sm;page-break-inside: avoid;">
                                         <tr class="border-black o_total">
-                                            <td><strong>Total(Deposit):</strong></td>
+                                            <td><strong>Tổng tiền(Đặt cọc):</strong></td>
                                             <td class="text-right">
                                                 <span
                                                     t-esc="total"

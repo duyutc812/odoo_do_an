@@ -7,7 +7,7 @@ import pytz
 class CheckoutAtLib(models.Model):
     _name = 'lib.checkout.at.lib'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _description = 'Checkout In Lib'
+    _description = 'Phiếu mượn tại thư viện'
 
     @api.model
     def _default_stage(self):
@@ -17,41 +17,41 @@ class CheckoutAtLib(models.Model):
     def _group_expand_stage_id(self, stages, domain, order):
         return stages.search([], order=order)
 
-    name_seq = fields.Char(string="Checkout ID", default=lambda self: _('New'), readonly=True)
-    card_id = fields.Many2one('lib.card', string="Card ID",
+    name_seq = fields.Char(string="Mã phiếu mượn", default=lambda self: _('New'), readonly=True)
+    card_id = fields.Many2one('lib.card', string="Mã thẻ mượn",
                               required=True,
                               domain=[('state', '=', 'running'), ('is_penalty', '=', False)], track_visibility='always')
-    state_card = fields.Selection(related='card_id.state', store=True, string='State Card')
-    gt_name = fields.Char(related='card_id.gt_name', store=True, track_visibility='always')
+    state_card = fields.Selection(related='card_id.state', store=True, string='Trạng thái thẻ mượn')
+    gt_name = fields.Char(related='card_id.gt_name', store=True, track_visibility='always', string='Tên độc giả')
     stage_id = fields.Many2one('lib.checkout.stage',
                                default=_default_stage,
                                group_expand='_group_expand_stage_id',
                                track_visibility='always'
                                )
-    state = fields.Selection(related='stage_id.state', store=True, string='State')
+    state = fields.Selection(related='stage_id.state', store=True, string='Trạng thái phiếu mượn')
     type_document = fields.Selection([
-        ('book', 'Book'),
-        ('magazine', 'Magazine And Newspaper'),
-        ('project', 'Project'),
-    ], string='Type Document', default='book', required=True)
-    book_id = fields.Many2one('lib.book', 'Name Book')
-    meta_book_id = fields.Many2one('lib.meta.books', string='Meta Book')
-    project_id = fields.Many2one('lib.document.project', 'Name Project')
-    meta_project_id = fields.Many2one('lib.meta.projects', string='Meta Project')
-    mgz_new_id = fields.Many2one('lib.magazine.newspaper', 'Name Mgz/New', track_visibility='always')
+        ('book', 'Sách'),
+        ('magazine', 'Tạp chí - báo'),
+        ('project', 'Đồ án - luận văn'),
+    ], string='Loại tài liệu', default='book', required=True)
+    book_id = fields.Many2one('lib.book', 'Tiêu đề sách')
+    meta_book_id = fields.Many2one('lib.meta.books', string='Meta Sách')
+    project_id = fields.Many2one('lib.document.project', 'Tên đồ án')
+    meta_project_id = fields.Many2one('lib.meta.projects', string='Meta đồ án')
+    mgz_new_id = fields.Many2one('lib.magazine.newspaper', 'Tạp chí - báo', track_visibility='always')
     meta_mgz_new_id = fields.Many2one('lib.meta.magazinenewspapers',
-                                      string='Meta Mgz-New', track_visibility='always')
-    status_document = fields.Text('Description', compute='_compute_status_document', store=True)
-    doc_price = fields.Monetary("Price Doc", 'currency_id', compute='_compute_doc_price', store=True)
-    currency_id = fields.Many2one('res.currency', 'Currency',
+                                      string='Meta tạp chí - báo', track_visibility='always')
+    status_document = fields.Text('Tình trạng', compute='_compute_status_document', store=True)
+    doc_price = fields.Monetary("Giá tiền", 'currency_id', compute='_compute_doc_price', store=True)
+    currency_id = fields.Many2one('res.currency', 'Tiền tệ',
                                   default=lambda s: s.env['res.currency'].sudo().search([('name', '=', 'VND')], limit=1))
-    penalty_price = fields.Monetary('Penalty Price', 'currency_id')
-    note = fields.Char('Note')
-    user_id = fields.Many2one('res.users', 'Librarian',
+    penalty_price = fields.Monetary('Tiền phạt', 'currency_id')
+    note = fields.Char('Ghi chú')
+    user_id = fields.Many2one('res.users', 'Nhân viên thư viện',
                               default=lambda s: s.env.uid,
                               readonly=True, track_visibility='always', required=True)
-    borrow_date = fields.Datetime(string='Borrow Date', track_visibility='always')
-    return_date = fields.Datetime(string='Return Date', track_visibility='always')
+    borrow_date = fields.Datetime(string='Ngày mượn', track_visibility='always')
+    return_date = fields.Datetime(string='Ngày trả', track_visibility='always')
     count_waiting = fields.Integer(compute='_compute_count_waiting')
 
     @api.multi
@@ -61,11 +61,11 @@ class CheckoutAtLib(models.Model):
     @api.constrains('book_id', 'meta_book_id', 'project_id', 'meta_project_id', 'mgz_new_id', 'meta_mgz_new_id')
     def _constrains_doc_meta_doc(self):
         if self.book_id != self.meta_book_id.book_id:
-            raise ValidationError(_('Let \'s select meta book again!'))
+            raise ValidationError(_('Chọn lại meta sách!'))
         elif self.mgz_new_id != self.meta_mgz_new_id.mgz_new_id:
-            raise ValidationError(_('Let \'s select meta mgz/new again!'))
+            raise ValidationError(_('Chọn lại meta tạp chí - báo!'))
         elif self.project_id != self.meta_project_id.project_id:
-            raise ValidationError(_('Let \'s select meta project again!'))
+            raise ValidationError(_('Chọn lại meta đồ án - luận văn!'))
 
     @api.onchange('meta_book_id', 'meta_project_id', 'meta_mgz_new_id')
     def _onchange_meta_book_id(self):
@@ -84,8 +84,8 @@ class CheckoutAtLib(models.Model):
             self.card_id = ''
             return {
                 'warning': {
-                    'title': _('Card ID'),
-                    'message': _('You are borrowing a document, please return it to continue!'),
+                    'title': _('Thẻ thư viện'),
+                    'message': _('Bạn đang mượn một tài liệu, vui lòng trả lại để tiếp tục!'),
                 }
             }
 
@@ -156,7 +156,7 @@ class CheckoutAtLib(models.Model):
                   ('id', 'not in', self.ids)]
         chk_of_card = lib_checkout.sudo().search(domain)
         if chk_of_card:
-            raise ValidationError(_('You cannot borrow book to same card more than once!'))
+            raise ValidationError(_('Bạn không thể mượn tài liệu giống nhau!'))
 
         domain2 = [
             ('card_id', '=', self.card_id.id),
@@ -165,7 +165,7 @@ class CheckoutAtLib(models.Model):
         ]
         checkout_of_card2 = lib_checkout.sudo().search_count(domain2)
         if checkout_of_card2:
-            raise ValidationError(_('You have borrowed more than the specified number of books for each card'))
+            raise ValidationError(_('Bạn đã mượn nhiều hơn số lượng sách được chỉ định cho mỗi thẻ'))
 
     @api.onchange('state')
     def _onchange_state(self):
@@ -185,43 +185,43 @@ class CheckoutAtLib(models.Model):
             if self.sudo().search([('card_id', '=', chk.card_id.id),
                             ('state', '=', 'running'),
                             ('id', 'not in', self.ids)]):
-                raise ValidationError(_('You are borrowing a document, please return it to continue!'))
+                raise ValidationError(_('Bạn đang mượn một tài liệu, vui lòng trả lại để tiếp tục!'))
             chk.name_seq = self.env['ir.sequence'].next_by_code('lib.checkout.sequence') or _('New')
             chk.stage_id = state_running
             chk._onchange_state()
             if chk.book_id:
                 if not chk.meta_book_id:
-                    raise ValidationError(_('Choose Meta Book!'))
+                    raise ValidationError(_('Hãy chọn lại meta sách!'))
                 if chk.meta_book_id.state == 'available':
                     chk.meta_book_id.state = 'not_available'
                     chk.book_id._compute_quantity_remaining()
-                    chk.meta_book_id.checkout = str(chk.name_get()[0][1]) + _(' - At lib')
+                    chk.meta_book_id.checkout = str(chk.name_get()[0][1]) + _(' - tại thư viện')
                 else:
-                    raise ValidationError(_('Book: "%s - %s" have borrowed.' %
+                    raise ValidationError(_('Sách: "%s - %s" đã được mượn.' %
                                           (self.meta_book_id.name_seq, self.book_id.name)))
             elif chk.mgz_new_id:
                 if not chk.meta_mgz_new_id:
-                    raise ValidationError(_('Choose Meta Magazine/Newspaper!'))
+                    raise ValidationError(_('Hãy chọn lại meta tạp chí - báo!'))
                 if chk.meta_mgz_new_id.state == 'available':
                     chk.meta_mgz_new_id.state = 'not_available'
                     chk.mgz_new_id._compute_quantity_remaining()
-                    chk.meta_mgz_new_id.checkout = str(chk.name_get()[0][1]) + _(' - At lib')
+                    chk.meta_mgz_new_id.checkout = str(chk.name_get()[0][1]) + _(' - tại thư viện')
                 else:
-                    raise ValidationError(_('Magazine/Newspaper have borrowed.'))
+                    raise ValidationError(_('Tạp chí - báo đã được mượn!'))
             elif chk.project_id:
                 if not chk.meta_project_id:
-                    raise ValidationError(_('Choose Meta Project!'))
+                    raise ValidationError(_('Hãy chọn lại meta đồ án - luận văn!'))
                 if chk.meta_project_id.state == 'available':
                     chk.meta_project_id.state = 'not_available'
                     chk.project_id._compute_quantity_remaining()
-                    chk.meta_project_id.checkout = str(chk.name_get()[0][1]) + _(' - At lib')
+                    chk.meta_project_id.checkout = str(chk.name_get()[0][1]) + _(' - tại thư viện')
                 else:
-                    raise ValidationError(_('Project: " %s " have borrowed.' % (self.project_id.name)))
+                    raise ValidationError(_('Đồ án - luận văn: " %s " đã được mượn.' % (self.project_id.name)))
             chk.borrow_date = fields.Datetime.now()
             return {
                 'effect': {
                     'fadeout': 'slow',
-                    'message': _('Checkout Cofirmed .... Thank You'),
+                    'message': _('Phiếu mượn đã được xác nhận'),
                     'type': 'rainbow_man',
                 }
             }
@@ -307,21 +307,21 @@ class CheckoutAtLib(models.Model):
             chk._onchange_state()
             dic = {
                 'is_lost': True,
-                'checkout': str(chk.name_get()[0][1]) + _(' - At lib'),
+                'checkout': str(chk.name_get()[0][1]) + _(' - tại thư viện'),
                 'state': 'not_available',
             }
             if chk.book_id:
                 chk.meta_book_id.write(dic)
                 chk.book_id._compute_quantity_remaining()
-                chk.note = _('lost document: %s') % (str(chk.meta_book_id.name_seq))
+                chk.note = _('Mất tài liệu: %s') % (str(chk.meta_book_id.name_seq))
             elif chk.mgz_new_id:
                 chk.meta_mgz_new_id.write(dic)
                 chk.mgz_new_id._compute_quantity_remaining()
-                chk.note = _('lost document: %s') % (str(chk.meta_mgz_new_id.name_seq))
+                chk.note = _('Mất tài liệu: %s') % (str(chk.meta_mgz_new_id.name_seq))
             elif chk.project_id:
                 chk.meta_project_id.write(dic)
                 chk.project_id._compute_quantity_remaining()
-                chk.note = _('lost document: %s') % (str(chk.meta_project_id.name_seq))
+                chk.note = _('Mất tài liệu: %s') % (str(chk.meta_project_id.name_seq))
             chk.return_date = fields.Datetime.now()
             chk.penalty_price = chk.doc_price
 
@@ -352,7 +352,7 @@ class CheckoutAtLib(models.Model):
         chk_bh_obj = self.env['lib.checkout.back.home']
         for chk in self:
             if chk.type_document == 'magazine':
-                raise ValidationError('Khong the muon ve nha')
+                raise ValidationError('Không thể mượn tạp chí - báo về nhà')
             else:
                 vals={}
                 vals.update({
@@ -370,7 +370,7 @@ class CheckoutAtLib(models.Model):
                         'meta_project_id': chk.meta_project_id.id,
                     })
             chk_bh = chk_bh_obj.create(vals)
-            return {'name': _('Borrow Back Home'),
+            return {'name': _('Phiếu mượn về'),
                     'view_mode': 'form',
                     'view_type': 'form',
                     'res_id': chk_bh.id,
@@ -398,7 +398,7 @@ class CheckoutAtLib(models.Model):
     @api.multi
     def open_checkout_waiting(self):
         return {
-            'name': _('Open Checkout Waiting'),
+            'name': _('Phiếu mượn đang chờ'),
             'domain': [('state', '=', 'draft'),
                        ('book_id', '=', self.book_id.id),
                        ('mgz_new_id', '=', self.mgz_new_id.id),

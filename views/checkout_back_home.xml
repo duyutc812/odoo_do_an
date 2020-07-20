@@ -19,7 +19,7 @@
                 <field name="category_doc"/>
                 <field name="user_id"/>
                 <field name="currency_id" invisible="1"/>
-                <field name="penalty_total" string="Penalty Price" sum="Total Penalty Price"/>
+                <field name="penalty_total" string="Tổng tiền phạt" sum="Tổng tiền phạt"/>
                 <field name="note"/>
                 <field name="state"/>
             </tree>
@@ -35,52 +35,52 @@
                     <field name="state" invisible="1"/>
                     <button name="running_state"
                             type="object"
-                            string="Confirm"
+                            string="Xác nhận"
                             class="oe_highlight"
                             attrs="{'invisible':[('state', '!=', 'draft')]}"
                             />
 
                     <button name="draft_state"
                             type="object"
-                            string="Draft"
+                            string="Nháp"
                             class="oe_highlight"
-
-                            /><!--attrs="{'invisible':[('state', '!=', 'running')]}"-->
+                            attrs="{'invisible':[('state', '!=', 'running')]}"
+                            /><!---->
 
                     <button name="done_state"
                             type="object"
-                            string="Return"
+                            string="Trả tài liệu"
                             class="oe_highlight"
                             attrs="{'invisible':[('state', '!=', 'running')]}"/>
 
                     <button name="fined_state"
                             type="object"
-                            string="Penalty"
+                            string="Phạt"
                             class="oe_highlight"
                             attrs="{'invisible':[('state', '!=', 'running')]}"/>
 
                     <button name="lost_document"
                             type="object"
-                            string="Lost Document"
-                            confirm="Lost Magazine or Newspaper? Are you sure ?"
+                            string="Mất tài liệu"
+                            confirm="Mất tài liệu? Bạn có chắc không?"
                             class="oe_highlight"
                             attrs="{'invisible':[('state', '!=', 'fined')]}"/>
 
                     <button name="cancel_state"
                             type="object"
-                            string="Cancel"
+                            string="Huỷ"
                             class="oe_highlight"
                             attrs="{'invisible':[('state', 'not in', ['lost', 'fined'])]}"/>
 
-                    <button name="%(do_an_tn.action_wizard_modify_descrip_chk_bh)d" string="Modify Description"
+                    <button name="%(do_an_tn.action_wizard_modify_descrip_chk_bh)d" string="Thay đổi tình trạng TL"
                             type="action"
                             attrs="{'invisible': [('state', 'in', ['running', 'lost', 'cancel'])]}"/>
 
-                    <button name="%(do_an_tn.action_wizard_extend_checkout_bh)d" string="Extend"
+                    <button name="%(do_an_tn.action_wizard_extend_checkout_bh)d" string="Gia hạn mượn"
                             type="action"
                             attrs="{'invisible': [('state', '!=', 'running')]}"/>
 
-                    <button name="%(do_an_tn.action_wizard_send_by_email)d" string="Send by Email"
+                    <button name="%(do_an_tn.action_wizard_send_by_email)d" string="Gửi Email"
                             type="action"/>
 
 
@@ -93,29 +93,30 @@
                     <div class="oe_button_box" name="button_box">
                         <button name="open_all_checkout_bh"
                                 type="object"
-                                class="oe_stat_button"
-                                icon="fa-tasks" string="All checkout back home">
+                                class="oe_stat_button o_text_overflow"
+                                icon="fa-tasks" string="Tất cả phiếu mượn"
+                                help="Tất cả phiếu mượn đang hoạt động">
                         </button>
 
                         <button name="open_chk_document"
                                 type="object"
                                 class="oe_stat_button"
                                 icon="fa-book">
-                            <field name="count_doc" string="Document" widget="statinfo"/>
+                            <field name="count_doc" string="Tài liệu tham khảo" widget="statinfo"/>
                         </button>
 
                         <button name="open_chk_syllabus"
                                 type="object"
                                 class="oe_stat_button"
                                 icon="fa-bars">
-                            <field name="count_syl" string="Syllabus" widget="statinfo"/>
+                            <field name="count_syl" string="Giáo trình" widget="statinfo"/>
                         </button>
 
                         <button name="open_all_penalty_checkout"
                                 type="object"
                                 class="oe_stat_button"
                                 icon="fa-times-circle-o">
-                            <field name="count_penalty" string="Penalty Checkout" widget="statinfo"/>
+                            <field name="count_penalty" string="Phiếu bị phạt" widget="statinfo"/>
                         </button>
 
                         <button name="open_checkout_waiting"
@@ -123,7 +124,7 @@
                                 class="oe_stat_button"
                                 icon="fa-tasks"
                                 attrs="{'invisible': [('state', 'not in', ['done', 'fined'])]}">
-                            <field name="count_waiting" string="Waiting" widget="statinfo"/>
+                            <field name="count_waiting" string="Đang chờ" widget="statinfo"/>
                         </button>
 
                     </div>
@@ -143,7 +144,7 @@
                         </h3>
                     </div>
                     <group col="2" colspan="4">
-                        <separator string="Card Details" colspan="4"/>
+                        <separator string="Thông tin thẻ mượn" colspan="4"/>
                         <group>
                             <field name="card_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="state_card" readonly="1"/>
@@ -154,7 +155,7 @@
                             <field name="user_id" required="1"/>
                         </group>
                     </group>
-                    <group string="Others">
+                    <group string="Thông tin tài liệu">
                         <group>
                             <field name="type_document" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="book_id"
@@ -177,21 +178,21 @@
                                            'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                         <group>
-                            <field name="document_term" readonly="1" string="Term"/>
+                            <field name="document_term" readonly="1"/>
                             <field name="category_doc"  attrs="{'invisible': [('type_document', '=', 'project')]}"/>
                             <field name="doc_price"/> <!-- attrs="{'invisible': [('state', 'not in', ['fined', 'lost'])]}"-->
                             <field name="status_document" />
                         </group>
                     </group>
-                    <group string="Return Date">
+                    <group string="Ngày trả tài liệu">
                         <group>
                             <field name="return_date" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                         <group>
-                            <field name="actual_return_date" string="Actual Return Date" readonly="1"/>
+                            <field name="actual_return_date" readonly="1"/>
                         </group>
                     </group>
-                    <group string="Penalty" attrs="{'invisible': [('state', 'in', ['draft', 'running', 'done'])]}">
+                    <group string="Phạt" attrs="{'invisible': [('state', 'in', ['draft', 'running', 'done'])]}">
                         <group>
                             <field name="currency_id" invisible="1" readonly="1"/>
                             <field name="day_overdue" attrs="{'invisible': [('day_overdue', '=', 0)]}" readonly="1"/>
@@ -221,21 +222,21 @@
         <field name="model">lib.checkout.back.home</field>
         <field name="arch" type="xml">
             <search>
-                <field name="card_id" string="Card ID"/>
-                <field name="name_seq" string="Checkout ID"/>
-                <field name="gt_name" string="User Name"/>
-                <filter string="Syllabus" name="syllabus" domain="[('type_document', '=', 'book'),
+                <field name="card_id" string="Mã thẻ mượn"/>
+                <field name="name_seq" string="Mã phiếu mượn"/>
+                <field name="gt_name" string="Tên độc giả"/>
+<!--                <filter string="Giáo trình" name="syllabus" domain="[('type_document', '=', 'book'),
                                                            ('category_doc', '=', 'Giáo Trình')]"/>
-                <filter string="Document(not syllabus)" name="doc_not_syl" domain="[('category_doc', '!=', 'Giáo Trình')]"/>
-                <filter string="Draft" name="draft_state" domain="[('state', '=', 'draft')]"/>
-                <filter string="Borrowed" name="running_state" domain="[('state', '=', 'running')]"/>
-                <filter string="Returned" name="done_state" domain="[('state', '=', 'done')]"/>
-                <filter string="Fined" name="fined_state" domain="[('state', '=', 'fined')]"/>
-                <filter string="Lost" name="lost_state" domain="[('state', '=', 'lost')]"/>
+                <filter string="Tài liệu tham khảo" name="doc_not_syl" domain="[('category_doc', '!=', 'Giáo Trình')]"/>-->
+                <filter string="Nháp" name="draft_state" domain="[('state', '=', 'draft')]"/>
+                <filter string="Đã mượn" name="running_state" domain="[('state', '=', 'running')]"/>
+                <filter string="Đã trả" name="done_state" domain="[('state', '=', 'done')]"/>
+                <filter string="Bị phạt" name="fined_state" domain="[('state', '=', 'fined')]"/>
+                <filter string="Mất tài liệu" name="lost_state" domain="[('state', '=', 'lost')]"/>
                 <group>
-                    <filter string="Card ID" name="card_id" context="{'group_by': 'card_id'}"/>
-                    <filter string="State" name="state_group" context="{'group_by': 'state'}"/>
-                    <filter string="Actual Return Date" name="actual_return_date" context="{'group_by': 'actual_return_date'}"/>
+                    <filter string="Mã thẻ mượn" name="card_id" context="{'group_by': 'card_id'}"/>
+                    <filter string="Trạng thái phiếu mượn" name="state_group" context="{'group_by': 'state'}"/>
+                    <filter string="Ngày trả thực tế" name="actual_return_date" context="{'group_by': 'actual_return_date'}"/>
                 </group>
             </search>
         </field>
@@ -252,6 +253,7 @@
                 <field name="meta_book_id"/>
                 <field name="project_id"/>
                 <field name="meta_project_id"/>
+                <field name="state"/>
                  <progressbar
                      field="kanban_state"
                      colors='{"overdue": "danger"}' sum_field="penalty_total"/>
@@ -266,7 +268,7 @@
                                     </a>
                                     <div class="dropdown-menu" role="menu">
                                         <t>
-                                            <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                            <a role="menuitem" type="delete" class="dropdown-item">Xoá</a>
                                         </t>
                                     </div>
                                 </div>
@@ -300,46 +302,12 @@
                                     <t t-if="record.book_id.raw_value"><t t-esc="record.meta_book_id.value"/></t>
                                     <t t-if="record.project_id.raw_value"><t t-esc="record.meta_project_id.value"/></t>
                                 </div>
-                                <!--<table style="font-size:10px" class="o_text_overflow">
-                                    <tr>
-                                        <th>
-                                            Card ID:
-                                        </th>
-                                        <td>
-                                            <field name="card_id"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            Title:
-                                        </th>
-                                        <td>
-                                            <t t-if="record.book_id.raw_value">
-                                                <field name="book_id"/>
-                                            </t>
-                                            <t t-else="record.project_id.raw_value">
-                                                <field name="project_id"/>
-                                            </t>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            ID Doc:
-                                        </th>
-                                        <td class="o_text_overflow">
-                                            <t t-if="record.meta_book_id.raw_value">
-                                                <field name="meta_book_id"/>
-                                            </t>
-                                            <t t-elif="record.meta_project_id.raw_value">
-                                                <field name="meta_project_id"/>
-                                            </t>
-                                        </td>
-                                    </tr>
-                                </table>-->
                                 <div class="o_kanban_record_bottom">
                                     <div class="oe_kanban_bottom_left">
                                         <field name="priority" widget="priority" readonly="1"/>
-                                        <field name="kanban_state" widget="kanban_state_selection"/>
+                                        <t t-if="record.state.raw_value=='running'">
+                                            <field name="kanban_state" widget="kanban_state_selection"/>
+                                        </t>
                                     </div>
                                     <div class="oe_kanban_bottom_right">
                                         <field name="state" widget="label_selection" options="{'classes': {'draft': 'default', 'running': 'success', 'fined': 'danger', 'lost': 'warning'}}"/>
@@ -355,7 +323,7 @@
                      </div> <!-- end of kanban color -->
                     </t>
                     <searchpanel>
-                        <field name="card_id" string="Card ID" domain="[('state', '=', 'running')]"/>
+                        <field name="card_id" string="Mã thẻ mượn" domain="[('state', '=', 'running')]"/>
                     </searchpanel>
                 </templates>
             </kanban>

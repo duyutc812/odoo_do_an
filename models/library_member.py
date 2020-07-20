@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from datetime import date
 import time
 from .library_author import get_default_img
@@ -17,42 +17,42 @@ def get_default_img():
 class Employee(models.Model):
     _inherit = 'res.users'
 
-    born_date = fields.Date('Born date')
-    address = fields.Text('Address')
+    born_date = fields.Date('Ngày sinh')
+    address = fields.Text('Địa chỉ')
     facebook = fields.Char('Facebook')
     email = fields.Char('Email')
 
 
 class Student(models.Model):
     _name = 'lib.student'
-    _description = 'Student'
+    _description = 'Sinh viên'
 
     @api.model
     def _default_major(self):
         return self.env['lib.student.major'].search([], limit=1)
 
-    name = fields.Char('Name', required=True)
-    student_image = fields.Binary('Cover', default=get_default_img())
-    student_id = fields.Char('Student ID', required=True)
-    identity_card = fields.Char('Identity Card')
-    born_date = fields.Date('Born Date', default=fields.Date.today())
+    name = fields.Char('Họ tên', required=True)
+    student_image = fields.Binary('Ảnh đại diện', default=get_default_img())
+    student_id = fields.Char('Mã sinh viên', required=True)
+    identity_card = fields.Char('Số CMND')
+    born_date = fields.Date('Ngày sinh', default=fields.Date.today())
     gender = fields.Selection([
-        ('male', 'Male'),
-        ('female', 'Female'),
-    ], default='male', string="Gender")
-    phone = fields.Char('Phone')
+        ('male', 'Nam'),
+        ('female', 'Nữ'),
+    ], default='male', string="Giới tính")
+    phone = fields.Char('Số điện thoại')
     email = fields.Char('Email')
     facebook = fields.Char('Facebook')
-    street = fields.Char('Street')
-    sub_district = fields.Char('Sub District')
-    district = fields.Char('District')
-    city = fields.Char('City')
-    country_id = fields.Many2one('res.country', 'Nationality')
-    major_id = fields.Many2one('lib.student.major', string="Major", default=_default_major)
-    major_name = fields.Char(related='major_id.name', string='Major name', readonly=True, store=True)
-    course = fields.Integer('Course', default=57)
+    street = fields.Char('Đường')
+    sub_district = fields.Char('Thị trấn/Xã')
+    district = fields.Char('Huyện')
+    city = fields.Char('Thành Phố')
+    country_id = fields.Many2one('res.country', 'Quốc tịch', default=lambda s: s.env['res.country'].search([('code', '=', 'VN')], limit=1))
+    major_id = fields.Many2one('lib.student.major', string="Chuyên Ngành", default=_default_major)
+    major_name = fields.Char(related='major_id.name', string='Tên chuyên ngành', readonly=True, store=True)
+    course = fields.Integer('Khoá học', default=57)
     note = fields.Text('Note')
-    is_active = fields.Boolean('Active?', default=True)
+    is_active = fields.Boolean('Có hiệu lực', default=True)
     color = fields.Integer('Color')
     count = fields.Integer('Count', compute='_compute_student_card')
 
@@ -98,37 +98,47 @@ class Student(models.Model):
     _sql_constraints = [
         ('student_id_unique',
          'unique(student_id)',
-         'The Student ID must be unique.'
+         'Mã sinh viên đã tồn tại!'
          ),
         ('identity_card_unique',
          'unique(identity_card)',
-         'The Identity Card must be unique.'
+         'Số chứng minh nhân dân đã tồn tại!'
          ),
         ('email_unique',
          'unique(email)',
-         'The Email must be unique.'
+         'Địa chỉ email đã tồn tại!'
          )
     ]
+
+    def unlink(self):
+        for stu in self:
+            card_id = self.env['lib.card'].search([
+                ('student_id', '=', stu.id)
+            ])
+            # print(check_author_book)
+            if card_id:
+                raise ValidationError(_('Không thể xoá sinh viên khi thẻ thư viện còn tồn tại!'))
+        return super(Student, self).unlink()
 
 
 class Teacher(models.Model):
     _name = 'lib.teacher'
-    _description = 'Teacher'
+    _description = 'Giảng viên'
 
-    name = fields.Char('Name')
-    teacher_image = fields.Binary('Cover', default=get_default_img())
-    born_date = fields.Date('Born Date')
-    address = fields.Text('Address')
+    name = fields.Char('Họ tên')
+    teacher_image = fields.Binary('Ảnh', default=get_default_img())
+    born_date = fields.Date('Ngày sinh')
+    address = fields.Text('Địa chỉ')
     gender = fields.Selection([
-        ('male', 'Male'),
-        ('fe_male', 'Female')
+        ('male', 'Nam'),
+        ('fe_male', 'Nữ')
     ])
-    phone = fields.Char('Phone')
-    email = fields.Char('Email Contact')
-    role = fields.Many2one('lib.teacher.role', string='Role')
-    note = fields.Text('Note')
-    country_id = fields.Many2one('res.country', 'Nationality')
-    is_active = fields.Boolean('Active?', default=True)
+    phone = fields.Char('Số điện thoại')
+    email = fields.Char('Email liên hệ')
+    role = fields.Many2one('lib.teacher.role', string='Chức vụ')
+    note = fields.Text('Ghi chú')
+    country_id = fields.Many2one('res.country', 'Quốc tịch', default=lambda s: s.env['res.country'].search([('code', '=', 'VN')], limit=1))
+    is_active = fields.Boolean('Có hiệu lực?', default=True)
     # user_id = fields.Many2one('res.users', string='User', default=lambda self: self._uid)
 
     # @api.onchange('born_date')
@@ -152,6 +162,23 @@ class Teacher(models.Model):
     @api.onchange('name')
     def _onchange_name_upper(self):
         self.name = self.name.title() if self.name else ''
+
+    _sql_constraints = [
+        ('email_unique',
+         'unique(email)',
+         'Email đã tồn tại!'
+         )
+    ]
+
+    def unlink(self):
+        for teacher in self:
+            card_id = self.env['lib.card'].search([
+                ('teacher_id', '=', teacher.id)
+            ])
+            # print(check_author_book)
+            if card_id:
+                raise ValidationError(_('Không thể xoá giảng viên khi thẻ thư viện còn tồn tại!'))
+        return super(Teacher, self).unlink()
 
 
 

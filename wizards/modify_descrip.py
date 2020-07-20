@@ -3,16 +3,16 @@ from odoo import api, fields, models, _
 
 class ModifyDescriptionDoc(models.TransientModel):
     _name = 'modify.description.doc'
-    _description = 'Modify Description'
+    _description = 'Thay đổi tình trạng tài liệu trên phiếu mượn tại thư viện'
 
-    book_id = fields.Many2one('lib.book', 'Name Book', readonly=True)
-    meta_book_id = fields.Many2one('lib.meta.books', 'Meta Book', readonly=True)
-    mgz_new_id = fields.Many2one('lib.magazine.newspaper', 'Name Mgz/New', readonly=True)
-    meta_mgz_new_id = fields.Many2one('lib.meta.magazinenewspapers', 'Meta Mgz-New', readonly=True)
-    project_id = fields.Many2one('lib.document.project', 'Name Project', readonly=True)
-    meta_project_id = fields.Many2one('lib.meta.projects', 'Meta Project', readonly=True)
-    status_document = fields.Text('Description', track_visibility='always')
-    user_id = fields.Many2one('res.users', 'Librarian',
+    book_id = fields.Many2one('lib.book', 'Tiêu đề sách', readonly=True)
+    meta_book_id = fields.Many2one('lib.meta.books', 'Meta Sách', readonly=True)
+    mgz_new_id = fields.Many2one('lib.magazine.newspaper', 'Tạp chí - báo', readonly=True)
+    meta_mgz_new_id = fields.Many2one('lib.meta.magazinenewspapers', 'Meta tạp chí - báo', readonly=True)
+    project_id = fields.Many2one('lib.document.project', 'Đồ án - luận văn', readonly=True)
+    meta_project_id = fields.Many2one('lib.meta.projects', 'Meta đồ án - luận văn', readonly=True)
+    status_document = fields.Text('Tình trạng', track_visibility='always')
+    user_id = fields.Many2one('res.users', 'Nhân viên thư viện',
                               default=lambda s: s.env.uid,
                               readonly=True)
 
@@ -38,25 +38,25 @@ class ModifyDescriptionDoc(models.TransientModel):
     def button_update_description(self):
         if self.book_id:
             self.meta_book_id.write({'description': self.status_document})
-            self.book_id.message_post(_('%s updated by %s' % (str(self.meta_book_id.name_seq), str(self.user_id.name))))
+            self.book_id.message_post(_('%s đã được cập nhật bởi %s' % (str(self.meta_book_id.name_seq), str(self.user_id.name))))
         elif self.mgz_new_id:
             self.meta_mgz_new_id.write({'description': self.status_document})
-            self.mgz_new_id.message_post(_('%s updated by %s' % (str(self.meta_mgz_new_id.name_seq), str(self.user_id.name))))
+            self.mgz_new_id.message_post(_('%s đã được cập nhật bởi %s' % (str(self.meta_mgz_new_id.name_seq), str(self.user_id.name))))
         elif self.project_id:
             self.meta_project_id.write({'description': self.status_document})
-            self.project_id.message_post(_('%s updated by %s' % (str(self.meta_project_id.name_seq), str(self.user_id.name))))
+            self.project_id.message_post(_('%s đã được cập nhật bởi %s' % (str(self.meta_project_id.name_seq), str(self.user_id.name))))
 
 
 class ModifyDescriptionDocCHKBH(models.TransientModel):
     _name = 'modify.description.doc.chk.bh'
-    _description = 'Modify Description Checkout Back Home'
+    _description = 'Thay đổi tình trạng tài liệu trên phiếu mượn về'
 
-    book_id = fields.Many2one('lib.book', 'Name Book', readonly=True)
-    meta_book_id = fields.Many2one('lib.meta.books', 'Meta Book', readonly=True)
-    project_id = fields.Many2one('lib.document.project', 'Name Project', readonly=True)
-    meta_project_id = fields.Many2one('lib.meta.projects', 'Meta Project', readonly=True)
+    book_id = fields.Many2one('lib.book', 'Tiêu đề sách', readonly=True)
+    meta_book_id = fields.Many2one('lib.meta.books', 'Meta Sách', readonly=True)
+    project_id = fields.Many2one('lib.document.project', 'Đồ án - luận văn', readonly=True)
+    meta_project_id = fields.Many2one('lib.meta.projects', 'Meta đồ án - luận văn', readonly=True)
     status_document = fields.Text('Description', track_visibility='always')
-    user_id = fields.Many2one('res.users', 'Librarian',
+    user_id = fields.Many2one('res.users', 'Nhân viên thư viện',
                               default=lambda s: s.env.uid,
                               readonly=True)
 
@@ -79,9 +79,9 @@ class ModifyDescriptionDocCHKBH(models.TransientModel):
     def button_update_description(self):
         if self.book_id:
             self.meta_book_id.write({'description': self.status_document})
-            self.book_id.message_post(_('%s updated by %s' % (str(self.meta_book_id.name_seq), str(self.user_id.name))))
+            self.book_id.message_post(_('%s đã được cập nhật bởi %s' % (str(self.meta_book_id.name_seq), str(self.user_id.name))))
         elif self.project_id:
             self.meta_project_id.write({'description': self.status_document})
-            self.project_id.message_post(_('%s updated by %s' % (str(self.meta_project_id.name_seq), str(self.user_id.name))))
+            self.project_id.message_post(_('%s đã được cập nhật bởi %s' % (str(self.meta_project_id.name_seq), str(self.user_id.name))))
 
 

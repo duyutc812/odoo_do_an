@@ -4,7 +4,7 @@
         model="lib.checkout.at.lib"
         report_type="qweb-html"
         menu="False"
-        string="Penalty Checkout At Lib"
+        string="In phiếu phạt: mượn tại thư viện"
         name="do_an_tn.report_penalty_checkout_at_lib_template"/>
 
     <template id="report_penalty_checkout_at_lib_template">
@@ -13,21 +13,22 @@
                 <t t-foreach="docs" t-as="o">
                     <div class="page">
                         <div class="container">
-                             <h1 style="text-align:center">Penalty Checkout At Library</h1>
-                            <i><h5 style="text-align:right;padding-right:200px" >Address: Street A, City B,...</h5></i>
+                             <h1 style="text-align:center">Phiếu phạt thư viện Trường Đại học ABC</h1>
+                            <i><h5 style="text-align:right;padding-right:200px" >Địa chỉ: Đường A, Quận B, Thành phố A...</h5></i>
                         <br/>
                         <div style="text-align:left">
+                            <h4><i><b>Thông tin độc giả:</b></i></h4>
                             <table>
                                 <tr>
                                     <th>
-                                    Member:
+                                        Độc giả:
                                     </th>
                                     <td style="padding-left: 20px">
                                         <span t-field="o.gt_name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Card ID:</th>
+                                    <th>Mã thẻ mượn:</th>
                                     <td style="padding-left: 20px">
                                         <span t-field="o.card_id.name_seq"/>
                                     </td>
@@ -39,13 +40,13 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Librarian:</th>
+                                    <th>Nhân viên thư viện:</th>
                                     <td style="padding-left: 20px">
                                         <span t-field="o.user_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Datetime:</th>
+                                    <th>Ngày trả:</th>
                                     <td style="padding-left: 20px">
                                         <span t-esc="o['return_date'].strftime('%d-%m-%Y %H:%M:%S')"/>
                                     </td>
@@ -53,17 +54,17 @@
                             </table>
                             <br/>
 
-                            <h4><i><b>Details:</b></i></h4>
+                            <h4><i><b>Thông tin phiếu:</b></i></h4>
                             <table class="table table-sm o_main_table">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">ID</th>
-                                        <th class="text-center">Title Doc</th>
+                                        <th class="text-center">Mã phiếu</th>
+                                        <th class="text-center">Tài liệu</th>
                                         <!--<th class="text-center">Category Doc</th>-->
-                                        <th class="text-center">Status Doc</th>
-                                        <th class="text-center">Return Date</th>
-                                        <th class="text-center">Penalty Price</th>
-                                        <th class="text-center">Note</th>
+                                        <th class="text-center">Mã tài liệu</th>
+                                        <th class="text-center">Tình trạng lúc mượn</th>
+                                        <th class="text-center">Tiền phạt</th>
+                                        <th class="text-center">Ghi chú</th>
                                     </tr>
                                 </thead>
                                 <tbody class="sale_tbody" style="font-size:13px">
@@ -106,11 +107,11 @@
     <report
             id="report_penalty_checkout_at_lib_xls"
             model="lib.checkout.at.lib"
-            string="Penalty Checkout At Lib"
+            string="Excel: In phiếu phạt: mượn tại thư viện"
             menu="False"
             report_type="xlsx"
             name="do_an_tn.report_penalty_at_lib_xls"
-            file="do_an_tn.report_penalty_at_lib_xls" />
+            file="Phiếu phạt mượn tại thư viện" />
 
     <record id="paperformat_euro_landscape"
             model="report.paperformat">
@@ -133,7 +134,7 @@
         id="action_library_checkout_back_home_penalty"
         model="lib.checkout.back.home"
         report_type="qweb-html"
-        string="Penalty Checkout Back Home"
+        string="In phiếu phạt: Mượn về"
         name="do_an_tn.report_penalty_checkout_bh_template"
         paperformat="paperformat_euro_landscape"/>
 
@@ -141,26 +142,27 @@
         <t t-call="web.html_container">
             <t t-call="web.internal_layout">
                 <t t-if="not checkouts_list">
-                    <h1>Invalid</h1>
+                    <h1>Không hợp lệ</h1>
                 </t>
                 <t t-elif="checkouts_list">
                     <div class="page">
                         <div class="container">
-                             <h1 style="text-align:center">Penalty Checkout Back Home</h1>
-                            <i><h5 style="text-align:right;padding-right:200px" >Address: Street A, City B,...</h5></i>
+                             <h1 style="text-align:center">Phiếu phạt thư viện trường Đại học ABC</h1>
+                            <i><h5 style="text-align:right;padding-right:200px" >Địa chỉ: Đường A, Quận B, Thành phố A...</h5></i>
                         <br/>
                         <div style="text-align:left">
+                            <h4><i><b>Thông tin độc giả:</b></i></h4>
                             <table>
                                 <tr>
                                     <th>
-                                    Member:
+                                        Độc giả:
                                     </th>
                                     <td style="padding-left: 20px">
                                         <span t-field="doc.gt_name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Card ID:</th>
+                                    <th>Mã thẻ mượn:</th>
                                     <td style="padding-left: 20px">
                                         <span t-field="doc.card_id.name_seq"/>
                                     </td>
@@ -172,7 +174,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Librarian:</th>
+                                    <th>Nhân viên thư viện:</th>
                                     <td style="padding-left: 20px">
                                         <t t-foreach="user_list" t-as="o">
                                             <span t-esc="o['user']"/>
@@ -180,7 +182,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Datetime:</th>
+                                    <th>Ngày phạt:</th>
                                     <td style="padding-left: 20px">
                                         <t t-foreach="curr_date_lst" t-as="o">
                                             <span t-esc="o['curr_date'].strftime('%d-%m-%Y %H:%M:%S')"/>
@@ -190,18 +192,18 @@
                             </table>
                             <br/>
 
-                            <h4><i><b>Details:</b></i></h4>
+                            <h4><i><b>Thông tin phiếu phạt:</b></i></h4>
                             <table class="table table-sm o_main_table">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">ID</th>
-                                        <th class="text-center">Title Doc</th>
+                                        <th class="text-center">Mã phiếu</th>
+                                        <th class="text-center">Tài liệu</th>
                                         <!--<th class="text-center">Category Doc</th>-->
-                                        <th class="text-center">Status Doc</th>
-                                        <th class="text-center">Return Date</th>
-                                        <th class="text-center">Actual Return Date</th>
-                                        <th class="text-center">Penalty Total</th>
-                                        <th class="text-center">Note</th>
+                                        <th class="text-center">Tình trạng</th>
+                                        <th class="text-center">Ngày hẹn trả</th>
+                                        <th class="text-center">Ngày trả</th>
+                                        <th class="text-center">Tiền phạt</th>
+                                        <th class="text-center">Ghi chú</th>
                                     </tr>
                                 </thead>
                                 <tbody class="sale_tbody" style="font-size:13px">
@@ -230,7 +232,7 @@
                                             </td>
                                             <td>
                                                 <t t-if="line['overdue']">
-                                                    <p t-esc="'overdue: '+ str(line['overdue']) + ' days. ' + line['note']"/>
+                                                    <p t-esc="'quá hạn: '+ str(line['overdue']) + ' ngày. ' + line['note']"/>
                                                 </t>
                                                 <t t-else="">
                                                     <p t-esc="line['note']"/>
@@ -241,139 +243,9 @@
                                     </t>
                                 </tbody>
                             </table>
-                            <!--<div class="clearfix">
-                                <div id="total" class="row">
-                                    <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
-                                        <table class="table table-sm;page-break-inside: avoid;">
-                                            <tr class="border-black o_total">
-                                                <td><strong>Total(Deposit):</strong></td>
-                                                <td class="text-right">
-                                                    <span
-                                                        t-esc="total"
-                                                        t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>-->
-
-
                             </div>
                         </div>
-
                     </div>
-                        <!--<h4><i><b>Information:</b></i></h4>
-                        <div class="row mt32 mb32" id="informations" style="padding-left:40px">
-                            <div t-if="doc.gt_name" class="col-auto mw-100 mb-2">
-                                <strong>Member Name:</strong>
-                                <p class="m-0" t-field="doc.gt_name"/>
-                            </div>
-                            <div t-if="doc.card_id.code" class="col-auto mw-100 mb-2">
-                                <strong>Card ID:</strong>
-                                <p class="m-0" t-field="doc.card_id.code"/>
-                            </div>
-                            <div t-if="doc.card_id.email" class="col-auto mw-100 mb-2">
-                                <strong>Email:</strong>
-                                <p class="m-0" t-field="doc.card_id.email"/>
-                            </div>
-                            <div class="col-auto mw-100 mb-2">
-                                <t t-foreach="user_list" t-as="o">
-                                    <strong>Librarian:</strong>
-                                    <p class="m-0" t-esc="o['user']"/>
-                                </t>
-                            </div>
-                            <div class="col-auto mw-100 mb-2">
-                                <t t-foreach="curr_date_lst" t-as="o">
-                                    <strong>Datetime:</strong>
-                                    <p class="m-0" t-esc="o['curr_date'].strftime('%H:%M:%S %d-%m-%Y')"/>
-                                </t>
-                            </div>
-                        </div>
-                        <h4><i><b>Penalty Checkouts:</b></i></h4>
-                        <br/>
-                        &lt;!&ndash;report_saleorder_document&ndash;&gt;
-                        <table class="table table-sm o_main_table">
-                            <thead>
-                                <tr>
-                                    &lt;!&ndash; TODO: remove in master &ndash;&gt;
-                                    &lt;!&ndash;<t t-set="colspan" t-value="5"/>&ndash;&gt;
-                                    <th class="text-center">ID</th>
-                                    <th class="text-center">Title Doc</th>
-                                    <th class="text-center">Doc ID</th>
-                                    &lt;!&ndash;<th class="text-center">Category Doc</th>&ndash;&gt;
-                                    <th class="text-center">Status Doc</th>
-                                    <th class="text-center">Return Date</th>
-                                    <th class="text-center">Actual Return Date</th>
-                                    <th class="text-center">Price Doc</th>
-                                </tr>
-                            </thead>
-                            <tbody class="sale_tbody" style="font-size:13px">
-
-                                <t t-set="total" t-value="0"/>
-
-                                <t t-foreach="checkouts_list" t-as="line">
-                                    <tr>
-                                        <td class="text-center">
-                                            <p t-esc="line['name_seq']"/>
-                                        </td>
-                                        <td class="text-center">
-                                            <p t-esc="line['title_doc']"/>
-                                        </td>
-                                        <td class="text-center">
-                                            <p t-esc="line['doc_id']"/>
-                                        </td>
-                                        &lt;!&ndash;<td class="text-center">
-                                            <p t-esc="line['category_doc']"/>
-                                        </td>&ndash;&gt;
-                                        <td class="text-center">
-                                            <p t-esc="line['status_doc']"/>
-                                        </td>
-                                        <td class="text-center">
-                                            <p t-esc="line['return_appointment_date'].strftime('%d/%m/%Y')"/>
-                                        </td>
-                                         <td class="text-center">
-                                             <t t-if="line['actual_return_date']">
-                                                 <p t-esc="line['actual_return_date'].strftime('%H:%M:%S %d-%m-%Y')"/>
-                                             </t>
-                                             <t t-elif="not line['actual_return_date']">
-                                                 <p t-esc="line['actual_return_date']"/>
-                                             </t>
-                                        </td>
-                                        <td class="text-center">
-                                            <t t-if="line['actual_return_date']">
-                                                <p style="text-decoration: line-through;" t-esc="line['doc_price']" t-options="{'widget': 'monetary', 'display_currency': line['currency_id']}"/>
-                                            </t>
-                                            <t t-elif="not line['actual_return_date']">
-                                                <p t-esc="line['doc_price']" t-options="{'widget': 'monetary', 'display_currency': line['currency_id']}"/>
-
-                                            </t>
-                                        </td>
-                                        <t t-if="not line['actual_return_date']">
-                                            <t t-set="total" t-value="total + line['doc_price']"/>
-                                        </t>
-
-                                    </tr>
-                                </t>
-                            </tbody>
-                        </table>
-                        <div class="clearfix">
-                            <div id="total" class="row">
-                                <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
-                                    <table class="table table-sm;page-break-inside: avoid;">
-                                        <tr class="border-black o_total">
-                                            <td><strong>Total(Deposit):</strong></td>
-                                            <td class="text-right">
-                                                <span
-                                                    t-esc="total"
-                                                    t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
                 </t>
             </t>
         </t>

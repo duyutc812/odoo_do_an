@@ -1,7 +1,7 @@
 <odoo>
     <data>
         <act_window id="action_wizard_send_by_email"
-                    name="Wizard Send By Email Checkout BH"
+                    name="Gửi email tới độc giả mượn về"
                     res_model="lib.checkout.bh.send.email"
                     view_type="form"
                     view_mode="form"
@@ -22,11 +22,11 @@
                     <footer>
                         <button type="object"
                                 name="button_send"
-                                string="Send"
+                                string="Gửi Email"
                                 class="btn-primary"
                                 />
                         <button special="cancel"
-                        string="Cancel"
+                        string="Huỷ"
                         class="btn-secondary" />
                     </footer>
                 </form>

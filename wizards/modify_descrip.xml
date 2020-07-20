@@ -1,7 +1,7 @@
 <odoo>
     <data>
         <act_window id="action_wizard_modify_descrip_doc"
-                    name="Modify Description"
+                    name="Thay đổi tình trạng tài liệu"
                     res_model="modify.description.doc"
                     view_type="form"
                     view_mode="form"
@@ -20,16 +20,16 @@
                         <field name="meta_mgz_new_id" attrs="{'invisible': [('meta_mgz_new_id', '=', False)]}"/>
                         <field name="project_id" attrs="{'invisible': [('project_id', '=', False)]}"/>
                         <field name="meta_project_id" attrs="{'invisible': [('meta_project_id', '=', False)]}"/>
-                        <field name="status_document"/>
+                        <field name="status_document" placeholder="Tình trạng tài liệu..."/>
                     </group>
                     <footer>
                         <button type="object"
                                 name="button_update_description"
-                                string="Update"
+                                string="Cập nhật"
                                 class="btn-primary"
                                 />
                         <button special="cancel"
-                        string="Cancel"
+                        string="Huỷ"
                         class="btn-secondary" />
                     </footer>
                 </form>
@@ -37,7 +37,7 @@
         </record>
 
         <act_window id="action_wizard_modify_descrip_chk_bh"
-                    name="Modify Description"
+                    name="Thay đổi tình trạng tài liệu"
                     res_model="modify.description.doc.chk.bh"
                     view_type="form"
                     view_mode="form"
@@ -54,16 +54,16 @@
                         <field name="meta_book_id" attrs="{'invisible': [('meta_book_id', '=', False)]}"/>
                         <field name="project_id" attrs="{'invisible': [('project_id', '=', False)]}"/>
                         <field name="meta_project_id" attrs="{'invisible': [('meta_project_id', '=', False)]}"/>
-                        <field name="status_document"/>
+                        <field name="status_document" placeholder="Tình trạng tài liệu..."/>
                     </group>
                     <footer>
                         <button type="object"
                                 name="button_update_description"
-                                string="Update"
+                                string="Cập nhật"
                                 class="btn-primary"
                                 />
                         <button special="cancel"
-                        string="Cancel"
+                        string="Huỷ"
                         class="btn-secondary" />
                     </footer>
                 </form>
