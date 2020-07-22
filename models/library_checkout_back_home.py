@@ -224,6 +224,9 @@ class CheckoutBackHome(models.Model):
 
     @api.onchange('state')
     def _onchange_state(self):
+        current_date = datetime.now()
+        user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz or 'UTC')
+        date_today = pytz.utc.localize(current_date).astimezone(user_tz).date()
         if self.state == 'draft':
             self.update({
                 'borrow_date': '',
@@ -245,13 +248,13 @@ class CheckoutBackHome(models.Model):
                 'note': '',
             })
         elif self.state == 'fined':
-            self.day_overdue = (fields.Date.today() - self.return_date).days if self.return_date < fields.Date.today() else 0
+            self.day_overdue = (date_today - self.return_date).days if self.return_date < date_today else 0
             self.penalty_chk_price = self.day_overdue * 1000
             self.actual_return_date = fields.Datetime.now()
             self.penalty_doc_price = 0
             self.note = ''
         elif self.state == 'lost':
-            self.day_overdue = (fields.Date.today() - self.return_date).days if self.return_date < fields.Date.today() else 0
+            self.day_overdue = (date_today - self.return_date).days if self.return_date < date_today else 0
             self.penalty_chk_price = self.day_overdue * 1000
             self.penalty_doc_price = self.doc_price
             self.actual_return_date = fields.Datetime.now()
@@ -271,7 +274,7 @@ class CheckoutBackHome(models.Model):
                                           ('id', 'not in', chk.ids),
                                           ('category_doc', '!=', syll_cate)])
             if len(chk_running_bk) >= chk.card_id.book_limit and len(chk_running_syl) >= chk.card_id.syllabus_limit:
-                raise ValidationError(_('Không thể mmuwonj thêm tài liệu'))
+                raise ValidationError(_('Không thể mượn thêm tài liệu'))
             elif len(chk_running_bk) >= chk.card_id.book_limit:
                 if self.category_doc.id != syll_cate:
                     raise ValidationError(_('Không thể mượn thêm tài liệu tham khảo!'))
@@ -542,14 +545,16 @@ class CheckoutBackHome(models.Model):
         user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz or 'UTC')
         date_today = pytz.utc.localize(current_date).astimezone(user_tz)
         CheckoutBH = self.sudo().search([('state', '=', 'running'),
-                                         ('return_date', '<', date_today),
-                                         ('kanban_state', '!=', 'overdue')])
+                                         ('return_date', '<', date_today)])
+        print(CheckoutBH)
         template_id = self.env.ref('do_an_tn.scheduled_send_mail_chk_overdue').id
         template = self.env['mail.template'].browse(template_id)
         for chk in CheckoutBH:
-            # template.send_mail(chk.id, force_send=True, raise_exception=True)
-            # chk.message_post(_('Send Email for Checkout'))
-            chk.kanban_state = 'overdue'
+            chk.day_overdue = (date_today.date() - chk.return_date).days if chk.return_date < date_today.date() else 0
+            if chk.kanban_state != 'overdue':
+                template.send_mail(chk.id, force_send=True, raise_exception=True)
+                chk.message_post(_('Đã gửi email thông báo mượn quá hạn cho độc giả!'))
+                chk.kanban_state = 'overdue'
 
     @api.multi
     def open_checkout_waiting(self):

@@ -3,9 +3,9 @@
     'name': 'Do An Tot Nghiep',
     'version': "12.0.1.0.0",
     'author': "Nguyen Quang Duy",
-    'category': 'School Management',
+    'category': 'Quản lý thư viện',
     'license': "AGPL-3",
-    'summary': 'A Module For Library Management For School',
+    'summary': 'Ứng dụng quản lý thư viện cho trường học',
     'complexity': 'easy',
     'depends': ['base', 'mail', 'muk_web_searchpanel', 'web_notify', 'board', 'web_timeline', 'report_xlsx'],
     'data': [

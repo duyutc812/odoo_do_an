@@ -64,10 +64,8 @@
                                 </t>
                             </div>
                             <div class="col-auto mw-100 mb-2">
-                                <t t-foreach="curr_date_lst" t-as="o">
-                                    <strong>Ngày mượn:</strong>
-                                    <p class="m-0" t-esc="o['curr_date'].strftime('%H:%M:%S %d-%m-%Y')"/>
-                                </t>
+                                <strong>Ngày mượn:</strong>
+                                <p class="m-0" t-esc="context_timestamp(doc.borrow_date).strftime('%d-%m-%Y %H:%M:%S')"/>
                             </div>
                         </div>
                         <h4><i><b>Thông tin phiếu mượn:</b></i></h4>

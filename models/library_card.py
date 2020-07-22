@@ -269,14 +269,14 @@ class Card(models.Model):
             for lib_card in lib_card_expire:
                 lib_card.stage_id = Stages.sudo().search([('state', '=', 'expire')])
 
-        # lib_card_running = self.search([('end_date', '>', date_today),
-        #                                 ('code', '!=', 'New')])
+        lib_card_running = self.search([('end_date', '>', date_today),
+                                        ('state', '!=', 'draft')])
         # lib_card_draft = self.search([('code', '=', 'New')])
         # print('Running : ', lib_card_running)
         # print('Expire: ', lib_card_expire)
-        # if lib_card_running:
-        #     for lib_card in lib_card_running:
-        #         lib_card.stage_id = Stages.search([('state', '=', 'running')])
+        if lib_card_running:
+            for lib_card in lib_card_running:
+                lib_card.stage_id = Stages.search([('state', '=', 'running')])
         #
         # if lib_card_draft:
         #     for lib_card in lib_card_draft:
@@ -285,7 +285,7 @@ class Card(models.Model):
     @api.multi
     def library_card_send_email(self):
         current_date = datetime.now()
-        print('Hoạt động lịch trình gửi email')
+        print('Hoạt động lịch trình: gửi email thông báo thẻ mượn hết hạn vào sau 1 tuần nữa')
         user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz or 'UTC')
         date_today = pytz.utc.localize(current_date).astimezone(user_tz)
         lib_card_will_expire = self.sudo().search([('end_date', '=', (date_today + rd(days=7))),

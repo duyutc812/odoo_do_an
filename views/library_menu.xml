@@ -358,8 +358,7 @@
 
     <menuitem id="menu_library_dashboard" name="Bảng thông tin"
               parent="menu_library" action="action_library_dashboard"
-              sequence="1"
-              groups="do_an_tn.library_group_librarian"/>
+              sequence="1"/>
 
     <record id="action_library_department" model="ir.actions.act_window">
         <field name="name">Phòng ban</field>

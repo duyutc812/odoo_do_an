@@ -236,6 +236,7 @@
             <search>
                 <field name="name" string="Tiêu đề"/>
                 <field name="name_seq" string="Mã sách"/>
+                <field name="author_ids" string="Tác giả"/>
                 <filter name="publisher_id" string="Nhà xuất bản" context="{'group_by':'publisher_id'}"/>
                 <filter name="category" string="Thể loại" context="{'group_by':'category'}"/>
             </search>

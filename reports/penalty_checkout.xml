@@ -48,7 +48,7 @@
                                 <tr>
                                     <th>Ngày trả:</th>
                                     <td style="padding-left: 20px">
-                                        <span t-esc="o['return_date'].strftime('%d-%m-%Y %H:%M:%S')"/>
+                                        <span t-esc="context_timestamp(o.return_date).strftime('%d-%m-%Y %H:%M:%S')"/>
                                     </td>
                                 </tr>
                             </table>

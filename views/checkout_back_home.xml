@@ -192,7 +192,7 @@
                             <field name="actual_return_date" readonly="1"/>
                         </group>
                     </group>
-                    <group string="Phạt" attrs="{'invisible': [('state', 'in', ['draft', 'running', 'done'])]}">
+                    <group string="Phạt" attrs="{'invisible': [('state', 'in', ['draft', 'running'])]}">
                         <group>
                             <field name="currency_id" invisible="1" readonly="1"/>
                             <field name="day_overdue" attrs="{'invisible': [('day_overdue', '=', 0)]}" readonly="1"/>

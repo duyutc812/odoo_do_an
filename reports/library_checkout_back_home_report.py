@@ -18,8 +18,6 @@ class LibraryCheckoutReport(models.AbstractModel):
         doc = checkouts[0]
         current_date = datetime.now()
         user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz or 'UTC')
-        date_today = pytz.utc.localize(current_date).astimezone(user_tz)
-        curr_date_lst = [{'curr_date': date_today}]
         chk_set = {x.card_id.id for x in checkouts}
         if len(chk_set) != 1:
             checkouts_list = []
@@ -54,7 +52,6 @@ class LibraryCheckoutReport(models.AbstractModel):
             'user_list': user_list,
             'doc': doc,
             'checkouts_list': checkouts_list,
-            'curr_date_lst': curr_date_lst,
         }
 
 
@@ -146,7 +143,7 @@ class PenaltyCheckoutBHReport(models.AbstractModel):
                     'currency_id': chk.currency_id,
                     'doc_price': chk.doc_price,
                     'status_doc': chk.status_document,
-                    'actual_return_date': chk.actual_return_date if chk.actual_return_date else '',
+                    'actual_return_date': pytz.utc.localize(chk.actual_return_date).astimezone(user_tz) if chk.actual_return_date else '',
                     'overdue': chk.day_overdue,
                     'penalty_chk_price': chk.penalty_chk_price,
                     'penalty_doc_price': chk.penalty_doc_price,
@@ -154,6 +151,7 @@ class PenaltyCheckoutBHReport(models.AbstractModel):
                     'note': chk.note,
                 }
                 checkouts_list.append(vals)
+                print(checkouts_list)
         return {
             'doc_model': 'lib.checkout.back.home',
             'data': data,

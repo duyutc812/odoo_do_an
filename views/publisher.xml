@@ -66,7 +66,7 @@
                                 <div class="o_kanban_image">
                                     <img alt="Avatar"
                                          t-att-src="kanban_image('lib.publisher',
-                                         'publisher_image',record.id.raw_value)"/>
+                                         'publisher_image',record.id.raw_value)" style="width:55px;height:60px"/>
                                 </div>
                                 <div class="oe_kanban_details">
                                         <h6>
