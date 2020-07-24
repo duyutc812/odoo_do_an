@@ -55,7 +55,7 @@ class ModifyDescriptionDocCHKBH(models.TransientModel):
     meta_book_id = fields.Many2one('lib.meta.books', 'Meta Sách', readonly=True)
     project_id = fields.Many2one('lib.document.project', 'Đồ án - luận văn', readonly=True)
     meta_project_id = fields.Many2one('lib.meta.projects', 'Meta đồ án - luận văn', readonly=True)
-    status_document = fields.Text('Description', track_visibility='always')
+    status_document = fields.Text('Tình trạng', track_visibility='always')
     user_id = fields.Many2one('res.users', 'Nhân viên thư viện',
                               default=lambda s: s.env.uid,
                               readonly=True)

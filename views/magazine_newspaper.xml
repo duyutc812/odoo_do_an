@@ -58,7 +58,7 @@
                         <group col="2" colspan="2">
                             <field name="quantity"/>
                             <field name="remaining"/>
-                            <field name="rack" placeholder="Library rack..."/>
+                            <field name="rack" placeholder="Giá chứa tài liệu..."/>
                             <field name="state" placeholder="Trạng thái..."/>
                         </group>
                     </group>

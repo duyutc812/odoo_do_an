@@ -12,7 +12,7 @@
         <field name="name">view.tree.student</field>
         <field name="model">lib.student</field>
         <field name="arch" type="xml">
-            <tree create="false" delete="false">
+            <tree> <!-- create="false" delete="false"-->
                 <field name="name"/>
                 <field name="student_id"/>
                 <field name="email"/>
@@ -112,7 +112,7 @@
         <field name="name">view.kanban.student</field>
         <field name="model">lib.student</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="major_id" quick_create="false" group_create="false" edit="false" group_edit="false">
+            <kanban default_group_by="major_id"><!-- group_create="false" quick_create="false" edit="false" group_edit="false"-->
                 <field name="name"/>
                 <field name="id"/>
                 <field name="student_image"/>

@@ -192,7 +192,7 @@
 
         <!--data Student-->
         <record id="data_student_1" model="lib.student">
-            <field name="name">Student One</field>
+            <field name="name">Nguyễn Thị A</field>
             <field name="student_id">160704523</field>
             <field name="student_image" type="base64" file="do_an_tn\static\default_image.png"/>
             <field name="born_date">1996-03-26</field>
@@ -210,7 +210,7 @@
         </record>
 
         <record id="data_student_2" model="lib.student">
-            <field name="name">Student Two</field>
+            <field name="name">Nguyễn Trọng B</field>
             <field name="student_id">160704524</field>
             <field name="student_image" type="base64" file="do_an_tn\static\default_image.png"/>
             <field name="born_date">1998-08-10</field>
@@ -228,7 +228,7 @@
 
         <!--data teacher-->
         <record id="data_teacher_1" model="lib.teacher">
-            <field name="name">Teacher One</field>
+            <field name="name">Giảng viên 1</field>
             <field name="gender">fe_male</field>
             <field name="role" ref="data_teacher_role_1"/>
             <field name="email">TeacherOne@gmail.com</field>
@@ -237,7 +237,7 @@
         </record>
 
         <record id="data_teacher_2" model="lib.teacher">
-            <field name="name">Teacher Three</field>
+            <field name="name">Giảng viên 3</field>
             <field name="gender">male</field>
             <field name="role" ref="data_teacher_role_3"/>
             <field name="born_date">1969-07-05</field>

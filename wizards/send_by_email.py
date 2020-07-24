@@ -10,7 +10,7 @@ class CheckoutMassMessage(models.TransientModel):
 
     checkout_id = fields.Many2one(
         'lib.checkout.back.home',
-        string='Checkout')
+        string='Mã phiếu')
     message_subject = fields.Char(default=_('Thư viện Trường Đại học ABC!'), string="Tiêu đề")
     message_body = fields.Text('Nội dung')
     email = fields.Char()

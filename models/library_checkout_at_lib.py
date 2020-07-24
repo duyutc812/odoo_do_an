@@ -385,12 +385,6 @@ class CheckoutAtLib(models.Model):
             res.append((chk.id, '%s - %s' % (chk.name_seq, chk.gt_name)))
         return res
 
-    # def unlink(self):
-    #     for chk in self:
-    #         if chk.state != 'draft':
-    #             raise ValidationError(_('You can not delete checkout when state not is draft!'))
-    #     return super(CheckoutAtLib, self).unlink()
-
     @api.multi
     def print_report(self):
         return self.env.ref('do_an_tn.action_library_checkout_at_lib_penalty').report_action(self)
@@ -417,5 +411,11 @@ class CheckoutAtLib(models.Model):
                                                    ('book_id', '=', chk.book_id.id),
                                                    ('mgz_new_id', '=', chk.mgz_new_id.id),
                                                    ('project_id', '=', chk.project_id.id)])
+
+    def unlink(self):
+        for chk in self:
+            if chk.state != 'draft':
+                raise ValidationError(_('Không thể xóa phiếu khác trạng thái \'Nháp\'!'))
+        return super(CheckoutAtLib, self).unlink()
 
 

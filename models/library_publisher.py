@@ -1,4 +1,5 @@
 from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 class Publisher(models.Model):
@@ -32,3 +33,13 @@ class Publisher(models.Model):
     def _onchange_name_publisher(self):
         """Method to set upper for name"""
         self.name = self.name.title() if self.name else ''
+
+    def unlink(self):
+        for rec in self:
+            check_publisher_book = self.env['lib.book'].search([
+                ('publisher_id', '=', rec.id)
+            ])
+            # print(check_author_book)
+            if check_publisher_book:
+                raise ValidationError(_('Không thể xoá nhà xuất bản khi sách của nhà xuất bản đang tồn tại!'))
+        return super(Publisher, self).unlink()

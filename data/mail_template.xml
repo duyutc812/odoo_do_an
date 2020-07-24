@@ -27,7 +27,7 @@
                                     Tài liệu có thể mượn:
                                 </th>
                                 <td>
-                                    ${object.book_limit} sách và ${object.syllabus_limit} giáo trình
+                                    ${object.book_limit} tài liệu tham khảo và ${object.syllabus_limit} giáo trình
                                 </td>
                             </tr>
                             <tr>

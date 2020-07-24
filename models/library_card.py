@@ -271,16 +271,10 @@ class Card(models.Model):
 
         lib_card_running = self.search([('end_date', '>', date_today),
                                         ('state', '!=', 'draft')])
-        # lib_card_draft = self.search([('code', '=', 'New')])
-        # print('Running : ', lib_card_running)
-        # print('Expire: ', lib_card_expire)
+
         if lib_card_running:
             for lib_card in lib_card_running:
                 lib_card.stage_id = Stages.search([('state', '=', 'running')])
-        #
-        # if lib_card_draft:
-        #     for lib_card in lib_card_draft:
-        #         lib_card.stage_id = Stages.search([('state', '=', 'draft')])
 
     @api.multi
     def library_card_send_email(self):
@@ -316,21 +310,15 @@ class Card(models.Model):
 
     @api.multi
     def unlink(self):
-        for rec in self:
-            if rec.state == 'running':
+        for card in self:
+            if card.state == 'running':
                 # or rec.state == 'expire'
                 raise ValidationError(_('Không thể xoá thẻ thư viện ở trạng thái đang hoạt động!'))
-            # elif rec.state == 'draft':
-            #     checkout_card = self.env['lib.checkout'].search_count([
-            #         ('card_id', '=', rec.id)
-            #     ])
-            #     if checkout_card:
-            #         raise ValidationError('Can not delete! related record')elif rec.state == 'draft':
-            #     checkout_card = self.env['lib.checkout'].search_count([
-            #         ('card_id', '=', rec.id)
-            #     ])
-            #     if checkout_card:
-            #         raise ValidationError('Can not delete! related record')
+            else:
+                checkout_al = self.env['lib.checkout.at.lib'].search([('card_id', '=', card.id)], limit=1)
+                checkout_bh = self.env['lib.checkout.back.home'].search([('card_id', '=', card.id)], limit=1)
+                if checkout_al or checkout_bh:
+                    raise ValidationError('Không thể xóa thẻ mượn do có phiếu mượn liên quan đến thẻ nữa!')
         return super(Card, self).unlink()
 
 

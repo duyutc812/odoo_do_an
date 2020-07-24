@@ -192,14 +192,14 @@
                             <field name="actual_return_date" readonly="1"/>
                         </group>
                     </group>
-                    <group string="Phạt" attrs="{'invisible': [('state', 'in', ['draft', 'running'])]}">
+                    <group string="Phạt" attrs="{'invisible': [('state', 'in', ['draft', 'running', 'done'])]}">
                         <group>
                             <field name="currency_id" invisible="1" readonly="1"/>
                             <field name="day_overdue" attrs="{'invisible': [('day_overdue', '=', 0)]}" readonly="1"/>
-                            <field name="penalty_chk_price" string="Penalty Checkout Price"
+                            <field name="penalty_chk_price"
 
                                    readonly="1"/><!--attrs="{'invisible': [('penalty_chk_price', '=', 0)]}"-->
-                            <field name="penalty_doc_price" string="Penalty Doc Price" attrs="{'readonly': [('state', '=', 'lost')]}"/>
+                            <field name="penalty_doc_price" attrs="{'readonly': [('state', '=', 'lost')]}"/>
                             <!--'invisible': [('penalty_doc_price', '=', 0)]-->
                         </group>
                         <group>

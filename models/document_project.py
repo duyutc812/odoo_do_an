@@ -105,5 +105,5 @@ class MetaProject(models.Model):
     def unlink(self):
         for pro in self:
             if pro.checkout:
-                raise ValidationError(_('Bạn không thể xoá :%s khi meta đồ án còn tồn taij trong phiếu mượn!' % (pro.name_seq)))
+                raise ValidationError(_('Bạn không thể xoá :%s khi meta đồ án còn tồn tại trong phiếu mượn!' % (pro.name_seq)))
         return super(MetaProject, self).unlink()

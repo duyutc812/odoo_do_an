@@ -37,7 +37,7 @@ class Book(models.Model):
     _description = 'Sách'
 
     name_seq = fields.Char(string="Mã sách", default=lambda self: _('New'), readonly=True, track_visibility='always')
-    name = fields.Char(string="Tiêu đề", required=False, help='Book cover title')
+    name = fields.Char(string="Tiêu đề", required=False, help='Tiêu đề sách')
     category = fields.Many2one('lib.category.book', 'Thể loại', required=True, track_visibility='always')
     publish_date = fields.Date('Ngày xuất bản', track_visibility='always')
     publisher_id = fields.Many2one('lib.publisher', string='Nhà xuất bản', track_visibility='always')

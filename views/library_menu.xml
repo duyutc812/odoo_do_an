@@ -235,6 +235,7 @@
         <field name="name">Sách</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">lib.book</field>
+        <field name="limit">18</field>
         <field name="view_mode">kanban,pivot,tree,form</field>
     </record>
 

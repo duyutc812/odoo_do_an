@@ -41,7 +41,7 @@ class Student(models.Model):
         ('female', 'Nữ'),
     ], default='male', string="Giới tính")
     phone = fields.Char('Số điện thoại')
-    email = fields.Char('Email')
+    email = fields.Char('Email', required=True)
     facebook = fields.Char('Facebook')
     street = fields.Char('Đường')
     sub_district = fields.Char('Thị trấn/Xã')

@@ -17,7 +17,6 @@
             <form>
                 <sheet>
                     <group col="2">
-                        <separator string="Category" colspan="2"/>
                         <field name="name" />
                     </group>
                     <!--<group>

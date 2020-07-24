@@ -87,16 +87,18 @@ class CheckoutBackHome(models.Model):
     @api.onchange('card_id')
     def onchange_card_id(self):
         syll_cate = self.env.ref('do_an_tn.data_category_6').id
+        chk = self.sudo().search([('card_id', '=', self.card_id.id),
+                                  ('state', '=', 'running'),
+                                  ('id', 'not in', self.ids)])
         chk_running_syl = self.sudo().search([('card_id', '=', self.card_id.id),
                                               ('state', '=', 'running'),
                                               ('id', 'not in', self.ids),
                                               ('category_doc', '=', syll_cate)])
-        chk_running_bk = self.sudo().search([('card_id', '=', self.card_id.id),
-                                             ('state', '=', 'running'),
-                                             ('id', 'not in', self.ids),
-                                             ('category_doc', '!=', syll_cate)])
-        if self.card_id :
-            if len(chk_running_syl) >= self.card_id.syllabus_limit and len(chk_running_bk) >= self.card_id.book_limit:
+        chk_running_bk = len(chk) - len(chk_running_syl)
+        print(chk_running_syl, chk_running_bk)
+        print(self.card_id.syllabus_limit , self.card_id.book_limit)
+        if self.card_id:
+            if len(chk_running_syl) >= self.card_id.syllabus_limit and chk_running_bk >= self.card_id.book_limit:
                 self.card_id = ''
                 return {
                     'warning': {
@@ -104,12 +106,12 @@ class CheckoutBackHome(models.Model):
                         'message': _('Bạn đã mượn đủ số lượng tài liệu được phép.\nKhông thể mượn thêm tài liệu cho thẻ này!'),
                     }
                 }
-            elif len(chk_running_bk) >= self.card_id.book_limit or len(chk_running_syl) >= self.card_id.syllabus_limit:
+            elif chk_running_bk >= self.card_id.book_limit or len(chk_running_syl) >= self.card_id.syllabus_limit:
                 return {
                     'warning': {
                         'title': _('Thẻ thư viện'),
                         'message': _('Số tài liệu tham khảo: %s\nSố giáo trình: %s\nBạn đang mượn %s tài liệu tham khảo và %s giáo trình!')
-                                   % (self.card_id.book_limit,  self.card_id.syllabus_limit, len(chk_running_bk), len(chk_running_syl)),
+                                   % (self.card_id.book_limit,  self.card_id.syllabus_limit, chk_running_bk, len(chk_running_syl)),
                     }
                 }
 
@@ -153,7 +155,8 @@ class CheckoutBackHome(models.Model):
         current_date = datetime.now()
         user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz or 'UTC')
         date_today = pytz.utc.localize(current_date).astimezone(user_tz)
-        if self.return_date and self.document_term and (self.return_date > (date_today + rd(days=self.document_term)).date()):
+        if self.return_date and self.document_term and \
+                (self.return_date > (date_today + rd(days=self.document_term)).date()):
             self.return_date = ''
             return {
                        'warning': {
@@ -161,14 +164,14 @@ class CheckoutBackHome(models.Model):
                            'message': _('Vượt quá thời hạn trả sách!')
                        }
                    }
-        # if self.return_date and self.return_date < date_today.date():
-        #     self.return_date = ''
-        #     return {
-        #                'warning': {
-        #                    'title': _('Duration Borrow Document'),
-        #                    'message': _('Ngày hẹn trả phải lớn hơn ngày hiện tại!'),
-        #                }
-        #            }
+        if self.return_date and self.return_date < date_today.date():
+            self.return_date = ''
+            return {
+                       'warning': {
+                           'title': _('Duration Borrow Document'),
+                           'message': _('Ngày hẹn trả phải lớn hơn ngày hiện tại!'),
+                       }
+                   }
         if self.return_date and self.end_date and self.return_date > self.end_date:
             self.return_date = ''
             return {
@@ -216,12 +219,6 @@ class CheckoutBackHome(models.Model):
     #         elif chk.project_id:
     #             chk.category_doc = chk.project_id.major_id.name
 
-    # def unlink(self):
-    #     for chk in self:
-    #         if chk.state != 'draft':
-    #             raise ValidationError(_('You can not delete checkout when state not is draft!'))
-    #     return super(CheckoutBackHome, self).unlink()
-
     @api.onchange('state')
     def _onchange_state(self):
         current_date = datetime.now()
@@ -264,18 +261,17 @@ class CheckoutBackHome(models.Model):
         syll_cate = self.env.ref('do_an_tn.data_category_6').id
         state_running = self.env['lib.checkout.stage'].search([('state', '=', 'running')])
         for chk in self:
-            chk_running_syl = self.sudo().search([('card_id', '=', chk.card_id.id),
-                                           ('state', '=', 'running'),
-                                           ('id', 'not in', chk.ids),
-                                           ('type_document', '=', 'book'),
-                                           ('category_doc', '=', syll_cate)])
-            chk_running_bk = self.sudo().search([('card_id', '=', chk.card_id.id),
-                                          ('state', '=', 'running'),
-                                          ('id', 'not in', chk.ids),
-                                          ('category_doc', '!=', syll_cate)])
-            if len(chk_running_bk) >= chk.card_id.book_limit and len(chk_running_syl) >= chk.card_id.syllabus_limit:
+            chk_count = self.sudo().search([('card_id', '=', self.card_id.id),
+                                      ('state', '=', 'running'),
+                                      ('id', 'not in', self.ids)])
+            chk_running_syl = self.sudo().search([('card_id', '=', self.card_id.id),
+                                                  ('state', '=', 'running'),
+                                                  ('id', 'not in', self.ids),
+                                                  ('category_doc', '=', syll_cate)])
+            chk_running_bk = len(chk_count) - len(chk_running_syl)
+            if chk_running_bk >= chk.card_id.book_limit and len(chk_running_syl) >= chk.card_id.syllabus_limit:
                 raise ValidationError(_('Không thể mượn thêm tài liệu'))
-            elif len(chk_running_bk) >= chk.card_id.book_limit:
+            elif chk_running_bk >= chk.card_id.book_limit:
                 if self.category_doc.id != syll_cate:
                     raise ValidationError(_('Không thể mượn thêm tài liệu tham khảo!'))
             elif len(chk_running_syl) >= chk.card_id.syllabus_limit:
@@ -570,6 +566,11 @@ class CheckoutBackHome(models.Model):
             'type': 'ir.actions.act_window',
         }
 
+    def unlink(self):
+        for chk in self:
+            if chk.state != 'draft':
+                raise ValidationError(_('Không thể xóa phiếu khác trạng thái \'Nháp\'!'))
+        return super(CheckoutBackHome, self).unlink()
 
 
 

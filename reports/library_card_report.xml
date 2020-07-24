@@ -30,8 +30,8 @@
                                         <tr>
                                             <td width="35%">
                                                 <p style="text-align:center;padding-top:10px;">
-                                                    <img t-if="o.member_type=='teacher'" t-att-src="'data:image/png;base64,%s' % to_text(o.teacher_image)" height="120" border="1" width="120"/>
-                                                    <img t-if="o.member_type=='student'" t-att-src="'data:image/png;base64,%s' % to_text(o.student_image)" height="120" border="1" width="120"/>
+                                                    <img t-if="o.member_type=='teacher'" t-att-src="'data:image/png;base64,%s' % to_text(o.teacher_image)" height="151" border="1" width="113"/>
+                                                    <img t-if="o.member_type=='student'" t-att-src="'data:image/png;base64,%s' % to_text(o.student_image)" height="151" border="1" width="113"/>
                                                 </p>
 
                                                 <!--<h5  style="text-align:center;"><strong><span t-field="o.gt_name"/></strong></h5>-->

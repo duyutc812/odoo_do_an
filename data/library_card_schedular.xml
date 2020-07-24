@@ -12,7 +12,7 @@
         </record>
 
         <record id="ir_cron_card_send_email" model="ir.cron">
-            <field name="name">Gửi email thông báo ngày hết hạn trước 1 tuần</field>
+            <field name="name">Gửi email thông báo thẻ mượn hết hạn trước 1 tuần</field>
             <field name="model_id" ref="model_lib_card"/>
             <field name="type">ir.actions.server</field>
             <field name="state">code</field>

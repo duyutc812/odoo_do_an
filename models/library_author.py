@@ -50,7 +50,7 @@ class Author(models.Model):
     @api.multi
     def open_books_of_author2(self):
         return {
-            'name': _('All book 2'),
+            'name': _('Tất cả sách'),
             'domain': [('author_ids', '=', self.id)],
             'view_type': 'form',
             'res_model': 'lib.book',

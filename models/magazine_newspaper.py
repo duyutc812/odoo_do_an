@@ -11,7 +11,7 @@ class Magazine(models.Model):
         ('magazine', 'Tạp chí'),
         ('newspaper', 'Báo')
     ], string='Loại', default='newspaper', required=True, track_visibility='always')
-    image = fields.Binary('Cover')
+    image = fields.Binary('Ảnh')
     category_mgz_id = fields.Many2one('lib.category.magazine', string='Thể loại tạp chí', track_visibility='always')
     category_new_id = fields.Many2one('lib.category.newspaper', string='Thể loại báo', track_visibility='always')
     num_mgz_new = fields.Integer(string="Số tạp chí/báo", track_visibility='always')
@@ -68,8 +68,6 @@ class Magazine(models.Model):
             mgz_new.state = 'not_available'
             if mgz_new.remaining >= 1:
                 mgz_new.state = 'available'
-            print(mgz_new.state)
-        print('depends')
         return True
 
     # @api.depends('books_available')
